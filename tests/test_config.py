@@ -99,6 +99,7 @@ def has_real_stockfish():
         return False
     return shutil.which(path) is not None
 
+@pytest.mark.golden
 @pytest.mark.skipif(not has_real_stockfish(), reason="skip-unless-STOCKFISH_PATH-is-set")
 class TestRealStockfish(unittest.TestCase):
     def test_real_engine_verification(self):

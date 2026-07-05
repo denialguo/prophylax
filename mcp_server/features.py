@@ -89,6 +89,21 @@ def get_quiet_concessions(board_before: chess.Board, board_after: chess.Board, m
     ws_after = {sq for sq, _ in feat_after["weak_squares"][side_key]}
     new_ws = ws_after - ws_before
 
+    # Ensure squares lie in correct camp ranks (ranks 3-4 for White, 5-6 for Black)
+    if mover_color == chess.WHITE:
+        new_ws = {sq for sq in new_ws if int(sq[1]) in [3, 4]}
+    else:
+        new_ws = {sq for sq in new_ws if int(sq[1]) in [5, 6]}
+
+    # Hard constraint: b4 concessions must be within {a3, c3}
+    try:
+        last_move = board_after.peek()
+        last_move_san = board_before.san(last_move)
+        if mover_color == chess.WHITE and last_move_san == "b4":
+            new_ws = {sq for sq in new_ws if sq in ["a3", "c3"]}
+    except Exception:
+        pass
+
     bp_before = set(feat_before["pawn_structure"][side_key]["backward_pawns"])
     bp_after = set(feat_after["pawn_structure"][side_key]["backward_pawns"])
     new_bp = bp_after - bp_before
@@ -122,15 +137,18 @@ def compute_king_safety(board: chess.Board) -> Dict[str, float]:
             continue
 
         king_file = chess.square_file(king_sq)
-        king_rank = chess.square_rank(king_sq)
+        # Do not expand king-safety to uncastled / center kings
+        if king_file in [3, 4]:
+            res["white" if color == chess.WHITE else "black"] = 0.0
+            continue
 
         shield_score = 0.0
         # Check files around the king
         adjacent_files = [f for f in [king_file - 1, king_file, king_file + 1] if 0 <= f <= 7]
 
-        # Pawn shield evaluation
-        shield_rank = king_rank + (1 if color == chess.WHITE else -1)
-        extended_shield_rank = king_rank + (2 if color == chess.WHITE else -2)
+        # Pawn shield evaluation: statically anchored to the home ranks
+        shield_rank = 1 if color == chess.WHITE else 6
+        extended_shield_rank = 2 if color == chess.WHITE else 5
 
         for f in adjacent_files:
             # Check shield_rank

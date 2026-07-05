@@ -1,0 +1,94 @@
+[
+  {
+    "name": "scandinavian_h4_calibration_fail",
+    "description": "Fails category (b) because of wrong side attribution and move interpretation (trapped knight vs king exposure)",
+    "input": {
+      "flagged_move": {
+        "move_san": "h4",
+        "move_number": 21,
+        "side": "white",
+        "phase": "middlegame",
+        "wdl_before_prob": 0.74,
+        "wdl_after_prob": 0.511,
+        "wdl_delta": -0.22899999999999998,
+        "best_move_san": "Bd1",
+        "pv": [
+          "Bd1",
+          "a6",
+          "Bb3",
+          "Qd7",
+          "h4",
+          "Nfxe4"
+        ],
+        "refutation_pv": [
+          "Nxf3",
+          "Kxf3",
+          "h5",
+          "Kg2",
+          "g6",
+          "Nh6+"
+        ],
+        "feature_deltas": {
+          "king_safety_delta": -1.0,
+          "pawn_structure_delta": 0.0,
+          "weak_squares": 0,
+          "piece_activity_delta": 0
+        },
+        "channel": "wdl"
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "narration": "Move 21.h4 (White): WDL drop 22.9%\nWhite's 21.h4 is a significant error, severely compromising king safety. The engine's refutation demonstrates this, as Black plays 21...Nxf3, followed by White's 22.Kxf3. Black then plays 22...h5 and 23...g6, further exposing the king, leading to the game-deciding 24.Nh6+ check.",
+    "ground_truth": "h5/g6 trap the f5 knight; Nh6+ is White's escape attempt.",
+    "should_pass": false
+  },
+  {
+    "name": "scandinavian_h4_calibration_pass",
+    "description": "Passes because the trapped knight is correctly identified and the escape attempt is not framed as an attack",
+    "input": {
+      "flagged_move": {
+        "move_san": "h4",
+        "move_number": 21,
+        "side": "white",
+        "phase": "middlegame",
+        "wdl_before_prob": 0.74,
+        "wdl_after_prob": 0.511,
+        "wdl_delta": -0.22899999999999998,
+        "best_move_san": "Bd1",
+        "pv": [
+          "Bd1",
+          "a6",
+          "Bb3",
+          "Qd7",
+          "h4",
+          "Nfxe4"
+        ],
+        "refutation_pv": [
+          "Nxf3",
+          "Kxf3",
+          "h5",
+          "Kg2",
+          "g6",
+          "Nh6+"
+        ],
+        "feature_deltas": {
+          "king_safety_delta": -1.0,
+          "pawn_structure_delta": 0.0,
+          "weak_squares": 0,
+          "piece_activity_delta": 0
+        },
+        "channel": "wdl"
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "narration": "Move 21.h4 (White): WDL drop 22.9%\nWhite's 21.h4 is a significant error, severely compromising king safety. The engine's refutation demonstrates this, as Black plays 21...Nxf3, followed by White's 22.Kxf3. Black then plays 22...h5 and 23...g6, trapping the f5 knight, while White's 24.Nh6+ is a desperate attempt to escape.",
+    "ground_truth": "h5/g6 trap the f5 knight; Nh6+ is White's escape attempt.",
+    "should_pass": true
+  }
+]

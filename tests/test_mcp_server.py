@@ -19,6 +19,15 @@ from mcp_server.server import handle_analyze_pgn, handle_analyze_position
 
 class TestMcpServerFeatures(unittest.TestCase):
 
+    def setUp(self):
+        self.original_env = dict(os.environ)
+        os.environ["STOCKFISH_PATH"] = "dummy_stockfish_path"
+        os.environ["STOCKFISH_NODES"] = "1000"
+
+    def tearDown(self):
+        os.environ.clear()
+        os.environ.update(self.original_env)
+
     def test_pgn_parse_failure(self):
         # Invalid PGN
         with self.assertRaises(ValueError):
@@ -173,3 +182,23 @@ class TestGoldenFixtures(unittest.TestCase):
         concessions = b5_flag.get("concessions", {})
         self.assertIn("c5", concessions.get("new_weak_squares", []))
         self.assertIn("c6", concessions.get("new_backward_pawns", []))
+
+    def test_concession_squares_ranks(self):
+        pgn_path = os.path.join(os.path.dirname(__file__), "fixtures", "scandinavian_blitz.pgn")
+        pgn_text = open(pgn_path).read()
+        res = handle_analyze_pgn({"pgn": pgn_text, "max_flags": 100})
+        
+        # Verify that all concession squares for White mover lie in ranks 3-4, and for Black in ranks 5-6
+        for f in res["flags"]:
+            mover_side = f["side"].lower()
+            concessions = f.get("concessions", {})
+            for sq in concessions.get("new_weak_squares", []):
+                rank = int(sq[1])
+                if mover_side == "white":
+                    self.assertIn(rank, [3, 4])
+                else:
+                    self.assertIn(rank, [5, 6])
+            if f["move_san"] == "b4" and f["move_number"] == 13:
+                new_ws = concessions.get("new_weak_squares", [])
+                for sq in new_ws:
+                    self.assertIn(sq, ["a3", "c3"])

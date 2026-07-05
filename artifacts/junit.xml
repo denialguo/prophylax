@@ -1,1 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="15" time="63.936" timestamp="2026-07-04T17:58:02.726507-07:00" hostname="denIAls-MACbooK.local"><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_eval_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_eval_path_missing_nodes" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_missing_both" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_movetime" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_nodes_fallback" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_invalid_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_missing_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_mock_success" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_mock_version_mismatch" time="0.000" /><testcase classname="tests.test_config.TestRealStockfish" name="test_real_engine_verification" time="0.165" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_illegal_move_pgn" time="0.001" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_mcp_server_channel_flagging_mocked" time="0.003" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_pgn_parse_failure" time="0.000" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_quiet_concessions_trigger_logic" time="0.001" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_weak_squares_camp_exclusion" time="0.000" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="66.522" timestamp="2026-07-04T18:36:03.087639-07:00" hostname="denIAls-MACbooK.local"><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_eval_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_eval_path_missing_nodes" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_missing_both" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_movetime" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_limits_precedence_interactive_path_nodes_fallback" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_invalid_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_missing_path" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_mock_success" time="0.000" /><testcase classname="tests.test_config.TestConfig" name="test_verify_engine_mock_version_mismatch" time="0.000" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_illegal_move_pgn" time="0.000" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_mcp_server_channel_flagging_mocked" time="0.003"><failure message="IndexError: list index out of range">self = &lt;test_mcp_server.TestMcpServerFeatures testMethod=test_mcp_server_channel_flagging_mocked&gt;
+mock_popen = &lt;MagicMock name='popen_uci' id='4868643136'&gt;
+mock_get_path = &lt;MagicMock name='get_stockfish_path' id='4868637424'&gt;
+
+    @patch("mcp_server.server.get_stockfish_path")
+    @patch("chess.engine.SimpleEngine.popen_uci")
+    def test_mcp_server_channel_flagging_mocked(self, mock_popen, mock_get_path):
+        mock_get_path.return_value = "dummy_path"
+    
+        # Mock engine instance
+        mock_engine = MagicMock()
+        mock_popen.return_value = mock_engine
+    
+        # Mock WDL outputs
+        # We return PovWdl objects from analyse
+        def mock_analyse(board, limit, multipv=1):
+            mock_wdl = chess.engine.PovWdl(chess.engine.Wdl(wins=300, draws=400, losses=300), chess.WHITE)
+            legal_move = list(board.legal_moves)[0] if board.legal_moves else None
+            return {"wdl": mock_wdl, "pv": [legal_move] if legal_move else []}
+    
+        mock_engine.analyse.side_effect = mock_analyse
+    
+        # Simple PGN text
+        pgn_text = "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6"
+&gt;       res = handle_analyze_pgn({"pgn": pgn_text, "max_flags": 4})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_mcp_server.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = {'max_flags': 4, 'pgn': '1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6'}
+
+    def handle_analyze_pgn(params: Dict[str, Any]) -&gt; Dict[str, Any]:
+        pgn_text = params.get("pgn", "")
+        max_flags = params.get("max_flags", 4)
+    
+        # Initialize clean engine instance per request
+        stockfish_path = get_stockfish_path()
+        if not stockfish_path:
+            raise RuntimeError("STOCKFISH_PATH is not set.")
+    
+        # Parse PGN
+        game = chess.pgn.read_game(io.StringIO(pgn_text))
+        if not game or game.errors:
+            raise ValueError("Invalid PGN format or parsing error.")
+    
+        # Check for illegal moves or parsing errors
+        board = game.board()
+        moves = []
+        for m in game.mainline_moves():
+            if m not in board.legal_moves:
+                raise ValueError(f"Illegal move detected in PGN: {m} in position {board.fen()}")
+            moves.append(m)
+            board.push(m)
+    
+        if not moves:
+            raise ValueError("Empty PGN or no moves parsed.")
+    
+        # Setup engine
+        limits = get_limits(interactive=False)
+        nodes = limits.get("nodes", 1000000) # Pinned to 1M
+    
+        import time
+        start_time = time.time()
+        current_limit = nodes
+        print(f"Stockfish search limit: Limit(nodes={current_limit})", file=sys.stderr, flush=True)
+    
+        engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+        try:
+            engine.configure({"Threads": STOCKFISH_THREADS, "UCI_ShowWDL": True})
+    
+            # Replay the game, analyzing each position
+            temp_board = game.board()
+    
+            # Analyze start pos
+            if nodes != current_limit:
+                raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
+            info = engine.analyse(temp_board, chess.engine.Limit(nodes=nodes))
+            start_wdl = info.get("wdl")
+    
+            # Track position and state history
+            # Each step stores: (board_state, wdl, pv)
+            history = [(temp_board.copy(), start_wdl, [])]
+    
+            for m in moves:
+                temp_board.push(m)
+                if nodes != current_limit:
+                    raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
+                info = analyse_with_longest_pv(engine, temp_board, nodes)
+                wdl = info.get("wdl")
+                pv = info.get("pv", [])
+                history.append((temp_board.copy(), wdl, pv))
+    
+            # We can now scan moves and detect flags
+            from mcp_server.features import get_feature_deltas, get_quiet_concessions, evaluate_position_features
+    
+            channel1_flags = []
+            channel2_flags = []
+    
+            temp_board = game.board()
+            for idx, m in enumerate(moves):
+                # Move info
+                move_number = int(idx / 2) + 1
+                side = "white" if temp_board.turn == chess.WHITE else "black"
+                color = temp_board.turn
+                phase = get_game_phase(temp_board, move_number)
+    
+                # Boards before and after
+                board_before, wdl_before, _ = history[idx]
+                board_after, wdl_after, post_move_pv = history[idx + 1]
+    
+                # Win probabilities
+                wp_before = get_win_probability(wdl_before, color, board_before)
+                wp_after = get_win_probability(wdl_after, color, board_after)
+                wdl_delta = wp_after - wp_before  # negative is worse for mover
+    
+                # Evaluate feature changes
+                feat_deltas = get_feature_deltas(board_before, board_after, color)
+    
+                # Analyze best move at this position for PV and best move SAN
+                # Since we need PV from before position, we run analysis on board_before
+                if nodes != current_limit:
+                    raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
+                best_info = analyse_with_longest_pv(engine, board_before, nodes)
+&gt;               best_move = best_info.get("pv", [None])[0]
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               IndexError: list index out of range
+
+mcp_server/server.py:186: IndexError</failure></testcase><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_pgn_parse_failure" time="0.000" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_quiet_concessions_trigger_logic" time="0.001" /><testcase classname="tests.test_mcp_server.TestMcpServerFeatures" name="test_weak_squares_camp_exclusion" time="0.000" /></testsuite></testsuites>

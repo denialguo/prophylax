@@ -1,0 +1,164 @@
+[
+  {
+    "name": "scandinavian_h4_blunder",
+    "input": {
+      "flagged_move": {
+        "move_san": "h4",
+        "move_number": 21,
+        "side": "white",
+        "phase": "middlegame",
+        "wdl_before_prob": 0.74,
+        "wdl_after_prob": 0.511,
+        "wdl_delta": -0.22899999999999998,
+        "best_move_san": "Bd1",
+        "pv": [
+          "Bd1",
+          "a6",
+          "Bb3",
+          "Qd7",
+          "h4",
+          "Nfxe4"
+        ],
+        "refutation_pv": [
+          "Nxf3",
+          "Kxf3",
+          "h5",
+          "Kg2",
+          "g6",
+          "Nh6+"
+        ],
+        "feature_deltas": {
+          "king_safety_delta": -1.0,
+          "pawn_structure_delta": 0.0,
+          "weak_squares": 0,
+          "piece_activity_delta": 0
+        },
+        "concessions": {
+          "new_weak_squares": ["g4", "g3"]
+        },
+        "channel": "wdl"
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "king_safety_delta",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "hangs a piece",
+      "promotes a pawn"
+    ]
+  },
+  {
+    "name": "scandinavian_b4_blunder",
+    "input": {
+      "flagged_move": {
+        "move_san": "b4",
+        "move_number": 13,
+        "side": "white",
+        "phase": "middlegame",
+        "wdl_before_prob": 0.8435,
+        "wdl_after_prob": 0.525,
+        "wdl_delta": -0.3185,
+        "best_move_san": "cxd4",
+        "pv": [
+          "cxd4",
+          "exd4",
+          "Be2",
+          "Bxg3",
+          "hxg3",
+          "c5"
+        ],
+        "refutation_pv": [
+          "a5",
+          "bxa5",
+          "Nc6",
+          "Nf5",
+          "dxc3",
+          "Bxc3"
+        ],
+        "feature_deltas": {
+          "weak_squares": -3,
+          "piece_activity_delta": -1,
+          "king_safety_delta": 0.0,
+          "pawn_structure_delta": 0.0
+        },
+        "concessions": {
+          "new_weak_squares": ["a4", "a3", "c3"]
+        },
+        "channel": "wdl"
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "weak_squares",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "blunders the queen",
+      "allows back rank mate"
+    ]
+  },
+  {
+    "name": "carlsbad_b5_quiet",
+    "input": {
+      "flagged_move": {
+        "move_san": "b5",
+        "move_number": 10,
+        "side": "black",
+        "phase": "middlegame",
+        "wdl_before_prob": 0.472,
+        "wdl_after_prob": 0.4265,
+        "wdl_delta": -0.045499999999999985,
+        "best_move_san": "Nf8",
+        "pv": [
+          "Nf8",
+          "f3",
+          "g6",
+          "Rad1",
+          "Ne6",
+          "Bh4"
+        ],
+        "refutation_pv": [
+          "a4",
+          "b4",
+          "Nb1",
+          "Bb7",
+          "Nd2",
+          "a5"
+        ],
+        "feature_deltas": {
+          "weak_squares": -4,
+          "piece_activity_delta": 1,
+          "pawn_structure_delta": -0.5,
+          "king_safety_delta": 0.0
+        },
+        "channel": "quiet_inaccuracy",
+        "concessions": {
+          "new_weak_squares": [
+            "a5",
+            "c5",
+            "a6",
+            "c6"
+          ],
+          "new_backward_pawns": [
+            "c6"
+          ]
+        }
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "new_weak_squares",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "blunder",
+      "loses a pawn",
+      "tactical threat"
+    ]
+  }
+]

@@ -32,7 +32,7 @@ def get_game_phase(board: chess.Board, move_number: int) -> str:
 
     if no_queens or low_material:
         return "endgame"
-    elif move_number <= 10:
+    elif move_number <= 9:
         return "opening"
     else:
         return "middlegame"
@@ -73,6 +73,23 @@ def get_pv_san(board: chess.Board, pv_moves: List[chess.Move]) -> List[str]:
         else:
             break
     return san_list
+
+def analyse_with_longest_pv(engine, board, nodes):
+    """
+    Analyses the position and returns the final info dictionary,
+    overwriting info['pv'] with the longest PV observed during the search
+    to prevent truncation from fail-high/fail-low updates.
+    """
+    info = {}
+    best_pv = []
+    with engine.analysis(board, chess.engine.Limit(nodes=nodes)) as analysis:
+        for info_item in analysis:
+            info.update(info_item)
+            if "pv" in info_item:
+                if len(info_item["pv"]) > len(best_pv):
+                    best_pv = info_item["pv"]
+    info["pv"] = best_pv
+    return info
 
 def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     pgn_text = params.get("pgn", "")
@@ -123,16 +140,17 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
         start_wdl = info.get("wdl")
         
         # Track position and state history
-        # Each step stores: (board_state, wdl, mover_side)
-        history = [(temp_board.copy(), start_wdl)]
+        # Each step stores: (board_state, wdl, pv)
+        history = [(temp_board.copy(), start_wdl, [])]
 
         for m in moves:
             temp_board.push(m)
             if nodes != current_limit:
                 raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-            info = engine.analyse(temp_board, chess.engine.Limit(nodes=nodes))
+            info = analyse_with_longest_pv(engine, temp_board, nodes)
             wdl = info.get("wdl")
-            history.append((temp_board.copy(), wdl))
+            pv = info.get("pv", [])
+            history.append((temp_board.copy(), wdl, pv))
 
         # We can now scan moves and detect flags
         from mcp_server.features import get_feature_deltas, get_quiet_concessions, evaluate_position_features
@@ -149,8 +167,8 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
             phase = get_game_phase(temp_board, move_number)
 
             # Boards before and after
-            board_before, wdl_before = history[idx]
-            board_after, wdl_after = history[idx + 1]
+            board_before, wdl_before, _ = history[idx]
+            board_after, wdl_after, post_move_pv = history[idx + 1]
 
             # Win probabilities
             wp_before = get_win_probability(wdl_before, color, board_before)
@@ -164,29 +182,29 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
             # Since we need PV from before position, we run analysis on board_before
             if nodes != current_limit:
                 raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-            best_info = engine.analyse(board_before, chess.engine.Limit(nodes=nodes))
-            best_move = best_info.get("pv", [None])[0]
+            best_info = analyse_with_longest_pv(engine, board_before, nodes)
+            pv_list = best_info.get("pv", [])
+            best_move = pv_list[0] if pv_list else None
             best_move_san = board_before.san(best_move) if best_move else ""
-            pv = get_pv_san(board_before, best_info.get("pv", []))
+            pv = get_pv_san(board_before, pv_list)
             move_san = board_before.san(m)
 
-            # Reformat WDL for exact output JSON: relative wins, draws, losses
-            rel_before = wdl_before.relative if wdl_before else None
-            rel_after = wdl_after.relative if wdl_after else None
+            refutation_pv = get_pv_san(board_after, post_move_pv)
+            concessions = get_quiet_concessions(board_before, board_after, color)
 
             flag_obj = {
                 "move_san": move_san,
                 "move_number": move_number,
                 "side": side,
                 "phase": phase,
-                "wdl_before": {"wins": rel_before.wins, "draws": rel_before.draws, "losses": rel_before.losses} if rel_before else None,
-                "wdl_after": {"wins": rel_after.wins, "draws": rel_after.draws, "losses": rel_after.losses} if rel_after else None,
                 "wdl_before_prob": wp_before,
                 "wdl_after_prob": wp_after,
                 "wdl_delta": wdl_delta,
                 "best_move_san": best_move_san,
                 "pv": pv,
-                "feature_deltas": feat_deltas
+                "refutation_pv": refutation_pv,
+                "feature_deltas": feat_deltas,
+                "concessions": concessions
             }
 
             # Channel 1 drop thresholds (negative bounds)
@@ -202,12 +220,10 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
                 channel1_flags.append(flag_obj)
             elif (move_number > 3) and (wdl_delta <= 0.0):
                 # Channel 2: Quiet concessions check
-                concessions = get_quiet_concessions(board_before, board_after, color)
                 has_new_ws = "new_weak_squares" in concessions
                 has_new_bp = "new_backward_pawns" in concessions
                 if has_new_ws and has_new_bp:
                     flag_obj["channel"] = "quiet_inaccuracy"
-                    flag_obj["concessions"] = concessions
                     channel2_flags.append(flag_obj)
 
             temp_board.push(m)

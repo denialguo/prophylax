@@ -52,6 +52,7 @@ colour-complex weaknesses). No beginner content. No invented lines.
   SKILL.md prose.
 - A skill's `description` is its routing algorithm: front-load trigger keywords; state
   what it does AND when NOT to use it.
+- The shared narration contract is intentionally duplicated across the three phase skills (opening_prep, middlegame_analysis, endgame_analysis). Any future contract change must be applied to all three simultaneously.
 - AGENTS.md, skills, and eval suites are code: reviewed and versioned.
 
 ## Workflow (Evaluation-Driven Development)
@@ -68,7 +69,6 @@ colour-complex weaknesses). No beginner content. No invented lines.
 ## Skills catalogue (router — bodies load only on trigger)
 - analysing-openings    .agents/skills/opening_prep/        # development, prep,
                                                             # structural commitments
-                                                            # (covers the seed g5 case)
 - analysing-middlegames .agents/skills/middlegame_analysis/ # plans, prophylaxis,
                                                             # weak squares, structure
 - analysing-endgames    .agents/skills/endgame_analysis/    # technique, key squares,

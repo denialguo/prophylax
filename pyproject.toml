@@ -10,5 +10,9 @@ dependencies = [
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
-markers = ["golden: engine-backed fixture tests"]
-addopts = "-m \"not golden\""
+markers = [
+    "golden: engine-backed fixture tests",
+    "narration: narration tests calling narrator model",
+    "judge: LLM-as-judge evaluation tests",
+]
+addopts = "-m \"not golden and not narration and not judge\""

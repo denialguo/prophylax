@@ -1,0 +1,115 @@
+[
+  {
+    "name": "synthetic_king_activity_concession",
+    "input": {
+      "flagged_move": {
+        "move_san": "Kf2",
+        "move_number": 40,
+        "side": "white",
+        "phase": "endgame",
+        "wdl_delta": -0.18,
+        "best_move_san": "Ke3",
+        "pv": [
+          "Ke3",
+          "Ke7",
+          "Kd4"
+        ],
+        "refutation_pv": [
+          "Ke7",
+          "Kd4"
+        ],
+        "channel": "wdl",
+        "feature_deltas": {
+          "king_safety_delta": -0.6
+        },
+        "synthetic": true
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "king_safety_delta",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "checkmate threat",
+      "blunders the rook"
+    ]
+  },
+  {
+    "name": "synthetic_endgame_zugzwang",
+    "input": {
+      "flagged_move": {
+        "move_san": "a4",
+        "move_number": 45,
+        "side": "black",
+        "phase": "endgame",
+        "wdl_delta": -0.4,
+        "best_move_san": "Kh7",
+        "pv": [
+          "Kh7",
+          "Kf6",
+          "Kh6"
+        ],
+        "refutation_pv": [
+          "Kf6",
+          "Kh6",
+          "Kf7"
+        ],
+        "channel": "wdl",
+        "feature_deltas": {
+          "king_safety_delta": -0.7
+        },
+        "synthetic": true
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "king_safety_delta",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "discovered check",
+      "promotes a queen"
+    ]
+  },
+  {
+    "name": "synthetic_endgame_pawn_race",
+    "input": {
+      "flagged_move": {
+        "move_san": "h5",
+        "move_number": 50,
+        "side": "white",
+        "phase": "endgame",
+        "wdl_delta": -0.4,
+        "best_move_san": "Kf4",
+        "pv": [
+          "Kf4",
+          "h4",
+          "g4"
+        ],
+        "refutation_pv": [
+          "h4",
+          "g4",
+          "Kf5"
+        ],
+        "channel": "wdl",
+        "feature_deltas": {
+          "pawn_structure_delta": -0.8
+        },
+        "synthetic": true
+      },
+      "config": {
+        "explanation_depth": 1,
+        "audience_rating": 1800
+      }
+    },
+    "expected_primary_theme": "pawn_structure_delta",
+    "expected_vocabulary_tier": "1800+",
+    "forbidden_claims": [
+      "loses the queen",
+      "back rank mate"
+    ]
+  }
+]
