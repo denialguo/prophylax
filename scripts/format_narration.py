@@ -37,12 +37,22 @@ def render_numbered_pv(moves: List[str], start_move_number: int, start_side: str
             
     return " ".join(parts)
 
+def build_header(flag: Dict[str, Any]) -> str:
+    move_san = flag.get("move_san", "")
+    move_num = flag.get("move_number", 1)
+    side = flag.get("side", "").capitalize()
+    wdl_delta = flag.get("wdl_delta", 0.0)
+    drop_pct = abs(wdl_delta) * 100
+    if side == "White":
+        return f"Move {move_num}.{move_san} (White): WDL drop {drop_pct:.1f}%"
+    else:
+        return f"Move {move_num}...{move_san} (Black): WDL drop {drop_pct:.1f}%"
+
 def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     """
     Formulates a structured text prompt for the LLM based on the flagged move data,
     explanation depth, and audience rating.
     """
-    move_san = flag.get("move_san", "")
     move_num = flag.get("move_number", 1)
     side = flag.get("side", "").capitalize()
     if "phase" not in flag:
@@ -55,12 +65,7 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     channel = flag.get("channel", "wdl")
     concessions = flag.get("concessions", {})
     
-    # Calculate WDL drop percentage
-    drop_pct = abs(wdl_delta) * 100
-    if side == "White":
-        header_str = f"Move {move_num}.{move_san} (White): WDL drop {drop_pct:.1f}%"
-    else:
-        header_str = f"Move {move_num}...{move_san} (Black): WDL drop {drop_pct:.1f}%"
+    header_str = build_header(flag)
         
     ranked_feats = rank_and_prune_features(flag.get("feature_deltas", {}), depth)
     

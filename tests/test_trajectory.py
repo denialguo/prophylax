@@ -129,23 +129,24 @@ async def test_deep_dive_trajectory():
         ):
             pass
             
-        calls.clear()  # Clear analyze_pgn call from setup
+        # Do not clear calls, so we can verify IN_ORDER [analyze_pgn, analyze_position]
         
         # Second, ask for a deep dive
         async for event in runner.run_async(
             user_id="user",
             session_id="s2",
-            new_message=types.Content(role="user", parts=[types.Part.from_text(text="deep dive b4")])
+            new_message=types.Content(role="user", parts=[types.Part.from_text(text="ask about move 13 white")])
         ):
             pass
             
-        # 2. "Deep-dive move X": trajectory is [analyze_position] (after we cleared setup)
+        # 2. "Deep-dive move X": trajectory is [analyze_pgn, analyze_position] IN_ORDER
         # Verify FEN belongs to the correct position (before move 13.b4)
-        assert len(calls) == 1
-        assert calls[0][0] == "analyze_position"
-        assert "fen" in calls[0][1]
+        assert len(calls) == 2
+        assert calls[0][0] == "analyze_pgn"
+        assert calls[1][0] == "analyze_position"
+        assert "fen" in calls[1][1]
         
         # Verify FEN has Black to move or the correct structure before 13.b4
         # Board turn should be White (since 13.b4 is White's move)
-        fen = calls[0][1]["fen"]
+        fen = calls[1][1]["fen"]
         assert " w " in fen

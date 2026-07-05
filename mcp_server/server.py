@@ -153,22 +153,23 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
             history.append((temp_board.copy(), wdl, pv))
 
         # We can now scan moves and detect flags
-        from mcp_server.features import get_feature_deltas, get_quiet_concessions, evaluate_position_features
+        from mcp_server.features import get_feature_deltas, get_quiet_concessions
 
         channel1_flags = []
         channel2_flags = []
+        move_evals = []
 
         temp_board = game.board()
         for idx, m in enumerate(moves):
-            # Move info
-            move_number = int(idx / 2) + 1
-            side = "white" if temp_board.turn == chess.WHITE else "black"
-            color = temp_board.turn
-            phase = get_game_phase(temp_board, move_number)
-
             # Boards before and after
             board_before, wdl_before, _ = history[idx]
             board_after, wdl_after, post_move_pv = history[idx + 1]
+
+            # Move info
+            move_number = int(idx / 2) + 1
+            side = "white" if board_before.turn == chess.WHITE else "black"
+            color = board_before.turn
+            phase = get_game_phase(board_before, move_number)
 
             # Win probabilities
             wp_before = get_win_probability(wdl_before, color, board_before)
@@ -206,6 +207,15 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
                 "feature_deltas": feat_deltas,
                 "concessions": concessions
             }
+
+            move_evals.append({
+                "move_san": move_san,
+                "move_number": move_number,
+                "side": side,
+                "phase": phase,
+                "wdl_delta": wdl_delta,
+                "best_move_san": best_move_san
+            })
 
             # Channel 1 drop thresholds (negative bounds)
             if move_number <= 3:
@@ -251,6 +261,7 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
 
         return {
             "flags": selected_flags,
+            "move_evals": move_evals,
             "summary": {
                 "total_flags": len(selected_flags),
                 "phase_distribution": phase_counts,
@@ -301,9 +312,10 @@ def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
         # Deterministic absolute features
         from mcp_server.features import evaluate_position_features
         abs_features = evaluate_position_features(board)
-        # Convert weak_squares set to sorted list for JSON serialization
-        ws_list = sorted(list(abs_features["weak_squares"]), key=lambda x: x[0])
-        abs_features["weak_squares"] = [{"square": s, "complex": c} for s, c in ws_list]
+        # Convert weak_squares sets to sorted lists for JSON serialization
+        for color_key in ["white", "black"]:
+            ws_list = sorted(list(abs_features["weak_squares"][color_key]), key=lambda x: x[0])
+            abs_features["weak_squares"][color_key] = [{"square": s, "complex": c} for s, c in ws_list]
 
         duration = time.time() - start_time
         print(f"Fixture: Position Analysis | Positions analyzed: 1 | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
