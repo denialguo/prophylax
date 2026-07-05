@@ -1,0 +1,10 @@
+{
+  "flags": [
+    {
+      "move_san": "g4",
+      "move_number": 2,
+      "wdl_delta_min": -0.35600000000000004,
+      "wdl_delta_max": -0.326
+    }
+  ]
+}

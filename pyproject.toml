@@ -1,0 +1,14 @@
+[project]
+name = "prophylax"
+version = "0.1.0"
+description = "A positional chess second that reads your engine and explains your mistakes"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk==2.3.0",
+    "chess==1.11.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+markers = ["golden: engine-backed fixture tests"]
+addopts = "-m \"not golden\""

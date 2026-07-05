@@ -1,0 +1,28 @@
+{
+  "flags": [
+    {
+      "move_san": "g4",
+      "move_number": 22,
+      "wdl_delta_min": -0.649,
+      "wdl_delta_max": -0.619
+    },
+    {
+      "move_san": "Ne7",
+      "move_number": 12,
+      "wdl_delta_min": -0.35650000000000004,
+      "wdl_delta_max": -0.3265
+    },
+    {
+      "move_san": "b4",
+      "move_number": 13,
+      "wdl_delta_min": -0.3335,
+      "wdl_delta_max": -0.3035
+    },
+    {
+      "move_san": "h4",
+      "move_number": 21,
+      "wdl_delta_min": -0.244,
+      "wdl_delta_max": -0.21399999999999997
+    }
+  ]
+}
