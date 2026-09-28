@@ -43,65 +43,85 @@ def user_message_for(err: Exception) -> str:
         return USER_MESSAGES.get(err.code, "Analysis failed due to an internal error.")
     return "Something went wrong while generating coaching. Details were logged."
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# One long-lived server per event loop, serialized by a lock. It is respawned when
+# it dies, times out, or the environment it was started with has changed.
+_server = None  # (proc, loop, env snapshot, lock)
+_request_id = 0
+
+def _discard_server():
+    global _server
+    if _server is not None:
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(_server[0].pid, signal.SIGKILL)
+        _server = None
+
 async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
     """
-    Spawns the MCP server as a stdio subprocess and performs a stateless JSON-RPC call.
+    JSON-RPC call to the persistent MCP server subprocess (spawned on first use).
     Raises ToolError on any failure, including exceeding PROPHYLAX_TOOL_TIMEOUT_S.
     """
+    global _server, _request_id
     # PreToolUse sanitization hook
     is_valid, arguments, err_msg = sanitize_tool_input(tool_name, arguments)
     if not is_valid:
         raise ToolError(INVALID_PARAMS, f"Input rejected by sanitization hook: {err_msg}")
 
-    cmd = [sys.executable, "mcp_server/server.py"]
+    loop = asyncio.get_running_loop()
     env = dict(os.environ)
-
-    # Ensure current working directory is in PYTHONPATH so the server can import modules
-    cwd = os.getcwd()
-    env["PYTHONPATH"] = cwd + (os.path.pathsep + env["PYTHONPATH"] if "PYTHONPATH" in env else "")
-
-    # Own process group, so a timeout kills the server AND its Stockfish child
-    proc = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdin=asyncio.subprocess.PIPE,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-        env=env,
-        start_new_session=True,
-    )
-
-    req = {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "tools/call",
-        "params": {
-            "name": tool_name,
-            "arguments": arguments
-        }
-    }
-
-    # communicate() drains stdout and stderr together, so a chatty stderr can't deadlock
-    timeout = get_tool_timeout()
-    try:
-        stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate((json.dumps(req) + "\n").encode("utf-8")), timeout
+    if _server is not None and (_server[1] is not loop or _server[2] != env or _server[0].returncode is not None):
+        _discard_server()
+    if _server is None:
+        cmd = [sys.executable, "mcp_server/server.py"]
+        # ponytail: PYTHONPATH kept so the server runs as a script; -m would drop it
+        env["PYTHONPATH"] = ROOT + (os.path.pathsep + env["PYTHONPATH"] if "PYTHONPATH" in env else "")
+        # Own process group, so a timeout kills the server AND its Stockfish child.
+        # stderr is inherited: server logs go straight to ours.
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdin=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE,
+            cwd=ROOT,
+            env=env,
+            start_new_session=True,
         )
-    except asyncio.TimeoutError:
-        with contextlib.suppress(ProcessLookupError):
-            os.killpg(proc.pid, signal.SIGKILL)
-        await proc.wait()
-        raise ToolError(ENGINE_TIMEOUT, f"Tool call {tool_name} exceeded {timeout:g}s")
+        _server = (proc, loop, dict(os.environ), asyncio.Lock())
+    proc, _, _, lock = _server
 
-    stderr_str = stderr_bytes.decode("utf-8", "replace").strip()
-    if stderr_str:
-        print(f"[mcp_server] {stderr_str}", file=sys.stderr, flush=True)
+    async with lock:
+        _request_id += 1
+        req = {
+            "jsonrpc": "2.0",
+            "id": _request_id,
+            "method": "tools/call",
+            "params": {
+                "name": tool_name,
+                "arguments": arguments
+            }
+        }
+        timeout = get_tool_timeout()
+        try:
+            proc.stdin.write((json.dumps(req) + "\n").encode("utf-8"))
+            await proc.stdin.drain()
+            line = await asyncio.wait_for(proc.stdout.readline(), timeout)
+        except asyncio.TimeoutError:
+            _discard_server()
+            await proc.wait()
+            raise ToolError(ENGINE_TIMEOUT, f"Tool call {tool_name} exceeded {timeout:g}s")
+        except (BrokenPipeError, ConnectionResetError):
+            line = b""
 
-    res_str = stdout_bytes.decode("utf-8", "replace").strip().splitlines()
-    if proc.returncode != 0 or not res_str:
-        # Server exits non-zero only when its startup checks (path, version, limits) fail
-        raise ToolError(ENGINE_UNAVAILABLE, f"MCP server exited with code {proc.returncode} without a response")
+        if not line:
+            # EOF: startup checks (path, version, limits) failed, or the server died
+            _discard_server()
+            await proc.wait()
+            raise ToolError(ENGINE_UNAVAILABLE, f"MCP server exited with code {proc.returncode} without a response")
 
-    res_json = json.loads(res_str[0])
+    res_json = json.loads(line)
+    if res_json.get("id") != req["id"]:
+        _discard_server()
+        raise ToolError(INTERNAL_ERROR, f"Response id {res_json.get('id')} does not match request {req['id']}")
     if "error" in res_json:
         raise ToolError(res_json["error"].get("code", INTERNAL_ERROR), res_json["error"].get("message", ""))
 
