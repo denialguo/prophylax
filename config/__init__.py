@@ -74,8 +74,10 @@ def verify_engine(mock_output: Optional[str] = None) -> str:
             f"Could not parse Stockfish version from output. Output head:\n{lines[:3]}"
         )
 
-    # Check if the pinned version string is present in the version line
-    if PINNED_STOCKFISH_VERSION not in version_line:
+    # Exact token match: "Stockfish 18 ..." — a substring check would accept "dev-20250118"
+    tokens = version_line.split()
+    version_token = tokens[tokens.index("Stockfish") + 1] if "Stockfish" in tokens[:-1] else ""
+    if version_token != PINNED_STOCKFISH_VERSION:
         raise RuntimeError(
             f"Stockfish version mismatch! Pinned version is '{PINNED_STOCKFISH_VERSION}', "
             f"but detected binary version is: '{version_line}'."

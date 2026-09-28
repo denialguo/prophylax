@@ -45,6 +45,23 @@ def get_limits(interactive: bool = False) -> Dict[str, int]:
 # Stockfish is single-threaded on the golden/eval path
 STOCKFISH_THREADS: int = 1
 
+# Input bounds for MCP tools (untrusted input; each ply costs two searches)
+MAX_PGN_CHARS: int = 100_000
+MAX_PGN_PLIES: int = 400
+MAX_FLAGS: int = MAX_PGN_PLIES  # only slices the output; can't exceed one flag per ply
+MAX_MULTIPV: int = 5
+
+
+def get_search_timeout() -> float:
+    """Wall-clock cap for ONE engine search (seconds). A node-limited search has no
+    built-in timeout; exceeding this kills the engine and returns a typed error."""
+    return float(os.environ.get("STOCKFISH_SEARCH_TIMEOUT_S", "60"))
+
+
+def get_tool_timeout() -> float:
+    """Agent-side cap for one whole MCP tool call (seconds), incl. a full-game analysis."""
+    return float(os.environ.get("PROPHYLAX_TOOL_TIMEOUT_S", "900"))
+
 # Model configuration — single source of truth.
 # ────────────────────────────────────────────────
 # Narrator models that have passed the narration gate (pytest -v -m narration).
