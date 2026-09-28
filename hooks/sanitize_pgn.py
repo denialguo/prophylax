@@ -10,6 +10,19 @@ WHITELISTED_HEADERS = {
     "ECO", "TimeControl"
 }
 
+# Non-name headers must match their format or are dropped. Free text (Event, Site)
+# can't be proven injection-free, so it is only charset-limited; it never reaches an
+# LLM prompt anyway (prompts get sanitized_movetext only).
+HEADER_FORMATS = {
+    "Event": r"[A-Za-z0-9 .,'()#:/?-]{1,60}",
+    "Site": r"[A-Za-z0-9 .,'()#:/?-]{1,60}",
+    "Date": r"[0-9?]{4}\.[0-9?]{2}\.[0-9?]{2}",
+    "Round": r"[0-9?.-]{1,10}",
+    "Result": r"1-0|0-1|1/2-1/2|\*",
+    "ECO": r"[A-E][0-9]{2}|\?",
+    "TimeControl": r"[0-9+/:*?-]{1,30}",
+}
+
 def _is_safe_player_name(name: str) -> bool:
     if not name or len(name) > 40:
         return False
@@ -37,6 +50,8 @@ def sanitize_pgn_string(pgn_text: str) -> Tuple[str, list[str]]:
                 clean_headers[key] = "Player1" if key == "White" else "Player2"
             else:
                 clean_headers[key] = value
+        elif not re.fullmatch(HEADER_FORMATS[key], value):
+            logs.append(f"Dropped malformed header: {key}")
         else:
             clean_headers[key] = value
             
@@ -54,6 +69,14 @@ def sanitize_pgn_string(pgn_text: str) -> Tuple[str, list[str]]:
     logs.append("Stripped all comments, NAGs, and variations from movetext.")
     
     return str(clean_pgn), logs
+
+def sanitized_movetext(pgn_text: str) -> str:
+    """Mainline moves only, no headers/comments: the only PGN form allowed into LLM prompts."""
+    clean_pgn, _ = sanitize_pgn_string(pgn_text)
+    game = chess.pgn.read_game(io.StringIO(clean_pgn)) if clean_pgn else None
+    if not game:
+        return ""
+    return game.accept(chess.pgn.StringExporter(columns=None, headers=False, variations=False, comments=False))
 
 def sanitize_tool_input(tool_name: str, arguments: dict) -> Tuple[bool, dict, str]:
     """

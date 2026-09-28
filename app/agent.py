@@ -14,7 +14,7 @@ from google.genai import types
 
 from scripts.format_narration import format_flag_for_llm
 from evals.validate_narration import validate_narration
-from hooks.sanitize_pgn import sanitize_tool_input
+from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 
 async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
     """
@@ -161,7 +161,9 @@ class CoachingAgent(BaseAgent):
                 move_evals = res.get("move_evals", [])
                 summary = res.get("summary", {})
                 
-                ctx.session.state["pgn_text"] = norm_msg
+                # Rule 7: only sanitized movetext (no headers/comments) is kept for later prompts
+                pgn_text = sanitized_movetext(norm_msg)
+                ctx.session.state["pgn_text"] = pgn_text
                 ctx.session.state["flags"] = flags
                 ctx.session.state["move_evals"] = move_evals
                 
@@ -225,7 +227,7 @@ class CoachingAgent(BaseAgent):
                     content=types.Content(role="model", parts=[types.Part.from_text(text=report)]),
                     actions=EventActions(
                         state_delta={
-                            "pgn_text": norm_msg,
+                            "pgn_text": pgn_text,
                             "flags": flags,
                             "move_evals": move_evals,
                             "report": report
@@ -251,7 +253,7 @@ If they are asking about a specific move, identify its move number, side (white 
 Return ONLY a valid JSON object matching this schema exactly, with no markdown formatting:
 {"is_move_query": boolean, "move_number": integer or null, "side": "white" or "black" or null, "requested_san": string or null}'''
                 )
-                prompt = f"User message: {user_message}\n\nGame PGN:\n{pgn_text}"
+                prompt = f"User message: {user_message}\n\nGame moves:\n{pgn_text}"
                 router_res = await self._run_sub_agent(classifier_agent, prompt)
                 
                 import json
