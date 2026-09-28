@@ -95,14 +95,20 @@ def get_quiet_concessions(board_before: chess.Board, board_after: chess.Board, m
     else:
         new_ws = {sq for sq in new_ws if int(sq[1]) in [5, 6]}
 
-    # Hard constraint: b4 concessions must be within {a3, c3}
-    try:
-        last_move = board_after.peek()
-        last_move_san = board_before.san(last_move)
-        if mover_color == chess.WHITE and last_move_san == "b4":
-            new_ws = {sq for sq in new_ws if sq in ["a3", "c3"]}
-    except Exception:
-        pass
+    # A pawn move concedes the squares it stopped guarding directly, plus any
+    # farther new hole an enemy pawn already supports (an outpost). Holes that are
+    # neither (e.g. a4 after b2-b4 with no Black pawn on it) are noise.
+    move = board_after.peek()
+    directly_guarded = (
+        chess.BB_PAWN_ATTACKS[mover_color][move.from_square]
+        if board_before.piece_type_at(move.from_square) == chess.PAWN else 0
+    )
+    enemy_pawns = board_after.pieces(chess.PAWN, not mover_color)
+    new_ws = {
+        sq for sq in new_ws
+        if chess.BB_SQUARES[chess.parse_square(sq)] & directly_guarded
+        or board_after.attackers(not mover_color, chess.parse_square(sq)) & enemy_pawns
+    }
 
     bp_before = set(feat_before["pawn_structure"][side_key]["backward_pawns"])
     bp_after = set(feat_after["pawn_structure"][side_key]["backward_pawns"])
