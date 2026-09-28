@@ -2,6 +2,8 @@ import os
 import re
 import json
 import pytest
+import chess
+import chess.pgn
 from typing import Dict, Any
 
 from app.agent import opening_agent, middlegame_agent, endgame_agent, NARRATOR_MODEL_NAME
@@ -39,12 +41,25 @@ def load_eval_cases() -> list:
                 cases.extend(json.load(f))
     return cases
 
-def count_sentences(text: str, expected_header: str) -> int:
-    lines = text.strip().splitlines()
-    if not lines:
-        return 0
-    # Strip the header line if present
-    body = "\n".join(lines[1:] if len(lines) > 1 else lines)
+def get_matching_game(flag: dict):
+    """Eval cases are cut from tests/fixtures games; find the game so the
+    validator can check numbered-move legality against it."""
+    fix_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
+    for f_name in sorted(os.listdir(fix_dir)):
+        if not f_name.endswith(".pgn"):
+            continue
+        with open(os.path.join(fix_dir, f_name)) as fh:
+            game = chess.pgn.read_game(fh)
+        board = game.board()
+        for idx, m in enumerate(game.mainline_moves()):
+            side = "white" if board.turn == chess.WHITE else "black"
+            if idx // 2 + 1 == flag.get("move_number") and side == flag.get("side", "").lower() and board.san(m) == flag.get("move_san"):
+                return game
+            board.push(m)
+    return None
+
+def count_sentences(text: str) -> int:
+    body = text.strip()
     # Split by period followed by space and alphanumeric
     sentences = [s.strip() for s in re.split(r'(?<=\.)\s+(?=[A-Za-z0-9])', body) if s.strip()]
     return len(sentences)
@@ -74,10 +89,11 @@ async def test_skills_narration(case: Dict[str, Any]):
         agent = middlegame_agent
         
     prompt = format_flag_for_llm(flagged_move, depth, rating)
-    
+    game = get_matching_game(flagged_move)  # None for synthetic cases
+
     # Run the narration generator — first attempt
     narration = await coach._run_sub_agent(agent, prompt)
-    first_pass = validate_narration(narration, flagged_move)
+    first_pass = validate_narration(narration, flagged_move, game)
     
     retries = 0
     if not first_pass:
@@ -86,7 +102,7 @@ async def test_skills_narration(case: Dict[str, Any]):
         narration = await coach._run_sub_agent(agent, prompt)
     
     # Hard requirement: FINAL narration (after retry/fallback) has zero violations
-    assert validate_narration(narration, flagged_move) is True, (
+    assert validate_narration(narration, flagged_move, game) is True, (
         f"validate_narration failed for case {case['name']} after {retries} retries. "
         f"Narration:\n{narration}"
     )
@@ -95,14 +111,14 @@ async def test_skills_narration(case: Dict[str, Any]):
     if retries > 0:
         print(f"  [METRIC] Case {case['name']} required {retries} retry (first-shot fabrication)")
     
-    # 2. Header emitted verbatim from format_narration output
+    # 2. Header is emitted by code, never by the narrator (operator decision D1)
     first_line_of_prompt = prompt.splitlines()[0]
     expected_header = first_line_of_prompt.split("header: ", 1)[1].strip()
     first_line_of_narration = narration.splitlines()[0].strip()
-    assert first_line_of_narration == expected_header, f"Header mismatch. Expected: '{expected_header}', got: '{first_line_of_narration}'"
-    
+    assert first_line_of_narration != expected_header, f"Narrator emitted the header: '{first_line_of_narration}'"
+
     # 3. Sentence count within depth-1 shape (2-4 sentences)
-    num_sentences = count_sentences(narration, expected_header)
+    num_sentences = count_sentences(narration)
     assert 2 <= num_sentences <= 4, f"Sentence count {num_sentences} not in range [2, 4] for case {case['name']}. Narration:\n{narration}"
     
     # 4. Every forbidden_claims entry is absent (case-insensitive substring check)
