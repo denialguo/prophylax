@@ -13,7 +13,7 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from scripts.format_narration import format_flag_for_llm
-from evals.validate_narration import validate_narration
+from evals.validate_narration import validate_narration, narration_violation
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 
 async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
@@ -160,7 +160,7 @@ class CoachingAgent(BaseAgent):
                 flags = res.get("flags", [])
                 move_evals = res.get("move_evals", [])
                 summary = res.get("summary", {})
-                
+
                 # Rule 7: only sanitized movetext (no headers/comments) is kept for later prompts
                 pgn_text = sanitized_movetext(norm_msg)
                 ctx.session.state["pgn_text"] = pgn_text
@@ -189,16 +189,16 @@ class CoachingAgent(BaseAgent):
                     narration = await self._run_sub_agent(agent, prompt)
                     
                     # Hardened validation check with retry-once-then-fallback
-                    if not validate_narration(narration, f):
-                        print(f"Validation failed for flag {f['move_number']}...{f['move_san']} ({f['side']}). Retrying once...", file=sys.stderr, flush=True)
+                    violation = narration_violation(narration, f, game)
+                    if violation:
+                        print(f"Validation failed for flag {f['move_number']}...{f['move_san']} ({f['side']}): {violation}. Retrying once...", file=sys.stderr, flush=True)
                         retry_prompt = (
                             f"{prompt}\n"
-                            f"WARNING: Your previous response was rejected because it mentioned invalid squares, illegal moves, "
-                            f"or used forbidden phrases like 'delta of -X'.\n"
+                            f"WARNING: Your previous response was rejected because {violation}.\n"
                             f"Please rewrite the narration, strictly obeying the NEGATIVE CONSTRAINTS."
                         )
                         narration = await self._run_sub_agent(agent, retry_prompt)
-                        if not validate_narration(narration, f):
+                        if not validate_narration(narration, f, game):
                             print(f"Validation failed on retry for flag {f['move_number']}...{f['move_san']}. Falling back to default narration.", file=sys.stderr, flush=True)
                             stats["fallback"] += 1
                             drop_pct = abs(f.get("wdl_delta", 0.0)) * 100
@@ -343,13 +343,14 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                     explanation = await self._run_sub_agent(agent, explanation_prompt)
                     
                     # Validate output (no duplicate headers)
-                    if not validate_narration(explanation, deep_dive_flag):
+                    violation = narration_violation(explanation, deep_dive_flag, game)
+                    if violation:
                         retry_prompt = (
                             f"{explanation_prompt}\n"
-                            f"WARNING: Your previous response was rejected. Do not start with 'Move ', do not hallucinate engine alternatives as the played move, and obey all negative constraints."
+                            f"WARNING: Your previous response was rejected because {violation}. Do not hallucinate engine alternatives as the played move, and obey all negative constraints."
                         )
                         explanation = await self._run_sub_agent(agent, retry_prompt)
-                        if not validate_narration(explanation, deep_dive_flag):
+                        if not validate_narration(explanation, deep_dive_flag, game):
                             explanation = f"{played_move_san} was played. The engine preferred alternative is {pos_analysis.get('multipv_lines', [{}])[0].get('pv', ['Unknown'])[0]}."
                             
                     final_explanation = f"### {header_str}\n\n{explanation}"
