@@ -6,3 +6,5 @@ venv/
 app/.adk/
 artifacts/
 run_output*.txt
+games/chess_com_games_*.pgn
+prophylax.webp

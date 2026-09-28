@@ -6,11 +6,72 @@ import chess
 import chess.pgn
 import chess.engine
 import io
+import contextlib
+import threading
 from typing import Dict, Any, List, Optional
-from config.settings import get_stockfish_path, get_limits, STOCKFISH_THREADS, PINNED_STOCKFISH_VERSION
+from config.settings import (
+    get_stockfish_path, get_limits, get_search_timeout, STOCKFISH_THREADS,
+    MAX_PGN_CHARS, MAX_PGN_PLIES, MAX_FLAGS, MAX_MULTIPV,
+)
+
+# JSON-RPC error codes. -32000..-32099 are reserved for implementation-defined errors.
+PARSE_ERROR = -32700
+METHOD_NOT_FOUND = -32601
+INVALID_PARAMS = -32602
+INTERNAL_ERROR = -32603
+ENGINE_TIMEOUT = -32001
+ENGINE_CRASHED = -32002
+ENGINE_UNAVAILABLE = -32003
+
+class EngineTimeout(Exception):
+    pass
+
+class EngineUnavailable(RuntimeError):
+    pass
 
 def log(msg: str):
     print(msg, file=sys.stderr, flush=True)
+
+@contextlib.contextmanager
+def search_deadline(engine: chess.engine.SimpleEngine):
+    """Node-limited searches have no python-chess timeout. If one outlives the
+    deadline, kill the engine (close() is thread-safe) and raise EngineTimeout;
+    partial results are never returned."""
+    seconds = get_search_timeout()
+    fired = threading.Event()
+
+    def kill():
+        fired.set()
+        engine.close()
+
+    timer = threading.Timer(seconds, kill)
+    timer.start()
+    try:
+        yield
+    except chess.engine.EngineError:
+        if fired.is_set():
+            raise EngineTimeout(f"Stockfish search exceeded {seconds:g}s")
+        raise
+    finally:
+        timer.cancel()
+
+def open_engine() -> chess.engine.SimpleEngine:
+    stockfish_path = get_stockfish_path()
+    if not stockfish_path:
+        raise EngineUnavailable("STOCKFISH_PATH is not set.")
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    try:
+        engine.configure({"Threads": STOCKFISH_THREADS, "UCI_ShowWDL": True})
+    except Exception:
+        engine.close()
+        raise
+    return engine
+
+def _bounded_int(params: Dict[str, Any], key: str, default: int, hi: int) -> int:
+    val = params.get(key, default)
+    if type(val) is not int or not 1 <= val <= hi:
+        raise ValueError(f"'{key}' must be an integer in [1, {hi}], got {val!r}")
+    return val
 
 # Helper to compute game phase
 def get_game_phase(board: chess.Board, move_number: int) -> str:
@@ -82,7 +143,7 @@ def analyse_with_longest_pv(engine, board, nodes):
     """
     info = {}
     best_pv = []
-    with engine.analysis(board, chess.engine.Limit(nodes=nodes)) as analysis:
+    with search_deadline(engine), engine.analysis(board, chess.engine.Limit(nodes=nodes)) as analysis:
         for info_item in analysis:
             info.update(info_item)
             if "pv" in info_item:
@@ -93,12 +154,9 @@ def analyse_with_longest_pv(engine, board, nodes):
 
 def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     pgn_text = params.get("pgn", "")
-    max_flags = params.get("max_flags", 4)
-
-    # Initialize clean engine instance per request
-    stockfish_path = get_stockfish_path()
-    if not stockfish_path:
-        raise RuntimeError("STOCKFISH_PATH is not set.")
+    if not isinstance(pgn_text, str) or len(pgn_text) > MAX_PGN_CHARS:
+        raise ValueError(f"'pgn' must be a string of at most {MAX_PGN_CHARS} characters.")
+    max_flags = _bounded_int(params, "max_flags", 4, MAX_FLAGS)
 
     # Parse PGN
     game = chess.pgn.read_game(io.StringIO(pgn_text))
@@ -116,6 +174,8 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
 
     if not moves:
         raise ValueError("Empty PGN or no moves parsed.")
+    if len(moves) > MAX_PGN_PLIES:
+        raise ValueError(f"Game has {len(moves)} plies; the limit is {MAX_PGN_PLIES}.")
 
     # Setup engine
     limits = get_limits(interactive=False)
@@ -126,17 +186,16 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     current_limit = nodes
     print(f"Stockfish search limit: Limit(nodes={current_limit})", file=sys.stderr, flush=True)
 
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    engine = open_engine()
     try:
-        engine.configure({"Threads": STOCKFISH_THREADS, "UCI_ShowWDL": True})
-
         # Replay the game, analyzing each position
         temp_board = game.board()
-        
+
         # Analyze start pos
         if nodes != current_limit:
             raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-        info = engine.analyse(temp_board, chess.engine.Limit(nodes=nodes))
+        with search_deadline(engine):
+            info = engine.analyse(temp_board, chess.engine.Limit(nodes=nodes))
         start_wdl = info.get("wdl")
         
         # Track position and state history
@@ -269,17 +328,18 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
             }
         }
     finally:
-        engine.quit()
+        engine.close()  # never raises, even after a deadline kill
 
 def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
     fen = params.get("fen", "")
-    multipv = params.get("multipv", 3)
+    multipv = _bounded_int(params, "multipv", 3, MAX_MULTIPV)
 
-    stockfish_path = get_stockfish_path()
-    if not stockfish_path:
-        raise RuntimeError("STOCKFISH_PATH is not set.")
-
+    if not isinstance(fen, str):
+        raise ValueError("'fen' must be a string.")
     board = chess.Board(fen)
+    if not board.is_valid():
+        # e.g. missing kings: Stockfish's behaviour on such positions is undefined
+        raise ValueError(f"FEN is not a legal position: {board.status()!r}")
     limits = get_limits(interactive=False)
     nodes = limits.get("nodes", 1000000)
 
@@ -288,14 +348,13 @@ def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
     current_limit = nodes
     print(f"Stockfish search limit: Limit(nodes={current_limit})", file=sys.stderr, flush=True)
 
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    engine = open_engine()
     try:
-        engine.configure({"Threads": STOCKFISH_THREADS, "UCI_ShowWDL": True})
-
         # MultiPV analysis
         if nodes != current_limit:
             raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-        results = engine.analyse(board, chess.engine.Limit(nodes=nodes), multipv=multipv)
+        with search_deadline(engine):
+            results = engine.analyse(board, chess.engine.Limit(nodes=nodes), multipv=multipv)
         # If multipv=1, analyze returns a dict, otherwise a list of dicts
         if isinstance(results, dict):
             results = [results]
@@ -325,18 +384,119 @@ def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
             "features": abs_features
         }
     finally:
-        engine.quit()
+        engine.close()
 
 # Stdio JSON-RPC 2.0 message parser
+TOOLS = [
+    {
+        "name": "analyze_pgn",
+        "description": "Parses a full PGN game and evaluates moves using Stockfish engine at pinned search limits. Flags theoretical blunders (Channel 1) and quiet positional/structural concessions (Channel 2) like backward pawns and weak squares.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pgn": {
+                    "type": "string",
+                    "description": "Full PGN chess game string to analyze."
+                },
+                "max_flags": {
+                    "type": "integer",
+                    "default": 4,
+                    "description": "Maximum number of blunder/concession flags to return."
+                }
+            },
+            "required": [
+                "pgn"
+            ]
+        }
+    },
+    {
+        "name": "analyze_position",
+        "description": "Performs deep analysis on a single FEN position using Stockfish, returning MultiPV lines and absolute static positional features (weak squares in camps, king safety, pawns structure).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "fen": {
+                    "type": "string",
+                    "description": "FEN string of the position to analyze."
+                },
+                "multipv": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Number of alternative lines to calculate."
+                }
+            },
+            "required": [
+                "fen"
+            ]
+        }
+    }
+]
+
+HANDLERS = {
+    "analyze_pgn": lambda p: handle_analyze_pgn(p),
+    "analyze_position": lambda p: handle_analyze_position(p),
+}
+
+def _error_code(err: Exception) -> int:
+    if isinstance(err, EngineTimeout):
+        return ENGINE_TIMEOUT
+    if isinstance(err, chess.engine.EngineError):
+        return ENGINE_CRASHED
+    if isinstance(err, (EngineUnavailable, OSError)):
+        return ENGINE_UNAVAILABLE
+    if isinstance(err, ValueError):
+        return INVALID_PARAMS
+    return INTERNAL_ERROR
+
+def _error(req_id, code: int, message: str) -> Dict[str, Any]:
+    return {"jsonrpc": "2.0", "id": req_id, "error": {"code": code, "message": message}}
+
+def handle_line(line: str) -> Optional[Dict[str, Any]]:
+    """One JSON-RPC request line -> response dict (None for notifications)."""
+    try:
+        req = json.loads(line)
+        if not isinstance(req, dict):
+            raise ValueError("request must be a JSON object")
+    except ValueError as e:
+        return _error(None, PARSE_ERROR, f"Parse error: {e}")
+
+    req_id = req.get("id")
+    method = req.get("method")
+    params = req.get("params") or {}
+
+    if method == "initialize":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {
+            "protocolVersion": "2024-11-05",
+            "capabilities": {},
+            "serverInfo": {"name": "prophylax-stockfish-server", "version": "0.1.0"},
+        }}
+    if method == "tools/list":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"tools": TOOLS}}
+    if method == "tools/call":
+        tool_name = params.get("name")
+        if tool_name not in HANDLERS:
+            return _error(req_id, INVALID_PARAMS, f"Unknown tool: {tool_name}")
+        try:
+            res_data = HANDLERS[tool_name](params.get("arguments") or {})
+        except Exception as err:
+            code = _error_code(err)
+            log(f"Error executing tool {tool_name} (code {code}): {err}\n{traceback.format_exc()}")
+            # Internal errors keep details in stderr; the rest are safe to surface
+            message = "Internal server error" if code == INTERNAL_ERROR else str(err)[:300]
+            return _error(req_id, code, message)
+        return {"jsonrpc": "2.0", "id": req_id, "result": {
+            "content": [{"type": "text", "text": json.dumps(res_data)}]
+        }}
+    if req_id is None:
+        return None  # notification
+    return _error(req_id, METHOD_NOT_FOUND, f"Method not found: {method}")
+
 def main():
     log("Stockfish MCP server starting up...")
-    
-    # Verify Stockfish path is set
     try:
-        path = get_stockfish_path()
-        if not path:
-            log("Error: STOCKFISH_PATH environment variable is missing.")
-            sys.exit(1)
+        from config import verify_engine
+        verify_engine()
+        get_limits(interactive=False)
     except Exception as e:
         log(f"Startup check failed: {e}")
         sys.exit(1)
@@ -344,123 +504,9 @@ def main():
     for line in sys.stdin:
         if not line.strip():
             continue
-        try:
-            req = json.loads(line)
-            method = req.get("method")
-            params = req.get("params", {})
-            req_id = req.get("id")
-
-            # Handle JSON-RPC methods
-            if method == "initialize":
-                res = {
-                    "jsonrpc": "2.0",
-                    "id": req_id,
-                    "result": {
-                        "protocolVersion": "2024-11-05",
-                        "capabilities": {},
-                        "serverInfo": {
-                            "name": "prophylax-stockfish-server",
-                            "version": "0.1.0"
-                        }
-                    }
-                }
-                print(json.dumps(res), flush=True)
-            elif method == "tools/list":
-                res = {
-                    "jsonrpc": "2.0",
-                    "id": req_id,
-                    "result": {
-                        "tools": [
-                            {
-                                "name": "analyze_pgn",
-                                "description": "Parses a full PGN game and evaluates moves using Stockfish engine at pinned search limits. Flags theoretical blunders (Channel 1) and quiet positional/structural concessions (Channel 2) like backward pawns and weak squares.",
-                                "inputSchema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "pgn": {
-                                            "type": "string",
-                                            "description": "Full PGN chess game string to analyze."
-                                        },
-                                        "max_flags": {
-                                            "type": "integer",
-                                            "default": 4,
-                                            "description": "Maximum number of blunder/concession flags to return."
-                                        }
-                                    },
-                                    "required": ["pgn"]
-                                }
-                            },
-                            {
-                                "name": "analyze_position",
-                                "description": "Performs deep analysis on a single FEN position using Stockfish, returning MultiPV lines and absolute static positional features (weak squares in camps, king safety, pawns structure).",
-                                "inputSchema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "fen": {
-                                            "type": "string",
-                                            "description": "FEN string of the position to analyze."
-                                        },
-                                        "multipv": {
-                                            "type": "integer",
-                                            "default": 3,
-                                            "description": "Number of alternative lines to calculate."
-                                        }
-                                    },
-                                    "required": ["fen"]
-                                }
-                            }
-                        ]
-                    }
-                }
-                print(json.dumps(res), flush=True)
-            elif method == "tools/call":
-                tool_name = params.get("name")
-                tool_params = params.get("arguments", {})
-
-                try:
-                    if tool_name == "analyze_pgn":
-                        res_data = handle_analyze_pgn(tool_params)
-                    elif tool_name == "analyze_position":
-                        res_data = handle_analyze_position(tool_params)
-                    else:
-                        raise ValueError(f"Unknown tool: {tool_name}")
-
-                    res = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "result": {
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": json.dumps(res_data)
-                                }
-                            ]
-                        }
-                    }
-                except Exception as err:
-                    log(f"Error executing tool {tool_name}: {err}\n{traceback.format_exc()}")
-                    res = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "error": {
-                            "code": -32603,
-                            "message": f"Tool execution failed: {str(err)}"
-                        }
-                    }
-                print(json.dumps(res), flush=True)
-            else:
-                if req_id is not None:
-                    res = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "error": {
-                            "code": -32601,
-                            "message": f"Method not found: {method}"
-                        }
-                    }
-                    print(json.dumps(res), flush=True)
-        except Exception as e:
-            log(f"JSON-RPC Server Error: {e}\n{traceback.format_exc()}")
+        res = handle_line(line)
+        if res is not None:
+            print(json.dumps(res), flush=True)
 
 if __name__ == "__main__":
     main()

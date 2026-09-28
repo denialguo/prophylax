@@ -4,6 +4,9 @@ import chess.pgn
 import io
 import json
 import asyncio
+import contextlib
+import signal
+import traceback
 from typing import AsyncGenerator
 from google.adk.agents import BaseAgent, Agent
 from google.adk.agents.invocation_context import InvocationContext
@@ -15,31 +18,58 @@ from google.genai import types
 from scripts.format_narration import format_flag_for_llm
 from evals.validate_narration import validate_narration, narration_violation
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
+from config.settings import get_tool_timeout
+from mcp_server.server import (
+    INVALID_PARAMS, INTERNAL_ERROR, ENGINE_TIMEOUT, ENGINE_CRASHED, ENGINE_UNAVAILABLE,
+)
+
+class ToolError(Exception):
+    """A failed MCP tool call, carrying the server's JSON-RPC error code."""
+    def __init__(self, code: int, message: str):
+        super().__init__(message)
+        self.code = code
+
+# Short, internals-free messages shown to the user; details go to stderr.
+USER_MESSAGES = {
+    ENGINE_TIMEOUT: "The engine timed out on this analysis. Try again, or lower STOCKFISH_NODES.",
+    ENGINE_CRASHED: "The chess engine stopped unexpectedly. Please try again.",
+    ENGINE_UNAVAILABLE: "The chess engine is unavailable. Check STOCKFISH_PATH and the pinned Stockfish version.",
+}
+
+def user_message_for(err: Exception) -> str:
+    if isinstance(err, ToolError):
+        if err.code == INVALID_PARAMS:
+            return f"That input couldn't be analysed: {err}"
+        return USER_MESSAGES.get(err.code, "Analysis failed due to an internal error.")
+    return "Something went wrong while generating coaching. Details were logged."
 
 async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
     """
     Spawns the MCP server as a stdio subprocess and performs a stateless JSON-RPC call.
+    Raises ToolError on any failure, including exceeding PROPHYLAX_TOOL_TIMEOUT_S.
     """
     # PreToolUse sanitization hook
     is_valid, arguments, err_msg = sanitize_tool_input(tool_name, arguments)
     if not is_valid:
-        raise ValueError(f"Input rejected by sanitization hook: {err_msg}")
+        raise ToolError(INVALID_PARAMS, f"Input rejected by sanitization hook: {err_msg}")
 
     cmd = [sys.executable, "mcp_server/server.py"]
     env = dict(os.environ)
-    
+
     # Ensure current working directory is in PYTHONPATH so the server can import modules
     cwd = os.getcwd()
     env["PYTHONPATH"] = cwd + (os.path.pathsep + env["PYTHONPATH"] if "PYTHONPATH" in env else "")
-    
+
+    # Own process group, so a timeout kills the server AND its Stockfish child
     proc = await asyncio.create_subprocess_exec(
         *cmd,
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
-        env=env
+        env=env,
+        start_new_session=True,
     )
-    
+
     req = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -49,33 +79,32 @@ async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
             "arguments": arguments
         }
     }
-    
-    req_bytes = (json.dumps(req) + "\n").encode("utf-8")
-    proc.stdin.write(req_bytes)
-    await proc.stdin.drain()
-    
-    res_line = await proc.stdout.readline()
-    res_str = res_line.decode("utf-8").strip()
-    
-    # Clean up subprocess
-    proc.stdin.close()
-    
-    # Read remaining stderr to help diagnose crashes
-    stderr_bytes = await proc.stderr.read()
-    stderr_str = stderr_bytes.decode("utf-8").strip()
-    
-    await proc.wait()
-    
-    if proc.returncode != 0:
-        raise RuntimeError(f"MCP server subprocess exited with code {proc.returncode}. Stderr:\n{stderr_str}")
-        
-    if not res_str:
-        raise RuntimeError(f"MCP server subprocess closed stdout without responding. Stderr:\n{stderr_str}")
-        
-    res_json = json.loads(res_str)
+
+    # communicate() drains stdout and stderr together, so a chatty stderr can't deadlock
+    timeout = get_tool_timeout()
+    try:
+        stdout_bytes, stderr_bytes = await asyncio.wait_for(
+            proc.communicate((json.dumps(req) + "\n").encode("utf-8")), timeout
+        )
+    except asyncio.TimeoutError:
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGKILL)
+        await proc.wait()
+        raise ToolError(ENGINE_TIMEOUT, f"Tool call {tool_name} exceeded {timeout:g}s")
+
+    stderr_str = stderr_bytes.decode("utf-8", "replace").strip()
+    if stderr_str:
+        print(f"[mcp_server] {stderr_str}", file=sys.stderr, flush=True)
+
+    res_str = stdout_bytes.decode("utf-8", "replace").strip().splitlines()
+    if proc.returncode != 0 or not res_str:
+        # Server exits non-zero only when its startup checks (path, version, limits) fail
+        raise ToolError(ENGINE_UNAVAILABLE, f"MCP server exited with code {proc.returncode} without a response")
+
+    res_json = json.loads(res_str[0])
     if "error" in res_json:
-        raise RuntimeError(f"MCP tool error: {res_json['error']}")
-        
+        raise ToolError(res_json["error"].get("code", INTERNAL_ERROR), res_json["error"].get("message", ""))
+
     text_content = res_json["result"]["content"][0]["text"]
     return json.loads(text_content)
 
@@ -371,7 +400,8 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                     return
                     
         except Exception as e:
-            yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=f"Analysis failed: {str(e)}")]))
+            print(f"Coaching turn failed: {e!r}\n{traceback.format_exc()}", file=sys.stderr, flush=True)
+            yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=user_message_for(e))]))
 
     async def _run_sub_agent(self, agent: Agent, prompt: str) -> str:
         """Run a sub-agent with automatic fallback on quota/rate-limit errors."""
