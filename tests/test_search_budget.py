@@ -71,3 +71,11 @@ def test_errors_are_not_cached(engine_log, monkeypatch):
     assert "error" in handle_line(json.dumps(req))
     monkeypatch.setenv("FAKE_ENGINE_MODE", "answer")
     call("analyze_position", {"fen": FEN})
+
+
+def test_one_engine_per_process_ucinewgame_per_request(engine_log):
+    call("analyze_pgn", {"pgn": PGN})
+    call("analyze_position", {"fen": FEN, "multipv": 2})
+    sent = engine_log()
+    assert sent.count("uci") == 1           # engine opened once
+    assert sent.count("ucinewgame") == 2    # cleared hash per request

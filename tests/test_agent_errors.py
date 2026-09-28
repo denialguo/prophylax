@@ -96,3 +96,32 @@ async def test_unexpected_errors_hide_internals():
         out = await _run(PGN)
     assert "Traceback" not in out and "/Users/" not in out
     assert "went wrong" in out.lower()
+
+
+@pytest.mark.anyio
+async def test_server_is_reused_and_respawned_after_death(tmp_path, monkeypatch):
+    import asyncio
+    import signal
+    import app.agent as agent
+    exe = tmp_path / "fake_stockfish"
+    exe.write_text(f"#!/bin/sh\nexec '{sys.executable}' '{FAKE}'\n")
+    exe.chmod(exe.stat().st_mode | stat.S_IEXEC)
+    monkeypatch.setenv("STOCKFISH_PATH", str(exe))
+    monkeypatch.setenv("STOCKFISH_NODES", "1000")
+    monkeypatch.setenv("FAKE_ENGINE_MODE", "answer")
+    spawns = []
+    real_exec = asyncio.create_subprocess_exec
+    async def counting_exec(*a, **kw):
+        spawns.append(a)
+        return await real_exec(*a, **kw)
+    monkeypatch.setattr(agent.asyncio, "create_subprocess_exec", counting_exec)
+
+    await call_mcp_tool_subprocess("analyze_position", {"fen": FEN, "multipv": 1})
+    await call_mcp_tool_subprocess("analyze_pgn", {"pgn": PGN})
+    assert len(spawns) == 1
+
+    os.killpg(agent._server[0].pid, signal.SIGKILL)
+    await agent._server[0].wait()
+    res = await call_mcp_tool_subprocess("analyze_position", {"fen": FEN, "multipv": 2})
+    assert len(spawns) == 2 and res["multipv_lines"]
+    agent._discard_server()

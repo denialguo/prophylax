@@ -69,6 +69,40 @@ def open_engine() -> chess.engine.SimpleEngine:
         raise
     return engine
 
+_engine: Optional[chess.engine.SimpleEngine] = None
+_engine_path: Optional[str] = None
+
+def close_engine():
+    global _engine
+    if _engine is not None:
+        _engine.close()
+        _engine = None
+
+# python-chess runs a non-daemon thread per engine, and Python joins those before
+# plain atexit handlers run; without this, any in-process caller hangs on exit.
+# ponytail: private stdlib hook (concurrent.futures uses it); stable since 3.9
+threading._register_atexit(close_engine)
+
+@contextlib.contextmanager
+def engine_session():
+    """Yields the long-lived engine and a fresh game token. python-chess sends
+    `ucinewgame` whenever the token changes, so every request starts with a
+    cleared hash, like a cold engine. Any failure (timeout kill, crash) discards
+    the engine; the next request reopens it."""
+    global _engine, _engine_path
+    path = get_stockfish_path()
+    if _engine is not None and _engine_path != path:
+        _engine.close()
+        _engine = None
+    if _engine is None:
+        _engine, _engine_path = open_engine(), path
+    try:
+        yield _engine, object()
+    except BaseException:
+        _engine.close()
+        _engine = None
+        raise
+
 def _bounded_int(params: Dict[str, Any], key: str, default: int, hi: int) -> int:
     val = params.get(key, default)
     if type(val) is not int or not 1 <= val <= hi:
@@ -137,7 +171,7 @@ def get_pv_san(board: chess.Board, pv_moves: List[chess.Move]) -> List[str]:
             break
     return san_list
 
-def analyse_with_longest_pv(engine, board, nodes):
+def analyse_with_longest_pv(engine, board, nodes, game=None):
     """
     Analyses the position and returns the final info dictionary,
     overwriting info['pv'] with the longest PV observed during the search
@@ -145,7 +179,7 @@ def analyse_with_longest_pv(engine, board, nodes):
     """
     info = {}
     best_pv = []
-    with search_deadline(engine), engine.analysis(board, chess.engine.Limit(nodes=nodes)) as analysis:
+    with search_deadline(engine), engine.analysis(board, chess.engine.Limit(nodes=nodes), game=game) as analysis:
         for info_item in analysis:
             info.update(info_item)
             if "pv" in info_item:
@@ -308,22 +342,19 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
 def search_game(start_fen: str, ucis: tuple, nodes: int, engine_path: str) -> tuple:
     """Every engine search for one game, in order: (wdl, pv) for the start position
     and after each move. Cached as a whole so a hit never changes the hash-table
-    history of later searches (D3a); the fresh engine per game keeps it cold.
+    history of later searches (D3a); ucinewgame per request keeps it cold.
     Errors propagate and are never cached."""
     # ponytail: Threads/Hash/version aren't in the key: constants, version checked at startup
     log(f"Stockfish search limit: Limit(nodes={nodes})")
     board = chess.Board(start_fen)
-    engine = open_engine()
-    try:
+    with engine_session() as (engine, game):
         out = []
         for uci in (None,) + ucis:
             if uci:
                 board.push_uci(uci)
-            info = analyse_with_longest_pv(engine, board, nodes)
+            info = analyse_with_longest_pv(engine, board, nodes, game)
             out.append((info.get("wdl"), tuple(info.get("pv", []))))
         return tuple(out)
-    finally:
-        engine.close()  # never raises, even after a deadline kill
 
 def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
     fen = params.get("fen", "")
@@ -366,13 +397,9 @@ def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
 @functools.lru_cache(maxsize=128)
 def search_position(fen: str, multipv: int, nodes: int, engine_path: str) -> tuple:
     log(f"Stockfish search limit: Limit(nodes={nodes})")
-    engine = open_engine()
-    try:
-        with search_deadline(engine):
-            results = engine.analyse(chess.Board(fen), chess.engine.Limit(nodes=nodes), multipv=multipv)
-        return tuple(results) if isinstance(results, list) else (results,)
-    finally:
-        engine.close()
+    with engine_session() as (engine, game), search_deadline(engine):
+        results = engine.analyse(chess.Board(fen), chess.engine.Limit(nodes=nodes), multipv=multipv, game=game)
+    return tuple(results) if isinstance(results, list) else (results,)
 
 # Stdio JSON-RPC 2.0 message parser
 TOOLS = [
@@ -489,12 +516,15 @@ def main():
         log(f"Startup check failed: {e}")
         sys.exit(1)
 
-    for line in sys.stdin:
-        if not line.strip():
-            continue
-        res = handle_line(line)
-        if res is not None:
-            print(json.dumps(res), flush=True)
+    try:
+        for line in sys.stdin:
+            if not line.strip():
+                continue
+            res = handle_line(line)
+            if res is not None:
+                print(json.dumps(res), flush=True)
+    finally:
+        close_engine()
 
 if __name__ == "__main__":
     main()

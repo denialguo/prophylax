@@ -1,6 +1,6 @@
 # Prophylax — Upgrade Plan
 
-Status: **Approved. M0–M4 done; M5+ awaiting approval.**
+Status: **Approved. M0–M5 done; M6+ awaiting approval.**
 
 | Milestone | State | Default suite after |
 |-----------|-------|---------------------|
@@ -9,6 +9,7 @@ Status: **Approved. M0–M4 done; M5+ awaiting approval.**
 | M2 validator | done; `tests/test_validator.py`; D1 applied to `test_narration.py` | 48 passed, 16 deselected, 0.63 s, `artifacts/junit.xml` |
 | M3 timeouts/errors | done; `tests/test_failure_modes.py`, `tests/test_agent_errors.py`, fake UCI engine; new env knobs `STOCKFISH_SEARCH_TIMEOUT_S` (60), `PROPHYLAX_TOOL_TIMEOUT_S` (900) | 68 passed, 16 deselected (6.03s, `artifacts/junit.xml`); golden 5 passed, 444s (`artifacts/junit_golden_m3.xml`) |
 | M4 search budget/cache | done; `tests/test_search_budget.py`; one search per position (was 2N+1); game- and position-level LRU cache; Hash pinned at 16. Within-game dedupe of repeated positions skipped (would change hash-table history) | 72 passed, 16 deselected (6.94s, `artifacts/junit.xml`); golden 5 passed, 96s (`artifacts/junit_golden_m4.xml`) |
+| M5 persistent engine | done; agent keeps one server per event loop (lock-serialized, respawn on death/timeout/env change); server keeps one engine, `ucinewgame` per request. Deviation: still launched as `mcp_server/server.py` with `PYTHONPATH`/cwd = repo root, because `test_mcp_subprocess_launch` asserts that path | 74 passed, 16 deselected (7.45s, `artifacts/junit.xml`); golden 5 passed, 93s (`artifacts/junit_golden_m5.xml`) |
 
 Baseline commit: `d5b5617`. Findings marked **[verified]** were reproduced by running
 code; **[read]** means established by reading code only.
