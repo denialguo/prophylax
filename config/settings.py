@@ -44,6 +44,8 @@ def get_limits(interactive: bool = False) -> Dict[str, int]:
 
 # Stockfish is single-threaded on the golden/eval path
 STOCKFISH_THREADS: int = 1
+# Pinned explicitly (Stockfish's default today) so a default change can't move results
+STOCKFISH_HASH_MB: int = 16
 
 # Input bounds for MCP tools (untrusted input; each ply costs two searches)
 MAX_PGN_CHARS: int = 100_000

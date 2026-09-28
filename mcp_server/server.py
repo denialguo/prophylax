@@ -6,11 +6,13 @@ import chess
 import chess.pgn
 import chess.engine
 import io
+import time
 import contextlib
 import threading
+import functools
 from typing import Dict, Any, List, Optional
 from config.settings import (
-    get_stockfish_path, get_limits, get_search_timeout, STOCKFISH_THREADS,
+    get_stockfish_path, get_limits, get_search_timeout, STOCKFISH_THREADS, STOCKFISH_HASH_MB,
     MAX_PGN_CHARS, MAX_PGN_PLIES, MAX_FLAGS, MAX_MULTIPV,
 )
 
@@ -61,7 +63,7 @@ def open_engine() -> chess.engine.SimpleEngine:
         raise EngineUnavailable("STOCKFISH_PATH is not set.")
     engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     try:
-        engine.configure({"Threads": STOCKFISH_THREADS, "UCI_ShowWDL": True})
+        engine.configure({"Threads": STOCKFISH_THREADS, "Hash": STOCKFISH_HASH_MB, "UCI_ShowWDL": True})
     except Exception:
         engine.close()
         raise
@@ -177,156 +179,149 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     if len(moves) > MAX_PGN_PLIES:
         raise ValueError(f"Game has {len(moves)} plies; the limit is {MAX_PGN_PLIES}.")
 
-    # Setup engine
-    limits = get_limits(interactive=False)
-    nodes = limits.get("nodes", 1000000) # Pinned to 1M
-
-    import time
+    nodes = get_limits(interactive=False)["nodes"]
     start_time = time.time()
-    current_limit = nodes
-    print(f"Stockfish search limit: Limit(nodes={current_limit})", file=sys.stderr, flush=True)
+    searches = search_game(game.board().fen(), tuple(m.uci() for m in moves), nodes, get_stockfish_path())
 
+    # history[i] = (board after i plies, its wdl, its pv); pv[0] is the best move there
+    history = []
+    temp_board = game.board()
+    for i, (wdl, pv) in enumerate(searches):
+        if i:
+            temp_board.push(moves[i - 1])
+        history.append((temp_board.copy(), wdl, list(pv)))
+
+    # We can now scan moves and detect flags
+    from mcp_server.features import get_feature_deltas, get_quiet_concessions
+
+    channel1_flags = []
+    channel2_flags = []
+    move_evals = []
+
+    temp_board = game.board()
+    for idx, m in enumerate(moves):
+        # Boards before and after
+        board_before, wdl_before, _ = history[idx]
+        board_after, wdl_after, post_move_pv = history[idx + 1]
+
+        # Move info
+        move_number = int(idx / 2) + 1
+        side = "white" if board_before.turn == chess.WHITE else "black"
+        color = board_before.turn
+        phase = get_game_phase(board_before, move_number)
+
+        # Win probabilities
+        wp_before = get_win_probability(wdl_before, color, board_before)
+        wp_after = get_win_probability(wdl_after, color, board_after)
+        wdl_delta = wp_after - wp_before  # negative is worse for mover
+
+        # Evaluate feature changes
+        feat_deltas = get_feature_deltas(board_before, board_after, color)
+
+        # Best move/PV come from the pass-1 search of board_before (no re-search)
+        pv_list = history[idx][2]
+        best_move = pv_list[0] if pv_list else None
+        best_move_san = board_before.san(best_move) if best_move else ""
+        pv = get_pv_san(board_before, pv_list)
+        move_san = board_before.san(m)
+
+        refutation_pv = get_pv_san(board_after, post_move_pv)
+        concessions = get_quiet_concessions(board_before, board_after, color)
+
+        flag_obj = {
+            "move_san": move_san,
+            "move_number": move_number,
+            "side": side,
+            "phase": phase,
+            "wdl_before_prob": wp_before,
+            "wdl_after_prob": wp_after,
+            "wdl_delta": wdl_delta,
+            "best_move_san": best_move_san,
+            "pv": pv,
+            "refutation_pv": refutation_pv,
+            "feature_deltas": feat_deltas,
+            "concessions": concessions
+        }
+
+        move_evals.append({
+            "move_san": move_san,
+            "move_number": move_number,
+            "side": side,
+            "phase": phase,
+            "wdl_delta": wdl_delta,
+            "best_move_san": best_move_san
+        })
+
+        # Channel 1 drop thresholds (negative bounds)
+        if move_number <= 3:
+            threshold = -0.20
+        else:
+            threshold = -0.05 if phase == "opening" else (-0.08 if phase == "middlegame" else -0.10)
+        
+        channel1_triggered = (wdl_delta <= threshold)
+
+        if channel1_triggered:
+            flag_obj["channel"] = "wdl"
+            channel1_flags.append(flag_obj)
+        elif (move_number > 3) and (wdl_delta <= 0.0):
+            # Channel 2: Quiet concessions check
+            has_new_ws = "new_weak_squares" in concessions
+            has_new_bp = "new_backward_pawns" in concessions
+            if has_new_ws and has_new_bp:
+                flag_obj["channel"] = "quiet_inaccuracy"
+                channel2_flags.append(flag_obj)
+
+        temp_board.push(m)
+
+    # Rank flags:
+    # Channel 1 ranked by WDL drop ascending (most negative first)
+    channel1_flags.sort(key=lambda x: x["wdl_delta"])
+    # Channel 2 ranked below Channel 1
+    channel2_flags.sort(key=lambda x: x["wdl_delta"])
+    all_flags = channel1_flags + channel2_flags
+    selected_flags = all_flags[:max_flags]
+
+    # Phase distribution
+    phase_counts = {"opening": 0, "middlegame": 0, "endgame": 0}
+    for f in selected_flags:
+        phase_counts[f["phase"]] += 1
+
+    final_wdl_obj = history[-1][1]
+    final_wdl = {"wins": final_wdl_obj.relative.wins, "draws": final_wdl_obj.relative.draws, "losses": final_wdl_obj.relative.losses} if final_wdl_obj else None
+
+    # Log summary line to stderr
+    duration = time.time() - start_time
+    event_name = game.headers.get("Event", "Unknown Event")
+    print(f"Fixture: {event_name} | Positions analyzed: {len(moves) + 1} | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
+
+    return {
+        "flags": selected_flags,
+        "move_evals": move_evals,
+        "summary": {
+            "total_flags": len(selected_flags),
+            "phase_distribution": phase_counts,
+            "final_wdl": final_wdl
+        }
+    }
+
+@functools.lru_cache(maxsize=32)
+def search_game(start_fen: str, ucis: tuple, nodes: int, engine_path: str) -> tuple:
+    """Every engine search for one game, in order: (wdl, pv) for the start position
+    and after each move. Cached as a whole so a hit never changes the hash-table
+    history of later searches (D3a); the fresh engine per game keeps it cold.
+    Errors propagate and are never cached."""
+    # ponytail: Threads/Hash/version aren't in the key: constants, version checked at startup
+    log(f"Stockfish search limit: Limit(nodes={nodes})")
+    board = chess.Board(start_fen)
     engine = open_engine()
     try:
-        # Replay the game, analyzing each position
-        temp_board = game.board()
-
-        # Analyze start pos
-        if nodes != current_limit:
-            raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-        with search_deadline(engine):
-            info = engine.analyse(temp_board, chess.engine.Limit(nodes=nodes))
-        start_wdl = info.get("wdl")
-        
-        # Track position and state history
-        # Each step stores: (board_state, wdl, pv)
-        history = [(temp_board.copy(), start_wdl, [])]
-
-        for m in moves:
-            temp_board.push(m)
-            if nodes != current_limit:
-                raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-            info = analyse_with_longest_pv(engine, temp_board, nodes)
-            wdl = info.get("wdl")
-            pv = info.get("pv", [])
-            history.append((temp_board.copy(), wdl, pv))
-
-        # We can now scan moves and detect flags
-        from mcp_server.features import get_feature_deltas, get_quiet_concessions
-
-        channel1_flags = []
-        channel2_flags = []
-        move_evals = []
-
-        temp_board = game.board()
-        for idx, m in enumerate(moves):
-            # Boards before and after
-            board_before, wdl_before, _ = history[idx]
-            board_after, wdl_after, post_move_pv = history[idx + 1]
-
-            # Move info
-            move_number = int(idx / 2) + 1
-            side = "white" if board_before.turn == chess.WHITE else "black"
-            color = board_before.turn
-            phase = get_game_phase(board_before, move_number)
-
-            # Win probabilities
-            wp_before = get_win_probability(wdl_before, color, board_before)
-            wp_after = get_win_probability(wdl_after, color, board_after)
-            wdl_delta = wp_after - wp_before  # negative is worse for mover
-
-            # Evaluate feature changes
-            feat_deltas = get_feature_deltas(board_before, board_after, color)
-
-            # Analyze best move at this position for PV and best move SAN
-            # Since we need PV from before position, we run analysis on board_before
-            if nodes != current_limit:
-                raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
-            best_info = analyse_with_longest_pv(engine, board_before, nodes)
-            pv_list = best_info.get("pv", [])
-            best_move = pv_list[0] if pv_list else None
-            best_move_san = board_before.san(best_move) if best_move else ""
-            pv = get_pv_san(board_before, pv_list)
-            move_san = board_before.san(m)
-
-            refutation_pv = get_pv_san(board_after, post_move_pv)
-            concessions = get_quiet_concessions(board_before, board_after, color)
-
-            flag_obj = {
-                "move_san": move_san,
-                "move_number": move_number,
-                "side": side,
-                "phase": phase,
-                "wdl_before_prob": wp_before,
-                "wdl_after_prob": wp_after,
-                "wdl_delta": wdl_delta,
-                "best_move_san": best_move_san,
-                "pv": pv,
-                "refutation_pv": refutation_pv,
-                "feature_deltas": feat_deltas,
-                "concessions": concessions
-            }
-
-            move_evals.append({
-                "move_san": move_san,
-                "move_number": move_number,
-                "side": side,
-                "phase": phase,
-                "wdl_delta": wdl_delta,
-                "best_move_san": best_move_san
-            })
-
-            # Channel 1 drop thresholds (negative bounds)
-            if move_number <= 3:
-                threshold = -0.20
-            else:
-                threshold = -0.05 if phase == "opening" else (-0.08 if phase == "middlegame" else -0.10)
-            
-            channel1_triggered = (wdl_delta <= threshold)
-
-            if channel1_triggered:
-                flag_obj["channel"] = "wdl"
-                channel1_flags.append(flag_obj)
-            elif (move_number > 3) and (wdl_delta <= 0.0):
-                # Channel 2: Quiet concessions check
-                has_new_ws = "new_weak_squares" in concessions
-                has_new_bp = "new_backward_pawns" in concessions
-                if has_new_ws and has_new_bp:
-                    flag_obj["channel"] = "quiet_inaccuracy"
-                    channel2_flags.append(flag_obj)
-
-            temp_board.push(m)
-
-        # Rank flags:
-        # Channel 1 ranked by WDL drop ascending (most negative first)
-        channel1_flags.sort(key=lambda x: x["wdl_delta"])
-        # Channel 2 ranked below Channel 1
-        channel2_flags.sort(key=lambda x: x["wdl_delta"])
-        all_flags = channel1_flags + channel2_flags
-        selected_flags = all_flags[:max_flags]
-
-        # Phase distribution
-        phase_counts = {"opening": 0, "middlegame": 0, "endgame": 0}
-        for f in selected_flags:
-            phase_counts[f["phase"]] += 1
-
-        final_wdl_obj = history[-1][1]
-        final_wdl = {"wins": final_wdl_obj.relative.wins, "draws": final_wdl_obj.relative.draws, "losses": final_wdl_obj.relative.losses} if final_wdl_obj else None
-
-        # Log summary line to stderr
-        duration = time.time() - start_time
-        event_name = game.headers.get("Event", "Unknown Event")
-        print(f"Fixture: {event_name} | Positions analyzed: {len(moves) + 1} | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
-
-        return {
-            "flags": selected_flags,
-            "move_evals": move_evals,
-            "summary": {
-                "total_flags": len(selected_flags),
-                "phase_distribution": phase_counts,
-                "final_wdl": final_wdl
-            }
-        }
+        out = []
+        for uci in (None,) + ucis:
+            if uci:
+                board.push_uci(uci)
+            info = analyse_with_longest_pv(engine, board, nodes)
+            out.append((info.get("wdl"), tuple(info.get("pv", []))))
+        return tuple(out)
     finally:
         engine.close()  # never raises, even after a deadline kill
 
@@ -340,49 +335,42 @@ def handle_analyze_position(params: Dict[str, Any]) -> Dict[str, Any]:
     if not board.is_valid():
         # e.g. missing kings: Stockfish's behaviour on such positions is undefined
         raise ValueError(f"FEN is not a legal position: {board.status()!r}")
-    limits = get_limits(interactive=False)
-    nodes = limits.get("nodes", 1000000)
-
-    import time
+    nodes = get_limits(interactive=False)["nodes"]
     start_time = time.time()
-    current_limit = nodes
-    print(f"Stockfish search limit: Limit(nodes={current_limit})", file=sys.stderr, flush=True)
+    results = search_position(board.fen(), multipv, nodes, get_stockfish_path())
+    lines = []
+    for r in results:
+        wdl_obj = r.get("wdl")
+        rel_wdl = wdl_obj.relative if wdl_obj else None
+        lines.append({
+            "pv": get_pv_san(board, r.get("pv", [])),
+            "wdl": {"wins": rel_wdl.wins, "draws": rel_wdl.draws, "losses": rel_wdl.losses} if rel_wdl else None
+        })
 
+    # Deterministic absolute features
+    from mcp_server.features import evaluate_position_features
+    abs_features = evaluate_position_features(board)
+    # Convert weak_squares sets to sorted lists for JSON serialization
+    for color_key in ["white", "black"]:
+        ws_list = sorted(list(abs_features["weak_squares"][color_key]), key=lambda x: x[0])
+        abs_features["weak_squares"][color_key] = [{"square": s, "complex": c} for s, c in ws_list]
+
+    duration = time.time() - start_time
+    print(f"Fixture: Position Analysis | Positions analyzed: 1 | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
+
+    return {
+        "multipv_lines": lines,
+        "features": abs_features
+    }
+
+@functools.lru_cache(maxsize=128)
+def search_position(fen: str, multipv: int, nodes: int, engine_path: str) -> tuple:
+    log(f"Stockfish search limit: Limit(nodes={nodes})")
     engine = open_engine()
     try:
-        # MultiPV analysis
-        if nodes != current_limit:
-            raise ValueError(f"Limit changed mid-run: expected {current_limit}, got {nodes}")
         with search_deadline(engine):
-            results = engine.analyse(board, chess.engine.Limit(nodes=nodes), multipv=multipv)
-        # If multipv=1, analyze returns a dict, otherwise a list of dicts
-        if isinstance(results, dict):
-            results = [results]
-
-        lines = []
-        for r in results:
-            wdl_obj = r.get("wdl")
-            rel_wdl = wdl_obj.relative if wdl_obj else None
-            lines.append({
-                "pv": get_pv_san(board, r.get("pv", [])),
-                "wdl": {"wins": rel_wdl.wins, "draws": rel_wdl.draws, "losses": rel_wdl.losses} if rel_wdl else None
-            })
-
-        # Deterministic absolute features
-        from mcp_server.features import evaluate_position_features
-        abs_features = evaluate_position_features(board)
-        # Convert weak_squares sets to sorted lists for JSON serialization
-        for color_key in ["white", "black"]:
-            ws_list = sorted(list(abs_features["weak_squares"][color_key]), key=lambda x: x[0])
-            abs_features["weak_squares"][color_key] = [{"square": s, "complex": c} for s, c in ws_list]
-
-        duration = time.time() - start_time
-        print(f"Fixture: Position Analysis | Positions analyzed: 1 | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
-
-        return {
-            "multipv_lines": lines,
-            "features": abs_features
-        }
+            results = engine.analyse(chess.Board(fen), chess.engine.Limit(nodes=nodes), multipv=multipv)
+        return tuple(results) if isinstance(results, list) else (results,)
     finally:
         engine.close()
 

@@ -1,6 +1,6 @@
 # Prophylax — Upgrade Plan
 
-Status: **Approved. M0–M3 done; M4+ awaiting approval.**
+Status: **Approved. M0–M4 done; M5+ awaiting approval.**
 
 | Milestone | State | Default suite after |
 |-----------|-------|---------------------|
@@ -8,6 +8,7 @@ Status: **Approved. M0–M3 done; M4+ awaiting approval.**
 | M1 injection | done; `tests/test_prompt_injection.py` (verified failing without the fix) | — |
 | M2 validator | done; `tests/test_validator.py`; D1 applied to `test_narration.py` | 48 passed, 16 deselected, 0.63 s, `artifacts/junit.xml` |
 | M3 timeouts/errors | done; `tests/test_failure_modes.py`, `tests/test_agent_errors.py`, fake UCI engine; new env knobs `STOCKFISH_SEARCH_TIMEOUT_S` (60), `PROPHYLAX_TOOL_TIMEOUT_S` (900) | 68 passed, 16 deselected (6.03s, `artifacts/junit.xml`); golden 5 passed, 444s (`artifacts/junit_golden_m3.xml`) |
+| M4 search budget/cache | done; `tests/test_search_budget.py`; one search per position (was 2N+1); game- and position-level LRU cache; Hash pinned at 16. Within-game dedupe of repeated positions skipped (would change hash-table history) | 72 passed, 16 deselected (6.94s, `artifacts/junit.xml`); golden 5 passed, 96s (`artifacts/junit_golden_m4.xml`) |
 
 Baseline commit: `d5b5617`. Findings marked **[verified]** were reproduced by running
 code; **[read]** means established by reading code only.
