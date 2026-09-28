@@ -20,7 +20,6 @@ TEST_PGN = """[Event "Test Game"]
 1. e4 d5 2. Nc3 d4 3. Nce2 e5 4. d3 Nc6 5. Ng3 Nf6 6. Nf3 Bg4 7. Be2 Bxf3 8. Bxf3 Bd6 9. O-O O-O 10. Bg5 h6 11. Bd2 Re8 12. c3 Ne7 13. b4 c5 *"""
 
 @pytest.mark.anyio
-@pytest.mark.narration
 async def test_mcp_subprocess_launch():
     # Assert that call_mcp_tool_subprocess uses create_subprocess_exec to launch mcp_server/server.py
     src = inspect.getsource(call_mcp_tool_subprocess)
@@ -29,7 +28,6 @@ async def test_mcp_subprocess_launch():
     assert "sys.executable" in src
 
 @pytest.mark.anyio
-@pytest.mark.narration
 async def test_analyze_pgn_trajectory():
     calls = []
     
@@ -79,7 +77,6 @@ async def test_analyze_pgn_trajectory():
         assert "pgn" in calls[0][1]
 
 @pytest.mark.anyio
-@pytest.mark.narration
 async def test_deep_dive_trajectory():
     calls = []
     
@@ -119,8 +116,12 @@ async def test_deep_dive_trajectory():
     with patch("app.agent.call_mcp_tool_subprocess", new=mock_call), \
          patch("app.agent.CoachingAgent._run_sub_agent", new_callable=AsyncMock) as mock_sub:
         
-        mock_sub.return_value = "Move 13.b4 (White): WDL drop 31.0%\nDummy explanation."
-        
+        def mock_sub_side_effect(agent, prompt):
+            if agent.name == "intent_router":
+                return '{"is_move_query": true, "move_number": 13, "side": "white"}'
+            return "Dummy explanation."
+        mock_sub.side_effect = mock_sub_side_effect
+
         # First send PGN to populate state
         async for event in runner.run_async(
             user_id="user",
