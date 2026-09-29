@@ -37,9 +37,16 @@ def sanitize_pgn_string(pgn_text: str) -> Tuple[str, list[str]]:
     game = chess.pgn.read_game(io.StringIO(pgn_text))
     if not game:
         return "", ["Failed to parse PGN."]
-        
+    if "FEN" in game.headers:
+        try:
+            start_fen = chess.Board(game.headers["FEN"]).fen()  # re-emitted, never the raw text
+        except ValueError:
+            return "", ["Rejected PGN: invalid FEN header."]
+
     clean_headers = {}
     for key, value in game.headers.items():
+        if key in ("SetUp", "FEN"):
+            continue
         if key not in WHITELISTED_HEADERS:
             logs.append(f"Stripped header: {key}")
             continue
@@ -56,6 +63,8 @@ def sanitize_pgn_string(pgn_text: str) -> Tuple[str, list[str]]:
             clean_headers[key] = value
             
     clean_game = chess.pgn.Game()
+    if "FEN" in game.headers:
+        clean_game.setup(start_fen)
     for k, v in clean_headers.items():
         clean_game.headers[k] = v
         

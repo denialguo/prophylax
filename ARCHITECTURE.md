@@ -52,7 +52,7 @@ converse
 | `app/agent.py` | Root ADK agent: routing, narration harness, MCP client, CLI (`main`). |
 | `mcp_server/server.py` | JSON-RPC 2.0 over stdio. Owns Stockfish. Returns data, never prose. |
 | `mcp_server/features.py` | Static features: king safety, pawn structure, weak squares, concessions. |
-| `hooks/sanitize_pgn.py` | PGN/FEN sanitisation before any tool call or prompt. |
+| `hooks/sanitize_pgn.py` | PGN/FEN sanitisation before any tool call or prompt. A `[FEN]` start header is kept only after it parses as a board, and is re-emitted from that board. |
 | `scripts/format_narration.py` | Builds narrator prompts, headers and numbered lines. |
 | `scripts/move_reference.py` | Deterministic "which move?" parser. |
 | `evals/validate_narration.py` | Grounding checks for narration and conversation. |
@@ -184,9 +184,5 @@ real server output (`tests/payload_schema.py`).
 
 ## Known limits
 
-- A PGN that starts from a position (`[SetUp]`/`[FEN]` headers) works when
-  calling the server directly. Through the agent it fails: the sanitizer drops
-  those headers, then hits an illegal move while re-exporting the game from the
-  standard start, and the user sees the generic error message.
 - `analyze_pgn` numbers moves from 1 regardless of the FEN's move number.
 - King safety ignores uncastled kings on the d/e files.
