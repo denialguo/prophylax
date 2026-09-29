@@ -38,7 +38,16 @@ USER_MESSAGES = {
     ENGINE_UNAVAILABLE: "The chess engine is unavailable. Check STOCKFISH_PATH and the pinned Stockfish version.",
 }
 
+OVERLOAD_RETRY_DELAY_S = 3.0
+
+def _model_unavailable(err: Exception) -> bool:
+    """Quota exhausted (429) or model overloaded (503): transient, worth another model."""
+    return (getattr(err, "code", None) in (429, 503)
+            or "ResourceExhausted" in type(err).__name__ or "429" in str(err))
+
 def user_message_for(err: Exception) -> str:
+    if _model_unavailable(err):
+        return "The language model is busy or over its quota right now. Please try again in a minute."
     if isinstance(err, ToolError):
         if err.code == INVALID_PARAMS:
             return f"That input couldn't be analysed: {err}"
@@ -421,31 +430,35 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
         yield _text_event(self.name, reply)
 
     async def _run_sub_agent(self, agent: Agent, prompt: str) -> str:
-        """Run a sub-agent with automatic fallback on quota/rate-limit errors."""
+        """Run a sub-agent. A model overload (503) gets one retry after a short pause;
+        if it persists, or on a quota error (429), fall back through the other
+        certified narrators."""
         try:
             return await self._invoke_agent(agent, prompt)
         except Exception as e:
-            if "ResourceExhausted" in type(e).__name__ or "429" in str(e):
-                fallbacks = get_fallback_narrators(NARRATOR_MODEL_NAME)
-                for fb_model in fallbacks:
-                    print(
-                        f"Narrator quota exhausted on {agent.model}. "
-                        f"Falling back to {fb_model}.",
-                        file=sys.stderr, flush=True,
-                    )
-                    fb_agent = Agent(
-                        name=agent.name,
-                        model=fb_model,
-                        instruction=agent.instruction,
-                    )
-                    try:
-                        return await self._invoke_agent(fb_agent, prompt)
-                    except Exception as fb_e:
-                        if "ResourceExhausted" in type(fb_e).__name__ or "429" in str(fb_e):
-                            continue
-                        raise
-                raise  # all fallbacks exhausted
-            raise
+            if not _model_unavailable(e):
+                raise
+            err = e
+        if getattr(err, "code", None) == 503:
+            print(f"{agent.model} is overloaded (503). Retrying in {OVERLOAD_RETRY_DELAY_S:g}s...", file=sys.stderr, flush=True)
+            await asyncio.sleep(OVERLOAD_RETRY_DELAY_S)
+            try:
+                return await self._invoke_agent(agent, prompt)
+            except Exception as e:
+                if not _model_unavailable(e):
+                    raise
+                err = e
+        for fb_model in get_fallback_narrators(agent.model):
+            print(f"{agent.model} unavailable ({getattr(err, 'code', err)}). Falling back to {fb_model}.",
+                  file=sys.stderr, flush=True)
+            fb_agent = Agent(name=agent.name, model=fb_model, instruction=agent.instruction)
+            try:
+                return await self._invoke_agent(fb_agent, prompt)
+            except Exception as fb_e:
+                if not _model_unavailable(fb_e):
+                    raise
+                err = fb_e
+        raise err  # every certified model is unavailable
 
     async def _invoke_agent(self, agent: Agent, prompt: str) -> str:
         """Low-level agent invocation (no fallback logic)."""
