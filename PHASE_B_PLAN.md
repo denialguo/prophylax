@@ -6,6 +6,7 @@ Implemented milestone by milestone, in order.**
 | Milestone | State | Suites after |
 |---|---|---|
 | M11.0 FEN numbering | done; follow-up: the session movetext kept no start FEN, so deep dives and conversation on a FEN game replayed from the standard position (`sanitized_movetext` now keeps the re-emitted FEN; deep-dive test verified failing first); `tests/test_fen_numbering.py` (validator and server tests verified failing first); `ply_of` in `scripts/move_reference.py` used by the agent and validator. For FEN games, the move-1–3 threshold and the opening phase now follow the FEN's real move number | fast 147 passed, 17 deselected, 13s (`artifacts/junit_m11_0.xml`); golden 6 passed, 141s (`artifacts/junit_golden_m11_0.xml`) |
+| M11 models + converter | done (commit 2 of 3); `domain/models.py`, `domain/convert.py`, `tests/test_domain_models.py` (22 tests; each malformed-payload case checked to fail for its own reason). **Commit 3 (wiring) blocked, awaiting operator decision:** 13 agent tests across 7 files mock `analyze_pgn` with payloads the real server never returns (empty or partial `move_evals`, an extra `multipv` key), and the converter rejects them | fast 171 passed, 17 deselected, 13s (`artifacts/junit_m11_models.xml`) |
 
 This plan is based on reading the code at `fe177b8`. It adds a typed domain layer
 and a deterministic claim layer on top of the working pipeline. The MCP server,
