@@ -73,47 +73,43 @@ def check_narration_moves_legality(narration: str, game: chess.pgn.Game) -> Opti
         return None
 
     mainline = list(game.mainline_moves())
-    val_board = None
-    prev_move_num = None
-    prev_is_black = None
+    # Every line read so far that is still legal: (board, last number, last was Black).
+    # A numbered move may continue one of them ("13.cxd4 13...a5") or start a new line
+    # from the game at that ply ("13.cxd4 ... the refutation 13...a5 14.bxa5" follows 13.b4)
+    lines = []
 
     for move_num_str, dots, san, reply in matches:
         move_num = int(move_num_str)
         is_black = (dots == "...")
-
-        consecutive = False
-        if val_board is not None:
-            if prev_is_black:
-                if not is_black and move_num == prev_move_num + 1:
-                    consecutive = True
-            else:
-                if is_black and move_num == prev_move_num:
-                    consecutive = True
-
-        if not consecutive:
-            val_board = game.board()
-            target_ply = ply_of(game.board(), move_num, "black" if is_black else "white")
-            if not 0 <= target_ply <= len(mainline):
-                return f"{move_num}{dots or '.'}{san}"
+        starts = [b for b, n, blk in lines
+                  if (not is_black and blk and move_num == n + 1) or (is_black and not blk and move_num == n)]
+        target_ply = ply_of(game.board(), move_num, "black" if is_black else "white")
+        if 0 <= target_ply <= len(mainline):
+            b = game.board()
             for m in mainline[:target_ply]:
-                val_board.push(m)
+                b.push(m)
+            starts.append(b)
 
-        try:
-            val_board.push(val_board.parse_san(san))
-            prev_move_num = move_num
-            prev_is_black = is_black
-        except ValueError:
-            return f"{move_num}{dots or '.'}{san}"
-
-        # ponytail: an unparsable reply is treated as prose, not a violation;
-        # piece moves in it are still caught by the payload membership check
-        if reply:
+        lines = []
+        for b in starts:
             try:
-                val_board.push(val_board.parse_san(reply))
-                prev_move_num = move_num + (1 if is_black else 0)
-                prev_is_black = not is_black
+                move = b.parse_san(san)
             except ValueError:
-                pass
+                continue
+            b = b.copy()
+            b.push(move)
+            line = (b, move_num, is_black)
+            # ponytail: an unparsable reply is treated as prose, not a violation;
+            # piece moves in it are still caught by the payload membership check
+            if reply:
+                try:
+                    b.push(b.parse_san(reply))
+                    line = (b, move_num + (1 if is_black else 0), not is_black)
+                except ValueError:
+                    pass
+            lines.append(line)
+        if not lines:
+            return f"{move_num}{dots or '.'}{san}"
 
     return None
 
