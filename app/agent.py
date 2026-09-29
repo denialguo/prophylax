@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import chess.pgn
 import io
@@ -7,7 +8,7 @@ import asyncio
 import contextlib
 import signal
 import traceback
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Optional
 from google.adk.agents import BaseAgent, Agent
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.events import Event, EventActions
@@ -15,7 +16,8 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
-from scripts.format_narration import format_flag_for_llm
+from scripts.format_narration import format_flag_for_llm, build_header, render_numbered_pv, position_facts
+from scripts.move_reference import parse_move_reference
 from evals.validate_narration import validate_narration, narration_violation, grounding_violation, merge_flags
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 from config.settings import get_tool_timeout
@@ -128,41 +130,59 @@ async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
     text_content = res_json["result"]["content"][0]["text"]
     return json.loads(text_content)
 
-# Load skills instructions from SKILL.md
+# Skills: one shared narration contract + a phase section per SKILL.md
 SKILLS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.agents/skills"))
+PHASE_SKILLS = {"opening": "opening_prep", "middlegame": "middlegame_analysis", "endgame": "endgame_analysis"}
 
-def load_skill_instruction(phase_name: str) -> str:
-    path = os.path.join(SKILLS_DIR, phase_name, "SKILL.md")
-    with open(path) as f:
-        content = f.read()
+def _strip_frontmatter(content: str) -> str:
     if content.startswith("---"):
         parts = content.split("---", 2)
         if len(parts) >= 3:
             return parts[2].strip()
     return content.strip()
 
-# Initialize phase specialist agents — model from config (single source of truth)
+def load_skill_instruction(skill_dir: str) -> str:
+    """The shared contract followed by the skill's phase section."""
+    with open(os.path.join(SKILLS_DIR, "narration_contract.md")) as f:
+        contract = f.read().strip()
+    with open(os.path.join(SKILLS_DIR, skill_dir, "SKILL.md")) as f:
+        phase = _strip_frontmatter(f.read())
+    return f"{contract}\n\n{phase}"
+
 from config.settings import get_narrator_model, get_fallback_narrators
 
 NARRATOR_MODEL_NAME = get_narrator_model()  # validates at startup
 
-opening_agent = Agent(
-    name="analysing_openings",
-    model=NARRATOR_MODEL_NAME,
-    instruction=load_skill_instruction("opening_prep")
-)
+def make_narrator(phase: str) -> Agent:
+    """One narrator definition; the phase only picks the skill section and the
+    trace name (analysing_openings / _middlegames / _endgames)."""
+    skill_dir = PHASE_SKILLS.get(phase, "middlegame_analysis")
+    name = {"opening_prep": "analysing_openings", "middlegame_analysis": "analysing_middlegames",
+            "endgame_analysis": "analysing_endgames"}[skill_dir]
+    return Agent(name=name, model=NARRATOR_MODEL_NAME, instruction=load_skill_instruction(skill_dir))
 
-middlegame_agent = Agent(
-    name="analysing_middlegames",
-    model=NARRATOR_MODEL_NAME,
-    instruction=load_skill_instruction("middlegame_analysis")
-)
+NARRATORS = {phase: make_narrator(phase) for phase in PHASE_SKILLS}
+opening_agent, middlegame_agent, endgame_agent = NARRATORS["opening"], NARRATORS["middlegame"], NARRATORS["endgame"]
 
-endgame_agent = Agent(
-    name="analysing_endgames",
-    model=NARRATOR_MODEL_NAME,
-    instruction=load_skill_instruction("endgame_analysis")
-)
+def narrator_for(phase: str) -> Agent:
+    return NARRATORS.get(phase, NARRATORS["middlegame"])
+
+NARRATION_CONCURRENCY = 4  # parallel narrator calls per game report
+
+def _text_event(author: str, text: str, **kw) -> Event:
+    return Event(author=author, content=types.Content(role="model", parts=[types.Part.from_text(text=text)]), **kw)
+
+def _normalize_pgn_paste(text: str) -> str:
+    text = re.sub(r'\]\s*\[', ']\n[', text)
+    text = re.sub(r'\]\s+(1\.)', ']\n\n\\1', text)
+    return text.strip()
+
+def _is_likely_pgn(text: str) -> bool:
+    return bool(re.search(r'\[[A-Za-z]+\s+".*?"\]', text) or re.search(r'\b1\.\s*[a-zA-Z]', text))
+
+def _config(ctx: InvocationContext) -> tuple:
+    cfg = ctx.session.state.get("config", {})
+    return cfg.get("explanation_depth", 1), cfg.get("audience_rating", 1800)
 
 class CoachingAgent(BaseAgent):
     async def _run_async_impl(
@@ -174,279 +194,228 @@ class CoachingAgent(BaseAgent):
             if event.content and event.content.role == "user" and event.content.parts:
                 user_message = event.content.parts[0].text
                 break
-                
+
         if not user_message:
-            yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text="Welcome to Prophylax. Please send a PGN to analyze or ask to deep-dive a flagged move.")]))
+            yield _text_event(self.name, "Welcome to Prophylax. Please send a PGN to analyze or ask to deep-dive a flagged move.")
             return
 
-        def normalize_pgn_paste(text: str) -> str:
-            import re
-            text = re.sub(r'\]\s*\[', ']\n[', text)
-            text = re.sub(r'\]\s+(1\.)', ']\n\n\\1', text)
-            return text.strip()
-
-        def is_likely_pgn(text: str) -> bool:
-            import re
-            if re.search(r'\[[A-Za-z]+\s+".*?"\]', text):
-                return True
-            if re.search(r'\b1\.\s*[a-zA-Z]', text):
-                return True
-            return False
-
-        norm_msg = normalize_pgn_paste(user_message)
-        is_pgn_intent = False
+        norm_msg = _normalize_pgn_paste(user_message)
         game = None
-        
-        if is_likely_pgn(norm_msg):
+        if _is_likely_pgn(norm_msg):
             game = chess.pgn.read_game(io.StringIO(norm_msg))
-            if game and not game.errors and len(list(game.mainline_moves())) > 0:
-                is_pgn_intent = True
+            if not (game and not game.errors and any(True for _ in game.mainline_moves())):
+                game = None
 
         try:
-            if is_pgn_intent:
-                max_flags = int(ctx.session.state.get("config", {}).get("max_flags", 4))
-                res = await call_mcp_tool_subprocess("analyze_pgn", {"pgn": norm_msg, "max_flags": max_flags})
-                flags = res.get("flags", [])
-                move_evals = res.get("move_evals", [])
-                summary = res.get("summary", {})
-
-                # Rule 7: only sanitized movetext (no headers/comments) is kept for later prompts
-                pgn_text = sanitized_movetext(norm_msg)
-                ctx.session.state["pgn_text"] = pgn_text
-                ctx.session.state["flags"] = flags
-                ctx.session.state["move_evals"] = move_evals
-                
-                total_flags = summary.get("total_flags", 0)
-                phase_dist = summary.get("phase_distribution", {})
-                dist_str = ", ".join(f"{k}: {v}" for k, v in phase_dist.items() if v > 0)
-                report = f"Game Report | Total Flags: {total_flags} ({dist_str})\n"
-                report += "="*50 + "\n\n"
-                
-                explanation_depth = ctx.session.state.get("config", {}).get("explanation_depth", 1)
-                audience_rating = ctx.session.state.get("config", {}).get("audience_rating", 1800)
-                
-                # Sort flags in game order (move number ascending, White then Black)
-                sorted_flags = sorted(flags, key=lambda x: (x["move_number"], 0 if x["side"].lower() == "white" else 1))
-                
-                stats = {"attempted": len(sorted_flags), "passed_first": 0, "passed_retry": 0, "fallback": 0}
-                
-                for f in sorted_flags:
-                    phase = f["phase"]
-                    agent = opening_agent if phase == "opening" else (middlegame_agent if phase == "middlegame" else endgame_agent)
-                        
-                    prompt = format_flag_for_llm(f, explanation_depth, audience_rating)
-                    narration = await self._run_sub_agent(agent, prompt)
-                    
-                    # Hardened validation check with retry-once-then-fallback
-                    violation = narration_violation(narration, f, game)
-                    if violation:
-                        print(f"Validation failed for flag {f['move_number']}...{f['move_san']} ({f['side']}): {violation}. Retrying once...", file=sys.stderr, flush=True)
-                        retry_prompt = (
-                            f"{prompt}\n"
-                            f"WARNING: Your previous response was rejected because {violation}.\n"
-                            f"Please rewrite the narration, strictly obeying the NEGATIVE CONSTRAINTS."
-                        )
-                        narration = await self._run_sub_agent(agent, retry_prompt)
-                        if not validate_narration(narration, f, game):
-                            print(f"Validation failed on retry for flag {f['move_number']}...{f['move_san']}. Falling back to default narration.", file=sys.stderr, flush=True)
-                            stats["fallback"] += 1
-                            drop_pct = abs(f.get("wdl_delta", 0.0)) * 100
-                            from scripts.format_narration import render_numbered_pv, build_header
-                            pv_line = f.get("pv", [])
-                            rendered_pv = render_numbered_pv(pv_line, f["move_number"], f["side"])
-                            header_str = build_header(f)
-                            side_cap = f["side"].capitalize()
-                            
-                            narration = f"Move {f['move_number']}{'.' if side_cap == 'White' else '...'}{f['move_san']} ({side_cap}) is a structural concession / error. The engine recommends the line: {rendered_pv}."
-                        else:
-                            stats["passed_retry"] += 1
-                    else:
-                        stats["passed_first"] += 1
-                    
-                    from scripts.format_narration import build_header
-                    header = build_header(f)
-                    f["narration"] = narration
-                    report += f"### {header}\n\n{narration}\n"
-                    report += "-"*50 + "\n\n"
-                    
-                print(f"Run Summary: {stats['attempted']} narrations attempted / {stats['passed_first']} passed first try / {stats['passed_retry']} passed on retry / {stats['fallback']} fell back.", file=sys.stderr, flush=True)
-                ctx.session.state["report"] = report
-                yield Event(
-                    author=self.name,
-                    content=types.Content(role="model", parts=[types.Part.from_text(text=report)]),
-                    actions=EventActions(
-                        state_delta={
-                            "pgn_text": pgn_text,
-                            "flags": flags,
-                            "move_evals": move_evals,
-                            "report": report
-                        }
-                    )
-                )
-                return
-                
+            if game is not None:
+                handler = self.analyze_game(ctx, norm_msg, game)
             else:
                 pgn_text = ctx.session.state.get("pgn_text", "")
                 if not pgn_text:
-                    yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text="No game loaded in session. Please upload a PGN first.")]))
+                    yield _text_event(self.name, "No game loaded in session. Please upload a PGN first.")
                     return
-                    
-                from config.settings import get_narrator_model
-                from google.adk.agents import Agent
-                classifier_agent = Agent(
-                    name="intent_router",
-                    model=get_narrator_model(),
-                    instruction='''You are an intent classifier for a chess coaching assistant.
+                ref = await self.route(user_message, pgn_text)
+                handler = (self.ask_about_move(ctx, pgn_text, *ref) if ref
+                           else self.converse(ctx, user_message, pgn_text))
+            async for event in handler:
+                yield event
+        except Exception as e:
+            print(f"Coaching turn failed: {e!r}\n{traceback.format_exc()}", file=sys.stderr, flush=True)
+            yield _text_event(self.name, user_message_for(e))
+
+    async def route(self, user_message: str, pgn_text: str) -> Optional[tuple]:
+        """(move_number, side, requested_san) for a question about one move, else None.
+        Deterministic parser first; the LLM router only when it finds nothing."""
+        ref = parse_move_reference(user_message)
+        if ref:
+            return ref
+        classifier_agent = Agent(
+            name="intent_router",
+            model=get_narrator_model(),
+            instruction='''You are an intent classifier for a chess coaching assistant.
 Given a user message and the current game PGN, determine if the user is asking about a SPECIFIC move in the game (e.g. "move 15", "15.Bd3", "my knight move", "11...Bxc4").
 If they are asking about a specific move, identify its move number, side (white or black), and optionally the raw move SAN they typed (e.g. "Bxc4" or "Bd3").
 Return ONLY a valid JSON object matching this schema exactly, with no markdown formatting:
 {"is_move_query": boolean, "move_number": integer or null, "side": "white" or "black" or null, "requested_san": string or null}'''
-                )
-                prompt = f"User message: {user_message}\n\nGame moves:\n{pgn_text}"
-                router_res = await self._run_sub_agent(classifier_agent, prompt)
-                
-                import json
-                try:
-                    router_res = router_res.strip().removeprefix("```json").removesuffix("```").strip()
-                    intent = json.loads(router_res)
-                except Exception:
-                    intent = {"is_move_query": False}
-                    
-                if intent.get("is_move_query") and intent.get("move_number") and intent.get("side"):
-                    game = chess.pgn.read_game(io.StringIO(pgn_text))
-                    board = game.board()
-                    move_num = int(intent["move_number"])
-                    side_str = intent["side"].lower()
-                    
-                    target_ply = (move_num - 1) * 2 + (1 if side_str == "black" else 0)
-                    
-                    total_plies = sum(1 for _ in game.mainline_moves())
-                    if target_ply < 0 or target_ply >= total_plies:
-                        yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=f"Error: Move {move_num} {side_str} is outside the range of the current game.")]))
-                        return
-                        
-                    for ply, m in enumerate(game.mainline_moves()):
-                        if ply == target_ply:
-                            break
-                        board.push(m)
-                        
-                    try:
-                        game_move = list(game.mainline_moves())[target_ply]
-                    except IndexError:
-                        yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=f"Error: Move {move_num} {side_str} is outside the range of the current game.")]))
-                        return
-                        
-                    played_move_san = board.san(game_move)
-                    
-                    req_san = intent.get("requested_san")
-                    if req_san:
-                        import re
-                        clean_req = re.sub(r'[^a-zA-Z0-9]', '', req_san).lower()
-                        clean_played = re.sub(r'[^a-zA-Z0-9]', '', played_move_san).lower()
-                        if clean_req and clean_req != clean_played:
-                            yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=f"You asked about '{req_san}', but the move played in the game at {move_num} {side_str} was {played_move_san}. Would you like to analyze {played_move_san} instead?")]))
-                            return
-                            
-                    fen_before = board.fen()
-                    pos_analysis = await call_mcp_tool_subprocess("analyze_position", {"fen": fen_before, "multipv": 3})
-                    
-                    move_evals = ctx.session.state.get("move_evals", [])
-                    eval_entry = next((e for e in move_evals if e["move_number"] == move_num and e["side"].lower() == side_str), None)
-                    
-                    if eval_entry:
-                        wdl_delta = eval_entry.get("wdl_delta", 0.0)
-                        phase = eval_entry.get("phase", "unknown")
-                    else:
-                        yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=f"Error: Could not find move evaluation data for {move_num} {side_str}.")]))
-                        return
-                    
-                    flags = ctx.session.state.get("flags", [])
-                    selected_flag = next((f for f in flags if f["move_number"] == move_num and f["side"].lower() == side_str), None)
-                    
-                    if selected_flag:
-                        deep_dive_flag = dict(selected_flag)
-                        deep_dive_flag["channel"] = "deep_dive"
-                    else:
-                        deep_dive_flag = {
-                            "move_san": played_move_san,
-                            "move_number": move_num,
-                            "side": side_str,
-                            "phase": phase,
-                            "wdl_delta": wdl_delta,
-                            "best_move_san": pos_analysis.get("multipv_lines", [{}])[0].get("pv", [""])[0],
-                            "pv": pos_analysis.get("multipv_lines", [{}])[0].get("pv", []),
-                            "refutation_pv": [],
-                            "feature_deltas": [],
-                            "concessions": {"new_weak_squares": [], "new_backward_pawns": []},
-                            "channel": "deep_dive"
-                        }
-                    
-                    # Ground the deep dive in the engine data just fetched
-                    from scripts.format_narration import position_facts
-                    deep_dive_flag["alternatives"] = [l.get("pv", []) for l in pos_analysis.get("multipv_lines", []) if l.get("pv")]
-                    deep_dive_flag["position_facts"] = position_facts(pos_analysis.get("features", {}))
+        )
+        router_res = await self._run_sub_agent(classifier_agent, f"User message: {user_message}\n\nGame moves:\n{pgn_text}")
+        try:
+            intent = json.loads(router_res.strip().removeprefix("```json").removesuffix("```").strip())
+        except Exception:
+            return None
+        if intent.get("is_move_query") and intent.get("move_number") and intent.get("side"):
+            return int(intent["move_number"]), str(intent["side"]).lower(), intent.get("requested_san")
+        return None
 
-                    from scripts.format_narration import build_header
-                    header_str = build_header(deep_dive_flag)
-                    deep_dive_flag["header"] = header_str
-                    explanation_depth = ctx.session.state.get("config", {}).get("explanation_depth", 1)
-                    audience_rating = ctx.session.state.get("config", {}).get("audience_rating", 1800)
-                    explanation_prompt = format_flag_for_llm(deep_dive_flag, explanation_depth, audience_rating)
-                        
-                    agent = opening_agent if phase == "opening" else (middlegame_agent if phase == "middlegame" else endgame_agent)
-                    explanation = await self._run_sub_agent(agent, explanation_prompt)
-                    
-                    # Validate output (no duplicate headers)
-                    violation = narration_violation(explanation, deep_dive_flag, game)
-                    if violation:
-                        retry_prompt = (
-                            f"{explanation_prompt}\n"
-                            f"WARNING: Your previous response was rejected because {violation}. Do not hallucinate engine alternatives as the played move, and obey all negative constraints."
-                        )
-                        explanation = await self._run_sub_agent(agent, retry_prompt)
-                        if not validate_narration(explanation, deep_dive_flag, game):
-                            explanation = f"{played_move_san} was played. The engine preferred alternative is {pos_analysis.get('multipv_lines', [{}])[0].get('pv', ['Unknown'])[0]}."
-                            
-                    final_explanation = f"### {header_str}\n\n{explanation}"
-                    yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=final_explanation)]))
-                    return
-                    
-                else:
-                    conv_agent = Agent(
-                        name="conversational",
-                        model=get_narrator_model(),
-                        instruction="You are Prophylax, a chess coaching assistant.\nAnswer the user's question using the provided game report and flags.\nDo NOT invent new engine analysis. Only rely on the provided context."
-                    )
-                    report = ctx.session.state.get("report", "No report available.")
-                    flags = ctx.session.state.get("flags", [])
-                    conv_prompt = f"User message: {user_message}\n\nGame Report:\n{report}\n\nFlags:\n{json.dumps(flags, indent=2)}"
-                    reply = await self._run_sub_agent(conv_agent, conv_prompt)
+    async def _narrate(self, f: dict, game, depth: int, rating: int, stats: dict) -> str:
+        """Validated narration for one flag: retry once with the reason, then a deterministic fallback."""
+        agent = narrator_for(f["phase"])
+        prompt = format_flag_for_llm(f, depth, rating)
+        narration = await self._run_sub_agent(agent, prompt)
+        violation = narration_violation(narration, f, game)
+        if not violation:
+            stats["passed_first"] += 1
+            return narration
+        print(f"Validation failed for flag {f['move_number']}...{f['move_san']} ({f['side']}): {violation}. Retrying once...", file=sys.stderr, flush=True)
+        retry_prompt = (
+            f"{prompt}\n"
+            f"WARNING: Your previous response was rejected because {violation}.\n"
+            f"Please rewrite the narration, strictly obeying the NEGATIVE CONSTRAINTS."
+        )
+        narration = await self._run_sub_agent(agent, retry_prompt)
+        if validate_narration(narration, f, game):
+            stats["passed_retry"] += 1
+            return narration
+        print(f"Validation failed on retry for flag {f['move_number']}...{f['move_san']}. Falling back to default narration.", file=sys.stderr, flush=True)
+        stats["fallback"] += 1
+        rendered_pv = render_numbered_pv(f.get("pv", []), f["move_number"], f["side"])
+        side_cap = f["side"].capitalize()
+        return f"Move {f['move_number']}{'.' if side_cap == 'White' else '...'}{f['move_san']} ({side_cap}) is a structural concession / error. The engine recommends the line: {rendered_pv}."
 
-                    # Grounding: moves/squares must come from the stored flags or the game itself
-                    game = chess.pgn.read_game(io.StringIO(pgn_text))
-                    board = game.board()
-                    played = []
-                    for m in game.mainline_moves():
-                        played.append(board.san(m))
-                        board.push(m)
-                    ground = merge_flags(flags, played)
-                    violation = grounding_violation(reply, ground, game)
-                    if violation:
-                        print(f"Conversational reply rejected: {violation}. Retrying once...", file=sys.stderr, flush=True)
-                        reply = await self._run_sub_agent(conv_agent, (
-                            f"{conv_prompt}\n\nWARNING: Your previous answer was rejected because {violation}. "
-                            f"Only cite moves and squares that appear in the report or flags above."
-                        ))
-                        if grounding_violation(reply, ground, game):
-                            reply = ("I can only answer from the engine analysis of this game, and I couldn't do that "
-                                     "for this question. Ask about a specific move (for example \"move 13 white\") "
-                                     "for a deep dive.")
-                    yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=reply)]))
-                    return
-                    
-        except Exception as e:
-            print(f"Coaching turn failed: {e!r}\n{traceback.format_exc()}", file=sys.stderr, flush=True)
-            yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=user_message_for(e))]))
+    async def analyze_game(self, ctx: InvocationContext, norm_msg: str, game) -> AsyncGenerator[Event, None]:
+        max_flags = int(ctx.session.state.get("config", {}).get("max_flags", 4))
+        res = await call_mcp_tool_subprocess("analyze_pgn", {"pgn": norm_msg, "max_flags": max_flags})
+        flags = res.get("flags", [])
+        move_evals = res.get("move_evals", [])
+        summary = res.get("summary", {})
+
+        # Rule 7: only sanitized movetext (no headers/comments) is kept for later prompts
+        pgn_text = sanitized_movetext(norm_msg)
+        ctx.session.state["pgn_text"] = pgn_text
+        ctx.session.state["flags"] = flags
+        ctx.session.state["move_evals"] = move_evals
+
+        phase_dist = summary.get("phase_distribution", {})
+        dist_str = ", ".join(f"{k}: {v}" for k, v in phase_dist.items() if v > 0)
+        report = f"Game Report | Total Flags: {summary.get('total_flags', 0)} ({dist_str})\n"
+        report += "="*50 + "\n\n"
+
+        depth, rating = _config(ctx)
+        # Game order (move number ascending, White then Black); narrated concurrently, reported in order
+        sorted_flags = sorted(flags, key=lambda x: (x["move_number"], 0 if x["side"].lower() == "white" else 1))
+        stats = {"attempted": len(sorted_flags), "passed_first": 0, "passed_retry": 0, "fallback": 0}
+        limit = asyncio.Semaphore(NARRATION_CONCURRENCY)
+
+        async def bounded(f):
+            async with limit:
+                return await self._narrate(f, game, depth, rating, stats)
+
+        narrations = await asyncio.gather(*(bounded(f) for f in sorted_flags))
+        for f, narration in zip(sorted_flags, narrations):
+            f["narration"] = narration
+            report += f"### {build_header(f)}\n\n{narration}\n"
+            report += "-"*50 + "\n\n"
+
+        print(f"Run Summary: {stats['attempted']} narrations attempted / {stats['passed_first']} passed first try / {stats['passed_retry']} passed on retry / {stats['fallback']} fell back.", file=sys.stderr, flush=True)
+        ctx.session.state["report"] = report
+        yield _text_event(self.name, report, actions=EventActions(state_delta={
+            "pgn_text": pgn_text, "flags": flags, "move_evals": move_evals, "report": report,
+        }))
+
+    async def ask_about_move(self, ctx: InvocationContext, pgn_text: str, move_num: int, side_str: str,
+                             req_san: Optional[str]) -> AsyncGenerator[Event, None]:
+        game = chess.pgn.read_game(io.StringIO(pgn_text))
+        mainline = list(game.mainline_moves())
+        target_ply = (move_num - 1) * 2 + (1 if side_str == "black" else 0)
+        if target_ply < 0 or target_ply >= len(mainline):
+            yield _text_event(self.name, f"Error: Move {move_num} {side_str} is outside the range of the current game.")
+            return
+
+        board = game.board()
+        for m in mainline[:target_ply]:
+            board.push(m)
+        played_move_san = board.san(mainline[target_ply])
+
+        if req_san:
+            clean_req = re.sub(r'[^a-zA-Z0-9]', '', req_san).lower()
+            clean_played = re.sub(r'[^a-zA-Z0-9]', '', played_move_san).lower()
+            if clean_req and clean_req != clean_played:
+                yield _text_event(self.name, f"You asked about '{req_san}', but the move played in the game at {move_num} {side_str} was {played_move_san}. Would you like to analyze {played_move_san} instead?")
+                return
+
+        pos_analysis = await call_mcp_tool_subprocess("analyze_position", {"fen": board.fen(), "multipv": 3})
+
+        move_evals = ctx.session.state.get("move_evals", [])
+        eval_entry = next((e for e in move_evals if e["move_number"] == move_num and e["side"].lower() == side_str), None)
+        if not eval_entry:
+            yield _text_event(self.name, f"Error: Could not find move evaluation data for {move_num} {side_str}.")
+            return
+        phase = eval_entry.get("phase", "unknown")
+
+        lines = pos_analysis.get("multipv_lines", [{}])
+        top_pv = lines[0].get("pv", []) if lines else []
+        flags = ctx.session.state.get("flags", [])
+        selected_flag = next((f for f in flags if f["move_number"] == move_num and f["side"].lower() == side_str), None)
+        if selected_flag:
+            deep_dive_flag = dict(selected_flag)
+        else:
+            deep_dive_flag = {
+                "move_san": played_move_san,
+                "move_number": move_num,
+                "side": side_str,
+                "phase": phase,
+                "wdl_delta": eval_entry.get("wdl_delta", 0.0),
+                "best_move_san": top_pv[0] if top_pv else "",
+                "pv": top_pv,
+                "refutation_pv": [],
+                "feature_deltas": {},
+                "concessions": {},
+            }
+        deep_dive_flag["channel"] = "deep_dive"
+        # Ground the deep dive in the engine data just fetched
+        deep_dive_flag["alternatives"] = [l.get("pv", []) for l in pos_analysis.get("multipv_lines", []) if l.get("pv")]
+        deep_dive_flag["position_facts"] = position_facts(pos_analysis.get("features", {}))
+
+        header_str = build_header(deep_dive_flag)
+        deep_dive_flag["header"] = header_str
+        depth, rating = _config(ctx)
+        explanation_prompt = format_flag_for_llm(deep_dive_flag, depth, rating)
+        agent = narrator_for(phase)
+        explanation = await self._run_sub_agent(agent, explanation_prompt)
+
+        violation = narration_violation(explanation, deep_dive_flag, game)
+        if violation:
+            retry_prompt = (
+                f"{explanation_prompt}\n"
+                f"WARNING: Your previous response was rejected because {violation}. Do not hallucinate engine alternatives as the played move, and obey all negative constraints."
+            )
+            explanation = await self._run_sub_agent(agent, retry_prompt)
+            if not validate_narration(explanation, deep_dive_flag, game):
+                explanation = f"{played_move_san} was played. The engine preferred alternative is {top_pv[0] if top_pv else 'Unknown'}."
+
+        yield _text_event(self.name, f"### {header_str}\n\n{explanation}")
+
+    async def converse(self, ctx: InvocationContext, user_message: str, pgn_text: str) -> AsyncGenerator[Event, None]:
+        conv_agent = Agent(
+            name="conversational",
+            model=get_narrator_model(),
+            instruction="You are Prophylax, a chess coaching assistant.\nAnswer the user's question using the provided game report and flags.\nDo NOT invent new engine analysis. Only rely on the provided context."
+        )
+        report = ctx.session.state.get("report", "No report available.")
+        flags = ctx.session.state.get("flags", [])
+        conv_prompt = f"User message: {user_message}\n\nGame Report:\n{report}\n\nFlags:\n{json.dumps(flags, indent=2)}"
+        reply = await self._run_sub_agent(conv_agent, conv_prompt)
+
+        # Grounding: moves/squares must come from the stored flags or the game itself
+        game = chess.pgn.read_game(io.StringIO(pgn_text))
+        board = game.board()
+        played = []
+        for m in game.mainline_moves():
+            played.append(board.san(m))
+            board.push(m)
+        ground = merge_flags(flags, played)
+        violation = grounding_violation(reply, ground, game)
+        if violation:
+            print(f"Conversational reply rejected: {violation}. Retrying once...", file=sys.stderr, flush=True)
+            reply = await self._run_sub_agent(conv_agent, (
+                f"{conv_prompt}\n\nWARNING: Your previous answer was rejected because {violation}. "
+                f"Only cite moves and squares that appear in the report or flags above."
+            ))
+            if grounding_violation(reply, ground, game):
+                reply = ("I can only answer from the engine analysis of this game, and I couldn't do that "
+                         "for this question. Ask about a specific move (for example \"move 13 white\") "
+                         "for a deep dive.")
+        yield _text_event(self.name, reply)
 
     async def _run_sub_agent(self, agent: Agent, prompt: str) -> str:
         """Run a sub-agent with automatic fallback on quota/rate-limit errors."""
