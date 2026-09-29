@@ -65,6 +65,28 @@ def position_facts(features: Dict[str, Any]) -> Dict[str, List[str]]:
                 facts[f"{side.capitalize()} {label}"] = sorted(squares)
     return facts
 
+def narratable_features(flag: Dict[str, Any], depth: int) -> List[tuple]:
+    """The flag path's theme ranking: feature deltas by magnitude, pruned to depth."""
+    feature_deltas = dict(flag.get("feature_deltas", {}))
+    if flag["phase"] == "endgame":
+        # king_safety_delta is a shelter score; in an endgame it mostly measures the king
+        # walking into play, so it is not a coaching theme there (M14 Q2, as in build_claims)
+        feature_deltas.pop("king_safety_delta", None)
+    return rank_and_prune_features(feature_deltas, depth)
+
+
+# The claim types that state each ranked feature; piece_activity_delta has none (D8)
+FEATURE_CLAIMS = {"weak_squares": ("weak_square_created",), "king_safety_delta": ("king_safety_reduced",),
+                  "pawn_structure_delta": ("backward_pawn_created",)}
+
+
+def required_claims(flag: Dict[str, Any], claims: list, depth: int) -> list:
+    """The claims the narration must express: those stating the flag path's top-ranked
+    feature(s), so both inputs share one definition of the move's central point."""
+    types = {t for name, _ in narratable_features(flag, depth) for t in FEATURE_CLAIMS.get(name, ())}
+    return [c for c in claims if c.type in types]
+
+
 def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     """
     Formulates a structured text prompt for the LLM based on the flagged move data,
@@ -84,12 +106,7 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     
     header_str = build_header(flag)
         
-    feature_deltas = dict(flag.get("feature_deltas", {}))
-    if phase == "endgame":
-        # king_safety_delta is a shelter score; in an endgame it mostly measures the king
-        # walking into play, so it is not a coaching theme there (M14 Q2, as in build_claims)
-        feature_deltas.pop("king_safety_delta", None)
-    ranked_feats = rank_and_prune_features(feature_deltas, depth)
+    ranked_feats = narratable_features(flag, depth)
     
     prompt = f"header: {header_str}\n"
     prompt += f"Phase: {phase}\n"
@@ -198,6 +215,13 @@ def format_claims_for_llm(flag: Dict[str, Any], claims: list, depth: int, rating
     verified claim. No raw payload fields, scores or deltas reach the narrator."""
     lines = [f"header: {build_header(flag)}", f"Phase: {flag['phase']}", f"Channel: {flag.get('channel', 'wdl')}",
              f"Audience Rating: {rating}", f"Explanation Depth: {depth}", "", "VERIFIED CLAIMS"]
-    lines += [f"C{i}: {claim_sentence(c)}" for i, c in enumerate(claims, 1)]
+    required = required_claims(flag, claims, depth)
+    ordered = required + [c for c in claims if c not in required]
+    for i, c in enumerate(ordered, 1):
+        if i == 1 and required:
+            lines.append("[REQUIRED]")
+        if i == len(required) + 1:
+            lines.append("[SUPPORTING]")
+        lines.append(f"C{i}: {claim_sentence(c)}")
     lines += ["", "Explain this move using only the verified claims above."]
     return "\n".join(lines) + "\n"

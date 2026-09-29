@@ -19,7 +19,11 @@ def test_claims_prompt_lists_exactly_the_claims():
     flag, claims, prompt = prompt_for("scandinavian_b4_blunder")
     assert prompt.splitlines()[0] == "header: Move 13.b4 (White): WDL drop 31.9%"
     block = prompt.split("VERIFIED CLAIMS\n", 1)[1].split("\n\n", 1)[0].splitlines()
-    assert block == [f"C{i}: {claim_sentence(c)}" for i, c in enumerate(claims, 1)]
+    # the top-ranked feature (weak_squares) is the required claim; every claim listed once
+    a3 = next(c for c in claims if c.subject == "a3")
+    rest = [c for c in claims if c is not a3]
+    assert block == ["[REQUIRED]", f"C1: {claim_sentence(a3)}", "[SUPPORTING]"] + [
+        f"C{i}: {claim_sentence(c)}" for i, c in enumerate(rest, 2)]
     assert "Black's pawn on d4 attacks it." in prompt
     # D8 and no internal numbers: no raw deltas or scores reach the narrator
     for banned in ("feature_deltas", "WDL Delta", "piece_activity", "pawn_structure", "king_safety_delta", "-0."):
@@ -142,3 +146,30 @@ def test_middlegame_shelter_drop_is_still_a_theme():
     flag = _endgame_king_walk("middlegame")
     assert "1. king_safety_delta: -2.5000" in format_flag_for_llm(flag, 1, 1800)
     assert "king_safety_reduced" in {c.type for c in build_claims(move_analysis_from_flag(flag), game_id="g1")}
+
+
+@pytest.mark.parametrize("name,board,required", [
+    ("fools_mate_g4_blunder", True, {("weak_square_created", "h3")}),
+    ("scandinavian_b4_blunder", True, {("weak_square_created", "a3")}),
+    ("carlsbad_b5_quiet", True, {("weak_square_created", "a6"), ("weak_square_created", "c5")}),
+    ("scandinavian_h4_blunder", True, {("king_safety_reduced", None)}),
+    ("synthetic_opening_development_concession", False, {("king_safety_reduced", None)}),
+    ("synthetic_king_activity_concession", False, set()),  # Q2: endgame shelter score
+    ("synthetic_endgame_pawn_race", False, set()),         # D8: a score with no claim type
+    ("synthetic_opening_center_abandonment", False, set()),
+])
+def test_required_claims_follow_the_flag_ranking(name, board, required):
+    """Production logic, not benchmark labels: the claims stating the flag path's
+    top-ranked feature."""
+    from scripts.format_narration import required_claims
+    flag = EVAL[name]
+    claims = board_claims(flag) if board else build_claims(move_analysis_from_flag(flag), game_id="g1")
+    assert {(c.type, c.subject) for c in required_claims(flag, claims, 1)} == required
+    prompt = format_claims_for_llm(flag, claims, 1, 1800)
+    assert ("[REQUIRED]" in prompt) == bool(required) and "[SUPPORTING]" in prompt
+
+
+def test_required_marker_does_not_read_the_benchmark():
+    import inspect
+    import scripts.format_narration as fmt
+    assert "claim_benchmark" not in inspect.getsource(fmt) and "required" not in str(fmt.FEATURE_CLAIMS)
