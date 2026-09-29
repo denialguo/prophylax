@@ -16,27 +16,10 @@ from domain.convert import (PayloadError, game_analysis_from_payload, position_a
 from domain.models import MoveAnalysis
 from scripts.format_narration import format_flag_for_llm
 from tests import test_agent_structure, test_grounding
+from tests.payload_schema import pgn_payload as payload_for
 
 HAS_ENGINE = bool(os.environ.get("STOCKFISH_PATH") and shutil.which(os.environ["STOCKFISH_PATH"]))
 FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
-EVAL_KEYS = ("move_san", "move_number", "side", "phase", "wdl_delta", "best_move_san")
-
-
-def payload_for(pgn: str, flags: list) -> dict:
-    """A consistent analyze_pgn result around hand-written flags: every ply gets a
-    move_evals entry; flagged plies copy their flag's values."""
-    game = chess.pgn.read_game(io.StringIO(pgn))
-    board, evals = game.board(), []
-    by_move = {(f["move_number"], f["side"]): f for f in flags}
-    for move in game.mainline_moves():
-        side = "white" if board.turn else "black"
-        f = by_move.get((board.fullmove_number, side))
-        evals.append({k: f[k] for k in EVAL_KEYS} if f else
-                     {"move_san": board.san(move), "move_number": board.fullmove_number, "side": side,
-                      "phase": "opening", "wdl_delta": 0.0, "best_move_san": board.san(move)})
-        board.push(move)
-    return {"flags": [copy.deepcopy(f) for f in flags], "move_evals": evals,
-            "summary": {"total_flags": len(flags)}}
 
 
 MOCKS = [(test_grounding.PGN, [test_grounding.FLAG]),

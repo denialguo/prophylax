@@ -10,6 +10,7 @@ from google.genai import types
 
 import app.agent as agent_mod
 from app.agent import root_agent, narrator_for
+from tests.payload_schema import pgn_payload, position_payload
 
 PGN = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 *"
 
@@ -41,8 +42,8 @@ FLAGS = [flag(6, "black", "b5"), flag(2, "white", "Nf3"), flag(4, "white", "Ba4"
 async def run(messages, mock_sub):
     async def mcp(tool, args):
         if tool == "analyze_pgn":
-            return {"flags": [dict(f) for f in FLAGS], "move_evals": [], "summary": {"total_flags": len(FLAGS)}}
-        return {"multipv_lines": [], "features": {}}
+            return pgn_payload(PGN, FLAGS)
+        return position_payload()
     service = InMemorySessionService()
     await service.create_session(app_name="app", user_id="u", session_id="s")
     runner = Runner(agent=root_agent, app_name="app", session_service=service)
@@ -99,7 +100,7 @@ async def test_report_persists_narration_stats():
         return "Bc4 was better." if calls <= 2 else "The engine disliked it."  # first flag: retry then fallback
 
     async def mcp(tool, args):
-        return {"flags": [dict(FLAGS[1])], "move_evals": [], "summary": {"total_flags": 1}}
+        return pgn_payload(PGN, [FLAGS[1]])
     service = InMemorySessionService()
     await service.create_session(app_name="app", user_id="u", session_id="s")
     runner = Runner(agent=root_agent, app_name="app", session_service=service)

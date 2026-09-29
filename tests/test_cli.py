@@ -2,6 +2,7 @@
 from unittest.mock import patch
 
 from app.agent import main
+from tests.payload_schema import pgn_payload, position_payload
 
 FLAG = {"move_san": "g4", "move_number": 2, "side": "white", "phase": "opening", "wdl_delta": -0.34,
         "best_move_san": "", "pv": [], "refutation_pv": [], "feature_deltas": {}, "concessions": {},
@@ -15,7 +16,7 @@ def test_cli_prints_report(tmp_path, capsys):
 
     async def mcp(tool, args):
         calls.append((tool, args))
-        return {"flags": [FLAG], "move_evals": [], "summary": {"total_flags": 1, "phase_distribution": {"opening": 1}}}
+        return pgn_payload("1. f3 e5 2. g4 Qh4# 0-1", [FLAG])
 
     async def llm(self, agent, prompt):
         return "The engine disliked it; it opens the e1-h4 diagonal."

@@ -7,6 +7,7 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent
+from tests.payload_schema import pgn_payload, position_payload
 
 TEST_PGN = """[Event "Test Game"]
 [Site "Local"]
@@ -19,6 +20,7 @@ TEST_PGN = """[Event "Test Game"]
 1. e4 d5 2. Nc3 d4 3. Nce2 e5 *"""
 
 FLATTENED_PGN = '[Event "Test"] [Site "Bonn"] 1. e4 e5 2. Nf3 Nc6'
+FLATTENED_MOVES = "1. e4 e5 2. Nf3 Nc6"
 
 @pytest.mark.anyio
 async def test_routing_flattened_pgn():
@@ -29,7 +31,7 @@ async def test_routing_flattened_pgn():
     with patch("app.agent.call_mcp_tool_subprocess", new_callable=AsyncMock) as mock_mcp, \
          patch("app.agent.CoachingAgent._run_sub_agent", new_callable=AsyncMock) as mock_sub:
         
-        mock_mcp.return_value = {"flags": [], "summary": {"total_flags": 0, "phase_distribution": {}}, "multipv": []}
+        mock_mcp.side_effect = lambda tool, args: pgn_payload(FLATTENED_MOVES) if tool == "analyze_pgn" else position_payload()
         
         async for event in runner.run_async(
             user_id="user", session_id="s1",
@@ -65,7 +67,7 @@ async def test_routing_ask_about_move():
     with patch("app.agent.call_mcp_tool_subprocess", new_callable=AsyncMock) as mock_mcp, \
          patch("app.agent.CoachingAgent._run_sub_agent", new_callable=AsyncMock) as mock_sub:
         
-        mock_mcp.return_value = {"flags": [], "summary": {}, "multipv": []}
+        mock_mcp.side_effect = lambda tool, args: pgn_payload(TEST_PGN) if tool == "analyze_pgn" else position_payload()
         
         async for event in runner.run_async(
             user_id="user", session_id="s3",
