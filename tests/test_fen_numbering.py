@@ -10,6 +10,7 @@ import pytest
 
 from scripts.move_reference import ply_of
 from evals.validate_narration import check_narration_moves_legality
+from tests.payload_schema import position_payload
 
 # Black to move at move 30
 FEN = "8/8/8/4k3/8/8/4P3/4K3 b - - 0 30"
@@ -73,7 +74,7 @@ async def test_deep_dive_on_a_fen_game_analyses_the_right_position():
     seen = {}
     async def mcp(tool, args):
         seen[tool] = args
-        return {"multipv_lines": [{"pv": ["Kd2"], "wdl": None}], "features": {}}
+        return position_payload(["Kd2"])
 
     async def narrate(agent, prompt):
         return "The king heads for the pawn. It keeps the opposition."

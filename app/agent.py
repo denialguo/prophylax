@@ -19,6 +19,7 @@ from google.genai import types
 from scripts.format_narration import format_flag_for_llm, build_header, render_numbered_pv, position_facts
 from scripts.move_reference import parse_move_reference, ply_of
 from evals.validate_narration import validate_narration, narration_violation, grounding_violation, merge_flags
+from domain.convert import game_analysis_from_payload, position_analysis_from_payload, to_flag_dict
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 from config.settings import get_tool_timeout
 from mcp_server.server import (
@@ -301,12 +302,13 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
     async def analyze_game(self, ctx: InvocationContext, norm_msg: str, game) -> AsyncGenerator[Event, None]:
         max_flags = int(ctx.session.state.get("config", {}).get("max_flags", 4))
         res = await call_mcp_tool_subprocess("analyze_pgn", {"pgn": norm_msg, "max_flags": max_flags})
-        flags = res.get("flags", [])
-        move_evals = res.get("move_evals", [])
-        summary = res.get("summary", {})
-
         # Rule 7: only sanitized movetext (no headers/comments) is kept for later prompts
         pgn_text = sanitized_movetext(norm_msg)
+        # Fails loudly (PayloadError) unless the result is well formed and matches this game
+        analysis = game_analysis_from_payload(res, pgn_text)
+        flags = [to_flag_dict(m) for m in analysis.flagged()]
+        move_evals = res["move_evals"]
+        summary = res["summary"]
         ctx.session.state["pgn_text"] = pgn_text
         ctx.session.state["flags"] = flags
         ctx.session.state["move_evals"] = move_evals
@@ -363,6 +365,7 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                 return
 
         pos_analysis = await call_mcp_tool_subprocess("analyze_position", {"fen": board.fen(), "multipv": 3})
+        position = position_analysis_from_payload(pos_analysis, board.fen())
 
         move_evals = ctx.session.state.get("move_evals", [])
         eval_entry = next((e for e in move_evals if e["move_number"] == move_num and e["side"].lower() == side_str), None)
@@ -371,8 +374,7 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
             return
         phase = eval_entry.get("phase", "unknown")
 
-        lines = pos_analysis.get("multipv_lines", [{}])
-        top_pv = lines[0].get("pv", []) if lines else []
+        top_pv = list(position.lines[0][0].moves) if position.lines else []
         flags = ctx.session.state.get("flags", [])
         selected_flag = next((f for f in flags if f["move_number"] == move_num and f["side"].lower() == side_str), None)
         if selected_flag:
@@ -392,8 +394,8 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
             }
         deep_dive_flag["channel"] = "deep_dive"
         # Ground the deep dive in the engine data just fetched
-        deep_dive_flag["alternatives"] = [l.get("pv", []) for l in pos_analysis.get("multipv_lines", []) if l.get("pv")]
-        deep_dive_flag["position_facts"] = position_facts(pos_analysis.get("features", {}))
+        deep_dive_flag["alternatives"] = [list(line.moves) for line, _ in position.lines if line.moves]
+        deep_dive_flag["position_facts"] = position_facts(pos_analysis["features"])
 
         header_str = build_header(deep_dive_flag)
         deep_dive_flag["header"] = header_str

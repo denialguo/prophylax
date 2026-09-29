@@ -29,6 +29,8 @@ analyze_game
     ├─ per move: win-prob delta, phase, feature deltas, concessions
     │   (mcp_server/features.py, pure python-chess)
     └─ Channel 1 / Channel 2 flags, move_evals, summary
+  domain/convert.py: payload → GameAnalysis, checked against the replayed
+    game; anything malformed or mismatched fails the turn (PayloadError)
   narrate each flag (up to 4 concurrently, reported in game order):
     narrator_for(phase) → prompt (scripts/format_narration.py)
     → validator → retry once with the reason → deterministic fallback
@@ -52,6 +54,7 @@ converse
 | `app/agent.py` | Root ADK agent: routing, narration harness, MCP client, CLI (`main`). |
 | `mcp_server/server.py` | JSON-RPC 2.0 over stdio. Owns Stockfish. Returns data, never prose. |
 | `mcp_server/features.py` | Static features: king safety, pawn structure, weak squares, concessions. |
+| `domain/` | Typed analysis models (pydantic) and the payload → model conversion boundary. |
 | `hooks/sanitize_pgn.py` | PGN/FEN sanitisation before any tool call or prompt. A `[FEN]` start header is kept only after it parses as a board, and is re-emitted from that board. |
 | `scripts/format_narration.py` | Builds narrator prompts, headers and numbered lines. |
 | `scripts/move_reference.py` | Deterministic "which move?" parser. |

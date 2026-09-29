@@ -118,3 +118,59 @@ def test_real_server_payload_round_trips(monkeypatch):
     analysis = game_analysis_from_payload(payload, pgn)
     assert payload["flags"], "no flags: the round trip went unchecked"
     assert [to_flag_dict(m) for m in analysis.flagged()] == payload["flags"]
+
+
+# --- the agent converts every server result on arrival (M11 wiring) ---
+
+def _agent_run(pgn_result, position_result=None, messages=None):
+    import asyncio
+    from unittest.mock import patch
+    from google.adk.runners import Runner
+    from google.adk.sessions import InMemorySessionService
+    from google.genai import types
+    from app.agent import root_agent
+    prompts, out = [], []
+
+    async def mcp(tool, args):
+        return pgn_result if tool == "analyze_pgn" else position_result
+
+    async def sub(self, agent, prompt):
+        prompts.append((agent.name, prompt))
+        return "The move loosened the position. The engine preferred another plan."
+
+    async def go():
+        service = InMemorySessionService()
+        await service.create_session(app_name="app", user_id="u", session_id="s")
+        runner = Runner(agent=root_agent, app_name="app", session_service=service)
+        with patch("app.agent.call_mcp_tool_subprocess", new=mcp), \
+             patch("app.agent.CoachingAgent._run_sub_agent", new=sub):
+            for msg in messages or [test_agent_structure.PGN]:
+                async for e in runner.run_async(user_id="u", session_id="s", new_message=types.Content(
+                        role="user", parts=[types.Part.from_text(text=msg)])):
+                    if e.content and e.content.parts:
+                        out.append(e.content.parts[0].text)
+    asyncio.run(go())
+    return prompts, out
+
+
+def test_agent_narration_prompts_unchanged_by_conversion():
+    flags = test_agent_structure.FLAGS
+    prompts, _ = _agent_run(payload_for(test_agent_structure.PGN, flags))
+    narrator_prompts = sorted(p for name, p in prompts if name.startswith("analysing_"))
+    assert narrator_prompts == sorted(format_flag_for_llm(f, 1, 1800) for f in flags)
+
+
+def test_agent_stops_on_a_payload_that_does_not_match_the_game():
+    payload = payload_for(test_agent_structure.PGN, test_agent_structure.FLAGS)
+    payload["flags"][0]["move_san"] = payload["move_evals"][11]["move_san"] = "a5"  # 6...b5 was played
+    prompts, out = _agent_run(payload)
+    assert prompts == []  # nothing narrated from a payload that isn't this game
+    assert "Game Report" not in out[-1] and "went wrong" in out[-1].lower()
+
+
+def test_agent_stops_on_a_malformed_position_payload():
+    pgn = test_grounding.PGN
+    prompts, out = _agent_run(payload_for(pgn, [test_grounding.FLAG]), {"multipv_lines": [], "features": {}},
+                              messages=[pgn, "2.Nf3"])
+    assert not any(name.startswith("analysing_") and "Engine Alternatives" in p for name, p in prompts)
+    assert "went wrong" in out[-1].lower()
