@@ -3,7 +3,7 @@
   "id": "scandinavian_13b4",
   "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 13, "side": "white", "san": "b4"},
   "eval_case": "scandinavian_b4_blunder",
-  "mirror": false,
+  "mirror": true,
   "expected_claims": [
    {"type": "weak_square_created", "subject": "a3", "required": true},
    {"type": "pawn_support_lost", "subject": "c3", "required": true}
@@ -32,7 +32,7 @@
   "id": "carlsbad_10b5",
   "source": {"pgn_fixture": "carlsbad_quiet", "move_number": 10, "side": "black", "san": "b5"},
   "eval_case": "carlsbad_b5_quiet",
-  "mirror": false,
+  "mirror": true,
   "expected_claims": [
    {"type": "weak_square_created", "subject": "a6"},
    {"type": "weak_square_created", "subject": "c5", "required": true},
@@ -78,7 +78,7 @@
   "id": "scandinavian_21h4",
   "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 21, "side": "white", "san": "h4"},
   "eval_case": "scandinavian_h4_blunder",
-  "mirror": false,
+  "mirror": true,
   "expected_claims": [{"type": "king_safety_reduced", "subject": null, "required": true}],
   "forbidden_claims": [
    {"type": "weak_square_created", "subject": "h3"},
