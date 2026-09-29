@@ -136,6 +136,14 @@ def _move_label(number: int, side: str, san: str) -> str:
     return f"{number}.{san}" if side == "white" else f"{number}...{san}"
 
 
+def _pawns_attack(owner: str, squares, already: str = "") -> str:
+    """ "Black's pawn on d4 attacks it." / "Black's pawns on b4 and d4 attack it." """
+    squares = list(squares)
+    if len(squares) == 1:
+        return f"{owner}'s pawn on {squares[0]} {already}attacks it."
+    return f"{owner}'s pawns on {', '.join(squares[:-1])} and {squares[-1]} {already}attack it."
+
+
 def claim_sentence(claim) -> str:
     """The canonical English statement of one CoachingClaim (domain/claims.py). This is
     the text of the narrator's VERIFIED CLAIMS block; every square and move in it comes
@@ -158,12 +166,20 @@ def claim_sentence(claim) -> str:
         line = render_numbered_pv(list(facts["refutation_pv"]), start, "black" if claim.side == "white" else "white")
         return f"The engine's refutation of {move} is {line}."
     if t == "weak_square_created":
-        return f"{move} created a weak square on {claim.subject}: no {side} pawn can ever guard it again."
+        text = f"{move} created a weak square on {claim.subject}: no {side} pawn can ever guard it again."
+        if facts.get("enemy_pawn_attackers"):
+            text += " " + _pawns_attack(other, facts["enemy_pawn_attackers"], "already ")
+        return text
     if t == "backward_pawn_created":
+        front = facts.get("front_square", "the square in front of it")
+        front = f"{front}, the square in front of it," if "front_square" in facts else front
         return (f"{move} left {side}'s {claim.subject} pawn backward: no {side} pawn stands behind it on an "
-                f"adjacent file, and the square in front of it is covered by more {other} pawns than {side} pawns.")
+                f"adjacent file, and {front} is covered by more {other} pawns than {side} pawns.")
     if t == "pawn_support_lost":
-        return f"After {move}, no {side} pawn can ever support {side}'s {claim.subject} pawn."
+        text = f"After {move}, no {side} pawn can ever support {side}'s {claim.subject} pawn."
+        if facts.get("enemy_pawn_attackers"):
+            text += " " + _pawns_attack(other, facts["enemy_pawn_attackers"])
+        return text
     if t == "king_safety_reduced":
         return f"{move} thinned the pawn cover around {side}'s king."
     if t == "quiet_structural_concession":
