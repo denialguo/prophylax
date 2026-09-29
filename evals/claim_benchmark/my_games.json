@@ -1,113 +1,381 @@
 [
  {
   "id": "my_games_10_46a4",
-  "source": {"pgn_file": "games/my_games.pgn", "game_index": 10, "move_number": 46, "side": "white", "san": "a4"},
+  "source": {
+   "pgn_file": "games/my_games.pgn",
+   "game_index": 10,
+   "move_number": 46,
+   "side": "white",
+   "san": "a4"
+  },
   "eval_case": null,
   "mirror": false,
   "expected_claims": [
-   {"type": "weak_square_created", "subject": "b4"},
-   {"type": "backward_pawn_created", "subject": "b3"}
+   {
+    "type": "weak_square_created",
+    "subject": "b4"
+   },
+   {
+    "type": "backward_pawn_created",
+    "subject": "b3"
+   }
   ],
   "forbidden_claims": [
-   {"type": "pawn_support_lost", "subject": "b3"},
-   {"type": "weak_square_created", "subject": "a3"},
-   {"type": "king_safety_reduced", "subject": null}
+   {
+    "type": "pawn_support_lost",
+    "subject": "b3"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "a3"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
   ],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "b4", "color": "white", "value": ["a2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "b4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "b4", "color": "black", "value": ["c5"]},
-   {"board": "after", "fact": "pawn_attackers", "square": "b4", "color": "white", "value": []},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "b3", "color": "white", "value": ["a2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "b3", "color": "white", "value": []},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "a3", "color": "white", "value": []},
-   {"board": "before", "fact": "piece", "square": "f4", "value": "K"}
-  ]},
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "b4",
+     "color": "white",
+     "value": [
+      "a2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "b4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "b4",
+     "color": "black",
+     "value": [
+      "c5"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "b4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "b3",
+     "color": "white",
+     "value": [
+      "a2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "b3",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "a3",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "f4",
+     "value": "K"
+    }
+   ]
+  },
   "label_rationale": "Chosen as a pawn-ending positive (game 10, K+3P v K+2P). a2-a4 removes b3's last possible supporter; b3's front square b4 is attacked by Black's c5 and by no White pawn, so b3 is backward (reported once, not also unsupported). b4 can no longer be guarded and c5 attacks it: an outpost. a3 was already unguardable. The pawn move does not change the f4 king's surroundings.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  },
  {
   "id": "my_games_10_46g5",
-  "source": {"pgn_file": "games/my_games.pgn", "game_index": 10, "move_number": 46, "side": "black", "san": "g5+"},
+  "source": {
+   "pgn_file": "games/my_games.pgn",
+   "game_index": 10,
+   "move_number": 46,
+   "side": "black",
+   "san": "g5+"
+  },
   "eval_case": null,
   "mirror": false,
   "expected_claims": [
-   {"type": "weak_square_created", "subject": "f6"},
-   {"type": "weak_square_created", "subject": "h6"}
+   {
+    "type": "weak_square_created",
+    "subject": "f6"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "h6"
+   }
   ],
   "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "f5"},
-   {"type": "weak_square_created", "subject": "h5"}
+   {
+    "type": "weak_square_created",
+    "subject": "f5"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "h5"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
   ],
-  "not_labelled": [{"type": "king_safety_reduced", "subject": null}],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawn_attackers", "square": "f6", "color": "black", "value": ["g7"]},
-   {"board": "before", "fact": "pawn_attackers", "square": "h6", "color": "black", "value": ["g7"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "f6", "color": "black", "value": []},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "h6", "color": "black", "value": []},
-   {"board": "after", "fact": "piece", "square": "f6", "value": "k"},
-   {"board": "after", "fact": "pawn_attackers", "square": "f5", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "h5", "color": "white", "value": []}
-  ]},
-  "label_rationale": "Chosen as the reply in the same pawn ending: g7-g5+ gives up f6 and h6, both guarded directly by g7 (f6 holds Black's king, a piece, so it still counts). f5 and h5 are newly unguardable but were never guarded by g7 directly and no White pawn attacks them. The king-safety score also drops here (the f6 king loses g7); whether that is meaningful in a pawn ending is the question in my_games_10_45kf4, so that claim is left unlabelled.",
-  "status": "draft",
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "f6",
+     "color": "black",
+     "value": [
+      "g7"
+     ]
+    },
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "h6",
+     "color": "black",
+     "value": [
+      "g7"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "f6",
+     "color": "black",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "h6",
+     "color": "black",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "f6",
+     "value": "k"
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "f5",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "h5",
+     "color": "white",
+     "value": []
+    }
+   ]
+  },
+  "label_rationale": "Chosen as the reply in the same pawn ending: g7-g5+ gives up f6 and h6, both guarded directly by g7 (f6 holds Black's king, a piece, so it still counts). f5 and h5 are newly unguardable but were never guarded by g7 directly and no White pawn attacks them. Operator decision (Q2): a king walking off the d/e files in an endgame is not, by itself, king safety reduced; the shelter heuristic must not produce that claim merely because the position is an endgame.",
+  "status": "approved",
   "question": null
  },
  {
   "id": "my_games_10_45kf4",
-  "source": {"pgn_file": "games/my_games.pgn", "game_index": 10, "move_number": 45, "side": "white", "san": "Kf4"},
+  "source": {
+   "pgn_file": "games/my_games.pgn",
+   "game_index": 10,
+   "move_number": 45,
+   "side": "white",
+   "san": "Kf4"
+  },
   "eval_case": null,
   "mirror": false,
   "expected_claims": [],
-  "forbidden_claims": [],
-  "evidence": {"board": [
-   {"board": "before", "fact": "piece", "square": "e4", "value": "K"},
-   {"board": "after", "fact": "piece", "square": "f4", "value": "K"},
-   {"board": "after", "fact": "piece", "square": "f2", "value": null},
-   {"board": "after", "fact": "piece", "square": "g2", "value": null}
-  ]},
-  "label_rationale": "Chosen because the king-safety score treats an endgame king walk as a king-safety loss: e4 (d/e file, not scored) to f4 (scored: no shield pawns, open e/f files). The selection scan found 528 endgame king moves like this across 350 games.",
-  "status": "ambiguous",
-  "question": "In a king-and-pawn ending, should a king walk off the d/e files ever produce king_safety_reduced? The current score says yes (it drops 2.5 here). Forbid it in endgames, or keep it?"
+  "forbidden_claims": [
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
+  ],
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "e4",
+     "value": "K"
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "f4",
+     "value": "K"
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "f2",
+     "value": null
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "g2",
+     "value": null
+    }
+   ]
+  },
+  "label_rationale": "Chosen because the king-safety score treats an endgame king walk as a king-safety loss: e4 (d/e file, not scored) to f4 (scored: no shield pawns, open e/f files). The selection scan found 528 endgame king moves like this across 350 games. Operator decision (Q2): a king walking off the d/e files in an endgame is not, by itself, king safety reduced; the shelter heuristic must not produce that claim merely because the position is an endgame.",
+  "status": "approved",
+  "question": null
  },
  {
   "id": "my_games_10_44ke6",
-  "source": {"pgn_file": "games/my_games.pgn", "game_index": 10, "move_number": 44, "side": "black", "san": "Ke6"},
+  "source": {
+   "pgn_file": "games/my_games.pgn",
+   "game_index": 10,
+   "move_number": 44,
+   "side": "black",
+   "san": "Ke6"
+  },
   "eval_case": null,
   "mirror": false,
   "expected_claims": [],
-  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
-  "evidence": {"board": [
-   {"board": "before", "fact": "piece", "square": "d6", "value": "k"},
-   {"board": "after", "fact": "piece", "square": "e6", "value": "k"}
-  ]},
+  "forbidden_claims": [
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
+  ],
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "d6",
+     "value": "k"
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "e6",
+     "value": "k"
+    }
+   ]
+  },
   "label_rationale": "Chosen as a clear negative: a king move between the d and e files in a pawn ending. No pawn moves; nothing structural can change.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  },
  {
   "id": "my_games_11_32f4",
-  "source": {"pgn_file": "games/my_games.pgn", "game_index": 11, "move_number": 32, "side": "white", "san": "f4"},
+  "source": {
+   "pgn_file": "games/my_games.pgn",
+   "game_index": 11,
+   "move_number": 32,
+   "side": "white",
+   "san": "f4"
+  },
   "eval_case": null,
   "mirror": false,
-  "expected_claims": [{"type": "weak_square_created", "subject": "e4"}],
-  "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "g4"},
-   {"type": "backward_pawn_created", "subject": "f4"},
-   {"type": "pawn_support_lost", "subject": "f4"},
-   {"type": "king_safety_reduced", "subject": null}
+  "expected_claims": [
+   {
+    "type": "weak_square_created",
+    "subject": "e4"
+   }
   ],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawn_attackers", "square": "e4", "color": "white", "value": ["f3"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "e4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "e4", "color": "black", "value": ["d5"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "g4", "color": "white", "value": ["h2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "f4", "color": "white", "value": ["g2"]},
-   {"board": "before", "fact": "piece", "square": "e3", "value": "K"}
-  ]},
+  "forbidden_claims": [
+   {
+    "type": "weak_square_created",
+    "subject": "g4"
+   },
+   {
+    "type": "backward_pawn_created",
+    "subject": "f4"
+   },
+   {
+    "type": "pawn_support_lost",
+    "subject": "f4"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
+  ],
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "e4",
+     "color": "white",
+     "value": [
+      "f3"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "e4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "e4",
+     "color": "black",
+     "value": [
+      "d5"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "g4",
+     "color": "white",
+     "value": [
+      "h2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "f4",
+     "color": "white",
+     "value": [
+      "g2"
+     ]
+    },
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "e3",
+     "value": "K"
+    }
+   ]
+  },
   "label_rationale": "Chosen from a second game (11, rook-and-knight ending) as a positive: f3 guarded e4 and no White pawn can now, while Black's d5 attacks it, so e4 is an outpost. g4 stays guardable by h2; f4 keeps g2 behind it. The e3 king is on a file the king-safety score does not cover.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  }
 ]

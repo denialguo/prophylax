@@ -1,110 +1,391 @@
 [
  {
   "id": "targeted_far_hole_with_enemy_pawn",
-  "source": {"fen": "4k3/8/8/1p6/8/8/PP1P4/4K3 w - - 0 1", "san": "b4"},
+  "source": {
+   "fen": "4k3/8/8/1p6/8/8/PP1P4/4K3 w - - 0 1",
+   "san": "b4"
+  },
   "eval_case": null,
   "mirror": true,
   "expected_claims": [
-   {"type": "weak_square_created", "subject": "a3"},
-   {"type": "weak_square_created", "subject": "a4"}
+   {
+    "type": "weak_square_created",
+    "subject": "a3"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "a4"
+   }
   ],
   "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "c3"},
-   {"type": "weak_square_created", "subject": "c4"},
-   {"type": "king_safety_reduced", "subject": null}
+   {
+    "type": "weak_square_created",
+    "subject": "c3"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "c4"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
   ],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawn_attackers", "square": "a3", "color": "white", "value": ["b2"]},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "a4", "color": "white", "value": ["b2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "a4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "a4", "color": "black", "value": ["b5"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": ["d2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c4", "color": "white", "value": ["d2"]}
-  ]},
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "a3",
+     "color": "white",
+     "value": [
+      "b2"
+     ]
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "a4",
+     "color": "white",
+     "value": [
+      "b2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "a4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "a4",
+     "color": "black",
+     "value": [
+      "b5"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "c3",
+     "color": "white",
+     "value": [
+      "d2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "c4",
+     "color": "white",
+     "value": [
+      "d2"
+     ]
+    }
+   ]
+  },
   "label_rationale": "M6 branch: a far hole counts only when an enemy pawn already attacks it. The 13.b4 twin, but Black's b5 attacks a4, so a4 is an outpost as well as a3 (guarded by b2 directly). c3 and c4 stay guardable by d2.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  },
  {
   "id": "targeted_own_pawn_never_a_hole",
-  "source": {"fen": "4k3/8/8/8/8/2P5/1P6/4K3 w - - 0 1", "san": "b4"},
+  "source": {
+   "fen": "4k3/8/8/8/8/2P5/1P6/4K3 w - - 0 1",
+   "san": "b4"
+  },
   "eval_case": null,
   "mirror": true,
   "expected_claims": [
-   {"type": "weak_square_created", "subject": "a3"},
-   {"type": "pawn_support_lost", "subject": "c3"}
+   {
+    "type": "weak_square_created",
+    "subject": "a3"
+   },
+   {
+    "type": "pawn_support_lost",
+    "subject": "c3"
+   }
   ],
   "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "c3"},
-   {"type": "weak_square_created", "subject": "a4"},
-   {"type": "weak_square_created", "subject": "c4"},
-   {"type": "backward_pawn_created", "subject": "c3"}
+   {
+    "type": "weak_square_created",
+    "subject": "c3"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "a4"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "c4"
+   },
+   {
+    "type": "backward_pawn_created",
+    "subject": "c3"
+   }
   ],
-  "evidence": {"board": [
-   {"board": "after", "fact": "piece", "square": "c3", "value": "P"},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": ["b2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": []},
-   {"board": "before", "fact": "pawn_attackers", "square": "a3", "color": "white", "value": ["b2"]},
-   {"board": "after", "fact": "pawn_attackers", "square": "a4", "color": "black", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "c4", "color": "black", "value": []}
-  ]},
+  "evidence": {
+   "board": [
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "c3",
+     "value": "P"
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "c3",
+     "color": "white",
+     "value": [
+      "b2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "c3",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "a3",
+     "color": "white",
+     "value": [
+      "b2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "a4",
+     "color": "black",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "c4",
+     "color": "black",
+     "value": []
+    }
+   ]
+  },
   "label_rationale": "M6 branch: a square holding the mover's own pawn is never a hole. c3 becomes unguardable but holds White's pawn: it is an unsupported pawn, not a weak square, and not backward (no Black pawn attacks c4). a4 and c4 are new unguardable squares with no enemy pawn on them and never guarded by b2 directly.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  },
  {
   "id": "tactical_fools_mate_2g4",
-  "source": {"pgn_fixture": "fools_mate", "move_number": 2, "side": "white", "san": "g4"},
+  "source": {
+   "pgn_fixture": "fools_mate",
+   "move_number": 2,
+   "side": "white",
+   "san": "g4"
+  },
   "eval_case": "fools_mate_g4_blunder",
   "mirror": true,
-  "expected_claims": [{"type": "weak_square_created", "subject": "h3", "required": true}],
-  "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "h4"},
-   {"type": "king_safety_reduced", "subject": null},
-   {"type": "pawn_support_lost", "subject": "h2"}
+  "expected_claims": [
+   {
+    "type": "weak_square_created",
+    "subject": "h3",
+    "required": true
+   }
   ],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawn_attackers", "square": "h3", "color": "white", "value": ["g2"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "h3", "color": "white", "value": []},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "h4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "h4", "color": "black", "value": []},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "h2", "color": "white", "value": []},
-   {"board": "before", "fact": "piece", "square": "e1", "value": "K"}
-  ]},
+  "forbidden_claims": [
+   {
+    "type": "weak_square_created",
+    "subject": "h4"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   },
+   {
+    "type": "pawn_support_lost",
+    "subject": "h2"
+   }
+  ],
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "h3",
+     "color": "white",
+     "value": [
+      "g2"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "h3",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "h4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "h4",
+     "color": "black",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "h2",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "e1",
+     "value": "K"
+    }
+   ]
+  },
   "label_rationale": "A tactical blunder (Qh4# follows). Structurally only h3 is conceded (g2 guarded it). h4 is newly unguardable but no Black pawn attacks it. h2 was already without a possible supporter. The king is on e1, where the king-safety score does not apply, so no king-safety claim despite the mate.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  },
  {
   "id": "tactical_scandinavian_22g4",
-  "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 22, "side": "white", "san": "g4"},
+  "source": {
+   "pgn_fixture": "scandinavian_blitz",
+   "move_number": 22,
+   "side": "white",
+   "san": "g4"
+  },
   "eval_case": null,
   "mirror": true,
   "expected_claims": [
-   {"type": "weak_square_created", "subject": "f4"},
-   {"type": "pawn_support_lost", "subject": "h4"},
-   {"type": "king_safety_reduced", "subject": null}
+   {
+    "type": "weak_square_created",
+    "subject": "f4"
+   },
+   {
+    "type": "pawn_support_lost",
+    "subject": "h4"
+   },
+   {
+    "type": "king_safety_reduced",
+    "subject": null
+   }
   ],
   "forbidden_claims": [
-   {"type": "weak_square_created", "subject": "h3"},
-   {"type": "weak_square_created", "subject": "f3"},
-   {"type": "backward_pawn_created", "subject": "h4"}
+   {
+    "type": "weak_square_created",
+    "subject": "h3"
+   },
+   {
+    "type": "weak_square_created",
+    "subject": "f3"
+   },
+   {
+    "type": "backward_pawn_created",
+    "subject": "h4"
+   }
   ],
-  "evidence": {"board": [
-   {"board": "before", "fact": "pawn_attackers", "square": "f4", "color": "white", "value": ["g3"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "f4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "f4", "color": "black", "value": ["e5"]},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "h4", "color": "white", "value": ["g3"]},
-   {"board": "after", "fact": "pawns_behind_adjacent", "square": "h4", "color": "white", "value": []},
-   {"board": "after", "fact": "pawn_attackers", "square": "h5", "color": "black", "value": []},
-   {"board": "before", "fact": "piece", "square": "g2", "value": "K"},
-   {"board": "before", "fact": "piece", "square": "g3", "value": "P"},
-   {"board": "after", "fact": "piece", "square": "g3", "value": null},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "h3", "color": "white", "value": []},
-   {"board": "before", "fact": "pawns_behind_adjacent", "square": "f3", "color": "white", "value": []}
-  ]},
+  "evidence": {
+   "board": [
+    {
+     "board": "before",
+     "fact": "pawn_attackers",
+     "square": "f4",
+     "color": "white",
+     "value": [
+      "g3"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "f4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "f4",
+     "color": "black",
+     "value": [
+      "e5"
+     ]
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "h4",
+     "color": "white",
+     "value": [
+      "g3"
+     ]
+    },
+    {
+     "board": "after",
+     "fact": "pawns_behind_adjacent",
+     "square": "h4",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "after",
+     "fact": "pawn_attackers",
+     "square": "h5",
+     "color": "black",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "g2",
+     "value": "K"
+    },
+    {
+     "board": "before",
+     "fact": "piece",
+     "square": "g3",
+     "value": "P"
+    },
+    {
+     "board": "after",
+     "fact": "piece",
+     "square": "g3",
+     "value": null
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "h3",
+     "color": "white",
+     "value": []
+    },
+    {
+     "board": "before",
+     "fact": "pawns_behind_adjacent",
+     "square": "f3",
+     "color": "white",
+     "value": []
+    }
+   ]
+  },
   "label_rationale": "Planned as a tactical negative, but the board says otherwise: g3 guarded f4, no White pawn can now, and Black's e5 attacks it (conceded). h4 loses its only possible supporter (g3) but is not backward (no Black pawn attacks h5). The g2 king loses the g3 pawn in front of it. h3 and f3 were already unguardable before the move.",
-  "status": "draft",
+  "status": "approved",
   "question": null
  }
 ]
