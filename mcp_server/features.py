@@ -110,6 +110,14 @@ def get_quiet_concessions(board_before: chess.Board, board_after: chess.Board, m
         or board_after.attackers(not mover_color, chess.parse_square(sq)) & enemy_pawns
     }
 
+    # A pawn fact, not a square fact: pawns that just lost every possible pawn
+    # supporter. Neutral; it does not trigger flags. The moving pawn itself only
+    # counts if it had possible support before it moved.
+    unsupported_before = pawn_support_impossible(board_before, mover_color)
+    new_unsupported = pawn_support_impossible(board_after, mover_color) - unsupported_before
+    if chess.square_name(move.from_square) in unsupported_before:
+        new_unsupported.discard(chess.square_name(move.to_square))
+
     bp_before = set(feat_before["pawn_structure"][side_key]["backward_pawns"])
     bp_after = set(feat_after["pawn_structure"][side_key]["backward_pawns"])
     new_bp = bp_after - bp_before
@@ -126,7 +134,29 @@ def get_quiet_concessions(board_before: chess.Board, board_after: chess.Board, m
         if new_fixed_bp:
             concessions["new_fixed_backward_pawns"] = new_fixed_bp
 
+    if new_unsupported:
+        concessions["new_pawn_unsupported"] = sorted(new_unsupported)
+
     return concessions
+
+def pawn_support_impossible(board: chess.Board, color: chess.Color) -> Set[str]:
+    """Pawns of `color` that no friendly pawn can ever support: no friendly pawn
+    stands behind them on an adjacent file (lower rank for White, higher for
+    Black), so no sequence of forward advances reaches a supporting square.
+    Board-only: pawn captures that change files are not considered. A pawn on
+    its starting rank always qualifies, so only changes are meaningful."""
+    pawns = board.pieces(chess.PAWN, color)
+    out = set()
+    for sq in pawns:
+        f, r = chess.square_file(sq), chess.square_rank(sq)
+        behind = [
+            p for p in pawns
+            if abs(chess.square_file(p) - f) == 1
+            and (chess.square_rank(p) < r if color == chess.WHITE else chess.square_rank(p) > r)
+        ]
+        if not behind:
+            out.add(chess.square_name(sq))
+    return out
 
 # --- KING SAFETY HELPER FUNCTIONS ---
 def compute_king_safety(board: chess.Board) -> Dict[str, float]:
@@ -298,7 +328,8 @@ def compute_weak_squares(board: chess.Board) -> Dict[str, Set[Tuple[str, str]]]:
       - Ranks 5-6 for Black's camp.
     A square is weak if:
       - It cannot be defended by any friendly pawn (either friendly pawns have advanced
-        past its file, or friendly pawns on adjacent files are already past/dead).
+        past its file, or friendly pawns on adjacent files are already past/dead), and
+      - it is not occupied by a friendly pawn.
     Returns a set of tuples: (square_name, color_complex) where color_complex is 'light' or 'dark'.
     """
     res = {}
@@ -335,8 +366,10 @@ def compute_weak_squares(board: chess.Board) -> Dict[str, Set[Tuple[str, str]]]:
                     if can_defend:
                         break
                 
-                if not can_defend:
-                    # Weak square identified! Determine its color complex
+                # A square holding our own pawn is a weakened pawn, not a hole
+                # (the backward-pawn check covers it); only empty or piece-held
+                # squares can become enemy outposts.
+                if not can_defend and board.piece_at(sq) != chess.Piece(chess.PAWN, color):
                     # Weak square identified! Determine its color complex
                     file_idx_check = chess.square_file(sq)
                     rank_idx_check = chess.square_rank(sq)

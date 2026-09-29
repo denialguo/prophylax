@@ -38,7 +38,7 @@ def get_allowed_squares(flag: Dict[str, Any]) -> Set[str]:
 
     concessions = flag.get("concessions", {})
     if concessions:
-        for k in ["new_weak_squares", "new_backward_pawns", "new_fixed_backward_pawns"]:
+        for k in ["new_weak_squares", "new_backward_pawns", "new_fixed_backward_pawns", "new_pawn_unsupported"]:
             for sq in concessions.get(k, []):
                 allowed.update(re.findall(r'[a-h][1-8]', sq.lower()))
 
