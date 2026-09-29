@@ -65,7 +65,8 @@ def check_narration_moves_legality(narration: str, game: chess.pgn.Game) -> Opti
     san = r'(?:[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|O-O-O|O-O)'
     # "2.Nc3 Nf6": a numbered move plus one optional unnumbered reply
     pattern = rf'\b(\d+)(?:\s*(\.\.\.|\.))?\s*({san})(?:\s+({san}))?\b'
-    matches = re.findall(pattern, narration)
+    # Models often write the typographic ellipsis ("21…Nxf3"); read it as "..."
+    matches = re.findall(pattern, narration.replace("\u2026", "..."))
     if not matches:
         return None
 
