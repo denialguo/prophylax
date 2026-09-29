@@ -54,7 +54,8 @@ async def judge_narration(flagged_move: dict, narration: str, config: dict, grou
     ):
         if event.is_final_response():
             if event.content and event.content.parts:
-                response_text = event.content.parts[0].text
+                # Reasoning models return their thinking as separate thought parts
+                response_text = "".join(p.text for p in event.content.parts if p.text and not p.thought)
                 
     try:
         clean_text = response_text.strip()
