@@ -161,3 +161,45 @@ def validate_narration(narration: str, flag: Dict[str, Any], game: Optional[ches
     if reason:
         print(f"VALIDATION REJECTED: {reason}. Narration: {narration[:50]}...", file=sys.stderr)
     return reason is None
+
+
+# M13: claim-grounded narration. Terms with a precise Prophylax meaning may only be
+# used when a claim of that kind exists (D9); ordinary vocabulary stays allowed.
+CLAIM_TERMS = [
+    (re.compile(r"\bbackward pawns?\b", re.I), "backward pawn", "backward_pawn_created"),
+    (re.compile(r"\bweak squares?\b", re.I), "weak square", "weak_square_created"),
+    (re.compile(r"\bholes?\b", re.I), "hole", "weak_square_created"),
+    (re.compile(r"\boutposts?\b", re.I), "outpost", "weak_square_created"),
+]
+_SQUARE = re.compile(r"^[a-h][1-8]$")
+
+
+def concept_violation(text: str, claims: list) -> Optional[str]:
+    """A precise term used with no claim of its kind behind it, or None."""
+    types = {c.type for c in claims}
+    for pattern, term, ctype in CLAIM_TERMS:
+        if ctype not in types and pattern.search(text):
+            return f"it used the term '{term}', but no verified claim is about one"
+    return None
+
+
+def claims_ground(claims: list) -> Dict[str, Any]:
+    """The grounding payload for claim-grounded narration: the moves and squares the
+    claims (and their evidence) name, in the shape grounding_violation reads."""
+    ground: Dict[str, Any] = {"move_san": claims[0].move_san if claims else "", "pv": [], "refutation_pv": []}
+    squares = set()
+    for c in claims:
+        if c.subject:
+            squares.add(c.subject)
+        for e in c.evidence:
+            values = e.value if isinstance(e.value, tuple) else (e.value,)
+            if e.fact == "best_move":
+                ground["best_move_san"] = e.value
+            elif e.fact == "pv":
+                ground["pv"] = list(e.value)
+            elif e.fact == "refutation_pv":
+                ground["refutation_pv"] = list(e.value)
+            else:
+                squares.update(v for v in values if isinstance(v, str) and _SQUARE.match(v))
+    ground["position_facts"] = {"claim squares": sorted(squares)}
+    return ground

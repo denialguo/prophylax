@@ -121,6 +121,15 @@ def get_fallback_narrators(primary: str) -> list[str]:
     return [m for m in APPROVED_NARRATORS if m != primary]
 
 
+def get_narration_input() -> str:
+    """What the narrator is given (M13): "flag" (the server payload, today's default) or
+    "claims" (the verified coaching claims only)."""
+    value = os.environ.get("PROPHYLAX_NARRATION_INPUT", "flag")
+    if value not in ("flag", "claims"):
+        raise ValueError(f"PROPHYLAX_NARRATION_INPUT must be 'flag' or 'claims', got {value!r}")
+    return value
+
+
 def get_judge_model() -> str:
     """Resolve the judge model with collision check.
 

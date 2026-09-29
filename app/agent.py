@@ -16,9 +16,12 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
-from scripts.format_narration import format_flag_for_llm, build_header, render_numbered_pv, position_facts
+from scripts.format_narration import (format_flag_for_llm, build_header, render_numbered_pv, position_facts,
+                                      format_claims_for_llm, claim_sentence)
 from scripts.move_reference import parse_move_reference, ply_of
-from evals.validate_narration import validate_narration, narration_violation, grounding_violation, merge_flags
+from evals.validate_narration import (validate_narration, narration_violation, grounding_violation, merge_flags,
+                                     claims_ground, concept_violation)
+from domain.claims import build_claims
 from domain.convert import game_analysis_from_payload, position_analysis_from_payload, to_flag_dict
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 from config.settings import get_tool_timeout
@@ -168,31 +171,38 @@ def _strip_frontmatter(content: str) -> str:
             return parts[2].strip()
     return content.strip()
 
-def load_skill_instruction(skill_dir: str) -> str:
-    """The shared contract followed by the skill's phase section."""
+def load_skill_instruction(skill_dir: str, claims: bool = False) -> str:
+    """The shared contract followed by the skill's phase section; for claim-grounded
+    narration (M13), then the verified-claims rules."""
     with open(os.path.join(SKILLS_DIR, "narration_contract.md")) as f:
         contract = f.read().strip()
     with open(os.path.join(SKILLS_DIR, skill_dir, "SKILL.md")) as f:
         phase = _strip_frontmatter(f.read())
-    return f"{contract}\n\n{phase}"
+    instruction = f"{contract}\n\n{phase}"
+    if claims:
+        with open(os.path.join(SKILLS_DIR, "narration_contract_claims.md")) as f:
+            instruction += f"\n\n{f.read().strip()}"
+    return instruction
 
-from config.settings import get_narrator_model, get_fallback_narrators, resolve_model, model_name
+from config.settings import get_narrator_model, get_fallback_narrators, resolve_model, model_name, get_narration_input
 
 NARRATOR_MODEL_NAME = get_narrator_model()  # validates at startup
 
-def make_narrator(phase: str) -> Agent:
+def make_narrator(phase: str, claims: bool = False) -> Agent:
     """One narrator definition; the phase only picks the skill section and the
     trace name (analysing_openings / _middlegames / _endgames)."""
     skill_dir = PHASE_SKILLS.get(phase, "middlegame_analysis")
     name = {"opening_prep": "analysing_openings", "middlegame_analysis": "analysing_middlegames",
             "endgame_analysis": "analysing_endgames"}[skill_dir]
-    return Agent(name=name, model=resolve_model(NARRATOR_MODEL_NAME), instruction=load_skill_instruction(skill_dir))
+    return Agent(name=name, model=resolve_model(NARRATOR_MODEL_NAME), instruction=load_skill_instruction(skill_dir, claims))
 
 NARRATORS = {phase: make_narrator(phase) for phase in PHASE_SKILLS}
+CLAIM_NARRATORS = {phase: make_narrator(phase, claims=True) for phase in PHASE_SKILLS}
 opening_agent, middlegame_agent, endgame_agent = NARRATORS["opening"], NARRATORS["middlegame"], NARRATORS["endgame"]
 
-def narrator_for(phase: str) -> Agent:
-    return NARRATORS.get(phase, NARRATORS["middlegame"])
+def narrator_for(phase: str, claims: bool = False) -> Agent:
+    table = CLAIM_NARRATORS if claims else NARRATORS
+    return table.get(phase, table["middlegame"])
 
 NARRATION_CONCURRENCY = 4  # parallel narrator calls per game report
 
@@ -274,12 +284,23 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
             return int(intent["move_number"]), str(intent["side"]).lower(), intent.get("requested_san")
         return None
 
-    async def _narrate(self, f: dict, game, depth: int, rating: int, stats: dict) -> str:
-        """Validated narration for one flag: retry once with the reason, then a deterministic fallback."""
-        agent = narrator_for(f["phase"])
-        prompt = format_flag_for_llm(f, depth, rating)
+    async def _narrate(self, f: dict, game, depth: int, rating: int, stats: dict,
+                       move=None, game_id: Optional[str] = None) -> str:
+        """Validated narration for one flag: retry once with the reason, then a deterministic
+        fallback. With PROPHYLAX_NARRATION_INPUT=claims the narrator sees only the move's
+        verified claims, and a precise term with no claim behind it is also a violation."""
+        use_claims = get_narration_input() == "claims"
+        if use_claims:
+            claims = build_claims(move, game_id)
+            ground = claims_ground(claims)
+            prompt = format_claims_for_llm(f, claims, depth, rating)
+            check = lambda text: narration_violation(text, ground, game) or concept_violation(text, claims)
+        else:
+            prompt = format_flag_for_llm(f, depth, rating)
+            check = lambda text: narration_violation(text, f, game)
+        agent = narrator_for(f["phase"], claims=use_claims)
         narration = await self._run_sub_agent(agent, prompt)
-        violation = narration_violation(narration, f, game)
+        violation = check(narration)
         if not violation:
             stats["passed_first"] += 1
             return narration
@@ -290,11 +311,14 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
             f"Please rewrite the narration, strictly obeying the NEGATIVE CONSTRAINTS."
         )
         narration = await self._run_sub_agent(agent, retry_prompt)
-        if validate_narration(narration, f, game):
+        violation = check(narration)
+        if not violation:
             stats["passed_retry"] += 1
             return narration
-        print(f"Validation failed on retry for flag {f['move_number']}...{f['move_san']}. Falling back to default narration.", file=sys.stderr, flush=True)
+        print(f"Validation failed on retry for flag {f['move_number']}...{f['move_san']} ({violation}). Falling back to default narration.", file=sys.stderr, flush=True)
         stats["fallback"] += 1
+        if use_claims:
+            return " ".join(claim_sentence(c) for c in claims)
         rendered_pv = render_numbered_pv(f.get("pv", []), f["move_number"], f["side"])
         side_cap = f["side"].capitalize()
         return f"Move {f['move_number']}{'.' if side_cap == 'White' else '...'}{f['move_san']} ({side_cap}) is a structural concession / error. The engine recommends the line: {rendered_pv}."
@@ -320,13 +344,15 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
 
         depth, rating = _config(ctx)
         # Game order (move number ascending, White then Black); narrated concurrently, reported in order
+        moves_by_flag = {id(f): m for f, m in zip(flags, analysis.flagged())}
         sorted_flags = sorted(flags, key=lambda x: (x["move_number"], 0 if x["side"].lower() == "white" else 1))
         stats = {"attempted": len(sorted_flags), "passed_first": 0, "passed_retry": 0, "fallback": 0}
         limit = asyncio.Semaphore(NARRATION_CONCURRENCY)
 
         async def bounded(f):
             async with limit:
-                return await self._narrate(f, game, depth, rating, stats)
+                return await self._narrate(f, game, depth, rating, stats,
+                                           move=moves_by_flag[id(f)], game_id=analysis.game_id)
 
         narrations = await asyncio.gather(*(bounded(f) for f in sorted_flags))
         for f, narration in zip(sorted_flags, narrations):

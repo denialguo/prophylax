@@ -186,3 +186,13 @@ def claim_sentence(claim) -> str:
         return (f"The engine barely registers {move}, but it is a lasting structural concession: "
                 f"it creates both a weak square and a backward pawn.")
     raise ValueError(f"no sentence for claim type {t!r}")
+
+
+def format_claims_for_llm(flag: Dict[str, Any], claims: list, depth: int, rating: int) -> str:
+    """The claim-grounded prompt (M13): the header, the framing fields, and one line per
+    verified claim. No raw payload fields, scores or deltas reach the narrator."""
+    lines = [f"header: {build_header(flag)}", f"Phase: {flag['phase']}", f"Channel: {flag.get('channel', 'wdl')}",
+             f"Audience Rating: {rating}", f"Explanation Depth: {depth}", "", "VERIFIED CLAIMS"]
+    lines += [f"C{i}: {claim_sentence(c)}" for i, c in enumerate(claims, 1)]
+    lines += ["", "Explain this move using only the verified claims above."]
+    return "\n".join(lines) + "\n"
