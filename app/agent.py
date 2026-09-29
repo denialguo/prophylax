@@ -308,8 +308,11 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
 
         print(f"Run Summary: {stats['attempted']} narrations attempted / {stats['passed_first']} passed first try / {stats['passed_retry']} passed on retry / {stats['fallback']} fell back.", file=sys.stderr, flush=True)
         ctx.session.state["report"] = report
+        # Tracked metric: first-try / retry / fallback counts for this report, kept in the
+        # session (visible in adk web and to anything reading session state)
         yield _text_event(self.name, report, actions=EventActions(state_delta={
             "pgn_text": pgn_text, "flags": flags, "move_evals": move_evals, "report": report,
+            "narration_stats": stats,
         }))
 
     async def ask_about_move(self, ctx: InvocationContext, pgn_text: str, move_num: int, side_str: str,

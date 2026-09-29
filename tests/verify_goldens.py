@@ -36,6 +36,19 @@ MANIFEST = {
             {"move_number": 1, "move_san": "d5", "side": "black"}
         ]
     },
+    "kp_opposition": {
+        "pgn_file": "kp_opposition.pgn",
+        "json_file": "kp_opposition.json",
+        # 4.Ke3 gives Black the opposition (win -> draw); the same move at move 2 is fine
+        "positives": [
+            {"move_number": 4, "move_san": "Ke3", "side": "white"}
+        ],
+        "negatives": [
+            {"move_number": 1, "move_san": "Kd3", "side": "white"},
+            {"move_number": 2, "move_san": "Ke3", "side": "white"},
+            {"move_number": 5, "move_san": "d3", "side": "white"}
+        ]
+    },
     "carlsbad_quiet": {
         "pgn_file": "carlsbad_quiet.pgn",
         "json_file": "carlsbad_quiet.json",
@@ -49,14 +62,15 @@ MANIFEST = {
     }
 }
 
-def record_goldens():
+def record_goldens(names):
     """
     Runs the asserted games on the pinned rig, records exact measurements,
-    and updates/writes the corresponding .json files containing ONLY expected WDL bands.
+    and writes the corresponding .json files containing ONLY expected WDL bands.
     """
     print("Recording goldens on the pinned rig...")
     
-    for name, config in MANIFEST.items():
+    for name in names:
+        config = MANIFEST[name]
         pgn_path = os.path.join(FIXTURES_DIR, config["pgn_file"])
         pgn_text = open(pgn_path).read()
         res = handle_analyze_pgn({"pgn": pgn_text, "max_flags": 100})
@@ -208,12 +222,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.record or args.force_rerecord:
-        json_files = ["fools_mate.json", "scandinavian_blitz.json", "carlsbad_quiet.json"]
-        exists = any(os.path.exists(os.path.join(FIXTURES_DIR, f)) for f in json_files)
-        if exists and not args.force_rerecord:
+        # --record only writes bands that don't exist yet; existing bands are never
+        # touched unless --force-rerecord is given explicitly
+        missing = [n for n, c in MANIFEST.items() if not os.path.exists(os.path.join(FIXTURES_DIR, c["json_file"]))]
+        names = list(MANIFEST) if args.force_rerecord else missing
+        if not names:
             print("bands exist; re-recording requires --force-rerecord")
             sys.exit(1)
-        record_goldens()
+        record_goldens(names)
         sys.exit(0)
     else:
         passed = verify_goldens()

@@ -1,6 +1,6 @@
 # Prophylax — Upgrade Plan
 
-Status: **Approved. M0–M8 done; M9+ awaiting approval.**
+Status: **Approved. M0–M9 done; M10 awaiting approval.**
 
 | Milestone | State | Default suite after |
 |-----------|-------|---------------------|
@@ -14,6 +14,7 @@ Status: **Approved. M0–M8 done; M9+ awaiting approval.**
 | M6 follow-up | done; squares holding the mover's own pawn are never holes; new neutral `new_pawn_unsupported` fact (option C in `docs/unsupported_pawn_question.md`), not a flag trigger; shown to the narrator only when the pawn isn't also backward | 87 passed, 16 deselected (7.06s, `artifacts/junit.xml`); golden 5 passed, 125s (`artifacts/junit_golden_m6c.xml`) |
 | M7 grounding | done; `tests/test_grounding.py` (2 of 4 verified failing without the change). Deep dive prompt carries the multipv lines and position features, which the validator allows. Conversational replies are checked against all stored flags plus the moves actually played: retry once, then a fixed fallback. Golden not rerun (no engine or feature code touched) | 91 passed, 16 deselected (8.23s, `artifacts/junit.xml`) |
 | M8 agents/routing | done; `tests/test_move_reference.py` (23 phrasings), `tests/test_agent_structure.py`. Contract lives once in `.agents/skills/narration_contract.md`; one `make_narrator` builds each phase's narrator. Trace names kept per phase (`test_prompt_injection` asserts them), so the plan's "one name in the trace" loss doesn't happen. Deterministic move parser first, LLM router as fallback; handler split into `analyze_game` / `ask_about_move` / `converse`; flags narrated concurrently (limit 4) and reported in game order | 119 passed, 16 deselected (8.30s, `artifacts/junit.xml`) |
+| M9 evaluation | done; `tests/payload_schema.py` checks the real server output (5k nodes) and the agent-test mocks in the default suite. Endgame fixture `kp_opposition` (4.Ke3 loses the opposition; 2.Ke3 is fine), bands recorded on operator instruction. `--record` now writes only missing bands. Narration stats kept in session state and in junit properties | 122 passed, 17 deselected (9.00s, `artifacts/junit.xml`); golden 6 passed, 142s (`artifacts/junit_golden_m9.xml`) |
 
 Baseline commit: `d5b5617`. Findings marked **[verified]** were reproduced by running
 code; **[read]** means established by reading code only.
