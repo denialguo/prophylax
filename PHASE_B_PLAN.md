@@ -3,6 +3,10 @@
 Status: **approved 2026-09-28, with the D12 controlled-comparison amendment.
 Implemented milestone by milestone, in order.**
 
+| Milestone | State | Suites after |
+|---|---|---|
+| M11.0 FEN numbering | done; `tests/test_fen_numbering.py` (validator and server tests verified failing first); `ply_of` in `scripts/move_reference.py` used by the agent and validator. For FEN games, the move-1–3 threshold and the opening phase now follow the FEN's real move number | fast 147 passed, 17 deselected, 13s (`artifacts/junit_m11_0.xml`); golden 6 passed, 141s (`artifacts/junit_golden_m11_0.xml`) |
+
 This plan is based on reading the code at `fe177b8`. It adds a typed domain layer
 and a deterministic claim layer on top of the working pipeline. The MCP server,
 Stockfish settings, detection thresholds and golden bands do not change. The one

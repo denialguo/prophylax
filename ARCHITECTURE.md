@@ -87,7 +87,8 @@ converse
 Win probability is `W + D/2` from Stockfish's WDL, from the mover's side.
 
 **Phase:** endgame if no queens remain or at most 6 rooks, minors and pawns
-remain in total; otherwise opening through move 9, then middlegame.
+remain in total; otherwise opening through move 9, then middlegame. Move
+numbers are the board's own (a `[FEN]` start keeps its numbering).
 
 **Channel 1 (WDL drop):** the drop reaches the threshold for its phase:
 moves 1–3 −20%, then opening −5%, middlegame −8%, endgame −10%.
@@ -184,5 +185,4 @@ real server output (`tests/payload_schema.py`).
 
 ## Known limits
 
-- `analyze_pgn` numbers moves from 1 regardless of the FEN's move number.
 - King safety ignores uncastled kings on the d/e files.

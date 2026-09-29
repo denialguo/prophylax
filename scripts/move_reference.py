@@ -1,5 +1,6 @@
 # scripts/move_reference.py - deterministic parsing of "which move?" in a user message
 import re
+import chess
 from typing import Optional, Tuple
 
 SAN = r'(?:[KQRBN][a-h]?[1-8]?x?[a-h][1-8]|[a-h](?:x[a-h])?[1-8](?:=[QRBN])?|O-O-O|O-O)[+#]?'
@@ -26,3 +27,11 @@ def parse_move_reference(text: str) -> Optional[Tuple[int, str, Optional[str]]]:
     if m:
         return int(m.group(2)), m.group(1).lower(), None
     return None
+
+
+def ply_of(start: "chess.Board", move_number: int, side: str) -> int:
+    """Index into the mainline of the move numbered `move_number` for `side`, in a
+    game starting at `start` (a FEN may start at any move, with either side to move).
+    Negative or past-the-end values mean the move isn't in the game."""
+    return ((move_number - start.fullmove_number) * 2
+            + (side == "black") - (start.turn == chess.BLACK))

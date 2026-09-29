@@ -4,6 +4,8 @@ import chess
 import chess.pgn
 from typing import Dict, Any, Optional, Set
 
+from scripts.move_reference import ply_of
+
 # Piece moves, pawn captures, promotions, castling. Bare pawn pushes ("e4") are
 # indistinguishable from squares and are covered by the square whitelist.
 SAN_TOKEN = re.compile(
@@ -90,8 +92,8 @@ def check_narration_moves_legality(narration: str, game: chess.pgn.Game) -> Opti
 
         if not consecutive:
             val_board = game.board()
-            target_ply = (move_num - 1) * 2 + (1 if is_black else 0)
-            if target_ply > len(mainline):
+            target_ply = ply_of(game.board(), move_num, "black" if is_black else "white")
+            if not 0 <= target_ply <= len(mainline):
                 return f"{move_num}{dots or '.'}{san}"
             for m in mainline[:target_ply]:
                 val_board.push(m)
