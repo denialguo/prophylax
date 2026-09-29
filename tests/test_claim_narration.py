@@ -118,3 +118,27 @@ def test_agent_claims_mode_rejects_unbacked_terms(monkeypatch):
     assert stats["fallback"] == 1
     claims = build_claims(move, game_id="g1")
     assert text == " ".join(claim_sentence(c) for c in claims)
+
+
+def _endgame_king_walk(phase):
+    return {"move_san": "Kf2", "move_number": 40, "side": "white", "phase": phase, "wdl_delta": -0.18,
+            "best_move_san": "Ke3", "pv": ["Ke3", "Ke7"], "refutation_pv": ["Ke7", "Kd4"], "channel": "wdl",
+            "feature_deltas": {"king_safety_delta": -2.5, "piece_activity_delta": -1}, "concessions": {}}
+
+
+def test_endgame_king_walk_is_not_a_king_safety_theme():
+    """M14 Q2 on both paths: the shelter score drops, but neither prompt makes it a theme."""
+    from scripts.format_narration import format_flag_for_llm
+    flag = _endgame_king_walk("endgame")
+    prompt = format_flag_for_llm(flag, 1, 1800)
+    assert "king_safety_delta" not in prompt and "1. piece_activity_delta: -1.0000" in prompt
+    claims = build_claims(move_analysis_from_flag(flag), game_id="g1")
+    assert "king_safety_reduced" not in {c.type for c in claims}
+    assert flag["feature_deltas"]["king_safety_delta"] == -2.5  # the payload keeps it as telemetry
+
+
+def test_middlegame_shelter_drop_is_still_a_theme():
+    from scripts.format_narration import format_flag_for_llm
+    flag = _endgame_king_walk("middlegame")
+    assert "1. king_safety_delta: -2.5000" in format_flag_for_llm(flag, 1, 1800)
+    assert "king_safety_reduced" in {c.type for c in build_claims(move_analysis_from_flag(flag), game_id="g1")}

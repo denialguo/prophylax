@@ -84,7 +84,12 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     
     header_str = build_header(flag)
         
-    ranked_feats = rank_and_prune_features(flag.get("feature_deltas", {}), depth)
+    feature_deltas = dict(flag.get("feature_deltas", {}))
+    if phase == "endgame":
+        # king_safety_delta is a shelter score; in an endgame it mostly measures the king
+        # walking into play, so it is not a coaching theme there (M14 Q2, as in build_claims)
+        feature_deltas.pop("king_safety_delta", None)
+    ranked_feats = rank_and_prune_features(feature_deltas, depth)
     
     prompt = f"header: {header_str}\n"
     prompt += f"Phase: {phase}\n"
