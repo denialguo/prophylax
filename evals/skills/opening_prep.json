@@ -7,29 +7,31 @@
         "move_number": 2,
         "side": "white",
         "phase": "opening",
-        "wdl_before_prob": 0.6415,
+        "wdl_before_prob": 0.341,
         "wdl_after_prob": 0.0,
-        "wdl_delta": -0.6415,
-        "best_move_san": "e4",
+        "wdl_delta": -0.341,
+        "best_move_san": "Nc3",
         "pv": [
-          "e4",
-          "d5",
           "Nc3",
           "Nf6",
           "d4",
-          "e6"
+          "exd4",
+          "Qxd4",
+          "Nc6"
         ],
         "refutation_pv": [
           "Qh4#"
         ],
         "feature_deltas": {
-          "king_safety_delta": -1.0,
-          "pawn_structure_delta": 0.0,
           "weak_squares": -2,
-          "piece_activity_delta": 1
+          "piece_activity_delta": 1,
+          "king_safety_delta": 0.0,
+          "pawn_structure_delta": 0.0
         },
         "concessions": {
-          "new_weak_squares": ["h4", "h3"]
+          "new_weak_squares": [
+            "h3"
+          ]
         },
         "channel": "wdl"
       },

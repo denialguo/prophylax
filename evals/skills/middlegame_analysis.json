@@ -15,9 +15,9 @@
           "Bd1",
           "a6",
           "Bb3",
-          "Qd7",
-          "h4",
-          "Nfxe4"
+          "Ne6",
+          "a5",
+          "h5"
         ],
         "refutation_pv": [
           "Nxf3",
@@ -33,9 +33,7 @@
           "weak_squares": 0,
           "piece_activity_delta": 0
         },
-        "concessions": {
-          "new_weak_squares": ["g4", "g3"]
-        },
+        "concessions": {},
         "channel": "wdl"
       },
       "config": {
@@ -79,13 +77,18 @@
           "Bxc3"
         ],
         "feature_deltas": {
-          "weak_squares": -3,
+          "weak_squares": -2,
           "piece_activity_delta": -1,
           "king_safety_delta": 0.0,
           "pawn_structure_delta": 0.0
         },
         "concessions": {
-          "new_weak_squares": ["a4", "a3", "c3"]
+          "new_weak_squares": [
+            "a3"
+          ],
+          "new_pawn_unsupported": [
+            "c3"
+          ]
         },
         "channel": "wdl"
       },
@@ -112,14 +115,14 @@
         "wdl_before_prob": 0.472,
         "wdl_after_prob": 0.4265,
         "wdl_delta": -0.045499999999999985,
-        "best_move_san": "Nf8",
+        "best_move_san": "a5",
         "pv": [
-          "Nf8",
-          "f3",
-          "g6",
-          "Rad1",
-          "Ne6",
-          "Bh4"
+          "a5",
+          "h3",
+          "h6",
+          "Bh4",
+          "b5",
+          "Nb1"
         ],
         "refutation_pv": [
           "a4",
@@ -130,23 +133,24 @@
           "a5"
         ],
         "feature_deltas": {
-          "weak_squares": -4,
+          "weak_squares": -3,
           "piece_activity_delta": 1,
           "pawn_structure_delta": -0.5,
           "king_safety_delta": 0.0
         },
-        "channel": "quiet_inaccuracy",
         "concessions": {
           "new_weak_squares": [
-            "a5",
             "c5",
-            "a6",
-            "c6"
+            "a6"
           ],
           "new_backward_pawns": [
             "c6"
+          ],
+          "new_pawn_unsupported": [
+            "c6"
           ]
-        }
+        },
+        "channel": "quiet_inaccuracy"
       },
       "config": {
         "explanation_depth": 1,
