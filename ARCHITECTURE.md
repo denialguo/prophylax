@@ -133,6 +133,12 @@ Channel 2 flags rank below all Channel 1 flags.
   session state as `narration_stats`.
 - **Conversation** is held to the same grounding checks, against every stored
   flag plus the moves actually played.
+- **Claims input (M13, behind `PROPHYLAX_NARRATION_INPUT=claims`).** The narrator
+  sees only the move's verified claims (`domain/claims.py`, one sentence each)
+  plus `narration_contract_claims.md`. The validator grounds on the claims'
+  moves and squares, and rejects "backward pawn", "weak square", "hole" or
+  "outpost" when no claim of that kind exists. The fallback is the claim
+  sentences. Game reports only; deep dives and conversation use the flag path.
 
 ## Where the hard rules are enforced
 
@@ -163,6 +169,7 @@ internals, which go to stderr. The CLI exits 1 when no report was produced.
 | `STOCKFISH_SEARCH_TIMEOUT_S` | 60 | Watchdog for one search. |
 | `PROPHYLAX_TOOL_TIMEOUT_S` | 900 | Agent-side deadline for one tool call. |
 | `NARRATOR_MODEL` | `gemini-3.5-flash` | Must be in `APPROVED_NARRATORS`. |
+| `PROPHYLAX_NARRATION_INPUT` | `flag` | `claims` narrates from verified claims only (M13, pending the D12 decision). |
 | `JUDGE_MODEL` | `gemini-3.1-flash-lite` | Must differ from the narrator. |
 | `GEMINI_API_KEY` | required for Gemini models | Never stored in the repo (`app/.env` is git-ignored). |
 | `GROQ_API_KEY` | required for `groq/...` models | Provider-prefixed model names (e.g. `groq/llama-3.3-70b-versatile`) run through LiteLLM (`config.settings.resolve_model`). |
