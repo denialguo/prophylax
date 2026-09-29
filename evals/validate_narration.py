@@ -24,7 +24,9 @@ def extract_squares_from_move(move_san: str) -> Set[str]:
     return set(squares)
 
 def _payload_moves(flag: Dict[str, Any]) -> list:
-    return [flag.get("move_san", ""), flag.get("best_move_san", "")] + list(flag.get("pv", [])) + list(flag.get("refutation_pv", []))
+    alternatives = [m for line in flag.get("alternatives", []) for m in line]
+    return ([flag.get("move_san", ""), flag.get("best_move_san", "")] + list(flag.get("pv", []))
+            + list(flag.get("refutation_pv", [])) + alternatives)
 
 def get_allowed_moves(flag: Dict[str, Any]) -> Set[str]:
     """SAN moves (check/mate suffix stripped) the narration may cite."""
@@ -42,7 +44,20 @@ def get_allowed_squares(flag: Dict[str, Any]) -> Set[str]:
             for sq in concessions.get(k, []):
                 allowed.update(re.findall(r'[a-h][1-8]', sq.lower()))
 
+    for sqs in flag.get("position_facts", {}).values():
+        allowed.update(sq.lower() for sq in sqs)
+
     return allowed
+
+def merge_flags(flags: list, played_moves: list = ()) -> Dict[str, Any]:
+    """One pseudo-flag whose payload is every stored flag's payload plus the moves
+    actually played: the grounding set for free-form conversation."""
+    moves = [m for f in flags for m in _payload_moves(f)] + list(played_moves)
+    concessions: Dict[str, list] = {}
+    for f in flags:
+        for k, sqs in (f.get("concessions") or {}).items():
+            concessions.setdefault(k, []).extend(sqs)
+    return {"pv": moves, "concessions": concessions}
 
 def check_narration_moves_legality(narration: str, game: chess.pgn.Game) -> Optional[str]:
     """Numbered SAN (e.g. '13...a5') must be legal at that ply of the real game.
@@ -102,31 +117,37 @@ def check_narration_moves_legality(narration: str, game: chess.pgn.Game) -> Opti
 def narration_violation(narration: str, flag: Dict[str, Any], game: Optional[chess.pgn.Game] = None) -> Optional[str]:
     """
     Returns a short reason the narration is rejected, or None if it is valid:
-    1. No internal feature magnitudes like "delta of -X".
-    2. Does not start with the header (code emits it).
-    3. Every SAN move cited must come from the payload (played, best, PV, refutation).
-    4. Every bare square must come from the payload.
-    5. With the real game, every numbered move must be legal at that ply.
+    1. Does not start with the header (code emits it).
+    2. Everything grounding_violation checks.
     """
-    low = narration.lower()
+    if narration.strip().startswith("Move "):
+        return "it started with 'Move ' (the header is emitted by code)"
+    return grounding_violation(narration, flag, game)
+
+def grounding_violation(text: str, flag: Dict[str, Any], game: Optional[chess.pgn.Game] = None) -> Optional[str]:
+    """
+    1. No internal feature magnitudes like "delta of -X".
+    2. Every SAN move cited must come from the payload (played, best, PV, refutation,
+       alternatives).
+    3. Every bare square must come from the payload.
+    4. With the real game, every numbered move must be legal at that ply.
+    """
+    low = text.lower()
     if re.search(r'delta\s+of\s+-?\d+', low) or re.search(r'delta\s+magnitude', low):
         return "it quoted internal feature magnitudes (e.g. 'delta of -X')"
 
-    if narration.strip().startswith("Move "):
-        return "it started with 'Move ' (the header is emitted by code)"
-
     allowed_moves = get_allowed_moves(flag)
-    for san in SAN_TOKEN.findall(narration):
+    for san in SAN_TOKEN.findall(text):
         if san.rstrip("+#") not in allowed_moves:
             return f"move {san} is not in the engine payload"
 
     allowed_squares = get_allowed_squares(flag)
-    for sq in sorted(extract_squares(narration)):
+    for sq in sorted(extract_squares(text)):
         if sq not in allowed_squares:
             return f"square {sq} is not in the engine payload"
 
     if game is not None:
-        bad = check_narration_moves_legality(narration, game)
+        bad = check_narration_moves_legality(text, game)
         if bad:
             return f"{bad} is not a legal move at that point of the game"
 

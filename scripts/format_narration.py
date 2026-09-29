@@ -48,6 +48,23 @@ def build_header(flag: Dict[str, Any]) -> str:
     else:
         return f"Move {move_num}...{move_san} (Black): WDL drop {drop_pct:.1f}%"
 
+def position_facts(features: Dict[str, Any]) -> Dict[str, List[str]]:
+    """Squares named by analyze_position's static features, keyed by a prompt label.
+    Only non-empty entries are kept."""
+    facts = {}
+    for side in ("white", "black"):
+        structure = features.get("pawn_structure", {}).get(side, {})
+        entries = {
+            "weak squares": [w["square"] for w in features.get("weak_squares", {}).get(side, [])],
+            "backward pawns": structure.get("backward_pawns", []),
+            "isolated pawns": structure.get("isolated_pawns", []),
+            "doubled pawns": structure.get("doubled_pawns", []),
+        }
+        for label, squares in entries.items():
+            if squares:
+                facts[f"{side.capitalize()} {label}"] = sorted(squares)
+    return facts
+
 def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     """
     Formulates a structured text prompt for the LLM based on the flagged move data,
@@ -100,6 +117,14 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
     if unsupported:
         prompt += f"Pawns That Lost All Possible Pawn Support: {', '.join(unsupported)}\n"
             
+    alternatives = flag.get("alternatives", [])
+    if alternatives:
+        prompt += "Engine Alternatives From The Position Before The Move:\n"
+        for i, line in enumerate(alternatives, 1):
+            prompt += f"  {i}) {render_numbered_pv(line, move_num, side)}\n"
+    for label, squares in flag.get("position_facts", {}).items():
+        prompt += f"Before The Move, {label}: {', '.join(squares)}\n"
+
     prompt += "feature_deltas:\n"
     for rank, (feat, val) in enumerate(ranked_feats, 1):
         prompt += f"  {rank}. {feat}: {val:+.4f}\n"
