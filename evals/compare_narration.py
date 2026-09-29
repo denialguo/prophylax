@@ -232,7 +232,7 @@ def schedule(cases, runs):
     return order
 
 
-async def main_async(runs: int, out: str) -> dict:
+async def main_async(runs: int, out: str, resume: bool = False) -> dict:
     judge_mod.judge_agent = Agent(name=judge_mod.judge_agent.name, model=resolve_model(JUDGE),
                                   instruction=judge_mod.judge_agent.instruction,
                                   generate_content_config=types.GenerateContentConfig(**JUDGE_SETTINGS))
@@ -252,8 +252,19 @@ async def main_async(runs: int, out: str) -> dict:
     # D13: frozen before any narration is generated; both arms of every pair get these bytes
     truths = [judge_ground_truth(case_inputs(c)[3]) for c in cases]
     report["config"]["judge_ground_truths"] = dict(zip(report["config"]["cases"], truths))
+    if resume and os.path.exists(out):
+        # Keep the finished trials up to the last complete pair; the config must match
+        with open(out) as fh:
+            prev = json.load(fh)
+        if prev["config"] != report["config"]:
+            raise SystemExit(f"{out}: config differs from this run; cannot resume")
+        done = len(prev["trials"]) // 2 * 2
+        report["trials"], report["infrastructure_events"] = prev["trials"][:done], prev["infrastructure_events"]
+        report["resumed_at_trial"] = report.get("resumed_at_trial", []) + prev.get("resumed_at_trial", []) + [done]
     start = time.time()
-    for i, r, arm in schedule(cases, runs):
+    for n, (i, r, arm) in enumerate(schedule(cases, runs)):
+        if n < len(report["trials"]):
+            continue
         case, seed = cases[i], i * 10 + r
         for attempt in range(MAX_INFRA_RESTARTS + 1):
             infra = []
@@ -289,8 +300,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--out", default="artifacts/narration_compare.json")
+    ap.add_argument("--resume", action="store_true", help="continue a run stopped by provider outages")
     args = ap.parse_args(argv)
-    report = asyncio.run(main_async(args.runs, args.out))
+    report = asyncio.run(main_async(args.runs, args.out, args.resume))
     print(json.dumps({"metrics": report["metrics"], "decision": report["decision"],
                       "infrastructure_events": len(report["infrastructure_events"]),
                       "wall_clock_s": report["wall_clock_s"], "artifact": args.out}, indent=1))
