@@ -44,8 +44,9 @@ code-emitted report skeleton · narration validator
 (SAN legality, payload whitelist) · retry-once-then-
 fallback — a fabricated move never ships
 
-- **MCP server** (`mcp_server/`): stateless JSON-RPC 2.0 over stdio wrapping a
-  pinned Stockfish. Two tools; all features computed deterministically with
+- **MCP server** (`mcp_server/`): JSON-RPC 2.0 over stdio wrapping a pinned
+  Stockfish. One long-lived server and engine, cleared (`ucinewgame`) per
+  request; per-search and per-call timeouts. Two tools; all features computed deterministically with
   python-chess. Returns data only — it never narrates.
 - **Skills** (`.agents/skills/`): one shared narration contract plus a phase
   section per skill (opening, middlegame, endgame). One theme per flagged move = the top-ranked feature delta. No signal,
@@ -80,7 +81,8 @@ narration gate may ship (`APPROVED_NARRATORS`), with automatic quota fallback.
 ## Usage
 
 ```bash
-# full game report (top flags, both channels)
+# full game report (top flags, both channels); run from the repo root.
+# Exits 1 if no report was produced.
 STOCKFISH_PATH=... STOCKFISH_NODES=1000000 python3 -m app.agent --pgn mygame.pgn --max-flags 4
 
 # conversational coach (paste a PGN, then ask "what about 11...Bxc4?")
@@ -96,8 +98,8 @@ The answer key existed before the features did. See `tests/` and `evals/`:
 
 - **Golden fixtures** from real games, with WDL bands *measured* on the pinned
   rig (Stockfish 18, 1M nodes, single thread) — recorded by script, never
-  hand-typed (`tests/verify_goldens.py`, `--record` guarded by
-  `--force-rerecord`).
+  hand-typed (`tests/verify_goldens.py`; `--record` writes only missing bands,
+  `--force-rerecord` rewrites all).
 - **Stability gate**: every verdict must survive 3× deeper search. It rejected
   two shallow-search mirages from the answer key during development.
 - **Trajectory evals**: tool-call order asserted (`analyze_pgn` before
@@ -107,8 +109,8 @@ The answer key existed before the features did. See `tests/` and `evals/`:
   attack must fail; the correct narration of the same move must pass.
 
 ```bash
-./venv/bin/pytest -v                 # fast suite (no engine, no LLM)
-pytest -v -m golden                  # engine-backed fixtures (~10 min)
+./venv/bin/pytest -v                 # fast suite (no LLM; one schema check uses Stockfish if set)
+pytest -v -m golden                  # engine-backed fixtures (~2.5 min)
 pytest -v -m narration               # narrator gate (LLM)
 pytest -v -m judge                   # judge calibration (two LLMs)
 ```
@@ -129,4 +131,6 @@ it reports the move fell below the flagging thresholds and shows the engine's
 preference. Strong-move narration is signal-ready but unbuilt. Semantic misreads
 are measured by the offline judge rather than blocked at runtime; runtime
 judging is the deployment-hardening step. Endgame evals are synthetic pending a
-real endgame fixture; uncastled-king safety is a known feature gap.
+real endgame game (the engine suite has one endgame study); uncastled-king
+safety is a known feature gap. See `ARCHITECTURE.md` for the full pipeline and
+known limits.
