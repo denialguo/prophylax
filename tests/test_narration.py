@@ -59,10 +59,15 @@ def get_matching_game(flag: dict):
     return None
 
 def count_sentences(text: str) -> int:
-    body = text.strip()
+    # Move numbers ("46. Kf6", "46... Kh6") are not sentence ends
+    body = re.sub(r'\b\d+\.(?:\.\.|\u2026)?\s*(?=[KQRBNO]|[a-h][1-8x])', '', text.strip())
     # Split by period followed by space and alphanumeric
     sentences = [s.strip() for s in re.split(r'(?<=\.)\s+(?=[A-Za-z0-9])', body) if s.strip()]
     return len(sentences)
+
+def test_count_sentences_skips_move_numbers():
+    assert count_sentences("White wins through 46. Kf6, then 46... Kh6 and 47.Kf7 exd5. It is lost. Really.") == 3
+    assert count_sentences("One. Two. Three.") == 3
 
 def pytest_configure(config):
     """Log narrator and judge model names at session start."""
