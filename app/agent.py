@@ -16,7 +16,7 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from scripts.format_narration import format_flag_for_llm
-from evals.validate_narration import validate_narration, narration_violation
+from evals.validate_narration import validate_narration, narration_violation, grounding_violation, merge_flags
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 from config.settings import get_tool_timeout
 from mcp_server.server import (
@@ -381,6 +381,11 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                             "channel": "deep_dive"
                         }
                     
+                    # Ground the deep dive in the engine data just fetched
+                    from scripts.format_narration import position_facts
+                    deep_dive_flag["alternatives"] = [l.get("pv", []) for l in pos_analysis.get("multipv_lines", []) if l.get("pv")]
+                    deep_dive_flag["position_facts"] = position_facts(pos_analysis.get("features", {}))
+
                     from scripts.format_narration import build_header
                     header_str = build_header(deep_dive_flag)
                     deep_dive_flag["header"] = header_str
@@ -416,6 +421,26 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                     flags = ctx.session.state.get("flags", [])
                     conv_prompt = f"User message: {user_message}\n\nGame Report:\n{report}\n\nFlags:\n{json.dumps(flags, indent=2)}"
                     reply = await self._run_sub_agent(conv_agent, conv_prompt)
+
+                    # Grounding: moves/squares must come from the stored flags or the game itself
+                    game = chess.pgn.read_game(io.StringIO(pgn_text))
+                    board = game.board()
+                    played = []
+                    for m in game.mainline_moves():
+                        played.append(board.san(m))
+                        board.push(m)
+                    ground = merge_flags(flags, played)
+                    violation = grounding_violation(reply, ground, game)
+                    if violation:
+                        print(f"Conversational reply rejected: {violation}. Retrying once...", file=sys.stderr, flush=True)
+                        reply = await self._run_sub_agent(conv_agent, (
+                            f"{conv_prompt}\n\nWARNING: Your previous answer was rejected because {violation}. "
+                            f"Only cite moves and squares that appear in the report or flags above."
+                        ))
+                        if grounding_violation(reply, ground, game):
+                            reply = ("I can only answer from the engine analysis of this game, and I couldn't do that "
+                                     "for this question. Ask about a specific move (for example \"move 13 white\") "
+                                     "for a deep dive.")
                     yield Event(author=self.name, content=types.Content(role="model", parts=[types.Part.from_text(text=reply)]))
                     return
                     
