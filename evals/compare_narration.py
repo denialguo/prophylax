@@ -69,9 +69,9 @@ def prompt_version() -> dict:
         read(d, "SKILL.md") for d in ("opening_prep", "middlegame_analysis", "endgame_analysis"))
     h = lambda s: hashlib.sha256(s.encode()).hexdigest()[:16]
     return {
-        "flag": h(common + inspect.getsource(fmt.format_flag_for_llm)),
-        "claims": h(common + read("narration_contract_claims.md") + inspect.getsource(fmt.format_claims_for_llm)
-                    + inspect.getsource(fmt.claim_sentence) + inspect.getsource(domain.claims)),
+        "flag": h(common + inspect.getsource(fmt)),
+        "claims": h(common + read("narration_contract_claims.md") + inspect.getsource(fmt)
+                    + inspect.getsource(domain.claims)),
     }
 
 
