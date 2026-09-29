@@ -26,7 +26,9 @@ BENCH_DIR = os.path.join(os.path.dirname(__file__), "claim_benchmark")
 ROOT = os.path.dirname(os.path.dirname(__file__))
 # The benchmark covers board-derived claim types only; engine claims are pinned by golden bands
 TYPES = ("weak_square_created", "backward_pawn_created", "pawn_support_lost", "king_safety_reduced")
-KING_WORDS = ("safety", "shield", "expos")  # stricter than the gate's bare "king"
+# Stricter than the gate's bare "king"; "pawn cover" is the claim sentence's own wording,
+# so both arms' vocabulary counts
+KING_WORDS = ("safety", "shield", "expos", "pawn cover")
 
 
 def _msq(sq):

@@ -64,6 +64,7 @@ def test_required_claim_coverage(tmp_path):
     assert expressed(claim, "It leaves h3 weak.") and not expressed(claim, "It weakens the kingside.")
     assert not expressed(claim, "The bishop on h31")  # whole squares only
     assert expressed(ks, "The king's shield is gone.") and not expressed(ks, "The king walks.")
+    assert expressed(ks, "It thins the pawn cover around White's king.")  # the claims arm's wording
     cases = [{"eval_case": "e1", "expected_claims": [claim, {"type": "weak_square_created", "subject": "a3"}]},
              {"eval_case": "e2", "expected_claims": [ks]}]
     trials = [{"case": "e1", "run": 0, "arm": "flag", "final_narration": "h3 is weak."},
