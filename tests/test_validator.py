@@ -52,3 +52,30 @@ def test_typographic_ellipsis_reads_as_black_move():
     from evals.validate_narration import check_narration_moves_legality
     assert check_narration_moves_legality("the refutation 21…Nxf3, 22.Kxf3 h5 follows", game) is None
     assert check_narration_moves_legality("the refutation 21…Qxf3 follows", game) == "21...Qxf3"
+
+
+SCANDI = chess.pgn.read_game(open(os.path.join(os.path.dirname(__file__), "fixtures", "scandinavian_blitz.pgn")))
+
+
+def test_restarted_line_is_read_from_the_game():
+    """M13 run, b4 run 0: '13...a5 14.bxa5' is the refutation of 13.b4, not a reply to the
+    best move 13.cxd4 quoted just before it."""
+    from evals.validate_narration import check_narration_moves_legality
+    text = ("13.b4 is a significant error. While the engine prefers 13.cxd4, the played move permits Black "
+            "to exploit these structural deficiencies with the refutation 13...a5 14.bxa5 14...Nc6 "
+            "15.Nf5 15...dxc3 16.Bxc3.")
+    assert check_narration_moves_legality(text, SCANDI) is None
+
+
+def test_uninterrupted_line_still_validates():
+    from evals.validate_narration import check_narration_moves_legality
+    assert check_narration_moves_legality("the engine prefers 13.cxd4 13...exd4 14.Be2 14...Bxg3 15.hxg3", SCANDI) is None
+    assert check_narration_moves_legality("13.cxd4 exd4 14.Be2 Bxg3", SCANDI) is None
+
+
+def test_illegal_restarted_line_still_fails():
+    from evals.validate_narration import check_narration_moves_legality
+    # 14.b6 is legal neither after 13.cxd4 a5 nor after the game's 13.b4 a5
+    assert check_narration_moves_legality("the engine prefers 13.cxd4; the refutation 13...a5 14.b6", SCANDI) == "14.b6"
+    assert check_narration_moves_legality("13.cxd4 13...a5 14.bxa5", SCANDI) is None  # the game line
+    assert check_narration_moves_legality("the refutation 13...Qxh2 follows", SCANDI) == "13...Qxh2"
