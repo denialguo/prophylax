@@ -7,6 +7,7 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent, call_mcp_tool_subprocess
+from tests.payload_schema import pgn_payload, position_payload
 
 # Dummy PGN for testing
 TEST_PGN = """[Event "Test Game"]
@@ -34,8 +35,7 @@ async def test_analyze_pgn_trajectory():
     async def mock_call(tool_name: str, arguments: dict) -> dict:
         calls.append((tool_name, arguments))
         if tool_name == "analyze_pgn":
-            return {
-                "flags": [
+            return pgn_payload(TEST_PGN, [
                     {
                         "move_san": "b4",
                         "move_number": 13,
@@ -45,14 +45,11 @@ async def test_analyze_pgn_trajectory():
                         "best_move_san": "cxd4",
                         "pv": ["cxd4", "exd4"],
                         "refutation_pv": ["a5", "bxa5"],
-                        "concessions": {"new_weak_squares": ["a3", "c3"]}
+                        "feature_deltas": {},
+                        "concessions": {"new_weak_squares": ["a3", "c3"]},
+                        "channel": "wdl"
                     }
-                ],
-                "summary": {
-                    "total_flags": 1,
-                    "phase_distribution": {"middlegame": 1}
-                }
-            }
+            ])
         return {}
 
     session_service = InMemorySessionService()
@@ -83,8 +80,7 @@ async def test_deep_dive_trajectory():
     async def mock_call(tool_name: str, arguments: dict) -> dict:
         calls.append((tool_name, arguments))
         if tool_name == "analyze_pgn":
-            return {
-                "flags": [
+            return pgn_payload(TEST_PGN, [
                     {
                         "move_san": "b4",
                         "move_number": 13,
@@ -94,19 +90,13 @@ async def test_deep_dive_trajectory():
                         "best_move_san": "cxd4",
                         "pv": ["cxd4", "exd4"],
                         "refutation_pv": ["a5", "bxa5"],
-                        "concessions": {"new_weak_squares": ["a3", "c3"]}
+                        "feature_deltas": {},
+                        "concessions": {"new_weak_squares": ["a3", "c3"]},
+                        "channel": "wdl"
                     }
-                ],
-                "summary": {
-                    "total_flags": 1,
-                    "phase_distribution": {"middlegame": 1}
-                }
-            }
+            ])
         elif tool_name == "analyze_position":
-            return {
-                "pv": ["cxd4", "exd4"],
-                "multipv": []
-            }
+            return position_payload(["cxd4", "exd4"])
         return {}
 
     session_service = InMemorySessionService()

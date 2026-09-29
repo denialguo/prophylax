@@ -69,3 +69,43 @@ ANALYZE_POSITION = {
         }},
     },
 }
+
+
+EVAL_KEYS = ("move_san", "move_number", "side", "phase", "wdl_delta", "best_move_san")
+
+
+def pgn_payload(movetext: str, flags: list = ()) -> dict:
+    """A complete analyze_pgn result, shaped like the real server's, around hand-written
+    flags: every ply gets a move_evals entry; flagged plies copy their flag's values.
+    Agent-test mocks use this so the domain converter sees what production sees."""
+    import copy
+    import io
+    import chess.pgn
+    import jsonschema
+    game = chess.pgn.read_game(io.StringIO(movetext))
+    board, evals = game.board(), []
+    by_move = {(f["move_number"], f["side"]): f for f in flags}
+    for move in game.mainline_moves():
+        side = "white" if board.turn else "black"
+        f = by_move.get((board.fullmove_number, side))
+        evals.append({k: f[k] for k in EVAL_KEYS} if f else
+                     {"move_san": board.san(move), "move_number": board.fullmove_number, "side": side,
+                      "phase": "opening", "wdl_delta": 0.0, "best_move_san": board.san(move)})
+        board.push(move)
+    phases = {}
+    for f in flags:
+        phases[f["phase"]] = phases.get(f["phase"], 0) + 1
+    payload = {"flags": [copy.deepcopy(f) for f in flags], "move_evals": evals,
+               "summary": {"total_flags": len(flags), "phase_distribution": phases}}
+    jsonschema.validate(payload, ANALYZE_PGN)
+    return payload
+
+
+def position_payload(*pvs: list) -> dict:
+    """A complete analyze_position result with the given engine lines and no features."""
+    import jsonschema
+    payload = {"multipv_lines": [{"pv": list(pv), "wdl": None} for pv in pvs] or [{"pv": [], "wdl": None}],
+               "features": {"weak_squares": {"white": [], "black": []},
+                            "pawn_structure": {"white": {}, "black": {}}}}
+    jsonschema.validate(payload, ANALYZE_POSITION)
+    return payload

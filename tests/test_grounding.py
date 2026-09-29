@@ -7,6 +7,7 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent
+from tests.payload_schema import pgn_payload, position_payload
 
 PGN = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 *"
 FLAG = {
@@ -27,9 +28,7 @@ POSITION = {
 
 async def mock_mcp(tool, args):
     if tool == "analyze_pgn":
-        return {"flags": [FLAG],
-                "move_evals": [{k: FLAG[k] for k in ("move_san", "move_number", "side", "phase", "wdl_delta", "best_move_san")}],
-                "summary": {"total_flags": 1, "phase_distribution": {"opening": 1}}}
+        return pgn_payload(PGN, [FLAG])
     return POSITION
 
 

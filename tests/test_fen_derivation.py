@@ -7,6 +7,7 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent
+from tests.payload_schema import pgn_payload, position_payload
 
 TEST_PGN = """[Event "Test Game"]
 [Site "Local"]
@@ -34,7 +35,7 @@ async def test_ask_about_move_fen_derivation_white():
                 return '{"is_move_query": false}'
             return "dummy explanation"
         
-        mock_mcp.return_value = {"flags": [], "summary": {}, "multipv": []}
+        mock_mcp.side_effect = lambda tool, args: pgn_payload(TEST_PGN) if tool == "analyze_pgn" else position_payload()
         mock_sub.side_effect = mock_sub_side_effect
         
         async for event in runner.run_async(
@@ -74,7 +75,7 @@ async def test_ask_about_move_fen_derivation_black():
                 return '{"is_move_query": false}'
             return "dummy explanation"
             
-        mock_mcp.return_value = {"flags": [], "summary": {}, "multipv": []}
+        mock_mcp.side_effect = lambda tool, args: pgn_payload(TEST_PGN) if tool == "analyze_pgn" else position_payload()
         mock_sub.side_effect = mock_sub_side_effect
         
         async for event in runner.run_async(
@@ -113,7 +114,7 @@ async def test_ask_about_move_out_of_range():
                 return '{"is_move_query": false}'
             return "dummy explanation"
             
-        mock_mcp.return_value = {"flags": [], "summary": {}, "multipv": []}
+        mock_mcp.side_effect = lambda tool, args: pgn_payload(TEST_PGN) if tool == "analyze_pgn" else position_payload()
         mock_sub.side_effect = mock_sub_side_effect
         
         async for event in runner.run_async(
