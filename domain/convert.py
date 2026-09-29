@@ -139,3 +139,37 @@ def position_analysis_from_payload(payload: dict, fen: str) -> PositionAnalysis:
                                 features=PositionFeatures(**payload["features"]))
     except ValidationError as e:
         raise PayloadError(str(e)) from e
+
+
+def move_analysis_from_flag(flag: dict, fen_before: str | None = None) -> MoveAnalysis:
+    """A single flag with no surrounding game (the narration eval cases). Plies are
+    numbered as from the standard start. With `fen_before`, the move must be legal there
+    and the side to move must match; without it there is no board evidence."""
+    _keys(flag, FLAG_KEYS - {"concessions"}, FLAG_OPTIONAL | {"concessions", "synthetic"}, "flag")
+    side = flag["side"]
+    if fen_before is not None:
+        board = chess.Board(fen_before)
+        if (board.turn == chess.WHITE) != (side == "white") or board.fullmove_number != flag["move_number"]:
+            raise PayloadError(f"flag is {flag['move_number']} {side}, the board is {board.fullmove_number} "
+                               f"{'white' if board.turn else 'black'} to move")
+        try:
+            if board.san(board.parse_san(flag["move_san"])) != flag["move_san"]:
+                raise ValueError
+        except ValueError:
+            raise PayloadError(f"{flag['move_san']} is not a legal move in {fen_before}") from None
+    ply = (flag["move_number"] - 1) * 2 + (side == "black")
+    try:
+        return MoveAnalysis(
+            ply=ply, move_number=flag["move_number"], side=side, san=flag["move_san"], phase=flag["phase"],
+            fen_before=fen_before, best_move=flag["best_move_san"],
+            evaluation=EngineEvaluation(delta=flag["wdl_delta"], before=flag.get("wdl_before_prob"),
+                                        after=flag.get("wdl_after_prob")),
+            detail=FlagDetail(
+                channel=flag["channel"], rank=0,
+                pv=EngineLine(moves=flag["pv"], start_ply=ply),
+                refutation=EngineLine(moves=flag["refutation_pv"], start_ply=ply + 1),
+                feature_deltas=tuple(FeatureDelta(name=k, value=v) for k, v in flag["feature_deltas"].items()),
+                concessions=Concessions(**flag.get("concessions", {})),
+            ))
+    except (ValidationError, AttributeError, TypeError) as e:
+        raise PayloadError(str(e)) from e

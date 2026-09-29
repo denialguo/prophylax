@@ -174,3 +174,32 @@ def test_agent_stops_on_a_malformed_position_payload():
                               messages=[pgn, "2.Nf3"])
     assert not any(name.startswith("analysing_") and "Engine Alternatives" in p for name, p in prompts)
     assert "went wrong" in out[-1].lower()
+
+
+# --- standalone flags (the narration eval cases have no surrounding game) ---
+
+def test_every_narration_eval_flag_converts_standalone():
+    from domain.convert import move_analysis_from_flag
+    from tests.test_narration import load_eval_cases
+    cases = load_eval_cases()
+    assert len(cases) == 9
+    for case in cases:
+        flag = case["input"]["flagged_move"]
+        m = move_analysis_from_flag(flag)
+        assert m.fen_before is None and (m.move_number, m.side, m.san) == (
+            flag["move_number"], flag["side"], flag["move_san"])
+
+
+def test_standalone_flag_must_fit_its_board():
+    from domain.convert import move_analysis_from_flag
+    flag = dict(test_grounding.FLAG)  # 2.Nf3
+    board = chess.Board()
+    board.push_san("e4"); board.push_san("e5")
+    assert move_analysis_from_flag(flag, board.fen()).fen_before == board.fen()
+    with pytest.raises(PayloadError):
+        move_analysis_from_flag(flag, chess.STARTING_FEN)  # wrong move number
+    board.push_san("Nf3"); board.push_san("Nc6")
+    with pytest.raises(PayloadError):
+        move_analysis_from_flag({**flag, "move_number": 3}, board.fen())  # Nf3 not legal there
+    with pytest.raises(PayloadError):
+        move_analysis_from_flag({**flag, "bogus": 1})

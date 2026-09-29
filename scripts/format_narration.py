@@ -130,3 +130,43 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
         prompt += f"  {rank}. {feat}: {val:+.4f}\n"
         
     return prompt
+
+
+def _move_label(number: int, side: str, san: str) -> str:
+    return f"{number}.{san}" if side == "white" else f"{number}...{san}"
+
+
+def claim_sentence(claim) -> str:
+    """The canonical English statement of one CoachingClaim (domain/claims.py). This is
+    the text of the narrator's VERIFIED CLAIMS block; every square and move in it comes
+    from the claim itself."""
+    facts = {e.fact: e.value for e in claim.evidence}
+    side, other = ("White", "Black") if claim.side == "white" else ("Black", "White")
+    move = _move_label(claim.move_number, claim.side, claim.move_san)
+    t = claim.type
+    if t == "wdl_loss":
+        if "win_prob_before" in facts:
+            return (f"{move} dropped {side}'s win probability from {round(facts['win_prob_before'] * 100)}% "
+                    f"to {round(facts['win_prob_after'] * 100)}% in the engine's evaluation.")
+        return f"{move} lowered {side}'s winning chances in the engine's evaluation."
+    if t == "engine_best_move":
+        line = render_numbered_pv(list(facts["pv"]), claim.move_number, claim.side)
+        best = render_numbered_pv([facts["best_move"]], claim.move_number, claim.side)
+        return f"The engine preferred {best}, with the line {line}."
+    if t == "engine_refutation":
+        start = claim.move_number + (claim.side == "black")
+        line = render_numbered_pv(list(facts["refutation_pv"]), start, "black" if claim.side == "white" else "white")
+        return f"The engine's refutation of {move} is {line}."
+    if t == "weak_square_created":
+        return f"{move} created a weak square on {claim.subject}: no {side} pawn can ever guard it again."
+    if t == "backward_pawn_created":
+        return (f"{move} left {side}'s {claim.subject} pawn backward: no {side} pawn stands behind it on an "
+                f"adjacent file, and the square in front of it is covered by more {other} pawns than {side} pawns.")
+    if t == "pawn_support_lost":
+        return f"After {move}, no {side} pawn can ever support {side}'s {claim.subject} pawn."
+    if t == "king_safety_reduced":
+        return f"{move} thinned the pawn cover around {side}'s king."
+    if t == "quiet_structural_concession":
+        return (f"The engine barely registers {move}, but it is a lasting structural concession: "
+                f"it creates both a weak square and a backward pawn.")
+    raise ValueError(f"no sentence for claim type {t!r}")

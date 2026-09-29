@@ -3,7 +3,7 @@ what the application reasons over. Layers are kept apart on purpose:
 
   raw observation     EngineEvaluation, EngineLine, PositionFeatures (engine / server)
   deterministic fact  Concessions, FeatureDelta (server-computed, python-chess)
-  coaching claim      CoachingClaim (M12)
+  coaching claim      CoachingClaim + ClaimEvidence (M12, built by domain/claims.py)
   narration           a plain str, never stored on these models
 """
 from typing import Annotated, Literal, Optional
@@ -68,7 +68,7 @@ class MoveAnalysis(_Model):
     side: Side
     san: str
     phase: Phase
-    fen_before: str
+    fen_before: Optional[str]  # None only for a standalone flag with no game (synthetic evals)
     best_move: str
     evaluation: EngineEvaluation
     detail: Optional[FlagDetail] = None  # set only for flagged moves
@@ -115,3 +115,33 @@ class PositionAnalysis(_Model):
     fen: str
     lines: tuple[tuple[EngineLine, Optional[WDL]], ...]
     features: PositionFeatures
+
+
+ClaimType = Literal[
+    "wdl_loss", "engine_best_move", "engine_refutation", "weak_square_created",
+    "backward_pawn_created", "pawn_support_lost", "king_safety_reduced",
+    "quiet_structural_concession",
+]
+
+
+class ClaimEvidence(_Model):
+    """One fact a claim rests on, with where it came from:
+    engine           Stockfish numbers and lines, as returned by the MCP server
+    server_features  the server's deterministic outputs (concessions, feature deltas, phase, channel)
+    board            recomputed here from fen_before with python-chess; no search, no LLM"""
+    provenance: Literal["engine", "server_features", "board"]
+    fact: str
+    value: bool | StrictInt | StrictFloat | str | tuple[str, ...]
+
+
+class CoachingClaim(_Model):
+    """One statement the narrator may make about a move."""
+    claim_id: str
+    type: ClaimType
+    ply: StrictInt
+    move_number: StrictInt
+    side: Side
+    move_san: str
+    subject: Optional[Square] = None  # the square the claim is about, if any
+    evidence: tuple[ClaimEvidence, ...]
+    supports: tuple[str, ...] = ()  # claim_ids a composite claim is built from
