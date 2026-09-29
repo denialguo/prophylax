@@ -1,0 +1,229 @@
+[
+ {
+  "id": "scandinavian_13b4",
+  "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 13, "side": "white", "san": "b4"},
+  "eval_case": "scandinavian_b4_blunder",
+  "mirror": false,
+  "expected_claims": [
+   {"type": "weak_square_created", "subject": "a3", "required": true},
+   {"type": "pawn_support_lost", "subject": "c3", "required": true}
+  ],
+  "forbidden_claims": [
+   {"type": "weak_square_created", "subject": "a4"},
+   {"type": "weak_square_created", "subject": "c3"},
+   {"type": "backward_pawn_created", "subject": "c3"},
+   {"type": "king_safety_reduced", "subject": null}
+  ],
+  "evidence": {"board": [
+   {"board": "before", "fact": "pawn_attackers", "square": "a3", "color": "white", "value": ["b2"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "a3", "color": "white", "value": []},
+   {"board": "after", "fact": "pawn_attackers", "square": "a4", "color": "black", "value": []},
+   {"board": "before", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": ["b2"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": []},
+   {"board": "after", "fact": "piece", "square": "c3", "value": "P"},
+   {"board": "after", "fact": "pawn_attackers", "square": "c4", "color": "black", "value": []},
+   {"board": "after", "fact": "piece", "square": "g1", "value": "K"}
+  ]},
+  "label_rationale": "b2 guarded a3 and was the last White pawn that could; a3 is a new hole the move gave up. a4 is also newly unguardable but b2 never guarded it and no Black pawn attacks it, so it is not a concession. c3 holds White's own pawn (never a hole); it lost its only possible supporter (b2) but is not backward, since no Black pawn attacks c4. The g1 king's f2/g2/h2 shield is untouched.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "carlsbad_10b5",
+  "source": {"pgn_fixture": "carlsbad_quiet", "move_number": 10, "side": "black", "san": "b5"},
+  "eval_case": "carlsbad_b5_quiet",
+  "mirror": false,
+  "expected_claims": [
+   {"type": "weak_square_created", "subject": "a6"},
+   {"type": "weak_square_created", "subject": "c5", "required": true},
+   {"type": "backward_pawn_created", "subject": "c6", "required": true}
+  ],
+  "forbidden_claims": [
+   {"type": "weak_square_created", "subject": "a5"},
+   {"type": "weak_square_created", "subject": "c6"},
+   {"type": "pawn_support_lost", "subject": "c6"},
+   {"type": "king_safety_reduced", "subject": null}
+  ],
+  "evidence": {"board": [
+   {"board": "before", "fact": "pawn_attackers", "square": "a6", "color": "black", "value": ["b7"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "a6", "color": "black", "value": []},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c5", "color": "black", "value": []},
+   {"board": "after", "fact": "pawn_attackers", "square": "c5", "color": "white", "value": ["d4"]},
+   {"board": "after", "fact": "pawn_attackers", "square": "c5", "color": "black", "value": []},
+   {"board": "before", "fact": "pawns_behind_adjacent", "square": "c6", "color": "black", "value": ["b7"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c6", "color": "black", "value": []},
+   {"board": "after", "fact": "piece", "square": "c6", "value": "p"},
+   {"board": "after", "fact": "pawn_attackers", "square": "a5", "color": "white", "value": []}
+  ]},
+  "label_rationale": "b7 guarded a6 directly: new hole. c5 can no longer be guarded by a Black pawn and White's d4 attacks it: an outpost. c6 lost its only supporter (b7) and its front square c5 is attacked by d4 and by no Black pawn: backward, reported once as backward, not also as unsupported. a5 is newly unguardable but was never guarded by b7 and no White pawn attacks it. Black's f7/g7/h7 shield is untouched.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "scandinavian_12ne7",
+  "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 12, "side": "black", "san": "Ne7"},
+  "eval_case": null,
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
+  "evidence": {"board": [
+   {"board": "before", "fact": "piece", "square": "c6", "value": "n"},
+   {"board": "after", "fact": "piece", "square": "e7", "value": "n"}
+  ]},
+  "label_rationale": "A knight move: no pawn and no king moves, so no structural or king-safety claim can be true.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "scandinavian_21h4",
+  "source": {"pgn_fixture": "scandinavian_blitz", "move_number": 21, "side": "white", "san": "h4"},
+  "eval_case": "scandinavian_h4_blunder",
+  "mirror": false,
+  "expected_claims": [{"type": "king_safety_reduced", "subject": null, "required": true}],
+  "forbidden_claims": [
+   {"type": "weak_square_created", "subject": "h3"},
+   {"type": "weak_square_created", "subject": "g4"},
+   {"type": "backward_pawn_created", "subject": "h4"},
+   {"type": "pawn_support_lost", "subject": "h4"}
+  ],
+  "evidence": {"board": [
+   {"board": "before", "fact": "piece", "square": "g2", "value": "K"},
+   {"board": "before", "fact": "piece", "square": "h2", "value": "P"},
+   {"board": "after", "fact": "piece", "square": "h2", "value": null},
+   {"board": "after", "fact": "piece", "square": "h3", "value": null},
+   {"board": "before", "fact": "pawns_behind_adjacent", "square": "h3", "color": "white", "value": []},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "g4", "color": "white", "value": ["f2"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "h4", "color": "white", "value": ["g3"]}
+  ]},
+  "label_rationale": "The h2 pawn leaves the g2 king's shield and nothing replaces it on h3: king safety falls. h3 was already unguardable before the move (no g-pawn behind it), so it is not new; g4 is still guardable by f2. h4 keeps g3 behind it, so it is neither backward nor unsupported.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "kp_opposition_1kd3",
+  "source": {"pgn_fixture": "kp_opposition", "move_number": 1, "side": "white", "san": "Kd3"},
+  "eval_case": null,
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
+  "evidence": {"board": [
+   {"board": "before", "fact": "piece", "square": "e2", "value": "K"},
+   {"board": "after", "fact": "piece", "square": "d3", "value": "K"},
+   {"board": "after", "fact": "piece", "square": "d2", "value": "P"}
+  ]},
+  "label_rationale": "King move in a king-and-pawn ending, staying on the d/e files: no pawn moves and there is no shield to weaken.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "kp_opposition_2ke3",
+  "source": {"pgn_fixture": "kp_opposition", "move_number": 2, "side": "white", "san": "Ke3"},
+  "eval_case": null,
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
+  "evidence": {"board": [
+   {"board": "before", "fact": "piece", "square": "d3", "value": "K"},
+   {"board": "after", "fact": "piece", "square": "e3", "value": "K"}
+  ]},
+  "label_rationale": "King move on the d/e files in a king-and-pawn ending: no structural claim.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "kp_opposition_4ke3",
+  "source": {"pgn_fixture": "kp_opposition", "move_number": 4, "side": "white", "san": "Ke3"},
+  "eval_case": null,
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
+  "evidence": {"board": [
+   {"board": "before", "fact": "piece", "square": "d3", "value": "K"},
+   {"board": "after", "fact": "piece", "square": "e3", "value": "K"}
+  ]},
+  "label_rationale": "The repeated Ke3 (the opposition case): still a king move with no pawn change.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "kp_opposition_5d3",
+  "source": {"pgn_fixture": "kp_opposition", "move_number": 5, "side": "white", "san": "d3"},
+  "eval_case": null,
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [],
+  "evidence": {"board": [
+   {"board": "before", "fact": "pawn_attackers", "square": "c3", "color": "white", "value": ["d2"]},
+   {"board": "before", "fact": "pawn_attackers", "square": "e3", "color": "white", "value": ["d2"]},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "c3", "color": "white", "value": []},
+   {"board": "after", "fact": "pawns_behind_adjacent", "square": "e3", "color": "white", "value": []},
+   {"board": "after", "fact": "piece", "square": "e3", "value": "K"}
+  ]},
+  "label_rationale": "By the hole definition, c3 and e3 become new holes: d2 guarded both directly and no White pawn can guard them again. e3 holds White's king, a piece, so the definition still counts it.",
+  "status": "ambiguous",
+  "question": "In a king-and-pawn ending with no Black piece or pawn able to use them, should d2-d3 produce weak_square_created on c3 and e3 (the definition says yes), be forbidden, or does the hole definition need an endgame exception?"
+ },
+ {
+  "id": "eval_development_concession",
+  "source": {"eval_case": "synthetic_opening_development_concession"},
+  "eval_case": "synthetic_opening_development_concession",
+  "mirror": false,
+  "expected_claims": [{"type": "king_safety_reduced", "subject": null, "required": true}],
+  "forbidden_claims": [],
+  "evidence": {"payload": [{"field": "feature_deltas", "name": "king_safety_delta", "value": -0.3}]},
+  "label_rationale": "Payload-only case (no board). The only structural signal is king_safety_delta -0.3, past the -0.01 cut, and the eval's expected theme is king safety.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "eval_king_activity_concession",
+  "source": {"eval_case": "synthetic_king_activity_concession"},
+  "eval_case": "synthetic_king_activity_concession",
+  "mirror": false,
+  "expected_claims": [{"type": "king_safety_reduced", "subject": null, "required": true}],
+  "forbidden_claims": [],
+  "evidence": {"payload": [{"field": "feature_deltas", "name": "king_safety_delta", "value": -0.6}]},
+  "label_rationale": "Payload-only case. king_safety_delta -0.6 is its only signal and its expected theme.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "eval_endgame_zugzwang",
+  "source": {"eval_case": "synthetic_endgame_zugzwang"},
+  "eval_case": "synthetic_endgame_zugzwang",
+  "mirror": false,
+  "expected_claims": [{"type": "king_safety_reduced", "subject": null, "required": true}],
+  "forbidden_claims": [],
+  "evidence": {"payload": [{"field": "feature_deltas", "name": "king_safety_delta", "value": -0.7}]},
+  "label_rationale": "Payload-only case. king_safety_delta -0.7 is its only signal and its expected theme.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "eval_center_abandonment",
+  "source": {"eval_case": "synthetic_opening_center_abandonment"},
+  "eval_case": "synthetic_opening_center_abandonment",
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [{"type": "king_safety_reduced", "subject": null}],
+  "evidence": {"payload": [
+   {"field": "feature_deltas", "name": "king_safety_delta", "value": 0.0},
+   {"field": "feature_deltas", "name": "pawn_structure_delta", "value": 0.0}
+  ]},
+  "label_rationale": "Payload-only negative: every feature delta is zero and there are no concessions; the eval's expected theme is none.",
+  "status": "draft",
+  "question": null
+ },
+ {
+  "id": "eval_endgame_pawn_race",
+  "source": {"eval_case": "synthetic_endgame_pawn_race"},
+  "eval_case": "synthetic_endgame_pawn_race",
+  "mirror": false,
+  "expected_claims": [],
+  "forbidden_claims": [],
+  "evidence": {"payload": [{"field": "feature_deltas", "name": "pawn_structure_delta", "value": -0.8}]},
+  "label_rationale": "Its only signal is pawn_structure_delta -0.8, a score with no claim type (D8). In the M13 A/B the claims arm lost this case's theme in 3/3 runs.",
+  "status": "ambiguous",
+  "question": "The eval expects a pawn-structure theme, but no claim type carries pawn_structure_delta (D8), and a payload-only case has no board to derive a specific claim from. Should a deterministic claim replace this score (which one, from which board fact), or is 'no structural claim' the right label?"
+ }
+]
