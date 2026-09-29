@@ -81,8 +81,8 @@ def position(case):
     src = case["source"]
     if "fen" in src:
         board = chess.Board(src["fen"])
-        return board, board.parse_san(src["san"])
-    if "pgn_fixture" in src:
+        move = board.parse_san(src["san"])
+    elif "pgn_fixture" in src:
         with open(os.path.join(ROOT, "tests", "fixtures", src["pgn_fixture"] + ".pgn")) as fh:
             game = chess.pgn.read_game(fh)
     elif "pgn_file" in src:
@@ -91,7 +91,8 @@ def position(case):
                 game = chess.pgn.read_game(fh)
     else:
         return None, None
-    board, move = _replay(game, src["move_number"], src["side"], src["san"])
+    if "fen" not in src:
+        board, move = _replay(game, src["move_number"], src["side"], src["san"])
     if src.get("mirror"):
         board = board.mirror()
         move = chess.Move(chess.square_mirror(move.from_square), chess.square_mirror(move.to_square),
