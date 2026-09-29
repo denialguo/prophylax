@@ -47,6 +47,7 @@ def test_harness_end_to_end_with_mocked_models(compare, tmp_path, monkeypatch):
     from google.genai import errors
     import app.agent
     calls = {"n": 0}
+    judged = []
 
     async def fake_invoke(self, agent, prompt):
         calls["n"] += 1
@@ -57,6 +58,7 @@ def test_harness_end_to_end_with_mocked_models(compare, tmp_path, monkeypatch):
         return "The engine disliked this move. Its preferred line keeps the balance."
 
     async def fake_judge(flag, narration, cfg, ground_truth=None):
+        judged.append(ground_truth)
         return {"a": 2, "b": 2, "c": 2, "d": 2, "reason": "ok"}
 
     async def no_sleep(_):
@@ -78,3 +80,25 @@ def test_harness_end_to_end_with_mocked_models(compare, tmp_path, monkeypatch):
     pairs = [(t["case"], t["run"]) for t in report["trials"]]
     assert pairs[0::2] == pairs[1::2]  # both arms of a pair run back to back
     assert all(t["seed"] == u["seed"] for t, u in zip(report["trials"][0::2], report["trials"][1::2]))
+
+    # D13: every judge call got the frozen ground truth; both arms of a pair the same bytes
+    truths = report["config"]["judge_ground_truths"]
+    assert judged == [truths[t["case"]] for t in report["trials"]]
+    assert all(t["judge_ground_truth_sha"] == u["judge_ground_truth_sha"]
+               for t, u in zip(report["trials"][0::2], report["trials"][1::2]))
+    assert report["metrics"]["claims"]["judge_subscore_totals"] == {"a": 18, "b": 18, "c": 18, "d": 18}
+
+
+def test_judge_ground_truth_is_neutral_and_deterministic(compare):
+    """Structured claims, not the sentences the claims arm saw; no narration involved."""
+    from scripts.format_narration import claim_sentence
+    from tests.test_narration import load_eval_cases
+    case = next(c for c in load_eval_cases() if c["input"]["flagged_move"]["move_san"] == "b4")
+    claims = compare.case_inputs(case)[3]
+    truth = compare.judge_ground_truth(claims)
+    assert truth == compare.judge_ground_truth(compare.case_inputs(case)[3])
+    assert "- type: pawn_support_lost\n  move: 13.b4\n  subject: c3\n" in truth
+    assert "    enemy_pawn_attackers: d4 (source: board)" in truth
+    for c in claims:
+        assert claim_sentence(c) not in truth
+    assert "attacks" not in truth

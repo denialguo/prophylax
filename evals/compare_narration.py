@@ -6,6 +6,9 @@ Protocol (PHASE_B_PLAN.md, M13, fixed before any run):
 - one pinned narrator and judge, pinned generation settings, no narrator fallback
 - a 429/503 is recorded as an infrastructure event and the whole trial is rerun with
   the same configuration; it never counts toward a metric
+- D13: the judge gets, in both arms of a pair, the same frozen ground truth: the
+  canonical claims and their evidence serialized neutrally (judge_ground_truth), built
+  before either narration; the flag payload (scores included) and rubric are unchanged
 - each trial goes through CoachingAgent._narrate, the production prompt / validate /
   retry / fallback path, with PROPHYLAX_NARRATION_INPUT set to the arm
 
@@ -89,7 +92,24 @@ def case_inputs(case):
     return flag, game, move, build_claims(move, game_id=case["name"])
 
 
-async def run_trial(coach, case, arm, seed, infra_log):
+def _value(v) -> str:
+    if isinstance(v, (tuple, list)):
+        return ", ".join(map(str, v)) or "none"
+    return str(v)
+
+
+def judge_ground_truth(claims) -> str:
+    """D13: the claims as neutral structured data, not the sentences the claims arm saw.
+    Deterministic: built from the flag/claim/board pipeline only, never from a narration."""
+    lines = ["VERIFIED CLAIMS"]
+    for c in claims:
+        lines += [f"- type: {c.type}", f"  move: {c.move_number}{'.' if c.side == 'white' else '...'}{c.move_san}",
+                  f"  subject: {c.subject or 'none'}", "  evidence:"]
+        lines += [f"    {e.fact}: {_value(e.value)} (source: {e.provenance})" for e in c.evidence]
+    return "\n".join(lines)
+
+
+async def run_trial(coach, case, arm, seed, infra_log, ground_truth):
     """One arm of one (case, run). Returns the trial record; raises InfraFailure."""
     flag, game, move, claims = case_inputs(case)
     cfg = case["input"]["config"]
@@ -125,7 +145,7 @@ async def run_trial(coach, case, arm, seed, infra_log):
         enforced = lambda t: narration_violation(t, flag, game)
     assert calls[0]["prompt"] == prompt  # the trial saw exactly the arm's prompt
 
-    scores = await judge(flag, final, cfg, infra_log)
+    scores = await judge(flag, final, cfg, infra_log, ground_truth)
     return {
         "first_narration": first, "first_violation": enforced(first),
         "first_concept_violation": concept_violation(first, claims),  # measured on both arms (M-e)
@@ -133,13 +153,14 @@ async def run_trial(coach, case, arm, seed, infra_log):
         "final_narration": final, "final_violation": enforced(final),
         "final_concept_violation": concept_violation(final, claims),
         "gate_failures": gate_failures(case, final, prompt),
+        "judge_ground_truth_sha": hashlib.sha256(ground_truth.encode()).hexdigest()[:16],
         "judge": scores, "judge_pass": judge_mod.evaluate_judge_result(scores),
     }
 
 
-async def judge(flag, narration, cfg, infra_log):
+async def judge(flag, narration, cfg, infra_log, ground_truth):
     try:
-        scores = await judge_mod.judge_narration(flag, narration, cfg)
+        scores = await judge_mod.judge_narration(flag, narration, cfg, ground_truth=ground_truth)
     except Exception as e:
         if not _model_unavailable(e):
             raise
@@ -163,6 +184,8 @@ def metrics(trials, arm):
         "M-f gate_passes": sum(not t["gate_failures"] for t in rows),
         "final_invalid": sum(t["final_violation"] is not None for t in rows),
         "final_concept_violations": sum(t["final_concept_violation"] is not None for t in rows),
+        # recorded, not part of the D12 rule: shows e.g. a D8 theme loss that stays above the pass mark
+        "judge_subscore_totals": {k: sum(t["judge"].get(k, 0) for t in rows) for k in "abcd"},
     }
 
 
@@ -220,13 +243,16 @@ async def main_async(runs: int, out: str) -> dict:
         },
         "trials": [], "infrastructure_events": [],
     }
+    # D13: frozen before any narration is generated; both arms of every pair get these bytes
+    truths = [judge_ground_truth(case_inputs(c)[3]) for c in cases]
+    report["config"]["judge_ground_truths"] = dict(zip(report["config"]["cases"], truths))
     start = time.time()
     for i, r, arm in schedule(cases, runs):
         case, seed = cases[i], i * 10 + r
         for attempt in range(MAX_INFRA_RESTARTS + 1):
             infra = []
             try:
-                record = await run_trial(coach, case, arm, seed, infra)
+                record = await run_trial(coach, case, arm, seed, infra, truths[i])
                 break
             except InfraFailure:
                 wait = next((e["retry_after_s"] for e in infra if e["retry_after_s"]), None) or min(60, 10 * 2 ** attempt)
