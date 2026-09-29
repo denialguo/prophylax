@@ -44,6 +44,19 @@ def _status(err: Exception):
     # google-genai errors carry .code, LiteLLM errors .status_code
     return getattr(err, "status_code", None) or getattr(err, "code", None)
 
+MAX_RETRY_WAIT_S = 30.0
+
+def _retry_delay(err: Exception) -> Optional[float]:
+    """Seconds to wait before retrying the same model, or None to fall back now.
+    503: a short pause. 429: only if the provider says the wait is short
+    ("try again in 5.7s"); a daily quota is not worth waiting for."""
+    if _status(err) == 503:
+        return OVERLOAD_RETRY_DELAY_S
+    m = re.search(r"try again in ([\d.]+)s", str(err))
+    if _status(err) == 429 and m and float(m.group(1)) <= MAX_RETRY_WAIT_S:
+        return float(m.group(1)) + 0.5
+    return None
+
 def _model_unavailable(err: Exception) -> bool:
     """Quota exhausted (429) or model overloaded (503): transient, worth another model."""
     return (_status(err) in (429, 503)
@@ -434,8 +447,9 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
         yield _text_event(self.name, reply)
 
     async def _run_sub_agent(self, agent: Agent, prompt: str) -> str:
-        """Run a sub-agent. A model overload (503) gets one retry after a short pause;
-        if it persists, or on a quota error (429), fall back through the other
+        """Run a sub-agent. An overload (503), or a rate limit that says to wait at
+        most MAX_RETRY_WAIT_S (e.g. a tokens-per-minute cap), gets one retry on the
+        same model; otherwise, or if it persists, fall back through the other
         certified narrators."""
         try:
             return await self._invoke_agent(agent, prompt)
@@ -444,9 +458,10 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                 raise
             err = e
         current = model_name(agent.model)
-        if _status(err) == 503:
-            print(f"{current} is overloaded (503). Retrying in {OVERLOAD_RETRY_DELAY_S:g}s...", file=sys.stderr, flush=True)
-            await asyncio.sleep(OVERLOAD_RETRY_DELAY_S)
+        delay = _retry_delay(err)
+        if delay is not None:
+            print(f"{current} unavailable ({_status(err)}). Retrying in {delay:g}s...", file=sys.stderr, flush=True)
+            await asyncio.sleep(delay)
             try:
                 return await self._invoke_agent(agent, prompt)
             except Exception as e:
@@ -479,7 +494,8 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
         ):
             if event.is_final_response():
                 if event.content and event.content.parts:
-                    response_text = event.content.parts[0].text
+                    # Reasoning models return their thinking as separate thought parts
+                    response_text = "".join(p.text for p in event.content.parts if p.text and not p.thought)
         return response_text
 
 root_agent = CoachingAgent(name="prophylax_coach")

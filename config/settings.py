@@ -95,15 +95,16 @@ def get_narrator_model() -> str:
     """Resolve the narrator model with startup validation.
 
     Precedence: NARRATOR_MODEL env var > _DEFAULT_NARRATOR.
-    Hard-fails if the resolved model is not in APPROVED_NARRATORS.
+    Hard-fails if the resolved model is not in APPROVED_NARRATORS, unless
+    PROPHYLAX_CERTIFY_NARRATOR names exactly that model (the certification run).
     """
     model = os.environ.get("NARRATOR_MODEL", _DEFAULT_NARRATOR)
-    if model not in APPROVED_NARRATORS:
+    if model not in APPROVED_NARRATORS and os.environ.get("PROPHYLAX_CERTIFY_NARRATOR") != model:
         raise ValueError(
             f"Narrator model '{model}' is not certified. "
             f"Approved models: {APPROVED_NARRATORS}. "
             f"To certify a new model, run: "
-            f"NARRATOR_MODEL={model} pytest -v -m narration"
+            f"PROPHYLAX_CERTIFY_NARRATOR={model} NARRATOR_MODEL={model} pytest -v -m narration"
         )
     return model
 
@@ -113,6 +114,8 @@ def get_fallback_narrators(primary: str) -> list[str]:
 
     Used at runtime when the primary model returns a quota/rate-limit error.
     """
+    if os.environ.get("PROPHYLAX_CERTIFY_NARRATOR"):
+        return []  # a certification run must be judged on the candidate's own output
     return [m for m in APPROVED_NARRATORS if m != primary]
 
 

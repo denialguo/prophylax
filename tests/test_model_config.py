@@ -89,3 +89,18 @@ class TestJudgeNarratorCollision:
         monkeypatch.delenv("JUDGE_MODEL", raising=False)
         monkeypatch.delenv("NARRATOR_MODEL", raising=False)
         assert get_judge_model() == _DEFAULT_JUDGE
+
+
+def test_certification_run_admits_only_the_named_model(monkeypatch):
+    monkeypatch.setenv("NARRATOR_MODEL", "groq/some-model")
+    monkeypatch.setenv("PROPHYLAX_CERTIFY_NARRATOR", "groq/some-model")
+    assert get_narrator_model() == "groq/some-model"
+    monkeypatch.setenv("PROPHYLAX_CERTIFY_NARRATOR", "groq/other-model")
+    with pytest.raises(ValueError, match="not certified"):
+        get_narrator_model()
+
+
+def test_certification_run_has_no_fallbacks(monkeypatch):
+    from config.settings import get_fallback_narrators
+    monkeypatch.setenv("PROPHYLAX_CERTIFY_NARRATOR", "groq/some-model")
+    assert get_fallback_narrators("groq/some-model") == []

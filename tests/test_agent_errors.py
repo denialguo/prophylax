@@ -210,3 +210,32 @@ async def test_litellm_errors_retry_then_fall_back_across_providers(monkeypatch)
     # Gemini 503 -> retry (LiteLLM-style 503 counts too) -> Groq
     assert reply == "ok"
     assert used == [NARRATOR_MODEL_NAME, NARRATOR_MODEL_NAME, "groq/llama-3.3-70b-versatile"]
+
+
+@pytest.mark.anyio
+async def test_short_rate_limit_waits_and_retries_same_model(monkeypatch):
+    import litellm
+    from app.agent import NARRATOR_MODEL_NAME
+    tpm = litellm.RateLimitError(message="Rate limit reached on tokens per minute (TPM). Please try again in 5.745s.",
+                                 llm_provider="groq", model="groq/x")
+    reply, used = await _run_sub_with([tpm, "ok"], monkeypatch)
+    assert reply == "ok" and used == [NARRATOR_MODEL_NAME, NARRATOR_MODEL_NAME]
+
+
+@pytest.mark.anyio
+async def test_reasoning_parts_are_not_returned_as_narration(monkeypatch):
+    from google.adk.events import Event
+    from google.genai import types as gt
+    from app.agent import CoachingAgent, narrator_for
+
+    class FakeRunner:
+        def __init__(self, **kw):
+            pass
+
+        async def run_async(self, **kw):
+            yield Event(author="n", content=gt.Content(role="model", parts=[
+                gt.Part(text="We need to produce narration per contract...", thought=True),
+                gt.Part(text="The engine prefers Nc3."),
+            ]))
+    monkeypatch.setattr("app.agent.Runner", FakeRunner)
+    assert await root_agent._invoke_agent(narrator_for("opening"), "p") == "The engine prefers Nc3."

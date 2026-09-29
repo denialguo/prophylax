@@ -1,5 +1,6 @@
 """Grounding validator on NON-fixture games (hard rule 2)."""
 import io
+import os
 import chess.pgn
 
 from evals.validate_narration import validate_narration, narration_violation
@@ -42,3 +43,12 @@ def test_violation_reason_is_reported():
     reason = narration_violation("The engine shows Qxh7 wins outright.", FLAG, GAME)
     assert reason is not None and "Qxh7" in reason
     assert narration_violation("The engine prefers Nc3.", FLAG, GAME) is None
+
+
+
+def test_typographic_ellipsis_reads_as_black_move():
+    # "21…Nxf3, 22.Kxf3" is one legal line; the "…" must not break the chain
+    game = chess.pgn.read_game(open(os.path.join(os.path.dirname(__file__), "fixtures", "scandinavian_blitz.pgn")))
+    from evals.validate_narration import check_narration_moves_legality
+    assert check_narration_moves_legality("the refutation 21…Nxf3, 22.Kxf3 h5 follows", game) is None
+    assert check_narration_moves_legality("the refutation 21…Qxf3 follows", game) == "21...Qxf3"
