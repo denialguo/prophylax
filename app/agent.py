@@ -40,9 +40,13 @@ USER_MESSAGES = {
 
 OVERLOAD_RETRY_DELAY_S = 3.0
 
+def _status(err: Exception):
+    # google-genai errors carry .code, LiteLLM errors .status_code
+    return getattr(err, "status_code", None) or getattr(err, "code", None)
+
 def _model_unavailable(err: Exception) -> bool:
     """Quota exhausted (429) or model overloaded (503): transient, worth another model."""
-    return (getattr(err, "code", None) in (429, 503)
+    return (_status(err) in (429, 503)
             or "ResourceExhausted" in type(err).__name__ or "429" in str(err))
 
 def user_message_for(err: Exception) -> str:
@@ -158,7 +162,7 @@ def load_skill_instruction(skill_dir: str) -> str:
         phase = _strip_frontmatter(f.read())
     return f"{contract}\n\n{phase}"
 
-from config.settings import get_narrator_model, get_fallback_narrators
+from config.settings import get_narrator_model, get_fallback_narrators, resolve_model, model_name
 
 NARRATOR_MODEL_NAME = get_narrator_model()  # validates at startup
 
@@ -168,7 +172,7 @@ def make_narrator(phase: str) -> Agent:
     skill_dir = PHASE_SKILLS.get(phase, "middlegame_analysis")
     name = {"opening_prep": "analysing_openings", "middlegame_analysis": "analysing_middlegames",
             "endgame_analysis": "analysing_endgames"}[skill_dir]
-    return Agent(name=name, model=NARRATOR_MODEL_NAME, instruction=load_skill_instruction(skill_dir))
+    return Agent(name=name, model=resolve_model(NARRATOR_MODEL_NAME), instruction=load_skill_instruction(skill_dir))
 
 NARRATORS = {phase: make_narrator(phase) for phase in PHASE_SKILLS}
 opening_agent, middlegame_agent, endgame_agent = NARRATORS["opening"], NARRATORS["middlegame"], NARRATORS["endgame"]
@@ -240,7 +244,7 @@ class CoachingAgent(BaseAgent):
             return ref
         classifier_agent = Agent(
             name="intent_router",
-            model=get_narrator_model(),
+            model=resolve_model(get_narrator_model()),
             instruction='''You are an intent classifier for a chess coaching assistant.
 Given a user message and the current game PGN, determine if the user is asking about a SPECIFIC move in the game (e.g. "move 15", "15.Bd3", "my knight move", "11...Bxc4").
 If they are asking about a specific move, identify its move number, side (white or black), and optionally the raw move SAN they typed (e.g. "Bxc4" or "Bd3").
@@ -400,7 +404,7 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
     async def converse(self, ctx: InvocationContext, user_message: str, pgn_text: str) -> AsyncGenerator[Event, None]:
         conv_agent = Agent(
             name="conversational",
-            model=get_narrator_model(),
+            model=resolve_model(get_narrator_model()),
             instruction="You are Prophylax, a chess coaching assistant.\nAnswer the user's question using the provided game report and flags.\nDo NOT invent new engine analysis. Only rely on the provided context."
         )
         report = ctx.session.state.get("report", "No report available.")
@@ -439,8 +443,9 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
             if not _model_unavailable(e):
                 raise
             err = e
-        if getattr(err, "code", None) == 503:
-            print(f"{agent.model} is overloaded (503). Retrying in {OVERLOAD_RETRY_DELAY_S:g}s...", file=sys.stderr, flush=True)
+        current = model_name(agent.model)
+        if _status(err) == 503:
+            print(f"{current} is overloaded (503). Retrying in {OVERLOAD_RETRY_DELAY_S:g}s...", file=sys.stderr, flush=True)
             await asyncio.sleep(OVERLOAD_RETRY_DELAY_S)
             try:
                 return await self._invoke_agent(agent, prompt)
@@ -448,10 +453,10 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                 if not _model_unavailable(e):
                     raise
                 err = e
-        for fb_model in get_fallback_narrators(agent.model):
-            print(f"{agent.model} unavailable ({getattr(err, 'code', err)}). Falling back to {fb_model}.",
+        for fb_model in get_fallback_narrators(current):
+            print(f"{current} unavailable ({_status(err) or err}). Falling back to {fb_model}.",
                   file=sys.stderr, flush=True)
-            fb_agent = Agent(name=agent.name, model=fb_model, instruction=agent.instruction)
+            fb_agent = Agent(name=agent.name, model=resolve_model(fb_model), instruction=agent.instruction)
             try:
                 return await self._invoke_agent(fb_agent, prompt)
             except Exception as fb_e:

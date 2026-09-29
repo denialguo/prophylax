@@ -160,7 +160,11 @@ internals, which go to stderr. The CLI exits 1 when no report was produced.
 | `PROPHYLAX_TOOL_TIMEOUT_S` | 900 | Agent-side deadline for one tool call. |
 | `NARRATOR_MODEL` | `gemini-3.5-flash` | Must be in `APPROVED_NARRATORS`. |
 | `JUDGE_MODEL` | `gemini-3.1-flash-lite` | Must differ from the narrator. |
-| `GEMINI_API_KEY` | required for narration | Never stored in the repo. |
+| `GEMINI_API_KEY` | required for Gemini models | Never stored in the repo (`app/.env` is git-ignored). |
+| `GROQ_API_KEY` | required for `groq/...` models | Provider-prefixed model names (e.g. `groq/llama-3.3-70b-versatile`) run through LiteLLM (`config.settings.resolve_model`). |
+
+A narrator call that hits a 503 is retried once after 3 s; a persistent 503 or
+a 429 falls back through the other `APPROVED_NARRATORS`, across providers.
 
 Fixed bounds in `config/settings.py`: 100,000 PGN characters, 400 plies,
 `max_flags` ≤ 400, `multipv` ≤ 5, Threads 1, Hash 16 MB.
