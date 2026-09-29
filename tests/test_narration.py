@@ -102,10 +102,20 @@ def gate_failures(case: Dict[str, Any], narration: str, prompt: str) -> list:
         elif not any(sq.lower() in narration.lower() for sq in new_ws):
             failures.append(f"Expected at least one concession square {new_ws} named in narration for case {case['name']}")
     elif theme == "none":
-        positional_tokens = ["weak", "backward", "outpost", "structure", "king", "safety"]
+        positional_tokens = ["weak", "backward", "outpost", "structure", "safety"]
         if any(token in narration.lower() for token in positional_tokens):
             failures.append(f"Positional tokens found in 'none' theme case {case['name']}")
     return failures
+
+@pytest.mark.parametrize("narration,passes", [
+    ("The king should head to e3.", True),     # naming the king is not a king-safety theme
+    ("This weakens king safety.", False),
+])
+def test_none_theme_forbids_themes_not_pieces(narration, passes):
+    case = {"name": "t", "expected_primary_theme": "none", "input": {"flagged_move": {}}}
+    failures = [f for f in gate_failures(case, narration, "header: x") if "Positional tokens" in f]
+    assert (not failures) == passes
+
 
 def test_count_sentences_skips_move_numbers():
     assert count_sentences("White wins through 46. Kf6, then 46... Kh6 and 47.Kf7 exd5. It is lost. Really.") == 3
@@ -189,7 +199,7 @@ def _legacy_gate(case, narration, prompt):
         assert len(new_ws) > 0, f"No concessions found for case {case['name']}"
         assert any(sq.lower() in narration.lower() for sq in new_ws), f"Expected at least one concession square {new_ws} named in narration for case {case['name']}"
     elif theme == "none":
-        positional_tokens = ["weak", "backward", "outpost", "structure", "king", "safety"]
+        positional_tokens = ["weak", "backward", "outpost", "structure", "safety"]
         assert not any(token in narration.lower() for token in positional_tokens), f"Positional tokens found in 'none' theme case {case['name']}"
 
 
