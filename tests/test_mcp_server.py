@@ -1,4 +1,5 @@
 import os
+import json
 import unittest
 import pytest
 import chess
@@ -202,3 +203,24 @@ class TestGoldenFixtures(unittest.TestCase):
                 new_ws = concessions.get("new_weak_squares", [])
                 for sq in new_ws:
                     self.assertIn(sq, ["a3", "c3"])
+
+    def test_kp_opposition_golden(self):
+        # Endgame fixture: 4.Ke3 hands Black the opposition. Bands are recorded only on
+        # operator instruction: python tests/verify_goldens.py --record
+        fixtures = os.path.join(os.path.dirname(__file__), "fixtures")
+        bands_path = os.path.join(fixtures, "kp_opposition.json")
+        self.assertTrue(os.path.exists(bands_path),
+                        "kp_opposition bands not recorded yet; needs an explicit operator --record")
+        bands = json.load(open(bands_path))["flags"]
+        res = handle_analyze_pgn({"pgn": open(os.path.join(fixtures, "kp_opposition.pgn")).read(), "max_flags": 10})
+
+        ke3 = [f for f in res["flags"] if f["move_san"] == "Ke3" and f["move_number"] == 4]
+        self.assertEqual(len(ke3), 1)
+        self.assertEqual(ke3[0]["phase"], "endgame")
+        self.assertEqual(ke3[0]["channel"], "wdl")
+        band = next(b for b in bands if b["move_san"] == "Ke3" and b["move_number"] == 4)
+        self.assertTrue(band["wdl_delta_min"] <= ke3[0]["wdl_delta"] <= band["wdl_delta_max"])
+
+        # never flagged: 1.Kd3, 2.Ke3 (same move, Black lacks the opposition), 5.d3 (already drawn)
+        flagged = {(f["move_number"], f["move_san"]) for f in res["flags"]}
+        self.assertFalse(flagged & {(1, "Kd3"), (2, "Ke3"), (5, "d3")})

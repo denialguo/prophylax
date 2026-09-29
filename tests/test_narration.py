@@ -74,7 +74,7 @@ def pytest_configure(config):
 @pytest.mark.anyio
 @pytest.mark.narration
 @pytest.mark.parametrize("case", load_eval_cases())
-async def test_skills_narration(case: Dict[str, Any]):
+async def test_skills_narration(case: Dict[str, Any], record_property):
     flagged_move = case["input"]["flagged_move"]
     config = case["input"]["config"]
     depth = config.get("explanation_depth", 1)
@@ -108,6 +108,9 @@ async def test_skills_narration(case: Dict[str, Any]):
     )
     # Retries are logged and asserted <= 1 per flag
     assert retries <= 1, f"Too many retries ({retries}) for case {case['name']}"
+    # Tracked metric, persisted in the junit XML (<property name="retries" ...>)
+    record_property("retries", retries)
+    record_property("first_pass", first_pass)
     if retries > 0:
         print(f"  [METRIC] Case {case['name']} required {retries} retry (first-shot fabrication)")
     

@@ -87,3 +87,26 @@ async def test_parsed_move_reference_skips_llm_router():
 
     await run([PGN, "what about 6...b5?"], mock_sub)
     assert "intent_router" not in seen
+
+
+@pytest.mark.anyio
+async def test_report_persists_narration_stats():
+    calls = 0
+
+    async def mock_sub(self, agent, prompt):
+        nonlocal calls
+        calls += 1
+        return "Bc4 was better." if calls <= 2 else "The engine disliked it."  # first flag: retry then fallback
+
+    async def mcp(tool, args):
+        return {"flags": [dict(FLAGS[1])], "move_evals": [], "summary": {"total_flags": 1}}
+    service = InMemorySessionService()
+    await service.create_session(app_name="app", user_id="u", session_id="s")
+    runner = Runner(agent=root_agent, app_name="app", session_service=service)
+    with patch("app.agent.call_mcp_tool_subprocess", new=mcp), \
+         patch("app.agent.CoachingAgent._run_sub_agent", new=mock_sub):
+        async for _ in runner.run_async(user_id="u", session_id="s",
+                                        new_message=types.Content(role="user", parts=[types.Part.from_text(text=PGN)])):
+            pass
+    state = (await service.get_session(app_name="app", user_id="u", session_id="s")).state
+    assert state["narration_stats"] == {"attempted": 1, "passed_first": 0, "passed_retry": 0, "fallback": 1}

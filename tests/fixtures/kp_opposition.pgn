@@ -1,0 +1,11 @@
+[Event "Opposition study"]
+[Site "Prophylax fixture"]
+[Date "????.??.??"]
+[Round "-"]
+[White "White"]
+[Black "Black"]
+[Result "*"]
+[SetUp "1"]
+[FEN "8/8/8/3k4/8/8/3PK3/8 w - - 0 1"]
+
+1. Kd3 Ke5 2. Ke3 Kd5 3. Kd3 Ke5 4. Ke3 Kd5 5. d3 Ke5 *
