@@ -125,3 +125,66 @@ async def test_server_is_reused_and_respawned_after_death(tmp_path, monkeypatch)
     res = await call_mcp_tool_subprocess("analyze_position", {"fen": FEN, "multipv": 2})
     assert len(spawns) == 2 and res["multipv_lines"]
     agent._discard_server()
+
+
+def _overloaded():
+    from google.genai import errors
+    return errors.ServerError(503, {"error": {"code": 503, "message": "high demand", "status": "UNAVAILABLE"}})
+
+
+def _quota():
+    from google.genai import errors
+    return errors.ClientError(429, {"error": {"code": 429, "message": "quota", "status": "RESOURCE_EXHAUSTED"}})
+
+
+async def _run_sub_with(outcomes, monkeypatch):
+    """outcomes: per _invoke_agent call, an exception to raise or a reply. Returns (reply, models used)."""
+    import app.agent as agent_mod
+    from app.agent import CoachingAgent, narrator_for
+    used = []
+
+    async def invoke(self, agent, prompt):
+        used.append(agent.model)
+        out = outcomes.pop(0)
+        if isinstance(out, Exception):
+            raise out
+        return out
+
+    async def no_sleep(_):
+        pass
+    monkeypatch.setattr(CoachingAgent, "_invoke_agent", invoke)
+    monkeypatch.setattr(agent_mod.asyncio, "sleep", no_sleep)
+    reply = await root_agent._run_sub_agent(narrator_for("opening"), "prompt")
+    return reply, used
+
+
+@pytest.mark.anyio
+async def test_overload_retries_same_model_once(monkeypatch):
+    from app.agent import NARRATOR_MODEL_NAME
+    reply, used = await _run_sub_with([_overloaded(), "ok"], monkeypatch)
+    assert reply == "ok" and used == [NARRATOR_MODEL_NAME, NARRATOR_MODEL_NAME]
+
+
+@pytest.mark.anyio
+async def test_persistent_overload_falls_back_to_other_model(monkeypatch):
+    from app.agent import NARRATOR_MODEL_NAME
+    from config.settings import get_fallback_narrators
+    reply, used = await _run_sub_with([_overloaded(), _overloaded(), "ok"], monkeypatch)
+    assert reply == "ok"
+    assert used == [NARRATOR_MODEL_NAME, NARRATOR_MODEL_NAME, get_fallback_narrators(NARRATOR_MODEL_NAME)[0]]
+
+
+@pytest.mark.anyio
+async def test_quota_error_falls_back_without_waiting(monkeypatch):
+    from app.agent import NARRATOR_MODEL_NAME
+    from config.settings import get_fallback_narrators
+    reply, used = await _run_sub_with([_quota(), "ok"], monkeypatch)
+    assert used == [NARRATOR_MODEL_NAME, get_fallback_narrators(NARRATOR_MODEL_NAME)[0]]
+
+
+@pytest.mark.anyio
+async def test_all_models_unavailable_gives_clear_message(monkeypatch):
+    with pytest.raises(Exception) as exc:
+        await _run_sub_with([_overloaded()] * 4, monkeypatch)
+    from app.agent import user_message_for
+    assert "busy or over its quota" in user_message_for(exc.value)
