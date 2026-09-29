@@ -239,7 +239,7 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
         board_after, wdl_after, post_move_pv = history[idx + 1]
 
         # Move info
-        move_number = int(idx / 2) + 1
+        move_number = board_before.fullmove_number  # a FEN start keeps its own numbering
         side = "white" if board_before.turn == chess.WHITE else "black"
         color = board_before.turn
         phase = get_game_phase(board_before, move_number)

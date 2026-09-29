@@ -17,7 +17,7 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from scripts.format_narration import format_flag_for_llm, build_header, render_numbered_pv, position_facts
-from scripts.move_reference import parse_move_reference
+from scripts.move_reference import parse_move_reference, ply_of
 from evals.validate_narration import validate_narration, narration_violation, grounding_violation, merge_flags
 from hooks.sanitize_pgn import sanitize_tool_input, sanitized_movetext
 from config.settings import get_tool_timeout
@@ -345,7 +345,7 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
                              req_san: Optional[str]) -> AsyncGenerator[Event, None]:
         game = chess.pgn.read_game(io.StringIO(pgn_text))
         mainline = list(game.mainline_moves())
-        target_ply = (move_num - 1) * 2 + (1 if side_str == "black" else 0)
+        target_ply = ply_of(game.board(), move_num, side_str)
         if target_ply < 0 or target_ply >= len(mainline):
             yield _text_event(self.name, f"Error: Move {move_num} {side_str} is outside the range of the current game.")
             return
