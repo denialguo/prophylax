@@ -255,7 +255,9 @@ async def main_async(runs: int, out: str) -> dict:
                 record = await run_trial(coach, case, arm, seed, infra, truths[i])
                 break
             except InfraFailure:
-                wait = next((e["retry_after_s"] for e in infra if e["retry_after_s"]), None) or min(60, 10 * 2 ** attempt)
+                # the server's hint can stay at 3s through a long spike, so back off at least exponentially
+                hint = next((e["retry_after_s"] for e in infra if e["retry_after_s"]), None) or 0
+                wait = max(hint, min(60, 10 * 2 ** attempt))
                 report["infrastructure_events"].append({"case": case["name"], "run": r, "arm": arm,
                                                         "attempt": attempt, "events": infra, "waited_s": wait})
                 print(f"infra: {case['name']} run {r} {arm}: {infra[-1]}; rerunning in {wait:g}s", file=sys.stderr)
