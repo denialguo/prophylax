@@ -109,3 +109,28 @@ def test_provider_5xx_is_infrastructure(compare):
     assert compare._infra(errors.ServerError(500, {"error": {"code": 500, "message": "x", "status": "INTERNAL"}}))
     assert compare._infra(errors.ServerError(503, {"error": {"code": 503, "message": "x", "status": "UNAVAILABLE"}}))
     assert not compare._infra(ValueError("a bug"))
+
+
+def test_resume_keeps_whole_pairs(compare, tmp_path, monkeypatch):
+    import app.agent
+    calls = {"n": 0}
+
+    async def fake_invoke(self, agent, prompt):
+        calls["n"] += 1
+        return "The engine disliked this move. Its preferred line keeps the balance."
+
+    async def fake_judge(flag, narration, cfg, ground_truth=None):
+        return {"a": 2, "b": 2, "c": 2, "d": 2, "reason": "ok"}
+
+    monkeypatch.setattr(app.agent.CoachingAgent, "_invoke_agent", fake_invoke)
+    monkeypatch.setattr(compare.judge_mod, "judge_narration", fake_judge)
+    out = tmp_path / "c.json"
+    full = asyncio.run(compare.main_async(1, str(out)))
+    partial = json.loads(out.read_text())
+    partial["trials"] = partial["trials"][:3]  # stopped mid-pair
+    out.write_text(json.dumps(partial))
+    calls["n"] = 0
+    resumed = asyncio.run(compare.main_async(1, str(out), resume=True))
+    assert calls["n"] == 16 and resumed["resumed_at_trial"] == [2]  # the half pair is redone
+    assert [(t["case"], t["run"], t["arm"]) for t in resumed["trials"]] == \
+           [(t["case"], t["run"], t["arm"]) for t in full["trials"]]
