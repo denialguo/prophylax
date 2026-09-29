@@ -144,7 +144,8 @@ async def _run_sub_with(outcomes, monkeypatch):
     used = []
 
     async def invoke(self, agent, prompt):
-        used.append(agent.model)
+        from config.settings import model_name
+        used.append(model_name(agent.model))
         out = outcomes.pop(0)
         if isinstance(out, Exception):
             raise out
@@ -188,3 +189,24 @@ async def test_all_models_unavailable_gives_clear_message(monkeypatch):
         await _run_sub_with([_overloaded()] * 4, monkeypatch)
     from app.agent import user_message_for
     assert "busy or over its quota" in user_message_for(exc.value)
+
+
+def test_provider_prefixed_models_go_through_litellm():
+    from google.adk.models.lite_llm import LiteLlm
+    from config.settings import resolve_model, model_name
+    groq = resolve_model("groq/llama-3.3-70b-versatile")
+    assert isinstance(groq, LiteLlm) and model_name(groq) == "groq/llama-3.3-70b-versatile"
+    assert resolve_model("gemini-3.1-flash-lite") == "gemini-3.1-flash-lite"
+
+
+@pytest.mark.anyio
+async def test_litellm_errors_retry_then_fall_back_across_providers(monkeypatch):
+    import litellm
+    import app.agent as agent_mod
+    from app.agent import NARRATOR_MODEL_NAME
+    monkeypatch.setattr(agent_mod, "get_fallback_narrators", lambda primary: ["groq/llama-3.3-70b-versatile"])
+    busy = litellm.ServiceUnavailableError(message="busy", llm_provider="groq", model="groq/x")
+    reply, used = await _run_sub_with([_overloaded(), busy, "ok"], monkeypatch)
+    # Gemini 503 -> retry (LiteLLM-style 503 counts too) -> Groq
+    assert reply == "ok"
+    assert used == [NARRATOR_MODEL_NAME, NARRATOR_MODEL_NAME, "groq/llama-3.3-70b-versatile"]

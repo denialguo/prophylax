@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "google-adk==2.3.0",
     "chess==1.11.2",
+    "litellm==1.103.0",  # non-Gemini models (e.g. groq/...) through ADK's LiteLlm
 ]
 
 [dependency-groups]

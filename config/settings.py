@@ -76,6 +76,21 @@ _DEFAULT_NARRATOR: str = "gemini-3.5-flash"
 _DEFAULT_JUDGE: str = "gemini-3.1-flash-lite"
 
 
+def resolve_model(name: str):
+    """What an ADK Agent's `model` takes: Gemini names pass through as strings;
+    provider-prefixed names (e.g. "groq/llama-3.3-70b-versatile") go through
+    LiteLLM, which reads that provider's key from the environment (GROQ_API_KEY)."""
+    if "/" not in name:
+        return name
+    from google.adk.models.lite_llm import LiteLlm
+    return LiteLlm(model=name)
+
+
+def model_name(model) -> str:
+    """Inverse of resolve_model: the configured name of an Agent's model."""
+    return getattr(model, "model", model)
+
+
 def get_narrator_model() -> str:
     """Resolve the narrator model with startup validation.
 

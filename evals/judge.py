@@ -6,12 +6,12 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
 
-from config.settings import get_judge_model
+from config.settings import get_judge_model, resolve_model
 JUDGE_MODEL_NAME = get_judge_model()  # validates at startup (collision check)
 
 judge_agent = Agent(
     name="llm_as_judge",
-    model=JUDGE_MODEL_NAME,
+    model=resolve_model(JUDGE_MODEL_NAME),
     instruction=(
         "You are an expert chess coaching quality judge. Your task is to evaluate the quality of a generated positional chess coaching narration against a structured move payload and an optional Ground Truth Interpretation.\n"
         "You must return your evaluation in JSON format containing scores (0, 1, or 2) for the following four criteria:\n"
