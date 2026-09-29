@@ -80,12 +80,17 @@ def sanitize_pgn_string(pgn_text: str) -> Tuple[str, list[str]]:
     return str(clean_pgn), logs
 
 def sanitized_movetext(pgn_text: str) -> str:
-    """Mainline moves only, no headers/comments: the only PGN form allowed into LLM prompts."""
+    """Mainline moves only, no headers/comments: the only PGN form allowed into LLM prompts.
+    A game from a position keeps its start FEN (re-emitted from a board, so it carries
+    no free text); without it the moves can't be replayed."""
     clean_pgn, _ = sanitize_pgn_string(pgn_text)
     game = chess.pgn.read_game(io.StringIO(clean_pgn)) if clean_pgn else None
     if not game:
         return ""
-    return game.accept(chess.pgn.StringExporter(columns=None, headers=False, variations=False, comments=False))
+    moves = game.accept(chess.pgn.StringExporter(columns=None, headers=False, variations=False, comments=False))
+    if "FEN" in game.headers:
+        return f'[SetUp "1"]\n[FEN "{game.board().fen()}"]\n\n{moves}'
+    return moves
 
 def sanitize_tool_input(tool_name: str, arguments: dict) -> Tuple[bool, dict, str]:
     """

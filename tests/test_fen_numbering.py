@@ -46,3 +46,42 @@ def test_server_numbers_moves_from_the_fen(monkeypatch):
     out = json.loads(res["result"]["content"][0]["text"])
     assert [(e["move_number"], e["side"], e["move_san"]) for e in out["move_evals"]] == [
         (30, "black", "Kd5"), (31, "white", "Kd2"), (31, "black", "Ke4"), (32, "white", "Kc3")]
+
+
+def test_session_movetext_keeps_the_start_position():
+    # The session stores sanitized movetext; deep dives replay it
+    from hooks.sanitize_pgn import sanitized_movetext
+    game = chess.pgn.read_game(io.StringIO(sanitized_movetext(PGN)))
+    assert game.board().fen() == FEN
+    assert list(game.mainline_moves()) == list(GAME.mainline_moves())
+
+
+@pytest.mark.anyio
+async def test_deep_dive_on_a_fen_game_analyses_the_right_position():
+    from unittest.mock import patch
+    from google.genai import types
+    from app.agent import CoachingAgent
+    from hooks.sanitize_pgn import sanitized_movetext
+
+    class Ctx:
+        class session:
+            state = {"pgn_text": sanitized_movetext(PGN), "config": {},
+                     "move_evals": [{"move_san": "Kd2", "move_number": 31, "side": "white",
+                                     "phase": "endgame", "wdl_delta": 0.0, "best_move_san": "Kd2"}]}
+            events = [type("E", (), {"content": types.Content(role="user", parts=[types.Part.from_text(text="31.Kd2")])})()]
+
+    seen = {}
+    async def mcp(tool, args):
+        seen[tool] = args
+        return {"multipv_lines": [{"pv": ["Kd2"], "wdl": None}], "features": {}}
+
+    async def narrate(agent, prompt):
+        return "The king heads for the pawn. It keeps the opposition."
+
+    coach = CoachingAgent(name="t")
+    with patch("app.agent.call_mcp_tool_subprocess", new=mcp), patch.object(coach, "_run_sub_agent", new=narrate):
+        events = [e async for e in coach._run_async_impl(Ctx())]
+    board = chess.Board(FEN)
+    board.push_san("Kd5")
+    assert seen["analyze_position"]["fen"] == board.fen()
+    assert "31.Kd2" in events[-1].content.parts[0].text
