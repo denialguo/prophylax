@@ -465,3 +465,35 @@ Return ONLY a valid JSON object matching this schema exactly, with no markdown f
         return response_text
 
 root_agent = CoachingAgent(name="prophylax_coach")
+
+async def _run_cli(pgn_text: str, max_flags: int) -> int:
+    service = InMemorySessionService()
+    await service.create_session(app_name="app", user_id="cli", session_id="cli",
+                                 state={"config": {"max_flags": max_flags}})
+    runner = Runner(agent=root_agent, app_name="app", session_service=service)
+    try:
+        async for event in runner.run_async(user_id="cli", session_id="cli",
+                                            new_message=types.Content(role="user", parts=[types.Part.from_text(text=pgn_text)])):
+            if event.content and event.content.parts and event.content.parts[0].text:
+                print(event.content.parts[0].text)
+    finally:
+        _discard_server()
+    session = await service.get_session(app_name="app", user_id="cli", session_id="cli")
+    return 0 if "report" in session.state else 1  # no report = the turn failed (message printed)
+
+def main(argv=None) -> int:
+    import argparse
+    parser = argparse.ArgumentParser(prog="python -m app.agent", description="Prophylax game report for one PGN.")
+    parser.add_argument("--pgn", required=True, help="path to a PGN file (first game is analysed)")
+    parser.add_argument("--max-flags", type=int, default=4, help="maximum flagged moves to narrate (default 4)")
+    args = parser.parse_args(argv)
+    try:
+        with open(args.pgn, encoding="utf-8", errors="replace") as f:
+            pgn_text = f.read()
+    except OSError as e:
+        print(f"Cannot read {args.pgn}: {e.strerror}", file=sys.stderr)
+        return 1
+    return asyncio.run(_run_cli(pgn_text, args.max_flags))
+
+if __name__ == "__main__":
+    sys.exit(main())
