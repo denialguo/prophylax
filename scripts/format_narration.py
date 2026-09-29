@@ -95,6 +95,10 @@ def format_flag_for_llm(flag: Dict[str, Any], depth: int, rating: int) -> str:
         prompt += f"New Weak Squares: {', '.join(new_ws)}\n"
     if new_bp:
         prompt += f"New Backward Pawns: {', '.join(new_bp)}\n"
+    # A backward pawn already implies it; don't give the narrator both
+    unsupported = [sq for sq in concessions.get("new_pawn_unsupported", []) if sq not in new_bp]
+    if unsupported:
+        prompt += f"Pawns That Lost All Possible Pawn Support: {', '.join(unsupported)}\n"
             
     prompt += "feature_deltas:\n"
     for rank, (feat, val) in enumerate(ranked_feats, 1):
