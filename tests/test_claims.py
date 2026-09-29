@@ -41,6 +41,12 @@ TABLE = [
     ("king safety reduced", {"feature_deltas": {"king_safety_delta": -1.0}}, ENGINE | {("king_safety_reduced", None)}),
     ("negligible king safety change", {"feature_deltas": {"king_safety_delta": -0.005}}, ENGINE),
     ("king safety improved", {"feature_deltas": {"king_safety_delta": 0.5}}, ENGINE),
+    # M14 Q2: the shelter score makes no king-safety claim in an endgame; other phases still do
+    ("endgame shelter score", {"phase": "endgame", "feature_deltas": {"king_safety_delta": -2.5}}, ENGINE),
+    ("opening shelter score", {"phase": "opening", "feature_deltas": {"king_safety_delta": -0.3}},
+     ENGINE | {("king_safety_reduced", None)}),
+    ("endgame structure still claimed", {"phase": "endgame", "concessions": {"new_weak_squares": ["c3"]}},
+     ENGINE | {("weak_square_created", "c3")}),
     # D8: scores are not statements
     ("scores make no claims", {"feature_deltas": {"pawn_structure_delta": -0.8, "piece_activity_delta": -3,
                                                   "weak_squares": -2}}, ENGINE),
