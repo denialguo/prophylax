@@ -123,7 +123,10 @@ def build_claims(move: MoveAnalysis, game_id: str) -> list[CoachingClaim]:
             raw.append(("pawn_support_lost", sq, [_ev("server_features", "new_pawn_unsupported", sq)]))
 
     deltas = {f.name: f.value for f in d.feature_deltas}
-    if deltas.get("king_safety_delta", 0) <= -NEGLIGIBLE:
+    # king_safety_delta is a shelter score (pawn shield, open files by the king). In an
+    # endgame it mostly measures the king walking into play, so it makes no claim there
+    # (M14 operator decision Q2); concrete endgame king danger would need its own concept
+    if deltas.get("king_safety_delta", 0) <= -NEGLIGIBLE and move.phase != "endgame":
         raw.append(("king_safety_reduced", None,
                     [_ev("server_features", "king_safety_delta", deltas["king_safety_delta"])]))
     if d.channel == "quiet_inaccuracy":

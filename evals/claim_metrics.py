@@ -21,6 +21,7 @@ import chess.pgn
 from domain.claims import ClaimConsistencyError, build_claims
 from domain.convert import move_analysis_from_flag
 from mcp_server.features import get_feature_deltas, get_quiet_concessions
+from mcp_server.server import get_game_phase
 
 BENCH_DIR = os.path.join(os.path.dirname(__file__), "claim_benchmark")
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -113,7 +114,8 @@ def deterministic_claims(case) -> set:
         after = board.copy()
         after.push(move)
         flag = {"move_san": board.san(move), "move_number": board.fullmove_number,
-                "side": "white" if board.turn == chess.WHITE else "black", "phase": "middlegame",
+                "side": "white" if board.turn == chess.WHITE else "black",
+                "phase": get_game_phase(board, board.fullmove_number),
                 "wdl_delta": 0.0, "best_move_san": "", "pv": [], "refutation_pv": [], "channel": "wdl",
                 "feature_deltas": get_feature_deltas(board, after, board.turn),
                 "concessions": get_quiet_concessions(board, after, board.turn)}
