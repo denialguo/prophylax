@@ -70,6 +70,8 @@ def get_tool_timeout() -> float:
 APPROVED_NARRATORS: list[str] = [
     "gemini-3.5-flash",
     "gemini-3.1-flash-lite",
+    # certified 2026-09-28: 9/9 narration cases (artifacts/junit_certify_gptoss120b*.xml)
+    "groq/openai/gpt-oss-120b",
 ]
 
 _DEFAULT_NARRATOR: str = "gemini-3.5-flash"
