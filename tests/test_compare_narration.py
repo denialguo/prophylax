@@ -102,3 +102,10 @@ def test_judge_ground_truth_is_neutral_and_deterministic(compare):
     for c in claims:
         assert claim_sentence(c) not in truth
     assert "attacks" not in truth
+
+
+def test_provider_5xx_is_infrastructure(compare):
+    from google.genai import errors
+    assert compare._infra(errors.ServerError(500, {"error": {"code": 500, "message": "x", "status": "INTERNAL"}}))
+    assert compare._infra(errors.ServerError(503, {"error": {"code": 503, "message": "x", "status": "UNAVAILABLE"}}))
+    assert not compare._infra(ValueError("a bug"))
