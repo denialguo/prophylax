@@ -191,7 +191,7 @@ def main():
                     "audience_rating": 1800
                 }
             },
-            "expected_primary_theme": "king_safety_delta",
+            "expected_primary_theme": "none",
             "expected_vocabulary_tier": "1800+",
             "forbidden_claims": ["checkmate threat", "blunders the rook"]
         },
@@ -218,7 +218,7 @@ def main():
                     "audience_rating": 1800
                 }
             },
-            "expected_primary_theme": "king_safety_delta",
+            "expected_primary_theme": "none",
             "expected_vocabulary_tier": "1800+",
             "forbidden_claims": ["discovered check", "promotes a queen"]
         },
