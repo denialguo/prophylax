@@ -58,6 +58,12 @@ class InfraFailure(Exception):
     pass
 
 
+def _infra(e: Exception) -> bool:
+    """Provider-side failures (429, 5xx): never the prompt's fault, so the trial reruns."""
+    status = _status(e)
+    return _model_unavailable(e) or (isinstance(status, int) and 500 <= status < 600)
+
+
 def prompt_version() -> dict:
     """Hashes of everything that shapes each arm's prompt and instruction."""
     import app.agent
@@ -124,7 +130,7 @@ async def run_trial(coach, case, arm, seed, infra_log, ground_truth):
         try:
             text = await coach._invoke_agent(pinned, prompt)
         except Exception as e:
-            if not _model_unavailable(e):
+            if not _infra(e):
                 raise
             infra_log.append({"model": NARRATOR, "status": _status(e), "retry_after_s": _retry_delay(e)})
             raise InfraFailure(e) from e
@@ -162,7 +168,7 @@ async def judge(flag, narration, cfg, infra_log, ground_truth):
     try:
         scores = await judge_mod.judge_narration(flag, narration, cfg, ground_truth=ground_truth)
     except Exception as e:
-        if not _model_unavailable(e):
+        if not _infra(e):
             raise
         infra_log.append({"model": JUDGE, "status": _status(e), "retry_after_s": _retry_delay(e)})
         raise InfraFailure(e) from e
