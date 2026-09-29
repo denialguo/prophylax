@@ -1,6 +1,6 @@
 # Prophylax — Upgrade Plan
 
-Status: **Approved. M0–M7 done; M8+ awaiting approval.**
+Status: **Approved. M0–M8 done; M9+ awaiting approval.**
 
 | Milestone | State | Default suite after |
 |-----------|-------|---------------------|
@@ -13,6 +13,7 @@ Status: **Approved. M0–M7 done; M8+ awaiting approval.**
 | M6 weak squares | done; `tests/test_weak_squares.py`. Operator chose "guarded + outposts": a pawn move concedes the squares it stopped guarding directly, plus any farther new hole an enemy pawn already supports. The rule proposed above would still have reported a4 after 13.b4 | 81 passed, 16 deselected (7.48s, `artifacts/junit.xml`); golden 5 passed, 92s (`artifacts/junit_golden_m6.xml`) |
 | M6 follow-up | done; squares holding the mover's own pawn are never holes; new neutral `new_pawn_unsupported` fact (option C in `docs/unsupported_pawn_question.md`), not a flag trigger; shown to the narrator only when the pawn isn't also backward | 87 passed, 16 deselected (7.06s, `artifacts/junit.xml`); golden 5 passed, 125s (`artifacts/junit_golden_m6c.xml`) |
 | M7 grounding | done; `tests/test_grounding.py` (2 of 4 verified failing without the change). Deep dive prompt carries the multipv lines and position features, which the validator allows. Conversational replies are checked against all stored flags plus the moves actually played: retry once, then a fixed fallback. Golden not rerun (no engine or feature code touched) | 91 passed, 16 deselected (8.23s, `artifacts/junit.xml`) |
+| M8 agents/routing | done; `tests/test_move_reference.py` (23 phrasings), `tests/test_agent_structure.py`. Contract lives once in `.agents/skills/narration_contract.md`; one `make_narrator` builds each phase's narrator. Trace names kept per phase (`test_prompt_injection` asserts them), so the plan's "one name in the trace" loss doesn't happen. Deterministic move parser first, LLM router as fallback; handler split into `analyze_game` / `ask_about_move` / `converse`; flags narrated concurrently (limit 4) and reported in game order | 119 passed, 16 deselected (8.30s, `artifacts/junit.xml`) |
 
 Baseline commit: `d5b5617`. Findings marked **[verified]** were reproduced by running
 code; **[read]** means established by reading code only.

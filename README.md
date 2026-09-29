@@ -36,7 +36,7 @@ Channel 2: quiet structural concessions
 │  refutation PV
 ▼
 Phase skills (.agents/skills/, progressive disclosure)
-opening · middlegame · endgame narration contracts
+one shared contract + opening · middlegame · endgame sections
 │
 ▼
 Deterministic harness around the LLM:
@@ -47,12 +47,14 @@ fallback — a fabricated move never ships
 - **MCP server** (`mcp_server/`): stateless JSON-RPC 2.0 over stdio wrapping a
   pinned Stockfish. Two tools; all features computed deterministically with
   python-chess. Returns data only — it never narrates.
-- **Skills** (`.agents/skills/`): three phase coaches with YAML-frontmatter
-  routing. One theme per flagged move = the top-ranked feature delta. No signal,
+- **Skills** (`.agents/skills/`): one shared narration contract plus a phase
+  section per skill (opening, middlegame, endgame). One theme per flagged move = the top-ranked feature delta. No signal,
   no claim.
-- **Multi-agent** (`app/`): the root agent routes each flag by the server's
-  phase field to the matching sub-agent; `ask_about_move` deep-dives any move on
-  request (`analyze_pgn → analyze_position`, strictly in order).
+- **Agent** (`app/`): one narrator definition, specialised per flag by the
+  server's phase field; flags are narrated concurrently. Move questions
+  (`15.Bd3`, "move 15 white") are parsed deterministically, with an LLM router
+  only as fallback; `ask_about_move` deep-dives any move on request
+  (`analyze_pgn → analyze_position`, strictly in order).
 - **Fail-closed narration**: every narration is validated against the payload
   (move legality, square whitelist, no internal units). One retry, then a
   deterministic fallback built from payload fields only.

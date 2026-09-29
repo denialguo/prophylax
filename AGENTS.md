@@ -52,7 +52,9 @@ colour-complex weaknesses). No beginner content. No invented lines.
   SKILL.md prose.
 - A skill's `description` is its routing algorithm: front-load trigger keywords; state
   what it does AND when NOT to use it.
-- The shared narration contract is intentionally duplicated across the three phase skills (opening_prep, middlegame_analysis, endgame_analysis). Any future contract change must be applied to all three simultaneously.
+- The shared narration contract lives once, in .agents/skills/narration_contract.md. Each phase
+  skill's SKILL.md holds only its phase section; one narrator definition loads the
+  contract plus the section for the flag's phase (app/agent.py: make_narrator).
 - AGENTS.md, skills, and eval suites are code: reviewed and versioned.
 
 ## Workflow (Evaluation-Driven Development)
