@@ -22,8 +22,11 @@ colour-complex weaknesses). No beginner content. No invented lines.
 2. The coach narrates ONLY from structured signals actually returned (WDL delta, PV,
    pawn-structure hash, king-safety score, weak-square / colour-complex flags). A
    positional claim with no signal behind it is a hallucination and a test failure.
-3. Read-only. The agent analyses; it mutates nothing. No writes to user data, no
-   external calls except the Stockfish MCP server.
+3. Never modify or overwrite source user data (PGN files stay immutable). Explicitly
+   approved, reproducible, application-owned derived storage is allowed and must be
+   git-ignored: today only the history database (PROPHYLAX_HISTORY_DB, default
+   data/prophylax_history.sqlite3; operator decision C1). No external calls except
+   the Stockfish MCP server.
 4. Blunder detection triggers on win-probability (WDL) delta, banded by game phase —
    NOT raw centipawns. cp deltas are non-stationary: they misfire in decided positions
    and under-fire on slow positional errors.

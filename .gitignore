@@ -9,3 +9,4 @@ run_output*.txt
 games/chess_com_games_*.pgn
 prophylax.webp
 .env
+data/

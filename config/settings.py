@@ -144,3 +144,20 @@ def get_judge_model() -> str:
             f"different model."
         )
     return judge
+
+
+# ── Phase C: persistent history (M15) ───────────────────────────────────────
+# Bulk history is analysed at 100k nodes (operator decision C3); the golden/eval path
+# stays at STOCKFISH_NODES=1M. Recurrence statistics say they rest on this budget (C4).
+HISTORY_NODES: int = 100_000
+
+
+def get_history_db_path() -> str:
+    """Application-owned, git-ignored history database (C1, C8). Never ADK's session DB."""
+    return os.environ.get("PROPHYLAX_HISTORY_DB", os.path.join("data", "prophylax_history.sqlite3"))
+
+
+def get_player_names() -> list[str]:
+    """The profiled player's usernames (PROPHYLAX_PLAYER_NAMES, comma-separated). A game
+    belongs to the profile only if one side matches exactly (case-insensitive)."""
+    return [n.strip() for n in os.environ.get("PROPHYLAX_PLAYER_NAMES", "").split(",") if n.strip()]
