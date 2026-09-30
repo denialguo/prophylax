@@ -17,6 +17,12 @@ FLAG_KEYS = MOVE_EVAL_KEYS | {"pv", "refutation_pv", "feature_deltas", "concessi
 FLAG_OPTIONAL = {"wdl_before_prob", "wdl_after_prob"}
 
 
+def content_id(start_fen: str, ucis: str) -> str:
+    """GameAnalysis.game_id: the game's content (start position + moves), so claim ids are
+    stable across re-analysis. Not unique per played game: identical move sequences collide."""
+    return hashlib.sha1(f"{start_fen}|{ucis}".encode()).hexdigest()[:12]
+
+
 class PayloadError(ValueError):
     """The server payload doesn't match the game or the contract."""
 
@@ -50,7 +56,7 @@ def game_analysis_from_payload(payload: dict, movetext: str) -> GameAnalysis:
 
 
 def _game_analysis(payload: dict, movetext: str) -> GameAnalysis:
-    _keys(payload, {"flags", "move_evals", "summary"}, set(), "analyze_pgn result")
+    _keys(payload, {"flags", "move_evals", "summary"}, {"analysis_config", "searches"}, "analyze_pgn result")
     start, plies = _replay(movetext)
     evals = payload["move_evals"]
     if len(evals) != len(plies):
@@ -96,7 +102,7 @@ def _game_analysis(payload: dict, movetext: str) -> GameAnalysis:
 
     ucis = " ".join(move.uci() for _, move in plies)
     return GameAnalysis(
-        game_id=hashlib.sha1(f"{start.fen()}|{ucis}".encode()).hexdigest()[:12],
+        game_id=content_id(start.fen(), ucis),
         start_fen=start.fen(),
         moves=tuple(MoveAnalysis(**m) for m in moves),
         summary=Summary(**payload["summary"]),

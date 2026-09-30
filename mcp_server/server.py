@@ -11,6 +11,7 @@ import contextlib
 import threading
 import functools
 from typing import Dict, Any, List, Optional
+from domain.versions import ANALYZER_VERSION
 from config.settings import (
     get_stockfish_path, get_limits, get_search_timeout, STOCKFISH_THREADS, STOCKFISH_HASH_MB,
     MAX_PGN_CHARS, MAX_PGN_PLIES, MAX_FLAGS, MAX_MULTIPV,
@@ -213,10 +214,30 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     if len(moves) > MAX_PGN_PLIES:
         raise ValueError(f"Game has {len(moves)} plies; the limit is {MAX_PGN_PLIES}.")
 
+    include_searches = params.get("include_searches", False)
+    if type(include_searches) is not bool:
+        raise ValueError(f"'include_searches' must be a boolean, got {include_searches!r}")
+
     nodes = get_limits(interactive=False)["nodes"]
     start_time = time.time()
     searches = search_game(game.board().fen(), tuple(m.uci() for m in moves), nodes, get_stockfish_path())
+    payload = derive_game_payload(game, moves, searches, max_flags)
 
+    # Log summary line to stderr
+    duration = time.time() - start_time
+    event_name = game.headers.get("Event", "Unknown Event")
+    print(f"Fixture: {event_name} | Positions analyzed: {len(moves) + 1} | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
+
+    payload["analysis_config"] = analysis_config(nodes)
+    if include_searches:
+        payload["searches"] = searches_to_json(searches)
+    return payload
+
+
+def derive_game_payload(game: chess.pgn.Game, moves: List[chess.Move], searches: tuple, max_flags: int) -> Dict[str, Any]:
+    """Everything analyze_pgn computes from the engine searches: win probabilities,
+    phases, feature deltas, concessions, flags. Pure (no engine), so stored searches
+    re-derive through exactly the code a live request runs (M15)."""
     # history[i] = (board after i plies, its wdl, its pv); pv[0] is the best move there
     history = []
     temp_board = game.board()
@@ -323,11 +344,6 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
     final_wdl_obj = history[-1][1]
     final_wdl = {"wins": final_wdl_obj.relative.wins, "draws": final_wdl_obj.relative.draws, "losses": final_wdl_obj.relative.losses} if final_wdl_obj else None
 
-    # Log summary line to stderr
-    duration = time.time() - start_time
-    event_name = game.headers.get("Event", "Unknown Event")
-    print(f"Fixture: {event_name} | Positions analyzed: {len(moves) + 1} | Node limit: {nodes} | Duration: {duration:.2f}s", file=sys.stderr, flush=True)
-
     return {
         "flags": selected_flags,
         "move_evals": move_evals,
@@ -337,6 +353,33 @@ def handle_analyze_pgn(params: Dict[str, Any]) -> Dict[str, Any]:
             "final_wdl": final_wdl
         }
     }
+
+
+def analysis_config(nodes: int) -> Dict[str, Any]:
+    """What produced an analysis (M15 provenance): engine, budget, pins, analyzer version."""
+    with engine_session() as (engine, _):
+        name = engine.id.get("name", "unknown")
+    return {"engine": name, "nodes": nodes, "threads": STOCKFISH_THREADS, "hash_mb": STOCKFISH_HASH_MB,
+            "multipv": 1, "analyzer_version": ANALYZER_VERSION}
+
+
+def searches_to_json(searches: tuple) -> list:
+    """search_game output as JSON: per position [[w, d, l] | None (side to move), [uci...]]."""
+    return [[[w.relative.wins, w.relative.draws, w.relative.losses] if w else None, [m.uci() for m in pv]]
+            for w, pv in searches]
+
+
+def searches_from_json(start: chess.Board, moves: List[chess.Move], stored: list) -> tuple:
+    """Inverse of searches_to_json, given the game (the side to move orients each WDL)."""
+    if len(stored) != len(moves) + 1:
+        raise ValueError(f"{len(stored)} stored searches for a game of {len(moves)} plies")
+    board, out = start.copy(), []
+    for i, (wdl, pv) in enumerate(stored):
+        if i:
+            board.push(moves[i - 1])
+        pov = chess.engine.PovWdl(chess.engine.Wdl(*wdl), board.turn) if wdl else None
+        out.append((pov, tuple(chess.Move.from_uci(u) for u in pv)))
+    return tuple(out)
 
 @functools.lru_cache(maxsize=32)
 def search_game(start_fen: str, ucis: tuple, nodes: int, engine_path: str) -> tuple:
