@@ -81,6 +81,13 @@ def cmd_status(conn, args):
     print(json.dumps(status(conn), indent=1))
 
 
+def cmd_profile(conn, args):
+    from history.profile import DEFAULT_TC, WINDOW, profile, render
+    tc = tuple(args.tc or DEFAULT_TC) + (("bullet",) if args.include_bullet else ())
+    p = profile(conn, window=args.window or WINDOW, tc_classes=tc, since=args.since, until=args.until)
+    print(json.dumps(p, indent=1) if args.json else render(p))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="python -m history", description=__doc__.splitlines()[0])
     ap.add_argument("--db", default=None, help="database path (default PROPHYLAX_HISTORY_DB)")
@@ -92,9 +99,18 @@ def main(argv=None):
     p.add_argument("--limit", type=int, default=None)
     sub.add_parser("rederive")
     sub.add_parser("status")
+    p = sub.add_parser("profile", help="what positional mistakes do I repeatedly make?")
+    p.add_argument("--window", type=int, default=None, help="games per window (default 20)")
+    p.add_argument("--tc", action="append", choices=["blitz", "rapid", "classical", "bullet"],
+                   help="time classes (default blitz, rapid, classical)")
+    p.add_argument("--include-bullet", action="store_true")
+    p.add_argument("--since", help="YYYY-MM-DD")
+    p.add_argument("--until", help="YYYY-MM-DD")
+    p.add_argument("--json", action="store_true")
     args = ap.parse_args(argv)
     conn = connect(args.db or get_history_db_path())
-    {"import": cmd_import, "analyze": cmd_analyze, "rederive": cmd_rederive, "status": cmd_status}[args.cmd](conn, args)
+    {"import": cmd_import, "analyze": cmd_analyze, "rederive": cmd_rederive, "status": cmd_status,
+     "profile": cmd_profile}[args.cmd](conn, args)
 
 
 if __name__ == "__main__":
