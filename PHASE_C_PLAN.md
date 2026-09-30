@@ -1,7 +1,41 @@
 # Phase C plan: persistent multi-game personalization (M15–M18)
 
-Status: **draft for operator review. Nothing here is implemented.** Phase C
-starts only after the D12 decision closes Phase B (operator order, step 7).
+Status: **M15 and M16 implemented (2026-09-29); M17 and M18 deferred until after the
+application (operator decision).** The decisions C1–C10 are as approved, with these
+deviations from this plan:
+
+- The database is `data/prophylax_history.sqlite3`, overridable with
+  `PROPHYLAX_HISTORY_DB` (C8).
+- `CLAIMS_VERSION` lives in `domain/versions.py` alongside `ANALYZER_VERSION`. It
+  isn't in `domain/claims.py`, because that file feeds the paused D12 run's
+  recorded configuration hash.
+- The real export forced two fixes:
+  - An exclusion reason, `null_move`: every 50th game in the export ends in a null
+    move. Those games are excluded, never repaired.
+  - A 16 MiB MCP response line limit, since a long game's reply with
+    `include_searches` exceeds asyncio's 64 KiB default.
+- The profile also shows how many of a category's flagged moves were quiet
+  (Channel 2) concessions, so a near-zero median loss can be read.
+
+**Batch (2026-09-29):**
+
+| Item | Count |
+|---|---|
+| Source games | 350 |
+| Imported | 350 |
+| Eligible and analysed | 250 |
+| Excluded: bullet | 50 |
+| Excluded: abandoned | 24 |
+| Excluded: under 20 plies | 14 |
+| Excluded: null move | 6 |
+| Excluded: not the player's | 6 |
+
+- 1,553 MistakeEvents (1,239 unclassified; 267 weak square; 99 backward pawn;
+  62 king safety; 61 pawn support lost).
+- Stockfish 18 at 100k nodes, 1 thread, 16 MB. 1,743s of analysis across four
+  segments (resumed after each fix).
+- Checks: 18,232 stored plies match the source; there are no events on opponent
+  moves; stored flags re-derive to the live analysis.
 
 The goal is to move Prophylax from
 
