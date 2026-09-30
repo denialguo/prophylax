@@ -55,7 +55,7 @@ def _events(conn, derivation_ids: list) -> list:
         return []
     q = ",".join("?" * len(derivation_ids))
     return [dict(r) for r in conn.execute(
-        f"""SELECT e.event_id, e.game_pk, e.phase, e.wdl_delta, e.derivation_id, c.category, c.subject
+        f"""SELECT e.event_id, e.game_pk, e.phase, e.channel, e.wdl_delta, e.derivation_id, c.category, c.subject
             FROM mistake_events e JOIN mistake_categories c USING (event_id)
             WHERE e.derivation_id IN ({q})""", derivation_ids)]
 
@@ -84,11 +84,13 @@ def _category_stats(events: list, category: str) -> dict:
     for e in rows:
         by_event.setdefault(e["event_id"], e)  # one event may name several squares
     moves = list(by_event.values())
-    losses = sorted(round(-e["wdl_delta"] * 100, 1) for e in moves)
+    losses = sorted(round(-e["wdl_delta"] * 100, 1) + 0.0 for e in moves)  # + 0.0: no "-0"
     return {
         "games": len({e["game_pk"] for e in moves}),
         "moves": len(moves),
         "phases": {p: sum(e["phase"] == p for e in moves) for p in PHASES},
+        # Channel 2 flags: structural concessions the engine barely penalises (loss ~0)
+        "quiet_moves": sum(e["channel"] == "quiet_inaccuracy" for e in moves),
         "median_loss_pp": statistics.median(losses) if losses else None,
         "loss_range_pp": [losses[0], losses[-1]] if losses else None,
     }
@@ -148,7 +150,10 @@ def render(p: dict) -> str:
         lines += [c["label"],
                   f"  {c['games']} of your last {w['games']} games ({c['moves']} flagged moves: {phases})",
                   f"  median win-probability loss: {c['median_loss_pp']:g} points "
-                  f"(range {c['loss_range_pp'][0]:g}-{c['loss_range_pp'][1]:g})"]
+                  f"(range {c['loss_range_pp'][0]:g} to {c['loss_range_pp'][1]:g})"]
+        if c["quiet_moves"]:
+            lines.append(f"  {c['quiet_moves']} of the {c['moves']} were quiet concessions: flagged for the "
+                         f"structure, not for an immediate drop in the evaluation")
         if c["created_moves"]:
             lines.append(f"  you did this on {c['created_moves']} moves in those games; "
                          f"{c['moves']} of them were engine-flagged")
