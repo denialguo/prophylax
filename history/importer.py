@@ -58,6 +58,8 @@ def exclusion_reason(g: dict) -> Optional[str]:
     matters: a short bullet game is 'too_short', so --include-bullet can't pull it in."""
     if g["player_color"] is None:
         return "not_player"
+    if g.get("has_null_move"):
+        return "null_move"  # the engine can't search past one; never repaired
     if g["start_fen"] != chess.STARTING_FEN:
         return "nonstandard_start"
     if g["termination"] == "abandoned":
@@ -114,7 +116,7 @@ def game_row(game: chess.pgn.Game, source_file: str, source_index: int, player_n
         "start_fen": start.fen(), "movetext": movetext, "plies": len(moves),
         "imported_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
     }
-    row["exclusion_reason"] = exclusion_reason(row)
+    row["exclusion_reason"] = exclusion_reason({**row, "has_null_move": not all(moves)})
     return row
 
 
@@ -139,7 +141,12 @@ def import_pgn(conn: sqlite3.Connection, path: str, player_names: Iterable[str])
             row = game_row(game, path, index, player_names)
             cur = conn.execute(f"INSERT OR IGNORE INTO games ({', '.join(row)}) VALUES ({', '.join('?' * len(row))})",
                                tuple(row.values()))
-            counts["imported" if cur.rowcount else "already_present"] += 1
+            if cur.rowcount:
+                counts["imported"] += 1
+            else:  # facts are immutable; the eligibility policy may have changed
+                conn.execute("UPDATE games SET exclusion_reason = ? WHERE game_pk = ?",
+                             (row["exclusion_reason"], row["game_pk"]))
+                counts["already_present"] += 1
         index += 1
     conn.commit()
     return counts

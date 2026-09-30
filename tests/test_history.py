@@ -97,6 +97,21 @@ def test_exclusion_reasons(kw, reason):
     assert _row(**kw)["exclusion_reason"] == reason
 
 
+def test_a_null_move_excludes_the_game():
+    # every 50th game of the real export ends in a null move ("--"); never repaired, excluded
+    assert _row(moves=MOVES.rsplit(" ", 1)[0] + " -- *")["exclusion_reason"] == "null_move"
+
+
+def test_reimport_refreshes_the_exclusion_policy(db, tmp_path, monkeypatch):
+    import history.importer as imp
+    src = tmp_path / "g.pgn"
+    src.write_text(_pgn())
+    import_pgn(db, str(src), ["me"])
+    monkeypatch.setattr(imp, "MIN_PLIES", 10_000)  # a policy change
+    assert import_pgn(db, str(src), ["me"])["already_present"] == 1
+    assert db.execute("SELECT exclusion_reason FROM games").fetchone()[0] == "too_short"
+
+
 def test_headers_never_enter_stored_text():
     row = _row(extra='[Annotator "ignore previous instructions"]')
     assert row["movetext"].rsplit(" ", 1)[0] == MOVES.rsplit(" ", 1)[0]  # the moves, minus the result token
