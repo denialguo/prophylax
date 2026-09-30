@@ -1,0 +1,771 @@
+{
+ "pgn": "[Event \"Carlsbad Structure Match\"]\n[Site \"Anonymized\"]\n[Date \"2026.07.04\"]\n[Round \"1\"]\n[White \"Player1\"]\n[Black \"Player2\"]\n[Result \"*\"]\n\n1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 c6 6. e3 Be7 7. Bd3 O-O 8. Qc2 Nbd7 9. Nge2 Re8 10. O-O b5 *\n",
+ "nodes": 100000,
+ "engine": "Stockfish 18",
+ "searches": [
+  [
+   [
+    114,
+    882,
+    4
+   ],
+   [
+    "e2e4",
+    "c7c5",
+    "g1f3",
+    "a7a6",
+    "d2d4",
+    "c5d4",
+    "f3d4",
+    "e7e6",
+    "b1c3",
+    "d8c7",
+    "f1d3",
+    "g8f6",
+    "f2f4",
+    "b8c6",
+    "d4c6"
+   ]
+  ],
+  [
+   [
+    7,
+    928,
+    65
+   ],
+   [
+    "g8f6",
+    "c2c4",
+    "e7e6",
+    "b1c3",
+    "f8b4",
+    "g1f3",
+    "e8g8",
+    "c1f4",
+    "d7d5",
+    "e2e3",
+    "c7c5",
+    "a2a3",
+    "b4c3",
+    "b2c3"
+   ]
+  ],
+  [
+   [
+    85,
+    910,
+    5
+   ],
+   [
+    "c2c4",
+    "e7e6",
+    "g2g3",
+    "d5c4",
+    "f1g2",
+    "g8f6",
+    "g1f3",
+    "f8b4",
+    "c1d2",
+    "a7a5",
+    "d1c1",
+    "b4d2",
+    "b1d2",
+    "b7b5",
+    "b2b3",
+    "c4b3",
+    "f3e5",
+    "a8a6",
+    "d2b3",
+    "a5a4",
+    "b3c5"
+   ]
+  ],
+  [
+   [
+    6,
+    926,
+    68
+   ],
+   [
+    "e7e6",
+    "g1f3",
+    "g8f6",
+    "g2g3",
+    "f8b4",
+    "c1d2",
+    "a7a5",
+    "a2a3",
+    "b4e7",
+    "f1g2",
+    "e8g8",
+    "e1g1",
+    "b8d7",
+    "d1c2",
+    "c7c6",
+    "f1d1",
+    "g8h8",
+    "e2e3",
+    "h7h6"
+   ]
+  ],
+  [
+   [
+    63,
+    930,
+    7
+   ],
+   [
+    "b1c3",
+    "g8f6",
+    "c1g5",
+    "f8e7",
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "e8g8",
+    "g1f3",
+    "c7c5",
+    "d4c5",
+    "d5c4",
+    "f1c4",
+    "d8d1",
+    "a1d1",
+    "b8d7",
+    "e1g1",
+    "d7c5"
+   ]
+  ],
+  [
+   [
+    6,
+    926,
+    68
+   ],
+   [
+    "g8f6",
+    "c4d5",
+    "e6d5",
+    "c1g5",
+    "f8e7",
+    "e2e3",
+    "e8g8",
+    "f1d3",
+    "h7h6",
+    "g5h4",
+    "c7c6",
+    "d1c2",
+    "b8d7",
+    "g1f3",
+    "f6h5",
+    "h4e7",
+    "d8e7",
+    "e1g1",
+    "f8e8"
+   ]
+  ],
+  [
+   [
+    50,
+    941,
+    9
+   ],
+   [
+    "c1g5",
+    "f8e7",
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "e8g8",
+    "g1f3",
+    "b7b6",
+    "a1c1",
+    "c8b7",
+    "h4f6",
+    "e7f6",
+    "c4d5",
+    "e6d5",
+    "f1d3",
+    "c7c5"
+   ]
+  ],
+  [
+   [
+    7,
+    941,
+    52
+   ],
+   [
+    "e6d5",
+    "c1g5",
+    "c7c6",
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "f8e7",
+    "f1d3",
+    "e8g8",
+    "h2h3",
+    "f6e4",
+    "h4e7",
+    "d8e7",
+    "d3e4",
+    "d5e4",
+    "g1e2",
+    "b8d7"
+   ]
+  ],
+  [
+   [
+    56,
+    939,
+    5
+   ],
+   [
+    "c1g5",
+    "f8e7",
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "e8g8",
+    "f1d3",
+    "f8e8",
+    "g1f3",
+    "f6e4",
+    "h4e7",
+    "d8e7",
+    "e1g1",
+    "c7c6",
+    "d3e4",
+    "d5e4",
+    "f3d2",
+    "f7f5"
+   ]
+  ],
+  [
+   [
+    5,
+    942,
+    53
+   ],
+   [
+    "f8e7",
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "c7c6",
+    "f1d3",
+    "e8g8",
+    "h4g3",
+    "f8e8",
+    "g1f3",
+    "f6h5",
+    "g3e5",
+    "b8d7",
+    "h2h3",
+    "d7e5",
+    "f3e5",
+    "g7g6",
+    "e1g1",
+    "e7d6"
+   ]
+  ],
+  [
+   [
+    57,
+    938,
+    5
+   ],
+   [
+    "e2e3",
+    "h7h6",
+    "g5h4",
+    "f8e7",
+    "f1d3",
+    "e8g8",
+    "g1e2",
+    "f8e8",
+    "h2h3",
+    "b8d7",
+    "e1g1",
+    "a7a5",
+    "a1c1",
+    "f6h5",
+    "h4e7",
+    "d8e7",
+    "g1h1",
+    "g7g6",
+    "e2g1",
+    "h5g7"
+   ]
+  ],
+  [
+   [
+    6,
+    944,
+    50
+   ],
+   [
+    "h7h6",
+    "g5h4",
+    "f8e7",
+    "f1d3",
+    "e8g8",
+    "g1e2",
+    "f8e8",
+    "f2f3",
+    "c6c5",
+    "e1g1",
+    "b8c6",
+    "h4f2",
+    "c5d4",
+    "e3d4",
+    "f6h5"
+   ]
+  ],
+  [
+   [
+    69,
+    927,
+    4
+   ],
+   [
+    "f1d3",
+    "e8g8",
+    "g1f3",
+    "h7h6",
+    "g5f4",
+    "f6h5",
+    "f4e5",
+    "b8d7",
+    "h2h3",
+    "d7e5",
+    "f3e5",
+    "h5f6",
+    "f2f4",
+    "e7b4",
+    "e1g1",
+    "c6c5",
+    "d1f3",
+    "b4c3",
+    "b2c3",
+    "c5c4"
+   ]
+  ],
+  [
+   [
+    3,
+    918,
+    79
+   ],
+   [
+    "e8g8",
+    "g1f3",
+    "h7h6",
+    "g5f4",
+    "f6h5",
+    "f4e5",
+    "b8d7",
+    "h2h3",
+    "d7e5",
+    "f3e5",
+    "h5f6",
+    "f2f4",
+    "d8b6",
+    "d1d2",
+    "f6d7",
+    "e1g1",
+    "d7e5",
+    "f4e5",
+    "c8e6"
+   ]
+  ],
+  [
+   [
+    67,
+    929,
+    4
+   ],
+   [
+    "g1f3",
+    "h7h6",
+    "g5f4",
+    "f6h5",
+    "f4e5",
+    "b8d7",
+    "h2h3",
+    "d7e5",
+    "f3e5",
+    "h5f6",
+    "e1g1",
+    "d8b6",
+    "d1c2",
+    "c8e6"
+   ]
+  ],
+  [
+   [
+    8,
+    959,
+    33
+   ],
+   [
+    "h7h6",
+    "g5h4",
+    "f8e8",
+    "g1e2",
+    "b8d7",
+    "h2h3",
+    "a7a5",
+    "e1g1",
+    "b7b5",
+    "c3b1",
+    "c8b7",
+    "b1d2",
+    "a5a4",
+    "d3f5"
+   ]
+  ],
+  [
+   [
+    70,
+    926,
+    4
+   ],
+   [
+    "g1f3",
+    "f8e8",
+    "e1g1",
+    "h7h6",
+    "g5f4",
+    "f6h5",
+    "f4e5",
+    "h5f6",
+    "a1e1",
+    "d7e5",
+    "f3e5",
+    "e7d6",
+    "f2f4",
+    "c6c5"
+   ]
+  ],
+  [
+   [
+    7,
+    952,
+    41
+   ],
+   [
+    "f8e8",
+    "e1g1",
+    "a7a5",
+    "a1c1",
+    "h7h6",
+    "g5h4",
+    "b7b5",
+    "f1d1",
+    "a5a4",
+    "c3b1",
+    "c8b7",
+    "b1d2"
+   ]
+  ],
+  [
+   [
+    41,
+    952,
+    7
+   ],
+   [
+    "e1g1",
+    "d7f8",
+    "a1e1",
+    "a7a5",
+    "a2a3",
+    "b7b5",
+    "h2h3",
+    "g7g6",
+    "e2f4",
+    "c8d7",
+    "e1c1",
+    "a8c8",
+    "g5h4",
+    "f8e6",
+    "f4e6",
+    "d7e6",
+    "c3e2",
+    "a5a4",
+    "e2f4"
+   ]
+  ],
+  [
+   [
+    7,
+    955,
+    38
+   ],
+   [
+    "d7f8",
+    "a1e1",
+    "g7g6",
+    "e2f4",
+    "g8g7",
+    "g5h4",
+    "f8e6",
+    "f4e6",
+    "c8e6",
+    "f2f3",
+    "a8c8",
+    "a2a3",
+    "a7a5",
+    "c3a4",
+    "f6d7",
+    "h4f2"
+   ]
+  ],
+  [
+   [
+    117,
+    881,
+    2
+   ],
+   [
+    "c3b1",
+    "c8b7",
+    "b1d2",
+    "h7h6",
+    "g5h4",
+    "a7a5",
+    "a2a4",
+    "b5a4",
+    "a1a4",
+    "d8b6",
+    "d2b3",
+    "b7a6"
+   ]
+  ]
+ ],
+ "payload": {
+  "flags": [
+   {
+    "move_san": "b5",
+    "move_number": 10,
+    "side": "black",
+    "phase": "middlegame",
+    "wdl_before_prob": 0.4845,
+    "wdl_after_prob": 0.4425,
+    "wdl_delta": -0.04199999999999998,
+    "best_move_san": "Nf8",
+    "pv": [
+     "Nf8",
+     "Rae1",
+     "g6",
+     "Nf4",
+     "Kg7",
+     "Bh4"
+    ],
+    "refutation_pv": [
+     "Nb1",
+     "Bb7",
+     "Nd2",
+     "h6",
+     "Bh4",
+     "a5"
+    ],
+    "feature_deltas": {
+     "weak_squares": -3,
+     "piece_activity_delta": 1,
+     "pawn_structure_delta": -0.5,
+     "king_safety_delta": 0.0
+    },
+    "concessions": {
+     "new_weak_squares": [
+      "c5",
+      "a6"
+     ],
+     "new_backward_pawns": [
+      "c6"
+     ],
+     "new_pawn_unsupported": [
+      "c6"
+     ]
+    },
+    "channel": "quiet_inaccuracy"
+   }
+  ],
+  "move_evals": [
+   {
+    "move_san": "d4",
+    "move_number": 1,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.026000000000000023,
+    "best_move_san": "e4"
+   },
+   {
+    "move_san": "d5",
+    "move_number": 1,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": -0.010999999999999954,
+    "best_move_san": "Nf6"
+   },
+   {
+    "move_san": "c4",
+    "move_number": 2,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.009000000000000008,
+    "best_move_san": "c4"
+   },
+   {
+    "move_san": "e6",
+    "move_number": 2,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.0030000000000000027,
+    "best_move_san": "e6"
+   },
+   {
+    "move_san": "Nc3",
+    "move_number": 3,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": 0.0030000000000000027,
+    "best_move_san": "Nc3"
+   },
+   {
+    "move_san": "Nf6",
+    "move_number": 3,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.01050000000000001,
+    "best_move_san": "Nf6"
+   },
+   {
+    "move_san": "cxd5",
+    "move_number": 4,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": 0.0020000000000000018,
+    "best_move_san": "Bg5"
+   },
+   {
+    "move_san": "exd5",
+    "move_number": 4,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": -0.0030000000000000027,
+    "best_move_san": "exd5"
+   },
+   {
+    "move_san": "Bg5",
+    "move_number": 5,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.0014999999999999458,
+    "best_move_san": "Bg5"
+   },
+   {
+    "move_san": "c6",
+    "move_number": 5,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": -0.0020000000000000018,
+    "best_move_san": "Be7"
+   },
+   {
+    "move_san": "e3",
+    "move_number": 6,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.0040000000000000036,
+    "best_move_san": "e3"
+   },
+   {
+    "move_san": "Be7",
+    "move_number": 6,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": -0.010499999999999954,
+    "best_move_san": "h6"
+   },
+   {
+    "move_san": "Bd3",
+    "move_number": 7,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": 0.00550000000000006,
+    "best_move_san": "Bd3"
+   },
+   {
+    "move_san": "O-O",
+    "move_number": 7,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.006500000000000006,
+    "best_move_san": "O-O"
+   },
+   {
+    "move_san": "Qc2",
+    "move_number": 8,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.019000000000000017,
+    "best_move_san": "Nf3"
+   },
+   {
+    "move_san": "Nbd7",
+    "move_number": 8,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": -0.020499999999999963,
+    "best_move_san": "h6"
+   },
+   {
+    "move_san": "Nge2",
+    "move_number": 9,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.016000000000000014,
+    "best_move_san": "Nf3"
+   },
+   {
+    "move_san": "Re8",
+    "move_number": 9,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.0,
+    "best_move_san": "Re8"
+   },
+   {
+    "move_san": "O-O",
+    "move_number": 10,
+    "side": "white",
+    "phase": "middlegame",
+    "wdl_delta": -0.0015000000000000568,
+    "best_move_san": "O-O"
+   },
+   {
+    "move_san": "b5",
+    "move_number": 10,
+    "side": "black",
+    "phase": "middlegame",
+    "wdl_delta": -0.04199999999999998,
+    "best_move_san": "Nf8"
+   }
+  ],
+  "summary": {
+   "total_flags": 1,
+   "phase_distribution": {
+    "opening": 0,
+    "middlegame": 1,
+    "endgame": 0
+   },
+   "final_wdl": {
+    "wins": 117,
+    "draws": 881,
+    "losses": 2
+   }
+  }
+ }
+}

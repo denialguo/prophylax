@@ -1,0 +1,560 @@
+{
+ "pgn": "[Event \"Opposition study\"]\n[Site \"Prophylax fixture\"]\n[Date \"????.??.??\"]\n[Round \"-\"]\n[White \"White\"]\n[Black \"Black\"]\n[Result \"*\"]\n[SetUp \"1\"]\n[FEN \"8/8/8/3k4/8/8/3PK3/8 w - - 0 1\"]\n\n1. Kd3 Ke5 2. Ke3 Kd5 3. Kd3 Ke5 4. Ke3 Kd5 5. d3 Ke5 *\n",
+ "nodes": 1000000,
+ "engine": "Stockfish 18",
+ "searches": [
+  [
+   [
+    1000,
+    0,
+    0
+   ],
+   [
+    "e2d3",
+    "d5e6",
+    "d3e4",
+    "e6d6",
+    "e4d4",
+    "d6c6",
+    "d4e5",
+    "c6d7",
+    "e5d5",
+    "d7c7",
+    "d5e6",
+    "c7c6",
+    "d2d4",
+    "c6c7",
+    "d4d5",
+    "c7d8",
+    "e6d6",
+    "d8c8",
+    "d6e7",
+    "c8c7",
+    "d5d6",
+    "c7c6",
+    "d6d7",
+    "c6d5",
+    "e7f6",
+    "d5d4",
+    "f6e6",
+    "d4c5",
+    "e6e5",
+    "c5c4",
+    "e5d6",
+    "c4d4",
+    "d6c6",
+    "d4c4",
+    "c6c7",
+    "c4b4"
+   ]
+  ],
+  [
+   [
+    0,
+    0,
+    1000
+   ],
+   [
+    "d5e6",
+    "d3c4",
+    "e6d6",
+    "c4d4",
+    "d6e6",
+    "d4c5",
+    "e6d7",
+    "c5d5",
+    "d7c7",
+    "d5e6",
+    "c7d8",
+    "e6d6",
+    "d8c8",
+    "d6c6",
+    "c8d8",
+    "d2d3",
+    "d8c8",
+    "d3d4",
+    "c8d8",
+    "c6d6",
+    "d8e8",
+    "d6c7",
+    "e8f7",
+    "c7c6",
+    "f7e8",
+    "c6d6",
+    "e8d8",
+    "d6e6"
+   ]
+  ],
+  [
+   [
+    1000,
+    0,
+    0
+   ],
+   [
+    "d3c4",
+    "e5f5",
+    "d2d4",
+    "f5e6",
+    "c4c5",
+    "e6d7",
+    "c5d5",
+    "d7e7",
+    "d5c6",
+    "e7e8",
+    "d4d5",
+    "e8d8",
+    "c6d6",
+    "d8c8",
+    "d6e7",
+    "c8b7",
+    "e7e6",
+    "b7b6",
+    "d5d6",
+    "b6c5",
+    "d6d7",
+    "c5d4",
+    "e6d6",
+    "d4e4",
+    "d6c5",
+    "e4f3",
+    "c5d4",
+    "f3e2",
+    "d4c4",
+    "e2d2",
+    "c4c5",
+    "d2c2",
+    "c5b5"
+   ]
+  ],
+  [
+   [
+    0,
+    0,
+    1000
+   ],
+   [
+    "e5f6",
+    "e3d4",
+    "f6f5",
+    "d4c5",
+    "f5g6",
+    "c5d5",
+    "g6h5",
+    "d2d4",
+    "h5g4",
+    "d5c6",
+    "g4g3",
+    "d4d5",
+    "g3f4",
+    "d5d6",
+    "f4e3",
+    "c6d5",
+    "e3e2",
+    "d5c4",
+    "e2d1",
+    "d6d7",
+    "d1d2",
+    "c4d5",
+    "d2e1",
+    "d5c5"
+   ]
+  ],
+  [
+   [
+    1000,
+    0,
+    0
+   ],
+   [
+    "e3d3",
+    "d5e6",
+    "d3e4",
+    "e6f6",
+    "e4d5",
+    "f6f5",
+    "d2d4",
+    "f5f4",
+    "d5c5",
+    "f4e3",
+    "d4d5",
+    "e3f3",
+    "c5d6",
+    "f3e2",
+    "d6c6",
+    "e2f2",
+    "c6b5"
+   ]
+  ],
+  [
+   [
+    0,
+    0,
+    1000
+   ],
+   [
+    "d5e6",
+    "d3e4",
+    "e6f6",
+    "e4d5",
+    "f6f5",
+    "d2d4",
+    "f5f4",
+    "d5d6",
+    "f4g3",
+    "d4d5",
+    "g3f3",
+    "d6e6",
+    "f3f2",
+    "d5d6",
+    "f2e2",
+    "e6d7",
+    "e2f2",
+    "d7c6",
+    "f2g1",
+    "d6d7",
+    "g1f2",
+    "c6b5",
+    "f2g3",
+    "b5c4",
+    "g3h3",
+    "c4c5",
+    "h3g4",
+    "c5c6"
+   ]
+  ],
+  [
+   [
+    1000,
+    0,
+    0
+   ],
+   [
+    "d3c4",
+    "e5f4",
+    "d2d4",
+    "f4e3",
+    "d4d5",
+    "e3f3",
+    "d5d6",
+    "f3e2",
+    "c4c5",
+    "e2d2",
+    "c5d4",
+    "d2d1",
+    "d6d7",
+    "d1e1",
+    "d4e4",
+    "e1d2",
+    "d7d8q",
+    "d2c2",
+    "e4d5",
+    "c2d3",
+    "d5c5",
+    "d3e3"
+   ]
+  ],
+  [
+   [
+    1,
+    998,
+    1
+   ],
+   [
+    "e5d5",
+    "d2d4",
+    "d5e6",
+    "e3e4",
+    "e6d6",
+    "d4d5",
+    "d6c7",
+    "e4e5",
+    "c7d7",
+    "e5f6",
+    "d7d6",
+    "f6f7",
+    "d6d5",
+    "f7e7",
+    "d5e5",
+    "e7d7",
+    "e5e4",
+    "d7c6",
+    "e4d4",
+    "c6b5",
+    "d4d5",
+    "b5b6",
+    "d5d6",
+    "b6b7",
+    "d6d7",
+    "b7a7",
+    "d7e6",
+    "a7a6",
+    "e6e5",
+    "a6b7",
+    "e5d6",
+    "b7b6",
+    "d6d5",
+    "b6c7",
+    "d5c5",
+    "c7d7",
+    "c5d5"
+   ]
+  ],
+  [
+   [
+    1,
+    998,
+    1
+   ],
+   [
+    "d2d4",
+    "d5d6",
+    "e3e4",
+    "d6e6",
+    "d4d5",
+    "e6d6",
+    "e4d4",
+    "d6d7",
+    "d4e5",
+    "d7e7",
+    "d5d6",
+    "e7d7",
+    "e5d5",
+    "d7d8",
+    "d5e6",
+    "d8e8",
+    "d6d7",
+    "e8d8",
+    "e6f6",
+    "d8d7",
+    "f6e5",
+    "d7c6",
+    "e5e6",
+    "c6b7",
+    "e6d7",
+    "b7b6",
+    "d7d6",
+    "b6b5",
+    "d6c7",
+    "b5c4",
+    "c7c6",
+    "c4d4",
+    "c6d6",
+    "d4c4",
+    "d6c6"
+   ]
+  ],
+  [
+   [
+    1,
+    998,
+    1
+   ],
+   [
+    "d5e5",
+    "d3d4",
+    "e5d5",
+    "e3d3",
+    "d5d6",
+    "d3e4",
+    "d6e6",
+    "d4d5",
+    "e6d7",
+    "e4e5",
+    "d7e7",
+    "d5d6",
+    "e7d8",
+    "e5e4",
+    "d8c8",
+    "e4d4",
+    "c8d8",
+    "d4c4",
+    "d8d7",
+    "c4d5",
+    "d7d8",
+    "d5c6",
+    "d8c8",
+    "c6b6",
+    "c8d7",
+    "b6c5",
+    "d7d8",
+    "c5b5"
+   ]
+  ],
+  [
+   [
+    1,
+    998,
+    1
+   ],
+   [
+    "d3d4",
+    "e5d6",
+    "e3d3",
+    "d6d5",
+    "d3c3",
+    "d5d6",
+    "c3c4",
+    "d6c6",
+    "d4d5",
+    "c6d7",
+    "c4d3",
+    "d7d8",
+    "d3d4",
+    "d8c8",
+    "d4e5",
+    "c8d7",
+    "d5d6",
+    "d7d8",
+    "e5e6",
+    "d8e8",
+    "e6d5",
+    "e8d8",
+    "d5c6",
+    "d8c8",
+    "c6b5",
+    "c8d7",
+    "b5c5",
+    "d7d8",
+    "c5d4",
+    "d8c8",
+    "d4e4",
+    "c8d7",
+    "e4e5"
+   ]
+  ]
+ ],
+ "payload": {
+  "flags": [
+   {
+    "move_san": "Ke3",
+    "move_number": 4,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_before_prob": 1.0,
+    "wdl_after_prob": 0.5,
+    "wdl_delta": -0.5,
+    "best_move_san": "Kc4",
+    "pv": [
+     "Kc4",
+     "Kf4",
+     "d4",
+     "Ke3",
+     "d5",
+     "Kf3"
+    ],
+    "refutation_pv": [
+     "Kd5",
+     "d4",
+     "Ke6",
+     "Ke4",
+     "Kd6",
+     "d5"
+    ],
+    "feature_deltas": {
+     "piece_activity_delta": 2,
+     "king_safety_delta": 0.0,
+     "pawn_structure_delta": 0.0,
+     "weak_squares": 0
+    },
+    "concessions": {},
+    "channel": "wdl"
+   }
+  ],
+  "move_evals": [
+   {
+    "move_san": "Kd3",
+    "move_number": 1,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Kd3"
+   },
+   {
+    "move_san": "Ke5",
+    "move_number": 1,
+    "side": "black",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Ke6"
+   },
+   {
+    "move_san": "Ke3",
+    "move_number": 2,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Kc4"
+   },
+   {
+    "move_san": "Kd5",
+    "move_number": 2,
+    "side": "black",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Kf6"
+   },
+   {
+    "move_san": "Kd3",
+    "move_number": 3,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Kd3"
+   },
+   {
+    "move_san": "Ke5",
+    "move_number": 3,
+    "side": "black",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Ke6"
+   },
+   {
+    "move_san": "Ke3",
+    "move_number": 4,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_delta": -0.5,
+    "best_move_san": "Kc4"
+   },
+   {
+    "move_san": "Kd5",
+    "move_number": 4,
+    "side": "black",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Kd5"
+   },
+   {
+    "move_san": "d3",
+    "move_number": 5,
+    "side": "white",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "d4"
+   },
+   {
+    "move_san": "Ke5",
+    "move_number": 5,
+    "side": "black",
+    "phase": "endgame",
+    "wdl_delta": 0.0,
+    "best_move_san": "Ke5"
+   }
+  ],
+  "summary": {
+   "total_flags": 1,
+   "phase_distribution": {
+    "opening": 0,
+    "middlegame": 0,
+    "endgame": 1
+   },
+   "final_wdl": {
+    "wins": 1,
+    "draws": 998,
+    "losses": 1
+   }
+  }
+ }
+}
