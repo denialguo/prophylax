@@ -1,0 +1,214 @@
+{
+ "pgn": "[Event \"Fools Mate Mini\"]\n[Site \"Anonymized\"]\n[Date \"2026.07.04\"]\n[Round \"1\"]\n[White \"Player1\"]\n[Black \"Player2\"]\n[Result \"0-1\"]\n\n1. f3 e5 2. g4 Qh4# 0-1\n",
+ "nodes": 1000000,
+ "engine": "Stockfish 18",
+ "searches": [
+  [
+   [
+    69,
+    925,
+    6
+   ],
+   [
+    "e2e4",
+    "e7e5",
+    "g1f3",
+    "b8c6",
+    "f1b5",
+    "g8f6",
+    "e1g1",
+    "f6e4",
+    "f1e1",
+    "e4d6",
+    "f3e5",
+    "c6e5",
+    "b1c3",
+    "f8e7",
+    "e1e5",
+    "e8g8",
+    "b5f1",
+    "e7f6",
+    "e5e1",
+    "d6f5",
+    "c3d5",
+    "f6h4",
+    "d2d4",
+    "c7c6",
+    "d5f4",
+    "d7d5",
+    "g2g3",
+    "h4e7",
+    "c2c3",
+    "c8d7",
+    "a2a4"
+   ]
+  ],
+  [
+   [
+    223,
+    775,
+    2
+   ],
+   [
+    "e7e5",
+    "b1c3",
+    "g8f6",
+    "d2d4",
+    "e5d4",
+    "d1d4",
+    "b8c6",
+    "d4f2",
+    "d7d5",
+    "e2e4",
+    "f8b4",
+    "c1d2",
+    "b4c3",
+    "d2c3",
+    "d5e4",
+    "f1b5",
+    "e8g8",
+    "g1e2",
+    "e4f3",
+    "g2f3",
+    "c8f5",
+    "f2c5",
+    "f5g6",
+    "a1d1",
+    "f6d7",
+    "c5f2"
+   ]
+  ],
+  [
+   [
+    1,
+    680,
+    319
+   ],
+   [
+    "b1c3",
+    "g8f6",
+    "d2d4",
+    "e5d4",
+    "d1d4",
+    "b8c6",
+    "d4f2",
+    "d7d5",
+    "e2e4",
+    "f8b4",
+    "c1d2",
+    "b4c3",
+    "d2c3",
+    "d5e4",
+    "f2c5",
+    "c8e6",
+    "a1d1",
+    "d8e7",
+    "c5e7",
+    "e8e7",
+    "f3e4",
+    "f6e4",
+    "c3g7",
+    "h8g8",
+    "g7h6",
+    "c6b4",
+    "f1d3",
+    "b4d3",
+    "c2d3"
+   ]
+  ],
+  [
+   [
+    1000,
+    0,
+    0
+   ],
+   [
+    "d8h4"
+   ]
+  ],
+  [
+   null,
+   []
+  ]
+ ],
+ "payload": {
+  "flags": [
+   {
+    "move_san": "g4",
+    "move_number": 2,
+    "side": "white",
+    "phase": "opening",
+    "wdl_before_prob": 0.341,
+    "wdl_after_prob": 0.0,
+    "wdl_delta": -0.341,
+    "best_move_san": "Nc3",
+    "pv": [
+     "Nc3",
+     "Nf6",
+     "d4",
+     "exd4",
+     "Qxd4",
+     "Nc6"
+    ],
+    "refutation_pv": [
+     "Qh4#"
+    ],
+    "feature_deltas": {
+     "weak_squares": -2,
+     "piece_activity_delta": 1,
+     "king_safety_delta": 0.0,
+     "pawn_structure_delta": 0.0
+    },
+    "concessions": {
+     "new_weak_squares": [
+      "h3"
+     ]
+    },
+    "channel": "wdl"
+   }
+  ],
+  "move_evals": [
+   {
+    "move_san": "f3",
+    "move_number": 1,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.14199999999999996,
+    "best_move_san": "e4"
+   },
+   {
+    "move_san": "e5",
+    "move_number": 1,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.04849999999999999,
+    "best_move_san": "e5"
+   },
+   {
+    "move_san": "g4",
+    "move_number": 2,
+    "side": "white",
+    "phase": "opening",
+    "wdl_delta": -0.341,
+    "best_move_san": "Nc3"
+   },
+   {
+    "move_san": "Qh4#",
+    "move_number": 2,
+    "side": "black",
+    "phase": "opening",
+    "wdl_delta": 0.0,
+    "best_move_san": "Qh4#"
+   }
+  ],
+  "summary": {
+   "total_flags": 1,
+   "phase_distribution": {
+    "opening": 1,
+    "middlegame": 0,
+    "endgame": 0
+   },
+   "final_wdl": null
+  }
+ }
+}
