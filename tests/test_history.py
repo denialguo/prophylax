@@ -241,3 +241,20 @@ def test_cli_analyze_stores_derives_and_enforces_the_budget(db, tmp_path, monkey
         cli._check_config({**CONFIG, "nodes": 1_000_000})
     with pytest.raises(SystemExit):
         cli._check_config({**CONFIG, "engine": "Stockfish 17"})
+
+
+def test_mcp_client_accepts_long_responses(monkeypatch):
+    """A 400-ply game with include_searches is a single JSON line well over 64 KiB."""
+    import asyncio
+    import app.agent
+    seen = {}
+
+    async def fake_exec(*cmd, **kw):
+        seen.update(kw)
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr(app.agent, "_server", None)
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", fake_exec)
+    with pytest.raises(RuntimeError):
+        asyncio.run(app.agent.call_mcp_tool_subprocess("analyze_pgn", {"pgn": "1. e4 *"}))
+    assert seen["limit"] >= 1024 * 1024

@@ -89,6 +89,9 @@ def _discard_server():
             os.killpg(_server[0].pid, signal.SIGKILL)
         _server = None
 
+MCP_MAX_RESPONSE_BYTES = 16 * 1024 * 1024
+
+
 async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
     """
     JSON-RPC call to the persistent MCP server subprocess (spawned on first use).
@@ -117,6 +120,9 @@ async def call_mcp_tool_subprocess(tool_name: str, arguments: dict) -> dict:
             cwd=ROOT,
             env=env,
             start_new_session=True,
+            # one JSON-RPC response is one line; asyncio's default 64 KiB line limit is
+            # too small for a long game with include_searches (history import)
+            limit=MCP_MAX_RESPONSE_BYTES,
         )
         _server = (proc, loop, dict(os.environ), asyncio.Lock())
     proc, _, _, lock = _server
