@@ -460,6 +460,11 @@ TOOLS = [
                     "type": "integer",
                     "default": 4,
                     "description": "Maximum number of blunder/concession flags to return."
+                },
+                "include_searches": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Also return the raw per-position engine searches (WDL, PV) for storage."
                 }
             },
             "required": [
