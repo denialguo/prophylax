@@ -121,6 +121,17 @@ def test_median_loss(db, losses, median):
     assert c["median_loss_pp"] == median and c["loss_range_pp"] == [min(losses), max(losses)]
 
 
+def test_quiet_concessions_are_counted_and_zero_loss_prints_as_zero(db):
+    add_game(db, 1, events=[(BP, "middlegame", 0), (BP, "middlegame", 12)])
+    db.execute("UPDATE mistake_events SET channel='quiet_inaccuracy', wdl_delta=-0.0 WHERE ply=0")
+    for i in (2, 3):
+        add_game(db, i, events=[(BP, "middlegame", 12)])
+    p = profile(db)
+    assert cat(p, BP)["quiet_moves"] == 1 and cat(p, BP)["loss_range_pp"] == [0.0, 12.0]
+    text = render(p)
+    assert "range 0 to 12" in text and "range -0" not in text and "1 of the 4 were quiet concessions" in text
+
+
 def test_phase_split(db):
     add_game(db, 1, events=[(BP, "middlegame", 5), (BP, "middlegame", 5), (BP, "endgame", 5)])
     assert cat(profile(db), BP)["phases"] == {"opening": 0, "middlegame": 2, "endgame": 1}

@@ -47,6 +47,42 @@ converse
   → grounding check (stored flags + moves actually played) → retry → fallback
 ```
 
+## Player history (M15, M16)
+
+```
+games/*.pgn (read only)
+  │ history/importer.py: strict header parse → typed columns; sanitized movetext only;
+  │ explicit exclusion_reason (not_player, null_move, abandoned, too_short, bullet, …)
+  ▼
+games ──▶ analyze_pgn(include_searches) through the MCP server at 100k nodes
+  │       → engine_runs + engine_positions: per-position WDL + PV, with provenance
+  │         (engine, nodes, Threads, Hash); immutable, stored once per configuration
+  ▼
+history/derive.py: stored searches → derive_game_payload (the live server code)
+  → game_analysis_from_payload → build_claims       (no engine; re-run on a version bump)
+  → move_analyses, claims, mistake_events + mistake_categories
+  ▼
+history/profile.py: recurring weaknesses over MistakeEvents (last 20 eligible games,
+  3+ distinct games, previous-20 trend, phase split, median loss, created→flagged rate)
+```
+
+- **One derivation path.** `handle_analyze_pgn` is `search_game` (the only engine
+  call) then `derive_game_payload` (pure). History re-derives stored searches
+  through the same function; `tests/test_derive_parity.py` proves the split kept
+  the payload identical (offline from recorded searches, and live at 1M).
+- **MistakeEvent** = a move by the profiled player that the existing pipeline
+  flagged (Channel 1 or 2). Its category is the move's structural claim types
+  (`weak_square_created`, `backward_pawn_created`, `pawn_support_lost`,
+  `king_safety_reduced`), else `unclassified`. Raw structural changes are only
+  the denominator of the created→flagged rate.
+- **Staleness.** A derivation whose `ANALYZER_VERSION` / `CLAIMS_VERSION` differs
+  from the code is re-derived from stored searches (`python -m history
+  rederive`, seconds, no Stockfish). A change to covered code fails
+  `tests/test_versions.py` until the version (or, for a pure refactor, the
+  recorded hash) is updated.
+- **Eligibility is explicit** (`games.exclusion_reason`), recomputed on every
+  import; storage never implies profile inclusion.
+
 ## Components
 
 | Path | Role |
@@ -61,6 +97,8 @@ converse
 | `evals/validate_narration.py` | Grounding checks for narration and conversation. |
 | `.agents/skills/` | `narration_contract.md` (shared) + one phase section per `SKILL.md`. |
 | `config/` | Engine path, version pin, limits, timeouts, certified narrator models. |
+| `domain/versions.py` | `ANALYZER_VERSION` / `CLAIMS_VERSION` for stored history, with source-hash guards (`tests/test_versions.py`). |
+| `history/` | Persistent player history (M15) and the recurring-weakness profile (M16); `python -m history`. |
 
 ## Engine process model
 
@@ -173,6 +211,8 @@ internals, which go to stderr. The CLI exits 1 when no report was produced.
 | `JUDGE_MODEL` | `gemini-3.1-flash-lite` | Must differ from the narrator. |
 | `GEMINI_API_KEY` | required for Gemini models | Never stored in the repo (`app/.env` is git-ignored). |
 | `GROQ_API_KEY` | required for `groq/...` models | Provider-prefixed model names (e.g. `groq/llama-3.3-70b-versatile`) run through LiteLLM (`config.settings.resolve_model`). |
+| `PROPHYLAX_HISTORY_DB` | `data/prophylax_history.sqlite3` | Application-owned history database (git-ignored; AGENTS.md rule 3). |
+| `PROPHYLAX_PLAYER_NAMES` | none | The profiled player's usernames, comma-separated (or `--player`). |
 
 A narrator call that hits a 503 is retried once after 3 s; a persistent 503 or
 a 429 falls back through the other `APPROVED_NARRATORS`, across providers.
@@ -188,6 +228,7 @@ Fixed bounds in `config/settings.py`: 100,000 PGN characters, 400 plies,
 | `pytest -m golden` | Engine fixtures with WDL bands at 1M nodes, including the `kp_opposition` endgame study. | Stockfish, ~2.5 min |
 | `pytest -m narration` | Real narrator against `evals/skills/*.json`; records retries in junit properties. | API key |
 | `pytest -m judge` | LLM-as-judge calibration. | API key |
+| `pytest tests/test_history*.py tests/test_derive_parity.py tests/test_versions.py` | M15/M16 offline: schema, importer, derivation from recorded searches, versions, profile statistics. | nothing |
 | `python tests/verify_goldens.py` | Bands at 1M and decision stability at 3M. `--record` writes only missing bands, on operator instruction. | Stockfish |
 
 Mocks used by the agent tests are validated against the same schema as the
@@ -196,3 +237,9 @@ real server output (`tests/payload_schema.py`).
 ## Known limits
 
 - King safety ignores uncastled kings on the d/e files.
+- `get_quiet_concessions` builds its square lists from sets, so their order in a
+  live payload follows the process's hash seed (the stored history sorts them).
+- Profile statistics rest on 100k-node analysis: on a 6-game check, 100k and 1M
+  agreed on 89% of the player's flagged moves and 8 of 9 structural ones, but on
+  only 76% of best moves (see `PHASE_C_PLAN.md` §3.2). King-safety events have no
+  per-move base rate stored, so no created→flagged rate.
