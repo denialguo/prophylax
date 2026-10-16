@@ -73,13 +73,15 @@ Each claim carries its evidence. For example, "a3 was guarded by the b2 pawn
 that moved" and "Black's d4 pawn attacks c3" are recomputed from the board and
 must agree with the engine server's facts, or no claim is made.
 
-A narration of another flagged move in the same game, from a real run
-(`python -m app.agent --pgn tests/fixtures/scandinavian_blitz.pgn`):
+The default narration of another flagged move in the same game, from a real
+run (`python -m app.agent --pgn tests/fixtures/scandinavian_blitz.pgn`, 1M nodes):
 
-> The move 21.h4 constitutes a severe strategic error that compromises white's
-> king safety. The refutation line 21...Nxf3 22.Kxf3 22...h5 23.Kg2 23...g6
-> 24.Nh6+ demonstrates how black immediately exploits the weakened kingside
-> structure.
+> The move 21.h4 is a significant error that undermines White's position by
+> thinning the pawn cover around the king, causing a sharp 22.9% drop in win
+> probability from 74% to 51%. The engine highlights that this choice invites
+> exploitation, as shown by the refutation line 21...Nxf3 22.Kxf3 h5 23.Kg2 g6
+> 24.Nh6+. Instead, the engine preferred the solid developing maneuver 21.Bd1,
+> leading to the continuation 21...a6 22.Bb3 Ne6 23.a5 h5.
 
 ## Example 2: your own history
 
@@ -123,7 +125,7 @@ Flagged moves with no structural pattern (tactical or other): 100 moves in 20 ga
 
 ## Testing and evaluation
 
-- **Fast suite:** 444 tests, about 12s, offline. It covers:
+- **Fast suite:** 444 tests, about 11s, offline. It covers:
   - the domain models and conversion
   - claims in both colours and in mirrored positions
   - the validators and the prompt contracts
@@ -140,13 +142,16 @@ Flagged moves with no structural pattern (tactical or other): 100 moves in 20 ga
 - **Pre-registered A/B tests for prompt changes:** paired, seeded runs
   alternating which arm goes first, with a switching rule written before the
   data. Provider outages are logged and rerun, never counted. The first
-  comparison of claim-grounded narration against the default kept the default:
-  the rule said so, and the losing variant was not tuned afterwards to win.
+  comparison kept the payload path (gate passes regressed). After fixing a
+  validator false positive and adding deterministic required-claim markers,
+  the rerun (54 trials) switched the default to claim-grounded narration:
+  judge passes 27/27 vs 25/27, with gate passes, fallbacks, invalid
+  narrations and concept violations level. The losing arm was not tuned.
 
 ```bash
 uv run pytest                    # fast suite (offline)
 uv run pytest -m golden          # engine-backed, needs Stockfish (~2 min)
-uv run pytest -m narration       # narrator gate (API key)
+uv run pytest -m narration       # flag-path narrator gate + default-path report (API key, Stockfish)
 uv run python -m evals.claim_metrics   # claim benchmark + narration coverage
 ```
 
@@ -178,11 +183,13 @@ The history database lives at `data/prophylax_history.sqlite3` (git-ignored;
 
 ## Honest limitations
 
-- **The default narration path can misuse terms.** In the example game, the
-  default path's 13.b4 narration called a3 an "outpost" (no Black pawn
-  attacks it) and c3 "isolated" (it isn't). The claim-grounded path rejects
-  exactly these, but it didn't win its pre-registered comparison, so it isn't
-  the default.
+- **Claim-grounded narration names the expected theme less often.** It is the
+  default because it won its pre-registered comparison (judge passes 27/27 vs
+  25/27). But its theme subscore was 30 against 43 for the payload path, so it
+  more often stays correct without leading on the theme a coach would pick.
+  The payload path (`PROPHYLAX_NARRATION_INPUT=flag`) is kept for comparison,
+  and it can misuse terms: in the example game it called a3 an "outpost" and
+  c3 "isolated", both of which the claim-grounded path rejects.
 - **Most mistakes are unclassified.** 1,239 of 1,553 flagged moves have no
   structural category. They're tactical or not yet a defined concept (for
   example, pawn races). Prophylax reports them as such and never guesses a

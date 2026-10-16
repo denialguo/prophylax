@@ -122,9 +122,9 @@ def get_fallback_narrators(primary: str) -> list[str]:
 
 
 def get_narration_input() -> str:
-    """What the narrator is given (M13): "flag" (the server payload, today's default) or
-    "claims" (the verified coaching claims only)."""
-    value = os.environ.get("PROPHYLAX_NARRATION_INPUT", "flag")
+    """What the narrator is given (M13): "claims" (the verified coaching claims only; the
+    default since D12 chose it) or "flag" (the server payload; the alternate/debug path)."""
+    value = os.environ.get("PROPHYLAX_NARRATION_INPUT", "claims")
     if value not in ("flag", "claims"):
         raise ValueError(f"PROPHYLAX_NARRATION_INPUT must be 'flag' or 'claims', got {value!r}")
     return value

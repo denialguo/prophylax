@@ -1,4 +1,4 @@
-"""M13: claim-grounded narration behind PROPHYLAX_NARRATION_INPUT (default: flag)."""
+"""M13: claim-grounded narration behind PROPHYLAX_NARRATION_INPUT (default: claims, per D12)."""
 import pytest
 
 from config.settings import get_narration_input
@@ -70,9 +70,9 @@ def test_claims_ground_allows_evidence_squares_only():
 
 def test_switch(monkeypatch):
     monkeypatch.delenv("PROPHYLAX_NARRATION_INPUT", raising=False)
-    assert get_narration_input() == "flag"
-    monkeypatch.setenv("PROPHYLAX_NARRATION_INPUT", "claims")
     assert get_narration_input() == "claims"
+    monkeypatch.setenv("PROPHYLAX_NARRATION_INPUT", "flag")
+    assert get_narration_input() == "flag"
     monkeypatch.setenv("PROPHYLAX_NARRATION_INPUT", "claim")
     with pytest.raises(ValueError):
         get_narration_input()
