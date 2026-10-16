@@ -7,15 +7,14 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent
-from tests.payload_schema import pgn_payload, position_payload
+from tests.payload_schema import pgn_payload, position_payload, with_board_concessions
 
 PGN = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 *"
-FLAG = {
+FLAG = with_board_concessions(PGN, [{
     "move_san": "Nf3", "move_number": 2, "side": "white", "phase": "opening",
     "wdl_delta": -0.2, "best_move_san": "Nc3", "pv": ["Nc3", "Nf6"],
-    "refutation_pv": ["Nc6"], "feature_deltas": {}, "concessions": {"new_weak_squares": ["f3"]},
-    "channel": "wdl",
-}
+    "refutation_pv": ["Nc6"], "feature_deltas": {}, "channel": "wdl",
+}])[0]
 POSITION = {
     "multipv_lines": [{"pv": ["Nc3", "Nf6"], "wdl": None}, {"pv": ["d4", "exd4"], "wdl": None}],
     "features": {

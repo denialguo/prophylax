@@ -7,7 +7,7 @@ from google.adk.runners import Runner
 from google.genai import types
 
 from app.agent import root_agent, call_mcp_tool_subprocess
-from tests.payload_schema import pgn_payload, position_payload
+from tests.payload_schema import pgn_payload, position_payload, with_board_concessions
 
 # Dummy PGN for testing
 TEST_PGN = """[Event "Test Game"]
@@ -35,7 +35,7 @@ async def test_analyze_pgn_trajectory():
     async def mock_call(tool_name: str, arguments: dict) -> dict:
         calls.append((tool_name, arguments))
         if tool_name == "analyze_pgn":
-            return pgn_payload(TEST_PGN, [
+            return pgn_payload(TEST_PGN, with_board_concessions(TEST_PGN, [
                     {
                         "move_san": "b4",
                         "move_number": 13,
@@ -46,10 +46,9 @@ async def test_analyze_pgn_trajectory():
                         "pv": ["cxd4", "exd4"],
                         "refutation_pv": ["a5", "bxa5"],
                         "feature_deltas": {},
-                        "concessions": {"new_weak_squares": ["a3", "c3"]},
                         "channel": "wdl"
                     }
-            ])
+            ]))
         return {}
 
     session_service = InMemorySessionService()
@@ -80,7 +79,7 @@ async def test_deep_dive_trajectory():
     async def mock_call(tool_name: str, arguments: dict) -> dict:
         calls.append((tool_name, arguments))
         if tool_name == "analyze_pgn":
-            return pgn_payload(TEST_PGN, [
+            return pgn_payload(TEST_PGN, with_board_concessions(TEST_PGN, [
                     {
                         "move_san": "b4",
                         "move_number": 13,
@@ -91,10 +90,9 @@ async def test_deep_dive_trajectory():
                         "pv": ["cxd4", "exd4"],
                         "refutation_pv": ["a5", "bxa5"],
                         "feature_deltas": {},
-                        "concessions": {"new_weak_squares": ["a3", "c3"]},
                         "channel": "wdl"
                     }
-            ])
+            ]))
         elif tool_name == "analyze_position":
             return position_payload(["cxd4", "exd4"])
         return {}

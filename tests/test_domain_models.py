@@ -153,7 +153,8 @@ def _agent_run(pgn_result, position_result=None, messages=None):
     return prompts, out
 
 
-def test_agent_narration_prompts_unchanged_by_conversion():
+def test_agent_narration_prompts_unchanged_by_conversion(monkeypatch):
+    monkeypatch.setenv("PROPHYLAX_NARRATION_INPUT", "flag")  # asserts the flag-path prompt text
     flags = test_agent_structure.FLAGS
     prompts, _ = _agent_run(payload_for(test_agent_structure.PGN, flags))
     narrator_prompts = sorted(p for name, p in prompts if name.startswith("analysing_"))

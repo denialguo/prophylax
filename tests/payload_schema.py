@@ -74,10 +74,35 @@ ANALYZE_POSITION = {
 EVAL_KEYS = ("move_san", "move_number", "side", "phase", "wdl_delta", "best_move_san")
 
 
+def _board_concessions(movetext: str) -> dict:
+    """(move_number, side) -> the concessions the real server computes for that move,
+    from its own function (sorted lists, as history stores them)."""
+    import io
+    import chess.pgn
+    from mcp_server.features import get_quiet_concessions
+    game = chess.pgn.read_game(io.StringIO(movetext))
+    board, out = game.board(), {}
+    for move in game.mainline_moves():
+        after = board.copy()
+        after.push(move)
+        out[(board.fullmove_number, "white" if board.turn else "black")] = {
+            k: sorted(v) for k, v in get_quiet_concessions(board, after, board.turn).items()}
+        board = after
+    return out
+
+
+def with_board_concessions(movetext: str, flags: list) -> list:
+    """Hand-written mock flags with their concessions replaced by the ones the board
+    actually has, so claims mode (which re-checks them, fail-closed) accepts them."""
+    real = _board_concessions(movetext)
+    return [{**f, "concessions": real[(f["move_number"], f["side"])]} for f in flags]
+
+
 def pgn_payload(movetext: str, flags: list = ()) -> dict:
     """A complete analyze_pgn result, shaped like the real server's, around hand-written
     flags: every ply gets a move_evals entry; flagged plies copy their flag's values.
-    Agent-test mocks use this so the domain converter sees what production sees."""
+    Agent-test mocks use this so the domain converter sees what production sees, and a
+    flag whose concessions the board does not have is rejected here (an impossible mock)."""
     import copy
     import io
     import chess.pgn
@@ -85,6 +110,12 @@ def pgn_payload(movetext: str, flags: list = ()) -> dict:
     game = chess.pgn.read_game(io.StringIO(movetext))
     board, evals = game.board(), []
     by_move = {(f["move_number"], f["side"]): f for f in flags}
+    real = _board_concessions(movetext)
+    for f in flags:
+        got = {k: sorted(v) for k, v in f["concessions"].items()}
+        if got != real[(f["move_number"], f["side"])]:
+            raise ValueError(f"mock flag {f['move_number']} {f['side']} {f['move_san']}: concessions {got}, "
+                             f"board {real[(f['move_number'], f['side'])]}")
     for move in game.mainline_moves():
         side = "white" if board.turn else "black"
         f = by_move.get((board.fullmove_number, side))

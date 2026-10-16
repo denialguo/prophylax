@@ -10,7 +10,7 @@ from google.genai import types
 
 import app.agent as agent_mod
 from app.agent import root_agent, narrator_for
-from tests.payload_schema import pgn_payload, position_payload
+from tests.payload_schema import pgn_payload, position_payload, with_board_concessions
 
 PGN = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 *"
 
@@ -31,12 +31,12 @@ def test_each_phase_gets_contract_plus_its_section(phase, section):
 
 def flag(n, side, san):
     return {"move_san": san, "move_number": n, "side": side, "phase": "opening", "wdl_delta": -0.2,
-            "best_move_san": "", "pv": [], "refutation_pv": [], "feature_deltas": {}, "concessions": {},
+            "best_move_san": "", "pv": [], "refutation_pv": [], "feature_deltas": {},
             "channel": "wdl"}
 
 
-FLAGS = [flag(6, "black", "b5"), flag(2, "white", "Nf3"), flag(4, "white", "Ba4"),
-         flag(3, "black", "a6"), flag(5, "white", "O-O"), flag(4, "black", "Nf6")]
+FLAGS = with_board_concessions(PGN, [flag(6, "black", "b5"), flag(2, "white", "Nf3"), flag(4, "white", "Ba4"),
+         flag(3, "black", "a6"), flag(5, "white", "O-O"), flag(4, "black", "Nf6")])
 
 
 async def run(messages, mock_sub):

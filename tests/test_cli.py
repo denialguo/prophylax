@@ -2,11 +2,11 @@
 from unittest.mock import patch
 
 from app.agent import main
-from tests.payload_schema import pgn_payload, position_payload
+from tests.payload_schema import pgn_payload, position_payload, with_board_concessions
 
-FLAG = {"move_san": "g4", "move_number": 2, "side": "white", "phase": "opening", "wdl_delta": -0.34,
-        "best_move_san": "", "pv": [], "refutation_pv": [], "feature_deltas": {}, "concessions": {},
-        "channel": "wdl"}
+FLAG = with_board_concessions("1. f3 e5 2. g4 Qh4# 0-1", [{"move_san": "g4", "move_number": 2, "side": "white", "phase": "opening", "wdl_delta": -0.34,
+        "best_move_san": "", "pv": [], "refutation_pv": [], "feature_deltas": {},
+        "channel": "wdl"}])[0]
 
 
 def test_cli_prints_report(tmp_path, capsys):
