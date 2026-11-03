@@ -1,0 +1,30 @@
+{
+ "fen": "r4b1k/pp2r1pp/5p2/8/P2qp3/2PP3P/RP3PP1/3R1NK1 w - - 0 25",
+ "best_move_uci": "c3d4",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "c3d4",
+  "a8d8",
+  "d3e4",
+  "e7e4",
+  "f1e3"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite stands a full queen down, with Black's <PIECE_OQ> on <SQUARE_28> dominating the center and the <PIECE_OP> on <SQUARE_29> forming a dangerous central passer. The critical tactical feature is that the queen sits en prise to the <PIECE_MP> on <SQUARE_19>. Capturing it transforms the position from a lost material deficit into a roughly balanced rook-and-minor-piece endgame where White's <PIECE_MN> on <SQUARE_6> and <PIECE_MR> on <SQUARE_4> can coordinate against Black's active rooks and bishop. The alternative of ignoring the queen leaves Black with a decisive material edge that is difficult to overcome.\n\nI. <PIECE_MP><SQUARE_19><PIECE_OQ><SQUARE_28> \u2014 the only move that saves the position. After the capture, Black's best is 1... <PIECE_OR><SQUARE_57><SQUARE_60>, immediately contesting the d-file and attacking the new <PIECE_MP> on <SQUARE_28>. White's most natural reply is 2. <PIECE_MP><SQUARE_20><PIECE_OP><SQUARE_29>, removing the passer and opening the e-file. Black recaptures 2... <PIECE_OR><SQUARE_53><PIECE_MP><SQUARE_29>, winning the pawn back and activating the rook on the open file. White develops 3. <PIECE_MN><SQUARE_6><SQUARE_21>, centralizing the knight and contesting the e-file. The resulting position is approximately equal: White's extra central pawn and active knight compensate for Black's rook activity on the open file.\n\nI.a. If White instead plays 2. <PIECE_MN><SQUARE_6><SQUARE_21> without first capturing the passer, Black seizes the initiative with 2... <PIECE_OP><SQUARE_29><PIECE_MP><SQUARE_20>, creating a passed pawn and opening the d-file. After 3. <PIECE_MR><SQUARE_4><PIECE_OP><SQUARE_20> <PIECE_OR><SQUARE_53><SQUARE_52>, Black attacks the <PIECE_MP> on <SQUARE_28>. White's 4. <PIECE_MN><SQUARE_21><SQUARE_38> threatens the <PIECE_OP> on <SQUARE_55>, but 4... <PIECE_OR><SQUARE_52><PIECE_MP><SQUARE_28> wins the pawn and leaves the <PIECE_MR> on <SQUARE_20> hanging, giving Black a clear advantage.\n\nI.b. The advance 2. <PIECE_MP><SQUARE_28><SQUARE_36> is a serious positional error. It opens the d-file and allows 2... <PIECE_OP><SQUARE_29><PIECE_MP><SQUARE_20>. After 3. <PIECE_MR><SQUARE_4><PIECE_OP><SQUARE_20> <PIECE_OR><SQUARE_53><SQUARE_52>, the <PIECE_MP> on <SQUARE_36> is attacked and cannot be adequately defended. Black's rook dominates the open file and the position is decisively better for Black.\n\nII. <PIECE_MP><SQUARE_20><PIECE_OP><SQUARE_29> \u2014 ignoring the queen allows Black to maintain a decisive material advantage. Black's best is 1... <PIECE_OQ><SQUARE_28><PIECE_MP><SQUARE_29>, capturing the central pawn and placing the queen on a dominant square. White's most resilient reply is 2. <PIECE_MN><SQUARE_6><SQUARE_21>, developing to a central outpost, but Black activates with 2... <PIECE_OR><SQUARE_57><SQUARE_61>, bringing the second rook to the open file. After 3. <PIECE_MR><SQUARE_4><SQUARE_5>, Black retains a comfortable winning advantage with the queen dominating the center and both rooks active.\n\nIII. <PIECE_MP><SQUARE_10><SQUARE_26> \u2014 a queenside advance that also ignores the queen. Black's best is 1... <PIECE_OQ><SQUARE_28><PIECE_MP><SQUARE_20>, capturing the central pawn and placing the queen on a dominant square where it simultaneously eyes the <PIECE_MP> on <SQUARE_19> and the <PIECE_MR> on <SQUARE_4>. White's best practical try is 2. <PIECE_MN><SQUARE_6><SQUARE_21>, but Black responds 2... <PIECE_OR><SQUARE_57><SQUARE_61>, centralizing the rook. The position remains decisively in Black's favor with the queen dominating the center and White's pieces poorly coordinated.\n\nBEST_MOVE: <PIECE_MP><SQUARE_19><PIECE_OQ><SQUARE_28>\nCRITICAL_LINE: <PIECE_MP><SQUARE_19><PIECE_OQ><SQUARE_28> <PIECE_OR><SQUARE_57><SQUARE_60> <PIECE_MP><SQUARE_20><PIECE_OP><SQUARE_29> <PIECE_OR><SQUARE_53><PIECE_MP><SQUARE_29> <PIECE_MN><SQUARE_6><SQUARE_21>\nPROMISING_MOVES: <PIECE_MP><SQUARE_19><PIECE_OQ><SQUARE_28> <PIECE_MP><SQUARE_20><PIECE_OP><SQUARE_29> <PIECE_MP><SQUARE_10><SQUARE_26>\nEVALUATION: the player has a slight advantage of 0.1 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 766,
+ "seconds": 22.65,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 912524811,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

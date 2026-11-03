@@ -1,0 +1,30 @@
+{
+ "fen": "2r2rk1/1p2bppp/1q2p3/P3n3/3pP3/6P1/3N1PBP/R2R2K1 w - - 0 24",
+ "best_move_uci": "a5b6",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "a5b6",
+  "c8c2",
+  "f2f4",
+  "e5g4",
+  "g2f1"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack holds a full queen for a bishop, a ten-point material surplus that is decisive in the abstract. The practical question for White is whether the <PIECE_MP> on <SQUARE_33> can eliminate the queen before Black converts the material edge. The answer is yes: the capture on <SQUARE_42> reduces the imbalance to a single pawn, leaving Black with a passed <PIECE_OP> on <SQUARE_28> and an active <PIECE_ON> on <SQUARE_37>, but no queen. This is by far the most resilient option for White.\n\nI. <PIECE_MP><SQUARE_33><PIECE_OQ><SQUARE_42> \u2014 the mandatory best move. After this capture, Black's most precise reply is 1... <PIECE_OR><SQUARE_59><SQUARE_11>, invading the second rank and immediately attacking the <PIECE_MN> on <SQUARE_12>. White's best practical try is 2. <PIECE_MP><SQUARE_14><SQUARE_30>, challenging the knight and opening the <SQUARE_6>-<SQUARE_62>. Black's strongest response is 2... <PIECE_ON><SQUARE_37><SQUARE_31>, preparing the check <PIECE_ON><SQUARE_31><SQUARE_21> while leaving the <PIECE_MP> on <SQUARE_42> undefended. White must respond 3. <PIECE_MB><SQUARE_15><SQUARE_6>, eliminating the check threat and simultaneously attacking the rook on <SQUARE_11>. The position remains favorable for Black with the active rook and the passed <SQUARE_28> pawn, but White has reduced the material gap to a single pawn and retains a coherent defensive structure.\n\nI.a. If White instead plays 2. <PIECE_MR><SQUARE_1><SQUARE_49>, targeting the <PIECE_OP> on <SQUARE_50>, Black responds 2... <PIECE_OB><SQUARE_53><SQUARE_35>, defending the pawn and activating the bishop. After 3. <PIECE_MR><SQUARE_49><PIECE_OP><SQUARE_50>, Black plays 3... <PIECE_OP><SQUARE_28><SQUARE_20>, pushing the passer and restricting the <PIECE_MR> on <SQUARE_4>. The rook on <SQUARE_50> is somewhat boxed in, and Black's passed pawn plus active pieces compensate.\n\nI.b. If White plays 2. <PIECE_MR><SQUARE_1><SQUARE_2>, the most passive option, Black again plays 2... <PIECE_OB><SQUARE_53><SQUARE_35>. After 3. <PIECE_MN><SQUARE_12><SQUARE_22>, Black captures 3... <PIECE_ON><SQUARE_37><PIECE_MN><SQUARE_22>+ with check. After 4. <PIECE_MB><SQUARE_15><PIECE_ON><SQUARE_22>, Black plays 4... <PIECE_OP><SQUARE_28><SQUARE_20>, and the <PIECE_MR> on <SQUARE_4> is boxed in. This is the most favorable outcome for Black among White's replies.\n\nII. <PIECE_MP><SQUARE_14><SQUARE_30> \u2014 a natural developing move that challenges the knight, but it leaves the queen on the board. Black's best is 1... <PIECE_OQ><SQUARE_42><SQUARE_10>, invading the second rank and directly attacking the <PIECE_MN> on <SQUARE_12>. After 2. <PIECE_MP><SQUARE_30><PIECE_ON><SQUARE_37> 2... <PIECE_OQ><SQUARE_10><PIECE_MN><SQUARE_12>, Black wins the knight and the queen's activity makes the position far more dangerous than after the queen capture. The evaluation drops to roughly six pawns in Black's favor.\n\nIII. <PIECE_MN><SQUARE_12><SQUARE_22> \u2014 develops the knight but again leaves the queen on the board. Black's best is 1... <PIECE_OQ><SQUARE_42><SQUARE_10>, dominating the second rank. After 2. <PIECE_MN><SQUARE_22><PIECE_ON><SQUARE_37> 2... <PIECE_OQ><SQUARE_10><PIECE_MN><SQUARE_37> 3. <PIECE_MP><SQUARE_14><SQUARE_30>, Black retains a decisive material edge with the queen actively placed and the <SQUARE_28> passer intact. The evaluation is the worst of the three candidates.\n\nThe queen capture is overwhelmingly superior: it eliminates Black's most powerful piece, reduces the material imbalance to a single pawn, and leaves White with a defensible position where the passed <PIECE_MP> on <SQUARE_42> and the active <PIECE_MR> on <SQUARE_1> provide long-term counterplay. The other two candidates leave the queen on the board, where it generates immediate tactical threats against the <PIECE_MN> on <SQUARE_12> and the <PIECE_MP> on <SQUARE_14>, making Black's advantage far more concrete and dangerous.\n\nBEST_MOVE: <PIECE_MP><SQUARE_33><PIECE_OQ><SQUARE_42>\nCRITICAL_LINE: <PIECE_MP><SQUARE_33><PIECE_OQ><SQUARE_42> <PIECE_OR><SQUARE_59><SQUARE_11> <PIECE_MP><SQUARE_14><SQUARE_30> <PIECE_ON><SQUARE_37><SQUARE_31> <PIECE_MB><SQUARE_15><SQUARE_6>\nPROMISING_MOVES: <PIECE_MP><SQUARE_33><PIECE_OQ><SQUARE_42> <PIECE_MP><SQUARE_14><SQUARE_30> <PIECE_MN><SQUARE_12><SQUARE_22>\nEVALUATION: the opponent has an advantage of 1.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 815,
+ "seconds": 23.33,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 2007444449,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}
