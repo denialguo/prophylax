@@ -226,12 +226,18 @@ caller.
 - **Not extracted, on purpose:** strategic language, and "eyes", "targets", "pressures" and net
   material ("wins a pawn"), where no predicate matches what the words mean. The audit counts some of
   these as false, so catching them needs new predicates or looser reading, not this layer.
-- **Benchmark:** `python -m evals.queen_extraction`. The 18 outputs and the audit are stored with
-  SHA-256 hashes; labels in `gold.jsonl` are hand-drafted, pending operator review. The grammar was
-  written against the same 18 outputs as the labels, so the scores describe this corpus, not new text.
+- **Development/tuning set:** `python -m evals.queen_extraction`. 18 outputs and the audit, stored
+  with SHA-256 hashes. The grammar was written against these outputs, so the scores describe this
+  corpus, not new text. Labels in `gold.jsonl` are hand-drafted; `label_review.jsonl` logs every
+  correction. An audit found labels describing the grammar's limits, and the fix moved exact fact
+  matches from 83/83 to 83/106.
+- **Held-out evaluation set:** `evals/queen_heldout/`, 24 other positions scored separately. The code
+  under evaluation is frozen at `046bb19`, and `tests/test_queen_heldout.py` fails if it changes.
+  The flow is `run_queen` → `freeze_predictions` → hand labels → `score` → `generate_report`.
+  Predictions are written read-only, with hashes, before any label exists.
 - **Known failure:** 13 I.b (`white pawn c3-c4`) is illegal at the branch the text means, but it
-  becomes legal later in the parent line. With no move number the branch point is unstated, so it
-  comes out AMBIGUOUS and the illegal move is not reported.
+  becomes legal later in the parent line. With no move number the extractor treats the branch point
+  as unstated, so it comes out AMBIGUOUS and the illegal move is not reported.
 
 ## Where the hard rules are enforced
 
@@ -286,6 +292,8 @@ Fixed bounds in `config/settings.py`: 100,000 PGN characters, 400 plies,
 | `pytest tests/test_history*.py tests/test_derive_parity.py tests/test_versions.py` | M15/M16 offline: schema, importer, derivation from recorded searches, versions, profile statistics. | nothing |
 | `pytest tests/test_verify.py` | Semantic verifier: false relations from the QUEEN benchmark as board positions, with positive controls. | nothing |
 | `pytest tests/test_queen_extraction.py` | Claim extraction and its benchmark on stored QUEEN output. | nothing |
+| `pytest tests/test_queen_heldout.py` | Held-out experiment infrastructure, with the generator faked and the network blocked. | nothing |
+| `pytest tests/test_verify_properties.py` | The verifier against python-chess and independent checks on seeded random games. | nothing |
 | `python tests/verify_goldens.py` | Bands at 1M and decision stability at 3M. `--record` writes only missing bands, on operator instruction. | Stockfish |
 
 Mocks used by the agent tests are validated against the same schema as the
