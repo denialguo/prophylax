@@ -125,12 +125,13 @@ Flagged moves with no structural pattern (tactical or other): 100 moves in 20 ga
 
 ## Testing and evaluation
 
-- **Fast suite:** 444 tests, about 11s, offline. It covers:
+- **Fast suite:** 535 tests, about 12s, offline. It covers:
   - the domain models and conversion
   - claims in both colours and in mirrored positions
   - the validators and the prompt contracts
   - the history schema, import, derivation and profile statistics
   - payload parity, from recorded engine searches
+  - the semantic fact verifier (not yet used in production)
 - **Golden tests:** engine-backed at the pinned 1M nodes, with WDL bands
   measured, not hand-typed. They include a live check that the refactored
   server returns exactly its pre-refactor output.
