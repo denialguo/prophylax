@@ -233,8 +233,10 @@ caller.
   matches from 83/83 to 83/106.
 - **Held-out evaluation set:** `evals/queen_heldout/`, 24 other positions scored separately. The code
   under evaluation is frozen at `046bb19`, and `tests/test_queen_heldout.py` fails if it changes.
-  The flow is `run_queen` → `freeze_predictions` → hand labels → `score` → `generate_report`.
-  Predictions are written read-only, with hashes, before any label exists.
+  The flow is `run_queen` → `freeze_predictions` → `build_labeling_package` → blind labels →
+  `import_blind_labels` → `score` → `generate_report`. Predictions are written read-only, with
+  hashes, before any label exists. The labelling package is standalone and contains nothing about
+  how any software reads the texts.
 - **Known failure:** 13 I.b (`white pawn c3-c4`) is illegal at the branch the text means, but it
   becomes legal later in the parent line. With no move number the extractor treats the branch point
   as unstated, so it comes out AMBIGUOUS and the illegal move is not reported.

@@ -1,0 +1,27 @@
+{
+ "note": "Every predicate is a statement about one board. Squares are like \"e4\", files like \"e\", colours \"white\" or \"black\", pieces pawn, knight, bishop, rook, queen, king. Arguments in optional may be left out when the text does not state them.",
+ "predicates": {
+  "piece_at": {"args": ["square"], "optional": ["color", "piece"], "meaning": "A piece stands on the square, of the stated colour and type if given."},
+  "square_empty": {"args": ["square"], "optional": [], "meaning": "Nothing stands on the square."},
+  "piece_count_is": {"args": ["color", "piece", "count"], "optional": [], "meaning": "That colour has exactly that many pieces of that type."},
+  "attacks": {"args": ["source", "target"], "optional": ["piece"], "meaning": "The piece on source bears on target by its capture rules, and target holds an enemy piece or nothing. Blockers stop it. Pawn pushes are not attacks. A pinned piece still attacks. False if target holds a piece of the same colour."},
+  "defends": {"args": ["source", "target"], "optional": ["piece"], "meaning": "The piece on source bears on target, and target holds a piece of the same colour or nothing. An x-ray through another piece does not count."},
+  "ray_clear": {"args": ["source", "target"], "optional": [], "meaning": "The two squares share a rank, file or diagonal and nothing stands strictly between them."},
+  "blocks": {"args": ["slider", "blocker"], "optional": [], "meaning": "A bishop, rook or queen stands on slider, and the piece on blocker is the first thing along a line that slider moves on. A pawn on the same file does not block a bishop."},
+  "pinned_against": {"args": ["pinner", "pinned", "target"], "optional": [], "meaning": "A bishop, rook or queen on pinner, on a line it moves along, with an enemy piece on pinned and behind it, nothing else between, that piece's own king or a more valuable piece on target."},
+  "is_open_file": {"args": ["file"], "optional": [], "meaning": "No pawn of either colour on the file. Other pieces may stand on it."},
+  "is_semi_open_file": {"args": ["file", "color"], "optional": [], "meaning": "No pawn of that colour on the file, and at least one enemy pawn."},
+  "is_file_clear": {"args": ["file"], "optional": [], "meaning": "Nothing at all on the file."},
+  "is_open_diagonal": {"args": ["source", "target"], "optional": [], "meaning": "The two squares share a diagonal and nothing stands strictly between them."},
+  "is_passed_pawn": {"args": ["square"], "optional": [], "meaning": "A pawn stands on the square, and no enemy pawn stands ahead of it on the same or an adjacent file."},
+  "has_passed_pawn": {"args": ["color", "file"], "optional": [], "meaning": "That colour has a passed pawn on that file."},
+  "promotion_distance_is": {"args": ["square", "moves"], "optional": [], "meaning": "The pawn there needs exactly that many pawn moves to promote, counted by rank: a pawn on its home rank may double-step. A pawn on c6 (White) needs 2."},
+  "material_balance_is": {"args": ["points"], "optional": [], "meaning": "White's material minus Black's equals points, with pawn 1, knight 3, bishop 3, rook 5, queen 9."},
+  "legal_move_count_is": {"args": ["count"], "optional": [], "meaning": "The side to move has exactly that many legal moves."},
+  "is_check": {"args": [], "optional": [], "meaning": "The side to move is in check."},
+  "is_checkmate": {"args": [], "optional": [], "meaning": "The side to move is checkmated."},
+  "is_stalemate": {"args": [], "optional": [], "meaning": "The side to move is stalemated."},
+  "is_insufficient_material": {"args": [], "optional": [], "meaning": "Neither side has mating material, as in king and knight against king."},
+  "is_terminal": {"args": [], "optional": [], "meaning": "The game is over by rule on this board."}
+ }
+}

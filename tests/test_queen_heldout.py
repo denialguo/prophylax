@@ -593,3 +593,244 @@ def test_a_draft_report_says_so(ready):
 def test_miss_review_is_tallied():
     text = report.render(scored(), None, {"cases": [CASE]}, [{"miss_class": "needs_predicate"}, {"miss_class": "needs_predicate"}])
     assert "Needs a new chess predicate: 2" in text
+
+
+# ── the blind labelling package ──────────────────────────────────────────────
+import importlib.util  # noqa: E402
+import inspect  # noqa: E402
+import shutil  # noqa: E402
+import subprocess  # noqa: E402
+import sys  # noqa: E402
+
+from domain.verify import PREDICATES  # noqa: E402
+from evals.queen_heldout import build_labeling_package as blp  # noqa: E402
+from evals.queen_heldout import import_blind_labels as ibl  # noqa: E402
+
+# Words that would tell a labeller about the system being evaluated, or how it read the texts
+LEAKS = ("extract.py", "verify.py", "domain/", "evals/", "046bb19", "regex", "grammar", "parser", "prophylax", "known_issue",
+         "controls_mapping", "branch_ambiguity", "wins_a_pawn", "en_prise", "strategic_pressure", "verifier", "extractor",
+         "prediction", "MANIFEST", "development", "benchmark", "queen_hce", "hallucinat", "precision", "recall")
+
+
+def package_module(path, name):
+    spec = importlib.util.spec_from_file_location(name, os.path.join(path, name + ".py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.fixture
+def package(frozen, tmp_path):
+    (frozen / "labels.schema.json").write_text(json.dumps(SCHEMA))
+    out = tmp_path / "package"
+    blp.build(str(out), base=str(frozen))
+    return out
+
+
+def test_package_has_what_the_labeller_needs(package):
+    for name in ("LABELING_INSTRUCTIONS.md", "HANDOFF.md", "predicates.json", "labels.schema.json", "labels.jsonl", "review.jsonl",
+                 "label_meta.json", "validate_labels.py", "label_tools.py", "package.json", "cases/x1/case.json", "cases/x1/response.txt"):
+        assert (package / name).exists(), name
+    assert (package / "labels.jsonl").read_text() == "" and (package / "review.jsonl").read_text() == ""
+    assert json.loads((package / "cases" / "x1" / "case.json").read_text()) == {"id": "x1", "fen": FEN}
+    assert (package / "cases" / "x1" / "response.txt").read_bytes() == TEXT.encode("utf-8")
+    assert (package.parent / "package.zip").exists()
+
+
+def test_package_leaks_nothing_about_the_system_being_evaluated(package):
+    for base, _, names in os.walk(package):
+        for name in names:
+            path = os.path.join(base, name)
+            if name == "response.txt":
+                continue  # the model's own words
+            content = open(path, encoding="utf-8").read().lower().replace("prophylaxis", "")  # the chess word is fine
+            for word in LEAKS:
+                assert word.lower() not in content, (name, word)
+
+
+def test_package_contains_no_prediction_content(package, frozen):
+    files = {os.path.relpath(os.path.join(b, n), package) for b, _, ns in os.walk(package) for n in ns}
+    assert not any("predict" in f.lower() or "manifest" in f.lower() for f in files)
+    assert "verifier_status" not in (package / "package.json").read_text() and "EXTRACTED" not in (package / "package.json").read_text()
+    assert set(json.loads((package / "package.json").read_text())["cases"][0]) == {"id", "response_sha256"}
+
+
+def test_package_tools_import_nothing_from_the_project():
+    for name in blp.TEMPLATE_FILES:
+        if name.endswith(".py"):
+            source = open(os.path.join(blp.TEMPLATE, name), encoding="utf-8").read()
+            for project in ("domain", "evals", "app", "mcp_server", "history", "config"):
+                assert f"from {project}" not in source and f"import {project}" not in source
+
+
+def test_build_refuses_before_predictions_are_frozen(tmp_path):
+    with pytest.raises(blp.Refused, match="not frozen"):
+        blp.build(str(tmp_path / "p"), base=str(tmp_path))
+    assert not (tmp_path / "p").exists()
+
+
+def test_build_refuses_a_folder_in_use_and_changed_raw_text(frozen, tmp_path):
+    (frozen / "labels.schema.json").write_text(json.dumps(SCHEMA))
+    used = tmp_path / "used"
+    used.mkdir()
+    (used / "x").write_text("x")
+    with pytest.raises(blp.Refused, match="already has files"):
+        blp.build(str(used), base=str(frozen))
+    (frozen / "raw" / "x1" / "explanation.txt").write_text(TEXT + "edited")
+    with pytest.raises(blp.Refused, match="no longer matches"):
+        blp.build(str(tmp_path / "p"), base=str(frozen))
+
+
+def test_vocabulary_is_exactly_the_predicates_with_their_arguments():
+    with open(os.path.join(blp.TEMPLATE, "predicates.json"), encoding="utf-8") as f:
+        vocabulary = json.load(f)["predicates"]
+    assert set(vocabulary) == set(PREDICATES)
+    for name, spec in vocabulary.items():
+        parameters = inspect.signature(PREDICATES[name]).parameters
+        required = {p for p, v in parameters.items() if p != "board" and v.default is inspect.Parameter.empty}
+        optional = {p for p, v in parameters.items() if p != "board" and v.default is not inspect.Parameter.empty}
+        assert set(spec["args"]) == required and set(spec["optional"]) == optional, name
+        assert spec["meaning"]
+
+
+def test_labeller_schema_is_a_cleaned_subset():
+    clean = blp.labeller_schema(SCHEMA)
+    assert "known_issue" not in clean["properties"] and "grammar" not in json.dumps(clean)
+    assert clean["required"] == SCHEMA["required"] and clean["allOf"] == SCHEMA["allOf"]
+
+
+def fill(package, rows=GOLD, reviews=(), meta=None):
+    (package / "labels.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    (package / "review.jsonl").write_text("".join(json.dumps(r) + "\n" for r in reviews))
+    (package / "label_meta.json").write_text(json.dumps(meta or {"labeller": "agent", "opened_anything_outside_this_folder": False}))
+
+
+def test_package_validator_accepts_good_labels_and_runs_alone(package):
+    clean = [{k: v for k, v in r.items() if k != "known_issue"} for r in GOLD]
+    fill(package, clean)
+    done = subprocess.run([sys.executable, "-I", str(package / "validate_labels.py")], cwd=package, capture_output=True, text=True)
+    assert done.returncode == 0, done.stdout + done.stderr
+    assert "8 labels, 0 open questions, 0 problems" in done.stdout
+
+
+def test_an_empty_package_validates_and_names_the_work_left(package):
+    done = subprocess.run([sys.executable, "-I", str(package / "validate_labels.py")], cwd=package, capture_output=True, text=True)
+    assert done.returncode == 0 and "No labels yet for: x1" in done.stdout
+
+
+def test_package_validator_agrees_with_the_scorer_on_bad_labels(package):
+    v = package_module(str(package), "validate_labels")
+    with open(package / "labels.schema.json") as f:
+        schema = json.load(f)
+    with open(package / "predicates.json") as f:
+        vocabulary = json.load(f)["predicates"]
+    cases = v.load_cases(str(package))
+    for change in ({"source_text": "not the text"}, {"predicate": "traps_piece"}, {"branch": ["e2e5"]}, {"branch": None},
+                   {"chess_truth": "UNDETERMINED"}, {"case": "nope"}):
+        row = {**GOLD[0], **change}
+        assert v.check_labels([row], cases, schema, vocabulary), change
+        assert sc.validate_labels([row], *texts_and_fens(), SCHEMA), change
+    assert v.check_labels([{**GOLD[0], "args": {"source": "e2"}}], cases, schema, vocabulary)
+    assert v.check_labels([{**GOLD[0], "args": {"source": "e2", "target": "d3", "wing": "king"}}], cases, schema, vocabulary)
+    assert v.check_labels([{**GOLD[7], "failure_ply": 5}], cases, schema, vocabulary)
+
+
+def test_package_validator_notices_a_changed_response_and_bad_reviews(package):
+    v = package_module(str(package), "validate_labels")
+    fill(package, [], [{"review_id": "r1", "case": "x1", "source_text": "not in the text", "question": "?"},
+                       {"review_id": "r2", "case": "x1"}])
+    assert sum("review" in p for p in v.validate(str(package))[0]) == 2
+    (package / "cases" / "x1" / "response.txt").write_text(TEXT + "edited")
+    assert any("changed" in p for p in v.validate(str(package))[0])
+
+
+def test_label_tools_find_spans_and_show_boards(package):
+    t = package_module(str(package), "label_tools")
+    t.HERE = str(package)
+    found = json.loads(t.span("x1", "The black king sits on e7"))
+    assert TEXT[found["span_start"]:found["span_end"]] == "The black king sits on e7"
+    assert "not found" in t.span("x1", "nothing like this")
+    assert "4 matches" in t.span("x1", "white pawn e2-e4")
+    assert "4k3/8/8/8/4P3/3p4/8/4K3 b - - 0 1" in t.board("x1", ["e2e4"])
+    assert "illegal" in t.board("x1", ["e2e5"])
+
+
+def test_label_tools_stop_at_the_end_of_a_game(tmp_path):
+    folder = tmp_path / "p"
+    (folder / "cases" / "c").mkdir(parents=True)
+    shutil.copyfile(os.path.join(blp.TEMPLATE, "label_tools.py"), folder / "label_tools.py")
+    (folder / "cases" / "c" / "case.json").write_text(json.dumps({"id": "c", "fen": "4k3/8/3q4/8/4N3/8/8/4K3 w - - 0 1"}))
+    t = package_module(str(folder), "label_tools")
+    t.HERE = str(folder)
+    assert "game is over" in t.board("c", ["e4d6", "e8d7"])
+
+
+# ── bringing labels back ─────────────────────────────────────────────────────
+@pytest.fixture
+def returned(package):
+    fill(package, [{k: v for k, v in r.items() if k != "known_issue"} for r in GOLD])
+    return package
+
+
+def imported_base(frozen):
+    (frozen / "labels_meta.json").write_text(json.dumps({"status": "not_started", "corrections_file": "label_corrections.jsonl"}))
+    (frozen / "label_corrections.jsonl").write_text("")
+    return str(frozen)
+
+
+def test_import_and_freeze_then_score(returned, frozen):
+    base = imported_base(frozen)
+    assert ibl.import_labels(str(returned), base, freeze=True) == {"labels": 8, "open_questions": 0, "status": "frozen"}
+    meta = json.loads((frozen / "labels_meta.json").read_text())
+    assert meta["independent_of_grammar_author"] is True and meta["predictions_manifest_sha256"] == fp.sha256_file(frozen / "predictions" / "MANIFEST.json")
+    result = sc.run(base)
+    assert result["meta"]["draft"] is False and result["meta"]["independent_of_grammar_author"] is True
+
+
+def test_import_keeps_open_questions_and_will_not_freeze_over_them(package, frozen):
+    fill(package, [GOLD[0]], [{"review_id": "r1", "case": "x1", "source_text": "a blunder", "question": "?"}])
+    base = imported_base(frozen)
+    with pytest.raises(ibl.Refused, match="open questions"):
+        ibl.import_labels(str(package), base, freeze=True)
+    assert ibl.import_labels(str(package), base)["status"] == "in_review"
+    assert (frozen / "labels_review.jsonl").read_text().strip()
+    with pytest.raises(sc.ScoreError, match="not frozen"):
+        sc.run(base)
+
+
+def test_import_refuses_bad_returns(returned, frozen):
+    base = imported_base(frozen)
+    package_json = json.loads((returned / "package.json").read_text())
+    (returned / "package.json").write_text(json.dumps({**package_json, "snapshot": "0" * 64}))
+    with pytest.raises(ibl.Refused, match="different snapshot"):
+        ibl.import_labels(str(returned), base)
+    (returned / "package.json").write_text(json.dumps(package_json))
+    fill(returned, [{**GOLD[0], "source_text": "wrong"}])
+    with pytest.raises(ibl.Refused, match="invalid labels"):
+        ibl.import_labels(str(returned), base)
+    fill(returned, [])
+    with pytest.raises(ibl.Refused, match="no labels"):
+        ibl.import_labels(str(returned), base)
+    fill(returned, [GOLD[0]], meta={"labeller": "agent", "opened_anything_outside_this_folder": True})
+    with pytest.raises(ibl.Refused, match="stayed inside"):
+        ibl.import_labels(str(returned), base)
+    fill(returned, [GOLD[0]], meta={"labeller": None, "opened_anything_outside_this_folder": False})
+    with pytest.raises(ibl.Refused, match="labeller"):
+        ibl.import_labels(str(returned), base)
+
+
+def test_import_never_overwrites_labels(returned, frozen):
+    base = imported_base(frozen)
+    (frozen / "labels.jsonl").write_text(json.dumps(GOLD[0]) + "\n")
+    with pytest.raises(ibl.Refused, match="already has labels"):
+        ibl.import_labels(str(returned), base)
+
+
+def test_known_issues_tagged_after_scoring_reach_the_report():
+    text = report.render(scored(), None, {"cases": [CASE]}, [{"miss_class": "needs_predicate", "known_issue": "eyes"}])
+    assert "| eyes | 1 |" in text
+
+
+def test_the_package_needs_no_prior_freeze_to_review_its_contents(tmp_path):
+    package = blp.build(str(tmp_path / "t"), template_only=True, make_zip=False)
+    assert package["cases"] == [] and (tmp_path / "t" / "LABELING_INSTRUCTIONS.md").exists()

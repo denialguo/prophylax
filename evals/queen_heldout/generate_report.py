@@ -132,7 +132,10 @@ def render(scores, manifest, suite, miss_review=()) -> str:
     layers = {"verifier_disagrees_with_label": "verifier", "variation_verifier_disagrees_with_label": "verifier", "variation_failure_ply_differs": "verifier"}
     tax = s.get("failure_taxonomy", {})
     lines += [f"| {k} | {layers.get(k, 'extraction')} | {v} |" for k, v in sorted(tax.items(), key=lambda kv: (-kv[1], kv[0]))] or [f"| {PENDING if not done else 'none'} | | |"]
-    known = s.get("known_issues", {})
+    known = dict(s.get("known_issues", {}))  # tagged after scoring: a blind labeller never sees these names
+    for r in miss_review:
+        if r.get("known_issue"):
+            known[r["known_issue"]] = known.get(r["known_issue"], 0) + 1
     lines += ["", "### Known issues left unfixed", "", "| Issue | Labels affected |", "|---|---|"]
     lines += [f"| {k} | {v} |" for k, v in sorted(known.items())] or [f"| {PENDING if not done else 'none tagged'} | |"]
     review = {}

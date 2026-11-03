@@ -6,5 +6,5 @@
  "predictions_opened_before_labels_frozen": null,
  "labels_frozen_utc": null,
  "corrections_file": "label_corrections.jsonl",
- "instructions": "After freeze_predictions.py: set predictions_manifest_sha256 and labeller, label, then set status to 'frozen', labels_frozen_utc and the two booleans. score.py refuses without a matching hash and only reports a draft until status is 'frozen'. Later corrections go in label_corrections.jsonl: {label_id, old, new, reason, after_seeing_predictions}."
+ "instructions": "Filled by import_blind_labels.py. score.py refuses without a matching hash and only reports a draft until status is 'frozen'. Later corrections go in label_corrections.jsonl: {label_id, old, new, reason, after_seeing_predictions}."
 }
