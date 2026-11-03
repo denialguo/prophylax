@@ -31,9 +31,9 @@ Keep two questions apart:
 
 ## The four kinds of label
 
-### EXTRACTABLE concrete fact
+### FACT: a concrete fact
 
-`"kind": "fact"`, `"extraction_class": "EXTRACTED"`.
+`"kind": "fact"`, `"label_class": "FACT"`.
 
 A statement that a careful chess reader can resolve **uniquely** to a predicate in `predicates.json`, with its arguments and its board. Exact square names need not appear in the same sentence. Use context and the board:
 
@@ -45,8 +45,11 @@ One statement can yield several labels: one per fact, each with its own truth va
 Record:
 
 - `predicate` and `args`. Include `piece` or `color` when the text states or clearly implies them.
+- `polarity`: `"positive"` if the text says the predicate holds, `"negative"` if it says the predicate does not hold.
 - `branch`: the moves in UCI from the root to the board the statement is about. `[]` is the root position.
-- `chess_truth`: `TRUE` or `FALSE` on that board. If the line reaching it has already gone illegal or passed the end of the game, there is no board: use `"branch": null` and `"chess_truth": "UNDETERMINED"`, and only in that case.
+- `chess_truth`: `TRUE` or `FALSE` for the statement as written, on that board. If the line reaching it has already gone illegal or passed the end of the game, there is no board: use `"branch": null` and `"chess_truth": "UNDETERMINED"`, and only in that case.
+
+**Negative statements are facts.** "The bishop on c5 does not attack g5" is `attacks` with `{"source": "c5", "target": "g5"}` and `"polarity": "negative"`. Its `chess_truth` is `TRUE` if the bishop indeed does not attack g5, and `FALSE` if it does. Where a predicate already states the thing directly, use it with positive polarity: "Black has no queen" is `piece_count_is` with count 0.
 
 **How truth works for some statements:**
 
@@ -56,9 +59,9 @@ Record:
 
 ### UNSUPPORTED
 
-`"kind": "non_fact"`, `"extraction_class": "UNSUPPORTED"`.
+`"kind": "non_fact"`, `"label_class": "UNSUPPORTED"`.
 
-Statements outside the predicate vocabulary: strategic evaluations, initiative, pressure, compensation, coordination, prophylaxis, zugzwang, plans, engine scores, and so on. The same applies to anything the vocabulary cannot express: negative statements ("is not attacked"), what could or would happen, net gains over a sequence, moves offered as an idea or threat rather than played in a line.
+Statements outside the predicate vocabulary: strategic evaluations, initiative, pressure, compensation, coordination, prophylaxis, zugzwang, plans, engine scores, and so on. The same applies to anything the vocabulary cannot express, even with negative polarity: what could or would happen, net gains over a sequence, moves offered as an idea or threat rather than played in a line.
 
 If a sentence also separately states a supported fact, label that fact too.
 
@@ -66,15 +69,15 @@ Set `false_concrete` to `true` when the statement is nevertheless concrete and f
 
 ### AMBIGUOUS
 
-`"kind": "non_fact"`, `"extraction_class": "AMBIGUOUS"`, or a variation with that class.
+`"kind": "non_fact"`, `"label_class": "AMBIGUOUS"`, or a variation with that class.
 
 Only when a careful human **cannot** uniquely resolve the intended piece, square, branch or relation, for example two knights either of which could be meant, or a word that could mean either a direct attack or a longer-term aim with nothing to settle it.
 
 Do not use AMBIGUOUS because a sentence is awkward to parse or leaves out square names. If you can tell what it means, resolve it. Explain the competing readings in `notes`. Set `false_concrete` as above if every reading is false.
 
-### VARIATION
+### LINE: a variation
 
-`"kind": "variation"`.
+`"kind": "variation"`, `"label_class": "LINE"`.
 
 Every line of moves the text asserts as played out, including the `CRITICAL_LINE:` entry. You do not need to label the `BEST_MOVE:` or `PROMISING_MOVES:` entries.
 
@@ -83,7 +86,7 @@ Every line of moves the text asserts as played out, including the `CRITICAL_LINE
 - `legal`: `true` if every move is legal in sequence. A move after the game has ended by rule (mate, stalemate, insufficient material) is illegal.
 - `annotations_hold`: `true` if all the line's stated captures, checks and mates are correct, including which piece is captured. `x`/"takes" and `+`/`#` are claims. A `-` between squares states a move without a capture.
 - `failure_ply`: index in `moves` of the first problem, or `null` if there is none. It must be set exactly when `legal` or `annotations_hold` is false.
-- If a careful reader cannot tell where a line branches from, use `"extraction_class": "AMBIGUOUS"` with your best statement of the options in `notes`, and `legal: true`, `annotations_hold: true`, `failure_ply: null`, `moves: []`.
+- If a careful reader cannot tell where a line branches from, use `"label_class": "AMBIGUOUS"` with your best statement of the options in `notes`, and `legal: true`, `annotations_hold: true`, `failure_ply: null`, `moves: []`.
 
 ## Reading the model's notation
 
