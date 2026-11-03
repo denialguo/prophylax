@@ -2,8 +2,8 @@
  {
   "id": "my_games_10_46a4",
   "source": {
-   "pgn_file": "games/my_games.pgn",
-   "game_index": 10,
+   "pgn_file": "tests/fixtures/claim_benchmark_games.pgn",
+   "game_index": 0,
    "move_number": 46,
    "side": "white",
    "san": "a4"
@@ -106,8 +106,8 @@
  {
   "id": "my_games_10_46g5",
   "source": {
-   "pgn_file": "games/my_games.pgn",
-   "game_index": 10,
+   "pgn_file": "tests/fixtures/claim_benchmark_games.pgn",
+   "game_index": 0,
    "move_number": 46,
    "side": "black",
    "san": "g5+"
@@ -201,8 +201,8 @@
  {
   "id": "my_games_10_45kf4",
   "source": {
-   "pgn_file": "games/my_games.pgn",
-   "game_index": 10,
+   "pgn_file": "tests/fixtures/claim_benchmark_games.pgn",
+   "game_index": 0,
    "move_number": 45,
    "side": "white",
    "san": "Kf4"
@@ -251,8 +251,8 @@
  {
   "id": "my_games_10_44ke6",
   "source": {
-   "pgn_file": "games/my_games.pgn",
-   "game_index": 10,
+   "pgn_file": "tests/fixtures/claim_benchmark_games.pgn",
+   "game_index": 0,
    "move_number": 44,
    "side": "black",
    "san": "Ke6"
@@ -289,8 +289,8 @@
  {
   "id": "my_games_11_32f4",
   "source": {
-   "pgn_file": "games/my_games.pgn",
-   "game_index": 11,
+   "pgn_file": "tests/fixtures/claim_benchmark_games.pgn",
+   "game_index": 1,
    "move_number": 32,
    "side": "white",
    "san": "f4"

@@ -241,7 +241,7 @@ uv run adk web
 
 # your history: import, analyse at 100k nodes, profile
 export PROPHYLAX_PLAYER_NAMES=YourChessComName
-uv run python -m history import --pgn games/my_games.pgn
+uv run python -m history import --pgn games/your_games.pgn   # games/*.pgn is git-ignored
 uv run python -m history analyze          # ~7 s per game; resumable
 uv run python -m history profile          # --include-bullet, --tc rapid, --since 2025-10-01, --json
 ```
@@ -287,3 +287,10 @@ The history database lives at `data/prophylax_history.sqlite3` (git-ignored;
 | `evals/` | Benchmarks, the narration comparison, the QUEEN evaluation |
 | [`docs/`](docs/) | Design notes, known semantic issues, the original plans (`docs/plans/`) |
 | [`AGENTS.md`](AGENTS.md) | The rules the project was built under |
+
+## License
+
+Prophylax's own code is under the [MIT license](LICENSE). That doesn't extend to third-party software,
+models or data, which stay under their own terms, including Stockfish and python-chess (both GPL).
+QUEEN is an external model that this repository evaluates. Its weights aren't included here, and nothing
+here grants rights to it. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

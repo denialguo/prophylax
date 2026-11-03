@@ -12,6 +12,7 @@ engine = chess.engine.SimpleEngine.popen_uci(engine_path)
 # 2. Configuration
 import sys
 PGN_FILE = sys.argv[1] if len(sys.argv) > 1 else "games/chess_com_games_2026-07-06.pgn"
+PLAYER_NAMES = [n.strip() for n in os.environ.get("PROPHYLAX_PLAYER_NAMES", "").split(",") if n.strip()]
 TARGET_MOVES = ["b4", "b5", "g4", "g5"]
 DEPTH = 16 # Fast enough to scan in bulk, deep enough to catch structural issues
 MIN_EVAL_DROP = 40  # Minimum 0.40 pawn drop (centipawns)
@@ -33,9 +34,9 @@ with open(PGN_FILE) as pgn:
         result = game.headers.get("Result", "")
         
         is_loss = False
-        if white in ("DankSonPotato", "DankiusDaddiusPotatoius") and result == "0-1":
+        if white in PLAYER_NAMES and result == "0-1":
             is_loss = True
-        elif black in ("DankSonPotato", "DankiusDaddiusPotatoius") and result == "1-0":
+        elif black in PLAYER_NAMES and result == "1-0":
             is_loss = True
             
         if not is_loss:
