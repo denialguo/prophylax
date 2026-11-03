@@ -38,9 +38,16 @@ def auth():
     return {"Authorization": f"Bearer {token}"} if token else {}
 
 
-def is_quota_error(body: str) -> bool:
+def quota_error_type(body: str) -> str | None:
     low = body.lower()
-    return "quota" in low or "runs limit" in low
+
+    if "runs limit" in low:
+        return "runs_limit"
+
+    if "quota" in low:
+        return "gpu_time"
+
+    return None
 
 
 def fetch_sha(url):
@@ -105,12 +112,13 @@ def run(cases, settings, base=HERE, generate=space_generate, revisions=None, ove
             return EXIT_ERROR
         seconds = round(time.monotonic() - started, 1)
         if kind != "complete":
-            entry = {"event": kind, "case": case["id"], "body": body, "seconds": seconds}
+            quota = quota_error_type(body)
+            entry = {"event": kind, "case": case["id"], "body": body, "seconds": seconds, "quota_type": quota}
             log({**entry, "body": body[:500]})
             keep_failure(case["id"], entry)
             print(case["id"], kind, body[:200], flush=True)
-            if is_quota_error(body):
-                print("Stopping: ZeroGPU quota. Rerun the same command once it resets; completed cases are skipped.", flush=True)
+            if quota:
+                print(f"Stopping: ZeroGPU quota ({quota}). Rerun the same command once it resets; completed cases are skipped.", flush=True)
                 return EXIT_QUOTA
             return EXIT_ERROR
         data = json.loads(body)
