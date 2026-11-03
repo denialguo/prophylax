@@ -1,0 +1,2 @@
+{"utc": "2026-11-03T05:25:41.089079+00:00", "event": "start", "space_sha": "9a5483ce0fb50b437fc9f4570e73eb034bb14603", "model_sha": "a98e8e4e8959090bd772fa82bb64414f7810f35e"}
+{"utc": "2026-11-03T05:25:41.612060+00:00", "event": "error", "case": "h01_tactical", "body": "{\"error\": \"You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens\", \"duration\": 10, \"visible\": true, \"title\": \"ZeroGPU quota exceeded\"}", "seconds": 0.5}

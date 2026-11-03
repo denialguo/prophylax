@@ -1,9 +1,10 @@
 """Requests one QUEEN response per held-out position from the public Space, with the settings
-the development outputs used. Sends only the FEN; no credentials. Saves the final response
+the development outputs used. Sends only the FEN, plus HF_TOKEN from the environment when set
+(for ZeroGPU quota; never logged or stored). Saves the final response
 unaltered (raw/<id>/response.json) with the text and details QUEEN returned, and never overwrites
 a completed case. Stops at the first quota error: it does not wait or retry on a schedule.
 
-Usage: ./venv/bin/python -m evals.queen_heldout.run_queen"""
+Usage: set -a; . app/.env; set +a; ./venv/bin/python -m evals.queen_heldout.run_queen"""
 import datetime
 import hashlib
 import json
@@ -16,6 +17,11 @@ HOST = "https://hugging-apps-queen-hce-4-chess.hf.space"
 SPACE_API = "https://huggingface.co/api/spaces/hugging-apps/queen-hce-4-chess"
 MODEL_API = "https://huggingface.co/api/models/princeton-nlp/queen_hce-4"
 MAX_TOKENS, TEMPERATURE, SEED = 2048, 0.6, 20260823
+
+
+def auth():
+    token = os.environ.get("HF_TOKEN")
+    return {"Authorization": f"Bearer {token}"} if token else {}
 
 
 def now():
@@ -34,11 +40,12 @@ def sha_of(url):
 
 def generate(fen):
     payload = json.dumps({"data": [fen, "", MAX_TOKENS, TEMPERATURE, SEED]}).encode()
-    request = urllib.request.Request(f"{HOST}/gradio_api/call/analyze", data=payload, headers={"Content-Type": "application/json"})
+    request = urllib.request.Request(f"{HOST}/gradio_api/call/analyze", data=payload, headers={"Content-Type": "application/json", **auth()})
     with urllib.request.urlopen(request, timeout=60) as r:
         event_id = json.load(r)["event_id"]
     kind = ""
-    with urllib.request.urlopen(f"{HOST}/gradio_api/call/analyze/{event_id}", timeout=600) as stream:
+    with urllib.request.urlopen(urllib.request.Request(f"{HOST}/gradio_api/call/analyze/{event_id}", headers=auth()),
+                                timeout=600) as stream:
         for raw in stream:
             line = raw.decode("utf-8")
             if line.startswith("event:"):
