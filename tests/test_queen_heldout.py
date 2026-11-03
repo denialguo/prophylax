@@ -937,3 +937,37 @@ def test_known_issues_tagged_after_scoring_reach_the_report():
 def test_the_package_needs_no_prior_freeze_to_review_its_contents(tmp_path):
     package = blp.build(str(tmp_path / "t"), template_only=True, make_zip=False)
     assert package["cases"] == [] and (tmp_path / "t" / "LABELING_INSTRUCTIONS.md").exists()
+
+
+# ── status ───────────────────────────────────────────────────────────────────
+from evals.queen_heldout import status as st  # noqa: E402
+
+
+def test_status_names_each_next_step(frozen):
+    (frozen / "suite.json").write_text(json.dumps({"cases": [CASE, {**CASE, "id": "x2"}]}))
+    (frozen / "labels_meta.json").write_text(json.dumps({"status": "not_started"}))
+    assert "Generate" in st.stage(str(frozen))["next"] and st.stage(str(frozen))["outputs"] == 1
+    (frozen / "suite.json").write_text(json.dumps({"cases": [CASE]}))
+    assert "hand it to the blind labeller" in st.stage(str(frozen))["next"]
+    (frozen / "labels.jsonl").write_text(json.dumps(GOLD[0]) + "\n")
+    assert "Resolve" in st.stage(str(frozen))["next"]
+    (frozen / "labels_meta.json").write_text(json.dumps({"status": "frozen"}))
+    assert "Score" in st.stage(str(frozen))["next"]
+    (frozen / "scores.json").write_text("{}")
+    assert "Report" in st.stage(str(frozen))["next"]
+    (frozen / "REPORT.md").write_text("")
+    assert "Complete" in st.stage(str(frozen))["next"]
+
+
+def test_status_before_the_freeze_and_on_the_real_experiment(tmp_path):
+    make_raw(tmp_path)
+    (tmp_path / "suite.json").write_text(json.dumps({"cases": [CASE]}))
+    (tmp_path / "labels_meta.json").write_text(json.dumps({"status": "not_started"}))
+    assert "Freeze" in st.stage(str(tmp_path))["next"]
+    assert st.stage()["total"] == 24
+
+
+def test_status_never_reads_text_it_could_leak():
+    source = inspect.getsource(st)
+    assert "raw_dir, " not in source.replace('raw_dir, c, "explanation.txt"', "")  # only ever checks that a file exists
+    assert "response.json" not in source and "predictions\", \"MANIFEST.json\")) " not in source
