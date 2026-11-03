@@ -3,40 +3,197 @@
  "title": "Held-out QUEEN gold label (one JSON object per line of labels.jsonl)",
  "description": "Label from the raw text and the board, without opening predictions/. Label every concrete statement, so a miss can be seen. Policy: a claim a careful reader can resolve uniquely to an existing predicate is extractable, whatever the grammar can do. Extraction truth (what the text says) is separate from chess truth (whether it holds).",
  "type": "object",
- "required": ["label_id", "case", "kind", "span_start", "span_end", "source_text", "extraction_class"],
+ "required": [
+  "label_id",
+  "case",
+  "kind",
+  "span_start",
+  "span_end",
+  "source_text",
+  "extraction_class"
+ ],
  "properties": {
-  "label_id": {"type": "string"},
-  "case": {"type": "string"},
-  "kind": {"enum": ["fact", "non_fact", "variation"]},
-  "span_start": {"type": "integer", "minimum": 0},
-  "span_end": {"type": "integer", "minimum": 1},
-  "source_text": {"type": "string", "description": "Exactly text[span_start:span_end]"},
-  "extraction_class": {"enum": ["EXTRACTED", "UNSUPPORTED", "AMBIGUOUS"]},
-  "notes": {"type": "string"},
-  "known_issue": {"enum": ["controls_mapping", "branch_ambiguity", "eyes", "en_prise", "wins_a_pawn", "strategic_pressure", "other"]}
+  "label_id": {
+   "type": "string"
+  },
+  "case": {
+   "type": "string"
+  },
+  "kind": {
+   "enum": [
+    "fact",
+    "non_fact",
+    "variation"
+   ]
+  },
+  "span_start": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "span_end": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "source_text": {
+   "type": "string",
+   "description": "Exactly text[span_start:span_end]"
+  },
+  "extraction_class": {
+   "enum": [
+    "EXTRACTED",
+    "UNSUPPORTED",
+    "AMBIGUOUS"
+   ]
+  },
+  "notes": {
+   "type": "string"
+  },
+  "known_issue": {
+   "enum": [
+    "controls_mapping",
+    "branch_ambiguity",
+    "eyes",
+    "en_prise",
+    "wins_a_pawn",
+    "strategic_pressure",
+    "other"
+   ]
+  }
  },
  "allOf": [
-  {"if": {"properties": {"kind": {"const": "fact"}}},
-   "then": {"required": ["predicate", "args", "branch", "chess_truth"],
-            "properties": {
-             "extraction_class": {"const": "EXTRACTED"},
-             "predicate": {"type": "string", "description": "A name in domain.verify.PREDICATES"},
-             "args": {"type": "object"},
-             "branch": {"type": ["array", "null"], "items": {"type": "string"}, "description": "UCI moves from the root to the board the claim is about; [] is the root; null if the line has already left legal play"},
-             "board_fen": {"type": ["string", "null"], "description": "Optional. If given, must equal the replayed branch"},
-             "chess_truth": {"enum": ["TRUE", "FALSE", "UNDETERMINED"], "description": "UNDETERMINED: no board to judge on (branch null)"}}}},
-  {"if": {"properties": {"kind": {"const": "non_fact"}}},
-   "then": {"required": ["false_concrete"],
-            "properties": {
-             "extraction_class": {"enum": ["UNSUPPORTED", "AMBIGUOUS"]},
-             "false_concrete": {"type": "boolean", "description": "The statement is concrete and false although no predicate represents it, or it cannot be resolved. Counts in the end-to-end denominator"}}}},
-  {"if": {"properties": {"kind": {"const": "variation"}}},
-   "then": {"required": ["moves", "legal", "annotations_hold", "failure_ply"],
-            "properties": {
-             "extraction_class": {"enum": ["EXTRACTED", "AMBIGUOUS"]},
-             "moves": {"type": "array", "items": {"type": "string"}, "description": "UCI from the root, up to and including the first illegal ply"},
-             "legal": {"type": "boolean"},
-             "annotations_hold": {"type": "boolean", "description": "The line's stated captures, + and # are all true"},
-             "failure_ply": {"type": ["integer", "null"], "description": "Index in moves of the first failure"}}}}
+  {
+   "if": {
+    "properties": {
+     "kind": {
+      "const": "fact"
+     }
+    }
+   },
+   "then": {
+    "required": [
+     "predicate",
+     "args",
+     "branch",
+     "chess_truth"
+    ],
+    "properties": {
+     "extraction_class": {
+      "const": "EXTRACTED"
+     },
+     "predicate": {
+      "type": "string",
+      "description": "A name in domain.verify.PREDICATES"
+     },
+     "args": {
+      "type": "object"
+     },
+     "branch": {
+      "type": [
+       "array",
+       "null"
+      ],
+      "items": {
+       "type": "string"
+      },
+      "description": "UCI moves from the root to the board the claim is about; [] is the root; null if the line has already left legal play"
+     },
+     "board_fen": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "Optional. If given, must equal the replayed branch"
+     },
+     "chess_truth": {
+      "enum": [
+       "TRUE",
+       "FALSE",
+       "UNDETERMINED"
+      ],
+      "description": "UNDETERMINED: no board to judge on (branch null)"
+     },
+     "polarity": {
+      "enum": [
+       "positive",
+       "negative"
+      ],
+      "default": "positive",
+      "description": "Whether the text asserts that the predicate holds or that it does not. chess_truth is the truth of the statement as written, polarity included."
+     }
+    }
+   }
+  },
+  {
+   "if": {
+    "properties": {
+     "kind": {
+      "const": "non_fact"
+     }
+    }
+   },
+   "then": {
+    "required": [
+     "false_concrete"
+    ],
+    "properties": {
+     "extraction_class": {
+      "enum": [
+       "UNSUPPORTED",
+       "AMBIGUOUS"
+      ]
+     },
+     "false_concrete": {
+      "type": "boolean",
+      "description": "The statement is concrete and false although no predicate represents it, or it cannot be resolved. Counts in the end-to-end denominator"
+     }
+    }
+   }
+  },
+  {
+   "if": {
+    "properties": {
+     "kind": {
+      "const": "variation"
+     }
+    }
+   },
+   "then": {
+    "required": [
+     "moves",
+     "legal",
+     "annotations_hold",
+     "failure_ply"
+    ],
+    "properties": {
+     "extraction_class": {
+      "enum": [
+       "EXTRACTED",
+       "AMBIGUOUS"
+      ]
+     },
+     "moves": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "UCI from the root, up to and including the first illegal ply"
+     },
+     "legal": {
+      "type": "boolean"
+     },
+     "annotations_hold": {
+      "type": "boolean",
+      "description": "The line's stated captures, + and # are all true"
+     },
+     "failure_ply": {
+      "type": [
+       "integer",
+       "null"
+      ],
+      "description": "Index in moves of the first failure"
+     }
+    }
+   }
+  }
  ]
 }

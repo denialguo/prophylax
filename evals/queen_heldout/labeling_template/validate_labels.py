@@ -77,7 +77,7 @@ def check_labels(labels, cases, schema, predicates):
                         board.push(board.parse_uci(uci))
                 except ValueError as e:
                     problems.append(f"{lid}: branch does not replay: {e}")
-        elif row["kind"] == "variation" and row["extraction_class"] == "EXTRACTED":
+        elif row["kind"] == "variation" and row["label_class"] == "LINE":
             if (row["legal"] and row["annotations_hold"]) != (row["failure_ply"] is None):
                 problems.append(f"{lid}: failure_ply must be set exactly when legal or annotations_hold is false")
             if row["failure_ply"] is not None and not 0 <= row["failure_ply"] < len(row["moves"]):

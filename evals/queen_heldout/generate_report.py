@@ -17,6 +17,7 @@ CONTAMINATION = [
     "Half the suite comes from real games and half from self-play. The self-play half came from v1 of the suite, which is also where the only outputs obtained before v2 (h01, h02) came from. Those two were not read before predictions froze.",
     "All outputs come from one model revision, one seed and one template. Results do not cover other models, prompts or formats.",
     "One labeller and no inter-rater measure, unless the report says otherwise.",
+    "The development labels treat negative claims as UNSUPPORTED; the held-out labels treat them as facts with negative polarity, which count as missed. Held-out fact recall can therefore be lower for that reason alone, and the development column was left unchanged.",
     "Self-play positions at 50k nodes may differ in style from the positions QUEEN was trained on.",
 ]
 
@@ -105,6 +106,9 @@ def render(scores, manifest, suite, miss_review=()) -> str:
                        ("missed", "Missed extractable claims"), ("hallucinated_on_non_fact", "Extractions on labelled non-facts"),
                        ("extraction_with_no_label", "Extractions matching no label")):
         lines.append(f"| {label} | {fmt(ex.get(key))} |")
+    lines.append(f"| Negative claims labelled | {fmt(ex.get('negative_labelled'))} |")
+    lines.append(f"| Negative claims missed (included in missed) | {fmt(ex.get('negative_missed'))} |")
+    lines.append(f"| Positive candidate on a negated claim | {fmt(ex.get('polarity_flipped'))} |")
     lines.append(f"| Variation exact-match rate | {fmt(var.get('exact_match_rate'))} |")
     lines += ["", "## Verification (on correctly extracted claims)", "", "| Metric | Value |", "|---|---|"]
     for key, label in (("VERIFIED", "VERIFIED"), ("FALSE", "FALSE"), ("UNKNOWN", "UNKNOWN"), ("verdict_accuracy", "Verdict accuracy"),

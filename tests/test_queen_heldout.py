@@ -469,6 +469,53 @@ def test_a_wrong_argument_and_a_wrong_board_are_told_apart():
     assert r["verified_precision"]["facts_false"] == 1
 
 
+NOT_ATTACKED = "White has excellent practical chances"  # a span with no candidate of its own
+
+
+def test_a_negative_claim_is_a_missed_concrete_claim():
+    labels = [{**fact("n1", NOT_ATTACKED, "attacks", {"source": "e2", "target": "f3"}, [], "TRUE"), "polarity": "negative"}]
+    r = scored(labels)
+    e = r["extraction"]
+    assert (e["facts_labelled"], e["negative_labelled"], e["negative_missed"], e["missed"], e["predicate_and_args_match"]) == (1, 1, 1, 1, 0)
+    assert e["polarity_flipped"] == 0 and r["failure_taxonomy"]["negative_claim_missed"] == 1
+    assert r["end_to_end_facts"]["false_claims"] == 0 and r["verification"]["correctly_extracted"] == 0
+
+
+def test_a_false_negative_claim_counts_as_a_false_claim_missed():
+    labels = [{**fact("n1", NOT_ATTACKED, "attacks", {"source": "e2", "target": "d3"}, [], "FALSE"), "polarity": "negative"}]
+    e = scored(labels)["end_to_end_facts"]
+    assert (e["false_claims"], e["false_claims_negative"], e["false_missed"], e["false_caught"]) == (1, 1, 1, 0)
+    assert outcome_total(e) == 1 and e["false_claim_capture_rate"] == 0.0
+
+
+def test_a_positive_candidate_on_a_negative_claim_is_never_a_match():
+    # The text is read here as denying what the candidate asserts, and the candidate verifies
+    quote = "The white pawn on e2 attacks the black pawn on d3"
+    labels = [{**fact("n1", quote, "attacks", {"source": "e2", "target": "d3"}, [], "FALSE"), "polarity": "negative"}]
+    r = scored(labels)
+    assert r["extraction"]["polarity_flipped"] == 1 and r["extraction"]["predicate_and_args_match"] == 0
+    assert r["failure_taxonomy"]["polarity_flipped"] == 1 and r["details"]["polarity_flipped"]
+    assert r["verified_precision"]["facts_false"] == 1 and r["verified_precision"]["facts_true"] == 0
+    assert r["verification"]["correctly_extracted"] == 0
+    # the same reading with a true statement still does not count the candidate as a true reading
+    labels = [{**fact("n1", quote, "attacks", {"source": "e2", "target": "d3"}, [], "TRUE"), "polarity": "negative"}]
+    assert scored(labels)["verified_precision"]["facts_true"] == 0
+
+
+def test_polarity_defaults_to_positive_internally_and_is_validated():
+    assert sc.validate_labels([{**GOLD[0], "polarity": "negative"}], *texts_and_fens(), SCHEMA) == []
+    assert sc.validate_labels([GOLD[0]], *texts_and_fens(), SCHEMA) == []
+    assert sc.validate_labels([{**GOLD[0], "polarity": "sideways"}], *texts_and_fens(), SCHEMA)
+    assert scored([GOLD[0]])["extraction"]["predicate_and_args_match"] == 1
+
+
+def test_the_report_shows_negative_claims_and_the_comparison_caveat():
+    labels = [{**fact("n1", NOT_ATTACKED, "attacks", {"source": "e2", "target": "f3"}, [], "TRUE"), "polarity": "negative"}]
+    text = report.render(scored(labels), None, {"cases": [CASE]})
+    assert "| Negative claims labelled | 1 |" in text and "| Negative claims missed (included in missed) | 1 |" in text
+    assert "negative polarity" in text
+
+
 def test_a_stray_extraction_on_a_non_fact_is_a_hallucination():
     labels = [non_fact("n9", "The white pawn on e4 attacks f5", "UNSUPPORTED", false_concrete=True)]
     r = scored(labels)
@@ -607,9 +654,23 @@ from evals.queen_heldout import build_labeling_package as blp  # noqa: E402
 from evals.queen_heldout import import_blind_labels as ibl  # noqa: E402
 
 # Words that would tell a labeller about the system being evaluated, or how it read the texts
-LEAKS = ("extract.py", "verify.py", "domain/", "evals/", "046bb19", "regex", "grammar", "parser", "prophylax", "known_issue",
+LEAKS = ("extract", "verify.py", "domain/", "evals/", "046bb19", "regex", "grammar", "parser", "prophylax", "known_issue",
          "controls_mapping", "branch_ambiguity", "wins_a_pawn", "en_prise", "strategic_pressure", "verifier", "extractor",
          "prediction", "MANIFEST", "development", "benchmark", "queen_hce", "hallucinat", "precision", "recall")
+
+
+def external(row):
+    """A label as the blind labeller writes it."""
+    neutral = {"fact": "FACT", "variation": "LINE"}
+    cls = row["extraction_class"]
+    out = {k: v for k, v in row.items() if k not in ("extraction_class", "known_issue")}
+    out["label_class"] = neutral[row["kind"]] if cls == "EXTRACTED" else cls
+    if row["kind"] == "fact":
+        out.setdefault("polarity", "positive")
+    return out
+
+
+EXTERNAL_GOLD = [external(r) for r in GOLD]
 
 
 def package_module(path, name):
@@ -696,18 +757,21 @@ def test_vocabulary_is_exactly_the_predicates_with_their_arguments():
 def test_labeller_schema_is_a_cleaned_subset():
     clean = blp.labeller_schema(SCHEMA)
     assert "known_issue" not in clean["properties"] and "grammar" not in json.dumps(clean)
-    assert clean["required"] == SCHEMA["required"] and clean["allOf"] == SCHEMA["allOf"]
+    assert "extraction_class" not in json.dumps(clean) and "EXTRACTED" not in json.dumps(clean)
+    assert "label_class" in clean["required"]
+    assert clean["allOf"][0]["then"]["properties"]["label_class"] == {"const": "FACT"}
+    assert "polarity" in clean["allOf"][0]["then"]["required"]
+    assert clean["allOf"][2]["then"]["properties"]["label_class"] == {"enum": ["LINE", "AMBIGUOUS"]}
 
 
-def fill(package, rows=GOLD, reviews=(), meta=None):
+def fill(package, rows=EXTERNAL_GOLD, reviews=(), meta=None):
     (package / "labels.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     (package / "review.jsonl").write_text("".join(json.dumps(r) + "\n" for r in reviews))
     (package / "label_meta.json").write_text(json.dumps(meta or {"labeller": "agent", "opened_anything_outside_this_folder": False}))
 
 
 def test_package_validator_accepts_good_labels_and_runs_alone(package):
-    clean = [{k: v for k, v in r.items() if k != "known_issue"} for r in GOLD]
-    fill(package, clean)
+    fill(package)
     done = subprocess.run([sys.executable, "-I", str(package / "validate_labels.py")], cwd=package, capture_output=True, text=True)
     assert done.returncode == 0, done.stdout + done.stderr
     assert "8 labels, 0 open questions, 0 problems" in done.stdout
@@ -727,12 +791,29 @@ def test_package_validator_agrees_with_the_scorer_on_bad_labels(package):
     cases = v.load_cases(str(package))
     for change in ({"source_text": "not the text"}, {"predicate": "traps_piece"}, {"branch": ["e2e5"]}, {"branch": None},
                    {"chess_truth": "UNDETERMINED"}, {"case": "nope"}):
-        row = {**GOLD[0], **change}
-        assert v.check_labels([row], cases, schema, vocabulary), change
-        assert sc.validate_labels([row], *texts_and_fens(), SCHEMA), change
-    assert v.check_labels([{**GOLD[0], "args": {"source": "e2"}}], cases, schema, vocabulary)
-    assert v.check_labels([{**GOLD[0], "args": {"source": "e2", "target": "d3", "wing": "king"}}], cases, schema, vocabulary)
-    assert v.check_labels([{**GOLD[7], "failure_ply": 5}], cases, schema, vocabulary)
+        assert v.check_labels([{**EXTERNAL_GOLD[0], **change}], cases, schema, vocabulary), change
+        assert sc.validate_labels([{**GOLD[0], **change}], *texts_and_fens(), SCHEMA), change
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "args": {"source": "e2"}}], cases, schema, vocabulary)
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "args": {"source": "e2", "target": "d3", "wing": "king"}}], cases, schema, vocabulary)
+    assert v.check_labels([{**EXTERNAL_GOLD[7], "failure_ply": 5}], cases, schema, vocabulary)
+
+
+def test_package_validator_requires_the_neutral_terms_and_polarity(package):
+    v = package_module(str(package), "validate_labels")
+    with open(package / "labels.schema.json") as f:
+        schema = json.load(f)
+    with open(package / "predicates.json") as f:
+        vocabulary = json.load(f)["predicates"]
+    cases = v.load_cases(str(package))
+    assert v.check_labels([EXTERNAL_GOLD[0]], cases, schema, vocabulary) == []
+    assert v.check_labels([GOLD[0]], cases, schema, vocabulary)                                    # internal terms
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "label_class": "EXTRACTED"}], cases, schema, vocabulary)
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "label_class": "LINE"}], cases, schema, vocabulary)  # a fact is not a line
+    assert v.check_labels([{**EXTERNAL_GOLD[6], "label_class": "FACT"}], cases, schema, vocabulary)
+    no_polarity = {k: v2 for k, v2 in EXTERNAL_GOLD[0].items() if k != "polarity"}
+    assert v.check_labels([no_polarity], cases, schema, vocabulary)
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "polarity": "maybe"}], cases, schema, vocabulary)
+    assert v.check_labels([{**EXTERNAL_GOLD[0], "polarity": "negative"}], cases, schema, vocabulary) == []
 
 
 def test_package_validator_notices_a_changed_response_and_bad_reviews(package):
@@ -768,7 +849,7 @@ def test_label_tools_stop_at_the_end_of_a_game(tmp_path):
 # ── bringing labels back ─────────────────────────────────────────────────────
 @pytest.fixture
 def returned(package):
-    fill(package, [{k: v for k, v in r.items() if k != "known_issue"} for r in GOLD])
+    fill(package)
     return package
 
 
@@ -787,8 +868,30 @@ def test_import_and_freeze_then_score(returned, frozen):
     assert result["meta"]["draft"] is False and result["meta"]["independent_of_grammar_author"] is True
 
 
+def test_import_maps_neutral_terms_back_and_keeps_what_was_returned(returned, frozen):
+    base = imported_base(frozen)
+    ibl.import_labels(str(returned), base)
+    rows = [json.loads(line) for line in (frozen / "labels.jsonl").read_text().splitlines()]
+    assert [r["extraction_class"] for r in rows] == [g["extraction_class"] for g in GOLD]
+    assert not any("label_class" in r for r in rows)
+    assert rows[0]["polarity"] == "positive"
+    assert (frozen / "labels_as_returned.jsonl").read_text() == (returned / "labels.jsonl").read_text()
+    assert sc.validate_labels(rows, *texts_and_fens(), SCHEMA) == []
+
+
+def test_import_refuses_labels_in_internal_terms_or_without_polarity(returned, frozen):
+    base = imported_base(frozen)
+    fill(returned, [GOLD[0]])
+    with pytest.raises(ibl.Refused, match="invalid labels"):
+        ibl.import_labels(str(returned), base)
+    fill(returned, [{k: v for k, v in EXTERNAL_GOLD[0].items() if k != "polarity"}])
+    with pytest.raises(ibl.Refused, match="invalid labels"):
+        ibl.import_labels(str(returned), base)
+    assert not (frozen / "labels.jsonl").exists() or not (frozen / "labels.jsonl").read_text().strip()
+
+
 def test_import_keeps_open_questions_and_will_not_freeze_over_them(package, frozen):
-    fill(package, [GOLD[0]], [{"review_id": "r1", "case": "x1", "source_text": "a blunder", "question": "?"}])
+    fill(package, [EXTERNAL_GOLD[0]], [{"review_id": "r1", "case": "x1", "source_text": "a blunder", "question": "?"}])
     base = imported_base(frozen)
     with pytest.raises(ibl.Refused, match="open questions"):
         ibl.import_labels(str(package), base, freeze=True)
@@ -805,16 +908,16 @@ def test_import_refuses_bad_returns(returned, frozen):
     with pytest.raises(ibl.Refused, match="different snapshot"):
         ibl.import_labels(str(returned), base)
     (returned / "package.json").write_text(json.dumps(package_json))
-    fill(returned, [{**GOLD[0], "source_text": "wrong"}])
+    fill(returned, [{**EXTERNAL_GOLD[0], "source_text": "wrong"}])
     with pytest.raises(ibl.Refused, match="invalid labels"):
         ibl.import_labels(str(returned), base)
     fill(returned, [])
     with pytest.raises(ibl.Refused, match="no labels"):
         ibl.import_labels(str(returned), base)
-    fill(returned, [GOLD[0]], meta={"labeller": "agent", "opened_anything_outside_this_folder": True})
+    fill(returned, [EXTERNAL_GOLD[0]], meta={"labeller": "agent", "opened_anything_outside_this_folder": True})
     with pytest.raises(ibl.Refused, match="stayed inside"):
         ibl.import_labels(str(returned), base)
-    fill(returned, [GOLD[0]], meta={"labeller": None, "opened_anything_outside_this_folder": False})
+    fill(returned, [EXTERNAL_GOLD[0]], meta={"labeller": None, "opened_anything_outside_this_folder": False})
     with pytest.raises(ibl.Refused, match="labeller"):
         ibl.import_labels(str(returned), base)
 

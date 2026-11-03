@@ -9,12 +9,24 @@ import json
 import os
 import shutil
 
+import jsonschema
+
+from evals.queen_heldout.build_labeling_package import labeller_schema
 from evals.queen_heldout.freeze_predictions import HERE, labels_exist, sha256_file
 from evals.queen_heldout.score import load_jsonl, load_predictions, validate_labels
+
+TO_INTERNAL_CLASS = {"FACT": "EXTRACTED", "LINE": "EXTRACTED", "UNSUPPORTED": "UNSUPPORTED", "AMBIGUOUS": "AMBIGUOUS"}
 
 
 class Refused(Exception):
     pass
+
+
+def to_internal(row: dict) -> dict:
+    """The labeller's neutral label_class becomes the project's extraction_class."""
+    out = {k: v for k, v in row.items() if k != "label_class"}
+    out["extraction_class"] = TO_INTERNAL_CLASS[row["label_class"]]
+    return out
 
 
 def import_labels(returned, base=HERE, freeze=False) -> dict:
@@ -28,9 +40,9 @@ def import_labels(returned, base=HERE, freeze=False) -> dict:
         raise Refused("these labels were made from a package for a different snapshot")
     if labels_exist(os.path.join(base, "labels.jsonl")):
         raise Refused("labels.jsonl already has labels: corrections go in label_corrections.jsonl")
-    labels = load_jsonl(os.path.join(returned, "labels.jsonl"))
+    returned_labels = load_jsonl(os.path.join(returned, "labels.jsonl"))
     reviews = load_jsonl(os.path.join(returned, "review.jsonl"))
-    if not labels:
+    if not returned_labels:
         raise Refused("no labels in the returned files")
     if freeze and reviews:
         raise Refused(f"{len(reviews)} open questions in review.jsonl: resolve them before freezing")
@@ -41,6 +53,13 @@ def import_labels(returned, base=HERE, freeze=False) -> dict:
             texts[case] = f.read()
     with open(os.path.join(base, "labels.schema.json"), encoding="utf-8") as f:
         schema = json.load(f)
+    external = labeller_schema(schema)
+    for row in returned_labels:
+        try:
+            jsonschema.validate(row, external)
+        except jsonschema.ValidationError as e:
+            raise Refused(f"invalid labels:\n  {row.get('label_id', '?')}: {e.message}")
+    labels = [to_internal(row) for row in returned_labels]
     problems = validate_labels(labels, texts, {c: p["fen"] for c, p in predictions.items()}, schema)
     if problems:
         raise Refused("invalid labels:\n  " + "\n  ".join(problems))
@@ -50,7 +69,9 @@ def import_labels(returned, base=HERE, freeze=False) -> dict:
         raise Refused("label_meta.json does not name the labeller")
     if returned_meta.get("opened_anything_outside_this_folder") is not False:
         raise Refused("label_meta.json does not confirm the labeller stayed inside the package; record what happened before importing")
-    shutil.copyfile(os.path.join(returned, "labels.jsonl"), os.path.join(base, "labels.jsonl"))
+    with open(os.path.join(base, "labels.jsonl"), "w", encoding="utf-8") as f:
+        f.writelines(json.dumps(row, ensure_ascii=False) + "\n" for row in labels)
+    shutil.copyfile(os.path.join(returned, "labels.jsonl"), os.path.join(base, "labels_as_returned.jsonl"))
     shutil.copyfile(os.path.join(returned, "review.jsonl"), os.path.join(base, "labels_review.jsonl"))
     meta_path = os.path.join(base, "labels_meta.json")
     with open(meta_path, encoding="utf-8") as f:

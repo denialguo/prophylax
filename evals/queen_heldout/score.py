@@ -113,9 +113,9 @@ def score(predictions, labels):
     used = set()
     for counter, names in ((ex, ("facts_labelled", "predicate_match", "args_match_given_predicate", "predicate_and_args_match", "board_match",
                                  "missed", "unsupported_labelled", "unsupported_detected", "ambiguous_labelled", "ambiguous_detected",
-                                 "hallucinated_on_non_fact")),
+                                 "hallucinated_on_non_fact", "negative_labelled", "negative_missed", "polarity_flipped")),
                            (ver, ("correctly_extracted", "VERIFIED", "FALSE", "UNKNOWN", "verdict_correct", "not_true_claims", "false_verified")),
-                           (e2e, ("false_claims", "false_claims_representable", "false_outside_predicates", "false_caught", "false_unknown", "false_missed",
+                           (e2e, ("false_claims", "false_claims_representable", "false_claims_negative", "false_outside_predicates", "false_caught", "false_unknown", "false_missed",
                                   "false_incorrectly_verified", "false_found_on_wrong_board", "false_caught_by_stray_candidate")),
                            (var, ("labelled", "exact", "missed", "false_lines", "false_caught", "false_became_unknown", "false_missed",
                                   "false_incorrectly_verified", "ambiguous_labelled", "ambiguous_detected", "verified_true", "verified_false", "verified_unlabelled"))):
@@ -130,7 +130,32 @@ def score(predictions, labels):
         case, candidates = row["case"], fact_rows[row["case"]]
         here = [(i, c) for i, c in enumerate(candidates) if _overlap(row["span_start"], row["span_end"], c["span_start"], c["span_end"])]
         extracted = [(i, c) for i, c in here if c["status"] == "EXTRACTED" and (case, i) not in used]
-        if row["kind"] == "fact":
+        if row["kind"] == "fact" and row.get("polarity", "positive") == "negative":
+            # Candidates only ever assert that a predicate holds, so a negative claim cannot be
+            # matched: it is a missed concrete claim. A candidate for the same fact here says the
+            # opposite of the text: it is consumed, and a VERIFIED from it is not a true reading.
+            ex["facts_labelled"] += 1
+            ex["negative_labelled"] += 1
+            ex["missed"] += 1
+            ex["negative_missed"] += 1
+            if row.get("known_issue"):
+                known[row["known_issue"]] += 1
+            if row["chess_truth"] == "FALSE":
+                e2e["false_claims"] += 1
+                e2e["false_claims_representable"] += 1
+                e2e["false_claims_negative"] += 1
+                e2e["false_missed"] += 1
+            flipped = [(i, c) for i, c in extracted if c["predicate"] == row["predicate"] and args_match(row["args"], c["args"])]
+            if flipped:
+                ex["polarity_flipped"] += 1
+                tax["polarity_flipped"] += 1
+                details["polarity_flipped"].append(_brief(row, flipped[0][1]))
+                used.add((case, flipped[0][0]))
+                labelled_candidate[(case, flipped[0][0])] = row
+            else:
+                tax["negative_claim_missed"] += 1
+                details["negative_claim_missed"].append(_brief(row, None))
+        elif row["kind"] == "fact":
             ex["facts_labelled"] += 1
             same = [(i, c) for i, c in extracted if c["predicate"] == row["predicate"]]
             exact = [(i, c) for i, c in same if args_match(row["args"], c["args"])]
@@ -229,7 +254,8 @@ def score(predictions, labels):
             if c["verifier_status"] == "VERIFIED":
                 if label is None:
                     verified_unlabelled += 1
-                elif label["kind"] == "fact" and label["chess_truth"] == "TRUE" and c["board_moves"] == label["branch"]:
+                elif (label["kind"] == "fact" and label.get("polarity", "positive") == "positive"
+                      and label["chess_truth"] == "TRUE" and c["board_moves"] == label["branch"]):
                     verified_true += 1
                 else:
                     verified_false += 1
@@ -334,7 +360,7 @@ def add_unmatched_variations(result, predictions, labels):
 
 def _brief(row, candidate, statuses=None):
     out = {"label_id": row["label_id"], "case": row["case"], "text": row["source_text"][:200], "class": row["extraction_class"]}
-    for k in ("predicate", "args", "branch", "chess_truth", "moves", "failure_ply"):
+    for k in ("predicate", "args", "polarity", "branch", "chess_truth", "moves", "failure_ply"):
         if k in row:
             out["want_" + k] = row[k]
     if candidate:

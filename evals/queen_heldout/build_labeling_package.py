@@ -23,11 +23,22 @@ class Refused(Exception):
 
 
 def labeller_schema(schema: dict) -> dict:
-    """The held-out schema without its internal notes. A subset, so labels written against
-    it are valid against the full one."""
+    """The held-out schema in the labeller's neutral terms, without its internal notes:
+    label_class instead of extraction_class, FACT and LINE instead of EXTRACTED, and polarity
+    required on every fact. import_blind_labels.to_internal maps a label back."""
     out = json.loads(json.dumps(schema))
     out["description"] = LABEL_DESCRIPTION
     out["properties"].pop("known_issue", None)
+    out["properties"]["label_class"] = {"enum": ["FACT", "LINE", "UNSUPPORTED", "AMBIGUOUS"]}
+    del out["properties"]["extraction_class"]
+    out["required"] = ["label_class" if r == "extraction_class" else r for r in out["required"]]
+    for branch, cls in zip(out["allOf"], ({"const": "FACT"}, {"enum": ["UNSUPPORTED", "AMBIGUOUS"]}, {"enum": ["LINE", "AMBIGUOUS"]})):
+        then = branch["then"]
+        del then["properties"]["extraction_class"]
+        then["properties"]["label_class"] = cls
+    fact = out["allOf"][0]["then"]
+    fact["required"] = fact["required"] + ["polarity"]
+    fact["properties"]["polarity"].pop("default")
     return out
 
 
