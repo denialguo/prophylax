@@ -7,6 +7,31 @@ chess fact comes from Stockfish and python-chess. The language model only puts
 facts it has been handed into words, and deterministic checks reject anything
 else before you see it.
 
+[![CI](https://github.com/denialguo/prophylax/actions/workflows/ci.yml/badge.svg)](https://github.com/denialguo/prophylax/actions/workflows/ci.yml)
+
+**At a glance**
+
+- **Grounded coaching.** Every narrated fact traces to a verified claim, with its evidence. Anything
+  unbacked is rejected, retried once, then replaced by the claims themselves.
+- **Decisions by experiment.** The default narration path was chosen by a pre-registered, paired
+  comparison (54 trials) with the switching rule written before the data.
+- **Your recurring mistakes.** A deterministic profile over your own games, re-derived in seconds
+  when the logic changes, without rerunning the engine.
+- **Checking another model's chess.** A verifier and claim extractor that test what a chess language
+  model says against the board. A blind evaluation on unseen outputs is in progress
+  ([details](#checking-another-models-chess-research-in-progress)).
+
+**Try it with no API keys or engine:**
+
+```bash
+git clone https://github.com/denialguo/prophylax && cd prophylax
+uv sync --locked
+uv run pytest                                 # about 30s, offline
+uv run python -m evals.claim_metrics          # the claim benchmark
+uv run python -m evals.queen_extraction       # extraction and verification on stored QUEEN outputs
+uv run python -m evals.queen_heldout.status   # where the blind evaluation stands
+```
+
 ## Architecture
 
 ```
@@ -123,9 +148,51 @@ Flagged moves with no structural pattern (tactical or other): 100 moves in 20 ga
   from the stored searches in seconds, and a test fails if covered code changes
   without a bump.
 
+## Checking another model's chess (research in progress)
+
+[QUEEN](https://huggingface.co/princeton-nlp/queen_hce-4) is a chess language model that writes rich
+explanations. On 18 stored outputs it chose well: its move was Stockfish's first choice 8 times and in
+the top three 16 times. But an audit found at least 76 false concrete statements, such as attacks that
+don't exist, files called open with pawns on them, and pawns "one step from promotion" that need two.
+
+Prophylax has what's needed to check such text:
+
+```
+QUEEN's text → extraction (what does it claim?) → verifier (is it true on that board?) → VERIFIED / FALSE / UNKNOWN
+```
+
+```text
+"the white pawn on f3 blocks the white bishop on f1"  →  blocks(f1, f3)        →  FALSE: a bishop on f1 does not move along the line to f3
+"The white king on b6 already controls a7"            →  attacks(b6, a7, king) →  VERIFIED
+"immediately creating a passed pawn" (after e2-e4)    →  is_passed_pawn(e4)    →  FALSE: it already held before the move
+```
+
+- **`domain/verify.py`** proves or disproves simple facts by wrapping python-chess, and answers UNKNOWN
+  for anything else. It is property-tested against python-chess on random games.
+- **`domain/extract.py`** is a deterministic grammar. It reports what a sentence says and never whether
+  it's true, and binds each claim to the board the prose has reached.
+
+**How far to trust this so far:**
+
+| On the 18 development outputs | |
+|---|---|
+| Facts read exactly | 83 of 106 |
+| Variations read exactly | 45 of 48 |
+| False VERIFIED among labelled claims | 0 |
+
+The grammar was written while reading those same outputs, so these numbers are optimistic. An audit
+of my own labels also found they'd been leaning toward what the grammar could read, and correcting them
+took the fact score from 83/83 to 83/106. The real test is a [blind held-out evaluation](evals/queen_heldout/):
+24 unseen positions, code frozen at `046bb19`, predictions saved read-only before a separate labeller
+sees the text. **It hasn't finished,** because generating outputs is limited by free GPU quota, so
+there's no held-out result yet. Known bugs are listed in [`docs/SEMANTIC_ISSUES.md`](docs/SEMANTIC_ISSUES.md),
+including two that can produce a false VERIFIED, and they stay unfixed until the evaluation is done.
+QUEEN isn't used in production; the [plan for after the evaluation](docs/QUEEN_INTEGRATION_DESIGN.md) is
+a proposal.
+
 ## Testing and evaluation
 
-- **Fast suite:** 742 tests, about 30s, offline. It covers:
+- **Fast suite:** over 700 tests, about 30s, offline. It covers:
   - the domain models and conversion
   - claims in both colours and in mirrored positions
   - the validators and the prompt contracts
@@ -162,9 +229,9 @@ Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Stockfish 18, and
 a Gemini or Groq API key (both have free tiers).
 
 ```bash
-git clone <repo> && cd prophylax && uv sync
-export STOCKFISH_PATH=$(which stockfish) STOCKFISH_NODES=1000000
-export GEMINI_API_KEY=...            # or put keys in app/.env (git-ignored)
+git clone https://github.com/denialguo/prophylax && cd prophylax && uv sync --locked
+cp app/.env.example app/.env         # fill in your key and Stockfish path (git-ignored)
+set -a; . app/.env; set +a
 
 # one game: a report on the flagged moves
 uv run python -m app.agent --pgn mygame.pgn --max-flags 4
@@ -206,6 +273,17 @@ The history database lives at `data/prophylax_history.sqlite3` (git-ignored;
     misunderstanding.
 - **Scope.** Single player and command-line only. Cross-game conversational
   retrieval and training positions built from your own mistakes are designed
-  (`PHASE_C_PLAN.md`) but not built.
+  (`docs/plans/PHASE_C_PLAN.md`) but not built.
 
-`ARCHITECTURE.md` has the full pipeline, configuration and known limits.
+## Where things are
+
+| Path | What |
+|---|---|
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | The full pipeline, configuration, tests and known limits |
+| `app/` | The agent, narration harness and command-line report |
+| `mcp_server/` | The only code that talks to Stockfish; deterministic features |
+| `domain/` | Typed models, coaching claims, the verifier and the extractor |
+| `history/` | Player history and the recurring-weakness profile |
+| `evals/` | Benchmarks, the narration comparison, the QUEEN evaluation |
+| [`docs/`](docs/) | Design notes, known semantic issues, the original plans (`docs/plans/`) |
+| [`AGENTS.md`](AGENTS.md) | The rules the project was built under |

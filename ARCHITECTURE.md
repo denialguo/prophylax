@@ -237,6 +237,7 @@ caller.
   `import_blind_labels` → `score` → `generate_report`. Predictions are written read-only, with
   hashes, before any label exists. The labelling package is standalone and contains nothing about
   how any software reads the texts.
+- **Open bugs:** `docs/SEMANTIC_ISSUES.md`, left unfixed for the evaluation. Post-evaluation plan: `docs/QUEEN_INTEGRATION_DESIGN.md`.
 - **Known failure:** 13 I.b (`white pawn c3-c4`) is illegal at the branch the text means, but it
   becomes legal later in the parent line. With no move number the extractor treats the branch point
   as unstated, so it comes out AMBIGUOUS and the illegal move is not reported.
@@ -303,10 +304,12 @@ real server output (`tests/payload_schema.py`).
 
 ## Known limits
 
+For the frozen extractor and verifier, see `docs/SEMANTIC_ISSUES.md`.
+
 - King safety ignores uncastled kings on the d/e files.
 - `get_quiet_concessions` builds its square lists from sets, so their order in a
   live payload follows the process's hash seed (the stored history sorts them).
 - Profile statistics rest on 100k-node analysis: on a 6-game check, 100k and 1M
   agreed on 89% of the player's flagged moves and 8 of 9 structural ones, but on
-  only 76% of best moves (see `PHASE_C_PLAN.md` §3.2). King-safety events have no
+  only 76% of best moves (see `docs/plans/PHASE_C_PLAN.md` §3.2). King-safety events have no
   per-move base rate stored, so no created→flagged rate.
