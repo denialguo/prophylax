@@ -1,0 +1,17 @@
+ANALYSIS:
+White is down a full queen and must find the most resilient defense. The white pawn on d5 is the primary counterplay asset, and the white bishop on b5 currently attacks the black knight on c6. The practical question is whether to eliminate the knight, advance the pawn, or reposition the bishop to a more active diagonal. Capturing the knight is clearly superior: it removes Black's most active piece and forces a simplification into a queen-versus-king-and-pawn ending where White's king can shelter effectively. The alternatives leave the knight on the board and allow Black to maintain a larger material edge with the queen and knight still coordinated.
+
+I. white bishop b5 takes black knight c6 — Best. The capture eliminates the knight and forces Black to choose between king placement and queen activation. Black's most precise reply is 1... black king e8-f7, centralizing the king to support the queen's checking battery along the g-file while keeping the white pawn on d5 at bay. White's most resilient continuation is 2. white king g1-f2, stepping toward the center to keep the pawn alive and maintain the bishop's diagonal. Black then plays 2... black queen d8-g5, activating the queen with a direct threat of black queen g5-h4+. The position remains decisively lost, but the king on f2 is the most compact defensive square available.
+
+I.a. If White instead plays 2. white king g1-f1, Black has 2... black queen d8-g5 3. white king f1-f2 black queen g5-h4+ 4. white king f2-e3 black queen h4-g5+ 5. white king e3-e4 black queen g5-h4+, a perpetual-check pattern that leaves the king permanently exposed.
+
+I.b. If White plays 2. white king g1-h2, Black has 2... black queen d8-h4+ 3. white king h2-g2 black queen h4-g5+ 4. white king g2-h3 black queen g5-h5+ 5. white king h3-g2, again a perpetual that leaves the king with no safe haven.
+
+II. white pawn d5 takes black knight c6 — Inferior. The capture creates a passed pawn on c6, but Black's queen immediately targets it. Black's best is 1... black queen d8-b6, attacking the pawn directly. White's best try is 2. white king g1-g2, but Black simply plays 2... black queen b6 takes white bishop b5, eliminating the bishop and leaving the king exposed. After 3. white king g2-g3, Black continues 3... black queen b5 takes white pawn c6, winning the pawn and leaving the king with no safe squares. The resulting queen-versus-king ending is a straightforward win.
+
+III. white bishop b5-c4 — Inferior. The bishop retreats to a more active diagonal, but the knight on c6 remains a dominant piece. Black's best is 1... black knight c6-d4, occupying a central outpost that directly threatens the white pawn on d5 and coordinates with the queen for a checking battery along the g1-g8. After 2. white king g1-g2, Black plays 2... black queen d8-g5+, driving the king to f2, and the knight on d4 continues to exert pressure on the pawn. The position is decisively lost with Black retaining both major pieces.
+
+BEST_MOVE: white bishop b5 takes black knight c6
+CRITICAL_LINE: white bishop b5 takes black knight c6 black king e8-f7 white king g1-f2 black queen d8-g5
+PROMISING_MOVES: white bishop b5 takes black knight c6 white pawn d5 takes black knight c6 white bishop b5-c4
+EVALUATION: the opponent has a decisive advantage of 3.6 pawns.

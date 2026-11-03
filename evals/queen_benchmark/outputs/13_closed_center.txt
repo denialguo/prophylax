@@ -1,0 +1,21 @@
+ANALYSIS:
+The position is a closed-center structure in which White's c4-d4 pawn duo presses against Black's c5-d5 chain. White's white bishop on d3 commands the long diagonal, and the white knight on f3 eyes the e5 outpost. Black's black knight on c6 is well placed, but the black bishop on c8 remains undeveloped behind the pawn chain. The practical question for Black is how to complete development while managing the central tension: resolving it immediately with a pawn capture concedes the initiative, while a quiet developing move preserves flexibility and keeps the position balanced.
+
+I. black pawn b7-b6 — the best move. This prepares black bishop c8-b7, developing to the long diagonal and freeing the black rook on a8. White's most natural reply is white pawn c4 takes black pawn d5, resolving the tension and opening the d1-d8 for the queen. Black's most precise response is black pawn e6 takes white pawn d5, eliminating the advanced pawn while preserving the black knight on c6 and the black pawn on c5. After white bishop c1-b2, activating the light-squared bishop, Black plays black bishop c8-b7, and the position is approximately equal with both sides possessing reasonable plans.
+
+I.a. If White instead plays white pawn d4 takes black pawn c5, Black recaptures black pawn b6 takes white pawn c5, gaining space and freeing the black rook on a8. After white bishop c1-b2 black bishop c8-b7, the position is slightly favorable for Black, as the c5 pawn becomes a target and White's queenside pawns are compromised.
+
+I.b. If White plays white pawn c3-c4, Black responds black pawn d5 takes white pawn c4, winning a pawn and breaking the chain. After white bishop d3 takes black pawn c4 black bishop c8-b7, the white bishop on c4 is exposed to the black pawn on b6, and Black's position is comfortable.
+
+II. black pawn d5 takes white pawn c4 — a premature central break that concedes the initiative. White's strongest reply is white bishop d3 takes black pawn c4, eliminating Black's extra pawn and activating the bishop on the long diagonal. Black's best is black pawn c5 takes white pawn d4, opening the c1-c8 for the rook. After white pawn c3 takes black pawn d4, Black develops black bishop c8-d7, and White continues white pawn e3-e4, gaining space and preparing e5. The resulting position is balanced but White retains a modest edge from the more active bishop and central presence.
+
+II.a. If Black instead plays black pawn b7-b5, White responds white bishop c4 takes black pawn b5, winning a pawn and training the bishop on the black knight on c6. After black pawn c5 takes white pawn d4 white pawn c3 takes black pawn d4, White retains a comfortable advantage from the extra pawn and the active bishop.
+
+III. black pawn c5 takes white pawn d4 — the least accurate option. White's strongest reply is white pawn c4 takes black pawn d5, creating a passed pawn and opening the c1-c8. Black's best is black pawn e6 takes white pawn d5, eliminating the passed pawn and opening the e1-e8 for the rook. After white pawn c3 takes black pawn d4, Black plays black knight c6-a5, attacking the white bishop on d3 and gaining a tempo. White retains a comfortable edge from the open c1-c8 and the active bishop.
+
+III.a. If Black instead plays black knight c6-a5 immediately, White pushes white pawn d5 takes black pawn e6, and after black bishop c8 takes white pawn e6, the white pawn on c3 advances to c4, gaining space and restricting the knight. This is worse for Black than the main line.
+
+BEST_MOVE: black pawn b7-b6
+CRITICAL_LINE: black pawn b7-b6 white pawn c4 takes black pawn d5 black pawn e6 takes white pawn d5 white bishop c1-b2 black bishop c8-b7
+PROMISING_MOVES: black pawn b7-b6 black pawn d5 takes white pawn c4 black pawn c5 takes white pawn d4
+EVALUATION: The position is approximately equal (0.1 pawns).

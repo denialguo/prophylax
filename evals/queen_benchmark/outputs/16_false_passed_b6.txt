@@ -1,0 +1,19 @@
+ANALYSIS:
+This is a pure king-and-pawn endgame. The player holds a single white pawn on c5; the opponent has two pawns on a7 and b6. The white king on a1 is far from the action, so the outcome is decided entirely by the race between the player's c-pawn and the opponent's king on h8. The black pawn on b6 directly attacks the white pawn on c5, creating an immediate tactical question: can the player convert the c-pawn before the opponent's king arrives? The answer is yes, but only by pushing immediately.
+
+I. white pawn c5-c6 — the winning move. The pawn advances to the sixth rank, one tempo from promotion. The opponent's king on h8 is too distant to intervene, and the black pawn on a7 is too slow to create a counter-threat.
+
+I.a. 1... black king h8-g7 — the best try, stepping toward the center. 2. white pawn c6-c7 black king g7-f7 3. white pawn c7-c8white queen. The queen endgame is decisively winning for the player; the black king on f7 cannot stop the remaining pawns.
+
+I.b. 1... black king h8-g8 — a tempo loss. 2. white pawn c6-c7 black king g8-f7 3. white pawn c7-c8white queen. The extra tempo costs the opponent a measurable amount.
+
+I.c. 1... black pawn a7-a5 — the worst option. Pushing the a-pawn does not address the immediate threat. 2. white pawn c6-c7 black king h8-g7 3. white pawn c7-c8white queen. The a-pawn advance has only accelerated the player's conversion.
+
+II. white pawn c5 takes black pawn b6 — eliminates the opponent's b-pawn but leaves the player with a single pawn on b6. After 1... black pawn a7 takes white pawn b6, the position reduces to a bare king-and-pawn ending with the opponent's pawn on b6. The player's king on a1 is too far from the queenside to catch the passer in time, and the opponent converts the advantage.
+
+III. white king a1-b2 — a critical error. The king steps toward the center but leaves the white pawn on c5 en prise. 1... black pawn b6 takes white pawn c5 creates a passed c-pawn, and the opponent is up a full pawn with a dangerous passer. After 2. white king b2-c3 black pawn c5-c4 3. white king c3 takes black pawn c4 black king h8-g7, the opponent retains a decisive material and positional advantage with the black pawn on a7 still on the board.
+
+BEST_MOVE: white pawn c5-c6
+CRITICAL_LINE: white pawn c5-c6 black king h8-g7 white pawn c6-c7 black king g7-f7 white pawn c7-c8white queen
+PROMISING_MOVES: white pawn c5-c6 white pawn c5 takes black pawn b6 white king a1-b2
+EVALUATION: the player is winning, with an evaluation of 6.7 pawns.

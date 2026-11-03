@@ -1,0 +1,21 @@
+ANALYSIS:
+White's white bishop on g5 pins the black knight on f6 against the black queen on d8, creating the central tension of the position. Black's black pawn on b5 is a structural liability that White can exploit, while the black bishop on c8 remains undeveloped behind the black pawn on c6. White's plans revolve around resolving the pin favorably, activating the white knight on e2, and targeting the black pawn on b5. Black must choose between challenging the pinning bishop, developing the queenside, or generating counterplay on the queenside.
+
+I. white knight e2-f4 — the strongest move. The knight joins the pin, adding a second attacker on f6 and threatening to exploit the pin tactically. Black's best reply is 1... black pawn h7-h6, directly challenging the pinning bishop. White's strongest response is 2. white bishop g5 takes black knight f6 black knight d7 takes white bishop f6, trading the active bishop for the knight and opening the a1-h8 for the white bishop on d3. After 3. white knight c3-e2 black pawn a7-a5, White retains a modest edge from the more active white knight on e2 and the open long diagonal, while Black's position is sound.
+
+I.a. If White instead retreats 2. white bishop g5-h4, Black plays 2... black pawn g7-g5, gaining kingside space and forcing the bishop back. After 3. white bishop h4-g3 black pawn b5-b4, Black attacks the white knight on c3 and obtains a comfortable spatial advantage.
+
+I.b. If White plays 2. white bishop g5-g3, Black seizes the initiative with 2... black pawn b5-b4, attacking the knight. After 3. white knight c3-e2 black pawn c6-c5, Black connects the queenside pawns and prepares ...c4, gaining a clear spatial advantage.
+
+II. white bishop g5 takes black knight f6 — a natural exchange that resolves the pin immediately. Black's best is 1... black knight d7 takes white bishop f6, restoring material equality. White's strongest reply is 2. white pawn a2-a4, challenging the black pawn on b5. After 2... black pawn b5-b4 3. white knight c3-a2 black pawn a7-a5, White retains a comfortable spatial and developmental edge, but Black's position is solid.
+
+II.a. If Black instead recaptures 1... black bishop e7 takes white bishop f6, the black bishop on f6 becomes a target and the black knight on d7 remains passive. White's 2. white knight c3-a4 immediately targets the black pawn on b5, and after 2... black pawn b5-b4 3. white knight a4-c5, the knight reaches a dominant outpost attacking the black knight on d7.
+
+III. white pawn a2-a4 — a direct queenside challenge that opens the a-file. Black's best is 1... black pawn b5-b4, creating a passed-pawn threat and forcing the white knight on c3 to react. White's strongest reply is 2. white knight c3-d1, preserving the bishop pair and keeping the white knight on e2 available for f4. After 2... black pawn h7-h6 3. white bishop g5 takes black knight f6 black knight d7 takes white bishop f6 4. white knight e2-f4, White retains a comfortable edge with the active knight and the open a1-a8.
+
+III.a. If Black instead plays 1... black pawn b5 takes white pawn a4, White's 2. white knight c3 takes black pawn a4 removes the extra pawn and opens the a-file. After 2... black pawn h7-h6 3. white bishop g5 takes black knight f6 black knight d7 takes white bishop f6 4. white knight a4-c5, the knight reaches a dominant outpost attacking the black knight on d7 and threatening white bishop d3-h7+.
+
+BEST_MOVE: white knight e2-f4
+CRITICAL_LINE: white knight e2-f4 black pawn h7-h6 white bishop g5 takes black knight f6 black knight d7 takes white bishop f6 white knight c3-e2 black pawn a7-a5
+PROMISING_MOVES: white knight e2-f4 white bishop g5 takes black knight f6 white pawn a2-a4
+EVALUATION: the player has a modest advantage of 0.4 pawns.

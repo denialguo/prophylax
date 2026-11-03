@@ -1,0 +1,25 @@
+ANALYSIS:
+This is a bare king-and-pawn endgame. The player holds a single white pawn on e2 with the white king on e4, while the opponent's lone king sits on e6. The entire contest reduces to a race: the player must escort the pawn to promotion, and the opponent must close the distance to the critical squares d5 and e5 to establish opposition and prevent the pawn's advance. The white king's initial placement determines whether the player can force the pawn through or whether the opponent seizes the opposition in time.
+
+I. white king e4-f4 — the best move, preserving the full winning edge.
+
+The king steps to f4, a square that simultaneously supports the pawn's advance and maintains the opposition. The opponent's best reply is 1...black king e6-d5, stepping directly toward the pawn's file to contest the opposition. The player's most efficient response is 2.white king f4-f5, stepping to the fifth rank to support the pawn and restrict the opponent's access to the promotion square. The opponent then plays 2...black king d5-d6, retreating to maintain opposition. From here the player must find the correct continuation to convert, but the position remains decisively winning.
+
+I.a. If the player instead plays 2.white king f4-f3, the opponent immediately answers 2...black king d5-e5, seizing the opposition and gaining a tempo that the player cannot fully neutralize.
+
+I.b. If the player plays 2.white pawn e2-e4, the opponent responds 2...black king d5-d6, and the white king on f4 is less well placed than on f5 for supporting the subsequent advance.
+
+II. white king e4-d4 — a solid alternative that keeps the win but concedes a tempo.
+
+The king steps to d4, a more central square that still supports the pawn's advance. The opponent's best reply is 1...black king e6-f5, stepping to the fifth rank to maintain the closest possible proximity to the pawn's file. The player's most efficient reply is 2.white pawn e2-e4, immediately creating a passed pawn. The opponent answers 2...black king f5-e6, stepping in front of the pawn. The player centralizes with 3.white king d4-d3, and the opponent follows with 3...black king e6-e5. The resulting position is winning for the player, but the opponent's king is optimally placed on the e-file and the practical difficulty of conversion is somewhat higher than in line I.
+
+III. white pawn e2-e3 — the least effective option.
+
+The pawn advances immediately, but this allows the opponent to seize the opposition before the white king can reposition. The opponent's best reply is 1...black king e6-d6, stepping to the most active square that directly contests the pawn's advance. The player's most natural reply is 2.white king e4-d4, centralizing to support the pawn. The opponent answers 2...black king d6-e6, re-establishing the opposition. The player then pushes 3.white pawn e3-e4, but the opponent's king is already optimally placed to challenge the passer. The evaluation drops to a modest advantage because the opponent's king has reached the critical diagonal in a single tempo.
+
+The decisive distinction is that white king e4-f4 places the king on a square from which it can both support the pawn and maintain the opposition, forcing the opponent into a reactive posture. The alternative white king e4-d4 is sound but allows the opponent to occupy the fifth rank, and the immediate pawn push white pawn e2-e3 surrenders the opposition entirely.
+
+BEST_MOVE: white king e4-f4
+CRITICAL_LINE: white king e4-f4 black king e6-d5 white king f4-f5 black king d5-d6
+PROMISING_MOVES: white king e4-f4 white king e4-d4 white pawn e2-e3
+EVALUATION: the player is winning, with an evaluation of 5.2 pawns.

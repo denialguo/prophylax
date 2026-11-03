@@ -1,0 +1,29 @@
+ANALYSIS:
+White's position is under severe pressure from Black's advanced pawn on c4, which directly attacks the white bishop on b3 and threatens to open the a-file against the white rook on a1. The white queen on d5 is active but exposed, and the white king remains uncastled in the center. Black's bishop pair and the potential open a-file give a clear long-term advantage, while the immediate tactical threat to the bishop forces a decision. White's best practical resource is to develop with tempo and create counterplay before Black consolidates the material edge.
+
+I. white bishop c1-g5 — the best move. The bishop develops to an active diagonal, pressuring f7 and creating immediate threats against the uncastled king. Black's most accurate reply is black knight g8-f6, developing with tempo against the queen while keeping the c4 pawn intact for a later capture.
+
+I.a. white bishop g5 takes black knight f6 black queen d8 takes white bishop f6 — the main line. White trades the active bishop for the knight, and Black recaptures with the queen, gaining the bishop pair and activating the queen on the open f-file. The c4 pawn remains a permanent thorn, and Black's pieces coordinate well around the center.
+
+I.b. white queen d5-d4 — a passive retreat that leaves the white bishop on g5 en prise. Black plays black pawn c4 takes white bishop b3, winning the bishop and opening the a-file. After white pawn a2 takes black pawn b3, Black continues black bishop f8-e7, attacking the bishop on g5. White's white bishop g5 takes black knight f6 is met by black bishop e7 takes white bishop f6, and Black retains the bishop pair with a clear advantage.
+
+I.c. white queen d5-c6 — the most ambitious try, aiming at a8 and the c4 pawn. Black responds black bishop f8-e7, attacking the bishop. After white bishop g5 takes black knight f6 black bishop e7 takes white bishop f6, White's white queen c6 takes black pawn c4 is met by black pawn b5 takes white queen c4, winning the queen for a pawn.
+
+II. white knight b1-c3 — a natural developing move, but it allows Black to immediately exploit the c4 pawn. Black's best is black knight g8-f6, developing with tempo against the queen. White's best reply is white queen d5-d4, stepping off the diagonal while maintaining central presence. Black then plays black pawn c4 takes white bishop b3, winning the bishop pair and opening the a-file. After white pawn a2 takes black pawn b3, Black continues black bishop f8-e7, developing with tempo on the queen. White's white bishop c1-g5 is the most active reply, but Black retains a decisive advantage with the bishop pair, the open a-file, and superior piece coordination.
+
+II.a. white queen d5-d2 — a more passive retreat that blocks the white bishop on c1. After black pawn c4 takes white bishop b3 white pawn a2 takes black pawn b3 black bishop f8-e7, White's white knight c3 takes black pawn b5 is met by black pawn a6 takes white knight b5, and the queen on d2 is poorly placed.
+
+II.b. white queen d5-b7 — the most ambitious try, placing the queen deep in Black's camp. Black responds black rook a8-b8, attacking the queen. After white queen b7 takes black pawn a6, Black plays black pawn c4 takes white bishop b3, and the queen on a6 is exposed to the black rook on a8.
+
+III. white bishop b3 takes black pawn c4 — the most aggressive try, capturing the thorn and opening the a-file. However, Black's decisive reply is black pawn b5 takes white bishop c4, winning the bishop and opening the c-file for the queen. White's best is white knight b1-c3, developing to a strong central square, but Black's material superiority and active pieces ensure a winning position.
+
+III.a. white queen d5 takes black pawn c4 — a direct capture that wins a pawn but leaves the queen exposed. Black develops with black knight g8-f6, and after white queen c4-d4 black bishop f8-e7, the queen is harassed and Black's pieces coordinate well.
+
+III.b. white queen d5-d4 — the most passive option. Black develops black knight g8-f6, and after white queen d4 takes black pawn c4 black bishop f8-e7, the queen is displaced from the center and Black's pieces coordinate effectively.
+
+The decisive factor distinguishing the candidates is that I. develops with tempo and creates counterplay against the uncastled king before Black can fully consolidate, while II. and III. allow Black to immediately exploit the c4 pawn or win material outright.
+
+BEST_MOVE: white bishop c1-g5
+CRITICAL_LINE: white bishop c1-g5 black knight g8-f6 white bishop g5 takes black knight f6 black queen d8 takes white bishop f6
+PROMISING_MOVES: white bishop c1-g5 white knight b1-c3 white bishop b3 takes black pawn c4
+EVALUATION: the opponent has a decisive advantage of 2.8 pawns.

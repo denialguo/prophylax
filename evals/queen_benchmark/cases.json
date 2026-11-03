@@ -1,0 +1,471 @@
+{
+ "model": "princeton-nlp/queen_hce-4",
+ "source": "queen_eval_audited_01_18 evidence/<id>/explanation.txt",
+ "cases": [
+  {
+   "id": "01_fools_mate",
+   "category": "tactical",
+   "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+   "best_move_uci": "d8h4",
+   "critical_line_uci": [
+    "d8h4"
+   ],
+   "sha256": "af72fe71993280456a8ec20f0fd0b80f61b160a7107a320a0309b994dcbc0416",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 16306565,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "02_legal_trap",
+   "category": "tactical",
+   "fen": "rn1qkbnr/ppp2p1p/3p2p1/4N3/2B1P3/2N5/PPPP1PPP/R1BbK2R w KQkq - 0 6",
+   "best_move_uci": "c4f7",
+   "critical_line_uci": [
+    "c4f7",
+    "e8e7"
+   ],
+   "sha256": "339f587490453fb4cb4314d5881c0a08a28515c0b15fe15e48f65f1f36d12698",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 133005450,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "03_smothered_mate",
+   "category": "tactical",
+   "fen": "5r1k/6pp/4Q2N/8/8/8/8/6K1 w - - 0 1",
+   "best_move_uci": "h6f7",
+   "critical_line_uci": [
+    "h6f7",
+    "h8g8",
+    "f7e5"
+   ],
+   "sha256": "9dce99578087f94aed4ed03edbf33b98c234a6dcbf9ca9c5f7e533d029cc98e8",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "04_knight_fork",
+   "category": "tactical",
+   "fen": "4k3/8/3q4/8/4N3/8/8/4K3 w - - 0 1",
+   "best_move_uci": "e4d6",
+   "critical_line_uci": [
+    "e4d6"
+   ],
+   "sha256": "f4df00e4347b0aea0877b4abf406aa0441fea835732253aa022dfdc1f7f722eb",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "05_pin",
+   "category": "tactical",
+   "fen": "3qk3/8/2n5/1B1P4/8/8/8/6K1 w - - 0 1",
+   "best_move_uci": "b5c6",
+   "critical_line_uci": [
+    "b5c6",
+    "e8f7",
+    "g1f2",
+    "d8g5"
+   ],
+   "sha256": "40fe6c897f7aa9860524f0fa1c8394a37b1df428744519a3dc76462fa8ec76ff",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "06_knight_net",
+   "category": "tactical",
+   "fen": "4k2r/3p1ppp/8/3p2N1/6p1/8/8/4K3 b - - 0 1",
+   "best_move_uci": "f7f6",
+   "critical_line_uci": [
+    "f7f6",
+    "e1f2",
+    "f6g5",
+    "f2g3",
+    "e8f7"
+   ],
+   "sha256": "6726f53819230df4c57b60d9e7b2198d15eda0af12419db4027b03b55f8bd0f8",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 2026290147,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "07_noahs_ark",
+   "category": "tactical",
+   "fen": "r2qkbnr/3b1ppp/p2p4/1p1Q4/2p1P3/1B6/PPP2PPP/RNB1K2R w KQkq - 0 12",
+   "best_move_uci": "c1g5",
+   "critical_line_uci": [
+    "c1g5",
+    "g8f6",
+    "g5f6",
+    "d8f6"
+   ],
+   "sha256": "2583a25be3067a2eb1442862aa40dc19ba71e790d5983f74200b139373f5ed87",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 986435556,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "08_back_rank",
+   "category": "tactical",
+   "fen": "6k1/5ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1",
+   "best_move_uci": "d1d8",
+   "critical_line_uci": [
+    "d1d8"
+   ],
+   "sha256": "33795cf154589560bedbdb0ebc8afd69b4f7ed5cb47ca8411a82b75676fa924a",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "09_carlsbad_before",
+   "category": "quiet",
+   "fen": "r1bqr1k1/pp1nbppp/2p2n2/3p2B1/3P4/2NBP3/PPQ1NPPP/R4RK1 b - - 8 10",
+   "best_move_uci": "h7h6",
+   "critical_line_uci": [
+    "h7h6",
+    "g5h4",
+    "d7f8",
+    "f2f3",
+    "c8e6"
+   ],
+   "sha256": "b069392a5feb32c1784720d292bbcdf0c1dbdb89ada0ec3ed00acd185ad2f131",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 779771758,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "10_carlsbad_after",
+   "category": "quiet",
+   "fen": "r1bqr1k1/p2nbppp/2p2n2/1p1p2B1/3P4/2NBP3/PPQ1NPPP/R4RK1 w - - 0 11",
+   "best_move_uci": "e2f4",
+   "critical_line_uci": [
+    "e2f4",
+    "h7h6",
+    "g5f6",
+    "d7f6",
+    "c3e2",
+    "a7a5"
+   ],
+   "sha256": "6ad9cf0b58417f24c09f34ff29daf79a2380f11946ba93805f446ab8eb19b570",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 767945374,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "11_scandinavian_after",
+   "category": "quiet",
+   "fen": "r2qr1k1/ppp1npp1/3b1n1p/4p3/1P1pP3/2PP1BN1/P2B1PPP/R2Q1RK1 b - - 0 13",
+   "best_move_uci": "d4c3",
+   "critical_line_uci": [
+    "d4c3",
+    "d2c3",
+    "e7c6",
+    "b4b5",
+    "c6d4"
+   ],
+   "sha256": "c91bfde179707f9c8b37b90e1fa516d6721a674ff5108cd3dfe2c1ee6fee281e",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 404448583,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "12_start",
+   "category": "quiet",
+   "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+   "best_move_uci": "e2e4",
+   "critical_line_uci": [
+    "e2e4",
+    "c7c5",
+    "d2d4",
+    "c5d4",
+    "d1d4",
+    "g8f6"
+   ],
+   "sha256": "5fd711996703316a5ecb21eecb9fe9c53a3aaf98e9ee37b5b1da38cf31bf4bda",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "13_closed_center",
+   "category": "quiet",
+   "fen": "r1bq1rk1/pp3ppp/2n1pn2/2pp4/2PP4/P1PBPN2/5PPP/R1BQ1RK1 b - - 0 9",
+   "best_move_uci": "b7b6",
+   "critical_line_uci": [
+    "b7b6",
+    "c4d5",
+    "e6d5",
+    "c1b2",
+    "c8b7"
+   ],
+   "sha256": "1b06667c1c52d54ca3a9f36e223da8703a0fc4181700a1a70486c3eccc75c153",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 1787424208,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "14_pawn_structure_control",
+   "category": "quiet",
+   "fen": "rnb2rk1/p1p1qpp1/1p5p/3p4/3P4/4PN2/PP3PPP/R2QKB1R w KQ - 0 11",
+   "best_move_uci": "f1e2",
+   "critical_line_uci": [
+    "f1e2",
+    "c7c5",
+    "e1g1",
+    "c5d4",
+    "f3d4"
+   ],
+   "sha256": "0aeb02457d4adbe3c380af525cca9ed9b961e0b85cd9f37adad57b28d962f5d5",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 767945374,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "15_c6_promotion_distance",
+   "category": "endgame",
+   "fen": "7k/8/2P5/8/8/8/8/K7 w - - 0 1",
+   "best_move_uci": "c6c7",
+   "critical_line_uci": [
+    "c6c7",
+    "h8g7",
+    "c7c8q"
+   ],
+   "sha256": "690e394487b7023907d555793dd4e8ece7fa4dd46843bf3e22d4d87df56fc872",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "16_false_passed_b6",
+   "category": "endgame",
+   "fen": "7k/p7/1p6/2P5/8/8/8/K7 w - - 0 1",
+   "best_move_uci": "c5c6",
+   "critical_line_uci": [
+    "c5c6",
+    "h8g7",
+    "c6c7",
+    "g7f7",
+    "c7c8q"
+   ],
+   "sha256": "bad3d1062329cfe2b2078e957a1cb7a0629cf8687883f35c36d5dc739d46f293",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "17_opposition",
+   "category": "endgame",
+   "fen": "8/8/4k3/8/4K3/8/4P3/8 w - - 0 1",
+   "best_move_uci": "e4f4",
+   "critical_line_uci": [
+    "e4f4",
+    "e6d5",
+    "f4f5",
+    "d5d6"
+   ],
+   "sha256": "5d3a421393d977b10e4d5d1ceb2a57bad3c553a266557286f860a5691747c8dc",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  },
+  {
+   "id": "18_rook_pawn_draw",
+   "category": "endgame",
+   "fen": "k7/8/PK6/8/8/8/8/8 w - - 0 1",
+   "best_move_uci": "b6a5",
+   "critical_line_uci": [
+    "b6a5",
+    "a8b8",
+    "a5b6",
+    "b8a8"
+   ],
+   "sha256": "89c808b1194abc024320818518216e775870d7b8e3974a9a0ebea3c3d474d773",
+   "inference_settings": {
+    "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "max_tokens": 2048,
+    "repetition_penalty": 1.0,
+    "seed": 20260823,
+    "request_seed": 917225541,
+    "history_plies": 0,
+    "dtype": "bfloat16",
+    "backend": "transformers (port of the release's vLLM runner)"
+   }
+  }
+ ]
+}
