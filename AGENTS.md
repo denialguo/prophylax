@@ -13,7 +13,6 @@ colour-complex weaknesses). No beginner content. No invented lines.
 - python-chess          # PGN parsing, board state, static feature extraction
 - Stockfish             # local binary, PINNED version, invoked ONLY by the MCP server
 - MCP transport: stateless JSON-RPC 2.0 over stdio
-- Environment: Antigravity CLI
 
 ## Hard rules (guardrails — inviolable for every step)
 1. The model NEVER calculates chess. Every eval, best move, PV, and win-probability
@@ -80,8 +79,14 @@ colour-complex weaknesses). No beginner content. No invented lines.
                                                             # tablebase-adjacent motifs
 
 ## Build/run
-# Filled in as the project scaffolds: deps pinned via uv/pip; Stockfish detected at
-# STOCKFISH_PATH; MCP server launched over stdio; evals via `adk eval` / pytest.
+- Install: `uv sync --locked`. Dependencies are pinned in pyproject.toml and uv.lock.
+- Configuration: copy app/.env.example to app/.env (git-ignored), load it with
+  `set -a; . app/.env; set +a`. Stockfish comes from STOCKFISH_PATH.
+- One game: `uv run python -m app.agent --pgn FILE`. Conversation: `uv run adk web`.
+  The agent launches the MCP server itself, over stdio.
+- History: `uv run python -m history import|analyze|rederive|status|profile`.
+- Tests: `uv run pytest` (offline), `-m golden` (Stockfish), `-m narration` and `-m judge` (API key).
+- Benchmarks: `uv run python -m evals.claim_metrics`, `uv run python -m evals.queen_extraction`.
 
 ## Testing discipline
 - NEVER modify fixtures, recorded bands, or assertions to make a failing test

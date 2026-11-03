@@ -2,7 +2,8 @@
 
 Bugs found in the extractor and verifier frozen at `046bb19` for the held-out QUEEN evaluation.
 **None are fixed**, because the evaluation measures that exact code. Fix them only after the
-held-out report, and rerun the development benchmark when you do.
+held-out report, as regression tests first, and rerun the development benchmark when you do
+([checklist](POST_EXPERIMENT_CHECKLIST.md)).
 
 ## Open
 
