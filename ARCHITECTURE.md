@@ -97,6 +97,7 @@ history/profile.py: recurring weaknesses over MistakeEvents (last 20 eligible ga
 | `evals/validate_narration.py` | Grounding checks for narration and conversation. |
 | `.agents/skills/` | `narration_contract.md` (shared) + one phase section per `SKILL.md`. |
 | `config/` | Engine path, version pin, limits, timeouts, certified narrator models. |
+| `domain/verify.py` | Semantic fact verifier: judges simple board and variation statements as VERIFIED / FALSE / UNKNOWN. Not wired into production. |
 | `domain/versions.py` | `ANALYZER_VERSION` / `CLAIMS_VERSION` for stored history, with source-hash guards (`tests/test_versions.py`). |
 | `history/` | Persistent player history (M15) and the recurring-weakness profile (M16); `python -m history`. |
 
@@ -178,6 +179,30 @@ Channel 2 flags rank below all Channel 1 flags.
   "outpost" when no claim of that kind exists. The fallback is the claim
   sentences. Game reports only; deep dives and conversation use the flag path.
 
+## Semantic fact verifier
+
+`evals/validate_narration.py` checks tokens: a square or move must be in the payload.
+Two grounded squares do not make the stated relation between them true, so "the bishop
+on c5 attacks g5" passes it. `domain/verify.py` checks the relation itself. It is a
+separate layer with no prose parsing and no production caller yet; input is typed.
+
+- `verify_fact(fen, Fact)` judges one statement. Predicates wrap python-chess: placement,
+  attacks and defends, rays and blockers, pin geometry, open / semi-open / clear files,
+  open diagonals, passed pawns, promotion distance, material, check, mate, stalemate,
+  insufficient material, terminal state.
+- `verify_variation(fen, [Ply])` replays typed moves and judges each ply's claims on that
+  branch's board: legality, side to move, move number, piece and capture identity, the
+  SAN's own `x`, `+` and `#`, material change, moves after the game has ended, and any
+  facts attached to the ply.
+- **UNKNOWN is not a pass.** No predicate exists for strategic ideas (traps, only moves,
+  prophylaxis, reroutes, coordination), so they are UNKNOWN, as are malformed arguments,
+  invalid boards, ambiguous SAN, and a promotion count with a piece on the path.
+- **Definitions:** an open file has no pawns, though pieces may stand on it (`is_file_clear`
+  is the stricter check). `attacks` is geometry; it ignores pins, and reports a pinned
+  attacker in the evidence. A verified line is playable with true statements, not good.
+- Engine lines can run past a dead draw: Stockfish keeps searching after insufficient
+  material, and 3 of 1,553 stored history lines do this. The verifier rejects those plies.
+
 ## Where the hard rules are enforced
 
 | Rule (AGENTS.md) | Enforcement |
@@ -229,6 +254,7 @@ Fixed bounds in `config/settings.py`: 100,000 PGN characters, 400 plies,
 | `pytest -m narration` | Real narrator against `evals/skills/*.json`; records retries in junit properties. | API key |
 | `pytest -m judge` | LLM-as-judge calibration. | API key |
 | `pytest tests/test_history*.py tests/test_derive_parity.py tests/test_versions.py` | M15/M16 offline: schema, importer, derivation from recorded searches, versions, profile statistics. | nothing |
+| `pytest tests/test_verify.py` | Semantic verifier: false relations from the QUEEN benchmark as board positions, with positive controls. | nothing |
 | `python tests/verify_goldens.py` | Bands at 1M and decision stability at 3M. `--record` writes only missing bands, on operator instruction. | Stockfish |
 
 Mocks used by the agent tests are validated against the same schema as the
