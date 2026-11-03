@@ -125,7 +125,7 @@ Flagged moves with no structural pattern (tactical or other): 100 moves in 20 ga
 
 ## Testing and evaluation
 
-- **Fast suite:** 714 tests, about 30s, offline. It covers:
+- **Fast suite:** 734 tests, about 30s, offline. It covers:
   - the domain models and conversion
   - claims in both colours and in mirrored positions
   - the validators and the prompt contracts
