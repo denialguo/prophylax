@@ -98,6 +98,8 @@ history/profile.py: recurring weaknesses over MistakeEvents (last 20 eligible ga
 | `.agents/skills/` | `narration_contract.md` (shared) + one phase section per `SKILL.md`. |
 | `config/` | Engine path, version pin, limits, timeouts, certified narrator models. |
 | `domain/verify.py` | Semantic fact verifier: judges simple board and variation statements as VERIFIED / FALSE / UNKNOWN. Not wired into production. |
+| `domain/extract.py` | Turns concrete statements in QUEEN's prose into typed candidates for the verifier, without judging them. Not wired into production. |
+| `evals/queen_extraction.py` | Offline benchmark: stored QUEEN output → candidates → verifier. Corpus and labels in `evals/queen_benchmark/`. |
 | `domain/versions.py` | `ANALYZER_VERSION` / `CLAIMS_VERSION` for stored history, with source-hash guards (`tests/test_versions.py`). |
 | `history/` | Persistent player history (M15) and the recurring-weakness profile (M16); `python -m history`. |
 
@@ -203,6 +205,34 @@ separate layer with no prose parsing and no production caller yet; input is type
 - Engine lines can run past a dead draw: Stockfish keeps searching after insufficient
   material, and 3 of 1,553 stored history lines do this. The verifier rejects those plies.
 
+## Claim extraction
+
+`domain/extract.py` reads what a sentence claims; `domain/verify.py` decides whether it
+holds. They stay separate: the extractor imports only the verifier's data types, and a false
+claim is extracted as written (`"The bishop on c5 attacks g5."` → `attacks(c5, g5)` → FALSE).
+It is a deterministic grammar over QUEEN's regular output format, with no LLM and no production
+caller.
+
+- **Extraction status** is `EXTRACTED`, `UNSUPPORTED`, `AMBIGUOUS` or `PARSE_ERROR`, never a
+  verdict. Candidates keep the source id, sentence, character span, predicate and arguments.
+- **Every fact is bound to a board.** Prose claims mostly describe hypothetical lines, so each
+  candidate carries a replay prefix from the root. Moves attach by their number (counted from
+  the root), then by legality. Several possible places with no number stop the line: the prefix
+  is `None`, and the judge returns UNKNOWN rather than judging on the root.
+- **Other guards against a false VERIFIED:** identities stated in the sentence become guard facts
+  (`attacks` alone accepts an empty target). "Creates" and "opens" carry `change_from`, a fact that
+  must not already have held. Negated, modal and planned clauses, and moves after words like
+  "preparing", never become facts.
+- **Not extracted, on purpose:** strategic language, and "eyes", "targets", "pressures" and net
+  material ("wins a pawn"), where no predicate matches what the words mean. The audit counts some of
+  these as false, so catching them needs new predicates or looser reading, not this layer.
+- **Benchmark:** `python -m evals.queen_extraction`. The 18 outputs and the audit are stored with
+  SHA-256 hashes; labels in `gold.jsonl` are hand-drafted, pending operator review. The grammar was
+  written against the same 18 outputs as the labels, so the scores describe this corpus, not new text.
+- **Known failure:** 13 I.b (`white pawn c3-c4`) is illegal at the branch the text means, but it
+  becomes legal later in the parent line. With no move number the branch point is unstated, so it
+  comes out AMBIGUOUS and the illegal move is not reported.
+
 ## Where the hard rules are enforced
 
 | Rule (AGENTS.md) | Enforcement |
@@ -255,6 +285,7 @@ Fixed bounds in `config/settings.py`: 100,000 PGN characters, 400 plies,
 | `pytest -m judge` | LLM-as-judge calibration. | API key |
 | `pytest tests/test_history*.py tests/test_derive_parity.py tests/test_versions.py` | M15/M16 offline: schema, importer, derivation from recorded searches, versions, profile statistics. | nothing |
 | `pytest tests/test_verify.py` | Semantic verifier: false relations from the QUEEN benchmark as board positions, with positive controls. | nothing |
+| `pytest tests/test_queen_extraction.py` | Claim extraction and its benchmark on stored QUEEN output. | nothing |
 | `python tests/verify_goldens.py` | Bands at 1M and decision stability at 3M. `--record` writes only missing bands, on operator instruction. | Stockfish |
 
 Mocks used by the agent tests are validated against the same schema as the

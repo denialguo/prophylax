@@ -1,0 +1,17 @@
+ANALYSIS:
+White stands a full queen behind in material, yet the position is dominated by a single overwhelming factor: the coordinated assault on the uncastled black king on e8. The white bishop on c4 and white knight on e5 both target f7, and the white knight on c3 adds a third piece to the attack. Black's only active counterpiece is the black bishop on d1, which eyes the white pawn on c2 and the white rook on a1, but it cannot simultaneously defend the kingside and generate meaningful counterplay. The practical question is whether White can convert the attacking potential into a decisive blow before Black consolidates the material edge.
+
+I. white bishop c4 takes black pawn f7 — the decisive sacrifice.
+
+I.a. 1... black king e8-e7 — the only move that avoids immediate mate. The king steps toward the centre, but the white bishop on f7 now dominates the position, controlling key diagonals and restricting the king's mobility. White retains a winning attack with the white knight on e5 and white knight on c3 ready to join.
+
+I.b. 1... black king e8-d7 — a fatal retreat. 2. white knight c3-d5+ is checkmate. The black king on d7 has no escape: e7 is covered by the white bishop on f7, c7 and c8 are blocked by Black's own pieces, and c6 and e6 are controlled by the white knight on e5. The black queen on d8 cannot interpose because the black pawn on d6 blocks the d-file.
+
+II. white knight e5 takes black pawn f7 — a natural alternative that places the knight on a dominant intruder square, simultaneously attacking the black rook on h8 and the black pawn on d6. However, Black's best reply is 1... black queen d8-h4, swinging the queen to the kingside to attack the white pawn on g2 and the white rook on h1, forcing White to respond to immediate threats rather than simply capturing the rook. After 2. white pawn g2-g3, Black continues 2... black queen h4-d4, centralizing the queen and attacking the white pawn on e4. White can then play 3. white knight f7 takes black rook h8, winning the exchange, but Black retains a decisive material advantage with the queen actively placed.
+
+III. white knight e5-f3 — a passive retreat that allows Black to consolidate. The best reply is 1... black bishop d1 takes white knight f3, eliminating White's most active piece and opening the f1-f8. After 2. white pawn g2 takes black bishop f3, Black develops 2... black knight g8-f6, centralizing the knight and relieving pressure on the black queen. White's 3. white bishop c4 takes black pawn f7+ wins a pawn with check, but after 3... black king e8 takes white bishop f7, Black remains a full queen ahead with a safe king and active pieces. The material deficit is decisive.
+
+BEST_MOVE: white bishop c4 takes black pawn f7
+CRITICAL_LINE: white bishop c4 takes black pawn f7 black king e8-e7
+PROMISING_MOVES: white bishop c4 takes black pawn f7 white knight e5 takes black pawn f7 white knight e5-f3
+EVALUATION: the player is winning, with an evaluation of 4.3 pawns.

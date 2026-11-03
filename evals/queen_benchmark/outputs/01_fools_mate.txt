@@ -1,0 +1,13 @@
+ANALYSIS:
+White's early g4 advance has created a permanent kingside vulnerability. The white pawn on g4 is a fixed target that Black can exploit with ...h5, and the white pawn on f3 blocks the white bishop on f1, restricting White's natural kingside development. Black's black pawn on e5 anchors the centre and restricts White's piece activity. The decisive dynamic feature is the open h4-f2 diagonal: with the white king still on e1 and no White piece able to interpose on f2, Black possesses an immediate mating resource.
+
+I. black queen d8-h4 — checkmate. The queen delivers check along the h4-f2-e1 diagonal. The white king cannot move to f2 (attacked by the queen), cannot move to d1 (occupied by the white queen), and cannot move to f1 (occupied by the white bishop). No White piece can interpose on f2 or capture the queen on h4. The game ends here.
+
+II. black pawn d7-d5 — a strong positional continuation that establishes the central pawn duo on d5 and e5. After white pawn e2-e3 black pawn h7-h5 white pawn g4 takes black pawn h5 black queen d8-h4, Black retains a decisive advantage with the active queen and White's compromised kingside structure. The alternative white bishop f1-g2 allows black bishop f8-c5, eyeing f2 and preparing the same ...h5 break with the added threat of a bishop sacrifice on f2.
+
+III. black knight b8-c6 — a solid developing move that supports the centre and prepares ...d5. After white pawn e2-e3 black pawn h7-h5 white pawn g4-g5 black bishop f8-c5, Black develops with tempo, threatening the white pawn on g5 and preparing the check black bishop c5-f2. The position remains decisively better for Black, but the immediate mating resource of I. renders this line moot.
+
+BEST_MOVE: black queen d8-h4
+CRITICAL_LINE: black queen d8-h4
+PROMISING_MOVES: black queen d8-h4 black pawn d7-d5 black knight b8-c6
+EVALUATION: the player checkmates the opponent in 1 move.

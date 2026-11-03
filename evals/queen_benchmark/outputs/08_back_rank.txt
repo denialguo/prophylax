@@ -1,0 +1,15 @@
+ANALYSIS:
+White holds a decisive material advantage with a rook against three pawns in a king-and-pawn endgame. The black king on g8 is hemmed in by its own pawns on f7, g7, and h7, leaving only the eighth rank as a potential escape route. White's rook on d1 can immediately exploit this geometry: the open d-file and the trapped king combine to produce an immediate mating net.
+
+I. white rook d1-d8 — checkmate. The rook delivers check along the eighth rank. The black king on g8 has no legal reply: f8 and h8 are both controlled by the checking rook, while f7, g7, and h7 are occupied by Black's own pawns. No piece can interpose or capture. This is the only move that ends the game immediately.
+
+II. white pawn h2-h4 — a winning but non-forcing alternative. After 1... black pawn h7-h5 2. white rook d1-d8+ black king g8-h7 3. white rook d8-d7 black pawn f7-f6 4. white rook d7 takes black pawn g7+ black king h7 takes white rook g7, White retains a winning pawn endgame with three pawns against one. The h-pawn advance creates a passed pawn and opens lines, but the conversion requires several more moves than the immediate mate.
+
+III. white pawn h2-h3 — similarly winning but slower. After 1... black pawn h7-h5 2. white rook d1-d8+ black king g8-h7 3. white rook d8-d7 black pawn f7-f6 4. white rook d7 takes black pawn g7+ black king h7 takes white rook g7, the same rook sacrifice on g7 is forced and leaves a winning pawn endgame. The h3 pawn is less useful than h4 for creating a passer, making this marginally inferior to line II.
+
+The difference between the candidates is decisive: line I ends the game instantly, while lines II and III, though winning, allow Black to extend the game by creating a passed h-pawn before the rook can be sacrificed.
+
+BEST_MOVE: white rook d1-d8
+CRITICAL_LINE: white rook d1-d8
+PROMISING_MOVES: white rook d1-d8 white pawn h2-h4 white pawn h2-h3
+EVALUATION: the player checkmates the opponent in 1 move.

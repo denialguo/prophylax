@@ -1,0 +1,15 @@
+ANALYSIS:
+White's knight on e4 and Black's queen on d6 stand in a configuration where the queen is undefended. The immediate tactical opportunity is decisive: the knight can simply capture the queen, converting the material imbalance into a theoretically drawn knight-versus-king endgame. Any king move instead leaves Black with a crushing queen advantage and a winning attack against the exposed white king.
+
+I. white knight e4 takes black queen d6 — the only move that preserves the game. After this capture, Black has no pieces and the position is a pure king-and-knight versus king endgame. Black's best reply is 1...black king e8-d7, stepping directly toward the knight to challenge it. White's most accurate response is 2.white knight d6-e4, relocating to a central square that is not attacked by the king on d7. The resulting position is approximately equal: the knight is well placed and cannot be dislodged without Black spending tempi to approach, while the white king can advance to support the knight or create counterplay. If White instead plays 2.white knight d6-f5, the knight lands on a square attacked by the king and is lost after 2...black king d7-e6. Similarly, 2.white knight d6-c4 is immediately captured by 2...black king d7-c6.
+
+II. white king e1-f2 — a losing king move. Black's queen centralizes with 1...black queen d6-d4, attacking the knight and dominating the central files. White's best try is 2.white king f2-g3, but Black simply plays 2...black queen d4 takes white knight e4, winning the knight and entering a trivially winning queen-versus-king endgame. The alternative 2.white king f2-f3 also loses the knight to 2...black queen d4 takes white knight e4+, and 2.white king f2-g2 allows 2...black queen d4 takes white knight e4+ with a similar outcome.
+
+III. white king e1-e2 — also losing. Black plays 1...black queen d6-e5, placing the queen directly on the knight's diagonal. White's best is 2.white king e2-d3, but Black captures with check: 2...black queen e5 takes white knight e4+. After 3.white king d3-d2, Black continues 3...black queen e4-d4+, maintaining the initiative with the queen actively placed and the white king still exposed. The alternative 2.white king e2-d2 is even worse, as the knight is immediately captured without the checking tempo.
+
+The capture on d6 is the only move that avoids losing the knight and the game. The resulting endgame is drawn, with White's knight well placed and Black's king needing several tempi to approach effectively.
+
+BEST_MOVE: white knight e4 takes black queen d6
+CRITICAL_LINE: white knight e4 takes black queen d6 black king e8-d7 white knight d6-e4
+PROMISING_MOVES: white knight e4 takes black queen d6 white king e1-f2 white king e1-e2
+EVALUATION: The position is approximately equal (0.0 pawns).

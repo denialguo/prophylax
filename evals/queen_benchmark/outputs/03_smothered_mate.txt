@@ -1,0 +1,13 @@
+ANALYSIS:
+White holds a decisive material advantage—queen and knight against a lone rook and two pawns—with the black king confined to h8 behind its own pawns on g7 and h7. The queen on e6 and knight on h6 form a coordinated battery aimed at the king's shelter. Black's only practical resource is the rook on f8, which can interpose on critical files or capture the knight, but any attempt to activate it must be weighed against the immediate mating threats. The key strategic question is how to maximize the knight's activity while keeping the queen's checking resources intact.
+
+I. white knight h6-f7 — the strongest move. The knight jumps to f7, simultaneously attacking the rook on f8 and the pawn on g7 while restricting the king's mobility. Black's best try is 1... black king h8-g8, stepping toward the center, but White's reply 2. white knight f7-e5 centralizes the knight to attack the rook and prepare the devastating white queen e6-f7 check. The rook is under direct pressure and the king has no safe squares that do not walk into the queen's battery. Black's alternatives are inferior: 1... black rook f8 takes white knight f7 loses the rook to 2. white queen e6 takes black rook f7, leaving a trivially winning queen-and-pawn versus two-pawns ending, and 1... black pawn h7-h6 allows 2. white knight f7-g5, attacking the rook and preparing the queen's infiltration along the eighth rank.
+
+II. white queen e6-e7 — a solid alternative that places the queen on the seventh rank, directly threatening the king. Black's best is 1... black rook f8 takes white knight h6, capturing the knight to eliminate the most dangerous attacker. White continues 2. white queen e7-e8, centralizing on the eighth rank to maintain pressure on the king and prepare a swing toward the pawns. The resulting queen-versus-rook-and-pawns ending is straightforwardly winning, though slightly less forcing than the knight sacrifice on f7.
+
+III. white knight h6-f5 — the knight centralizes to f5, maintaining the battery but allowing Black the most active defensive resource. Black's best try is 1... black pawn h7-h5, creating a potential passed pawn and opening the h-file. White's most precise reply is 2. white queen e6-e5, centralizing to attack the rook and prepare the devastating white queen e5-h8 check. After 2... black rook f8-g8, White retains a winning attack, but the position is less forcing than after I. because Black has generated a tempo with the pawn advance.
+
+BEST_MOVE: white knight h6-f7
+CRITICAL_LINE: white knight h6-f7 black king h8-g8 white knight f7-e5
+PROMISING_MOVES: white knight h6-f7 white queen e6-e7 white knight h6-f5
+EVALUATION: the player is winning, with an evaluation of 7.5 pawns.

@@ -1,0 +1,29 @@
+ANALYSIS:
+After 1. e4, White seizes the center and opens the white bishop on f1's diagonal. Black's most effective reply is 1... c5, immediately contesting the center and creating a dynamic counterpoint. White's most active response is 2. d4, opening the white bishop on c1's diagonal and challenging the c5 pawn. After 2... cxd4 3. Qxd4, the queen centralizes with a latent check on a4, and Black must address the threat while completing development. The resulting position is approximately equal, with both sides having reasonable plans.
+
+I. white pawn e2-e4 — the best move, claiming the center and activating the light-squared bishop.
+
+I.a. 1... black pawn c7-c5 2. white pawn d2-d4 black pawn c5 takes white pawn d4 3. white queen d1 takes black pawn d4 black knight g8-f6. The queen centralizes and the position is approximately equal. Black's alternative 2... black knight g8-f6 is inferior because 3. white pawn d4 takes black pawn c5 wins a pawn and opens the white bishop on c1's diagonal.
+
+I.b. 1... black pawn c7-c5 2. white knight g1-f3 black knight g8-f6 3. white pawn d2-d4 black pawn c5 takes white pawn d4 4. white knight f3 takes black pawn d4 black pawn e7-e5. Black gains space and the white knight on d4 is attacked, giving Black a slight edge.
+
+I.c. 1... black pawn c7-c5 2. white bishop f1-c4 black pawn d7-d5. Black attacks the bishop and frees the black bishop on c8. After 3. white bishop c4-b5+ black pawn a7-a6, the bishop is harassed and Black gains a tempo.
+
+II. white knight g1-f3 — a natural developing move, but it allows Black to equalize more comfortably.
+
+II.a. 1... black knight g8-f6 2. white pawn d2-d4 black pawn e7-e5 3. white pawn d4 takes black pawn e5 black knight f6-e4 4. white pawn e5-e6 black pawn f7 takes white pawn e6 5. white knight f3-g5. The white knight on g5 is a strong outpost, but Black has gained central space and the position is balanced.
+
+II.b. 1... black knight g8-f6 2. white pawn d2-d4 black pawn e7-e5 3. white pawn d4-d5 black pawn e5-e4. The white pawn on d5 becomes a target and the white bishop on f1 is hemmed in.
+
+III. white pawn c2-c3 — the most passive option, conceding the center and blocking the white bishop on c1.
+
+III.a. 1... black pawn d7-d5 2. white pawn d2-d4 black knight g8-f6 3. white knight g1-f3 black pawn e7-e6. The position is approximately equal, with both sides having reasonable plans.
+
+III.b. 1... black knight g8-f6 2. white pawn d2-d4 black pawn e7-e5 3. white pawn d4 takes black pawn e5 black knight f6-d5 4. white pawn e2-e4. White gains a comfortable space advantage with the white pawn on e4 attacking the black knight on d5.
+
+The decisive factor favoring I over II and III is that 1. e4 immediately claims the center and opens the light-squared bishop's diagonal, forcing Black into a reactive posture. After the most active Black reply 1... c5, White's 2. d4 leads to a balanced but slightly favorable position. By contrast, 1. Nf3 allows Black to equalize through the ...e5 break, and 1. c3 concedes the center entirely, blocking the white bishop on c1 and granting Black a comfortable ...d5 with full equality.
+
+BEST_MOVE: white pawn e2-e4
+CRITICAL_LINE: white pawn e2-e4 black pawn c7-c5 white pawn d2-d4 black pawn c5 takes white pawn d4 white queen d1 takes black pawn d4 black knight g8-f6
+PROMISING_MOVES: white pawn e2-e4 white knight g1-f3 white pawn c2-c3
+EVALUATION: the player has a slight advantage of 0.2 pawns.

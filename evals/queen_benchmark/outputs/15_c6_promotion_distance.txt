@@ -1,0 +1,21 @@
+ANALYSIS:
+This is a bare king-and-pawn endgame. The player holds a single passed pawn on c6, already on the sixth rank, against a lone black king on h8. The pawn is one step from promotion, and the white king on a1 is still far from the action. The practical question is whether to push immediately or reposition the king first. The answer is unambiguous: the immediate push is decisive because any delay allows the opponent to close the distance to the promotion square, converting a forced mate in seven into a merely winning position.
+
+I. white pawn c6-c7 — forced mate in 7.
+
+The pawn steps to c7, one square from promotion. The opponent's best reply is black king h8-g7, stepping directly toward the pawn's file. The player promotes immediately with white pawn c7-c8white queen, and the resulting queen-versus-king endgame is a forced mate. The alternative black king h8-h7 is inferior: it costs a tempo, and the player still promotes with white pawn c7-c8white queen before the black king can reach g7. The queen then delivers checks along the h-file and the long diagonal, driving the black king to the edge of the board in a standard mating net.
+
+II. white king a1-b1 — winning but not forced mate.
+
+The king steps toward the pawn, but the opponent gains a critical tempo by playing black king h8-g7 before the pawn reaches c7. After white pawn c6-c7 black king g7-f7 white pawn c7-c8white queen black king f7-e7, the black king has already penetrated to e7, and the conversion, while still winning, is less clean. The loss of one tempo in the race against promotion is the entire difference between a forced mate and a merely winning endgame.
+
+III. white king a1-b2 — also winning, with the same tempo deficit.
+
+The king advances one square further, but the opponent again responds with black king h8-g7, and after white pawn c6-c7 black king g7-f7 white pawn c7-c8white queen, the black king has already reached f7. The evaluation is marginally lower than line II because the white king on b2 is slightly less well placed for the subsequent queen endgame than on b1.
+
+The decisive factor is purely temporal: the pawn must reach c7 before the opponent's king can intercept the promotion square. Any king move surrenders that tempo and reduces the result from a forced mate to a large but non-forced advantage.
+
+BEST_MOVE: white pawn c6-c7
+CRITICAL_LINE: white pawn c6-c7 black king h8-g7 white pawn c7-c8white queen
+PROMISING_MOVES: white pawn c6-c7 white king a1-b1 white king a1-b2
+EVALUATION: the player checkmates the opponent in 7 moves.

@@ -1,0 +1,19 @@
+ANALYSIS:
+The position is defined by the pin on the g1-g8: White's white bishop on g5 immobilizes the black knight on f6 against the black queen on d8, while the white bishop on d3 eyes h7 and the white queen on c2 supports both central and kingside operations. Black's black bishop on c8 is blocked by the black knight on d7, and the black knight on f6 is the linchpin of the kingside defense. The practical question for Black is how to neutralize the pin: by challenging the bishop directly, by repositioning a defender, or by counterattacking on the queenside.
+
+I. black pawn h7-h6 — the best move. This directly challenges the white bishop on g5 and forces a decision.
+
+I.a. white bishop g5-h4 — White's most natural reply, preserving the pin while gaining a tempo on the h1-h8. Black's most accurate response is black knight d7-f8, unblocking the black bishop on c8 and preparing to meet white bishop h4 takes black knight f6 with black bishop e7 takes white bishop f6, eliminating the bishop pair. After white pawn f2-f3 black bishop c8-e6, the position is roughly balanced with White retaining a slight edge from the more active white rook on f1 and the open f1-f8.
+
+I.b. white bishop g5 takes black knight f6 — White trades the active bishop for the knight. Black's best recapture is black knight d7 takes white bishop f6, placing the knight on a strong central square. After white pawn f2-f3 black bishop c8-e6, the position is approximately equal. The recapture black bishop e7 takes white bishop f6 is inferior because it leaves the black knight on d7 undeveloped; after white pawn f2-f3 black bishop f6-e7 white pawn e3-e4 black pawn d5 takes white pawn e4 white pawn f3 takes black pawn e4, White gains a comfortable central pawn duo.
+
+I.c. white bishop g5-f4 — the bishop retreats to a more passive diagonal. Black's best is black knight d7-f8, preparing ...g6. After white pawn f2-f3 black pawn g7-g6, the position is roughly equal. The alternative black bishop e7-d6 is a serious error: white bishop f4 takes black bishop d6 wins the bishop pair and leaves Black's kingside exposed.
+
+II. black knight d7-f8 — a passive repositioning that leaves the pin intact. White's strongest reply is white bishop g5 takes black knight f6, forcing a recapture that shapes the structure. After black bishop e7 takes white bishop f6 white pawn f2-f3 black knight f8-g6 white pawn e3-e4 black pawn d5 takes white pawn e4 white pawn f3 takes black pawn e4, White retains a slight edge from the more active white bishop on d3 and the open f1-f8. The alternative recapture black pawn g7 takes white bishop f6 opens the g1-g8 and weakens the king's shelter, giving White a more comfortable attacking setup.
+
+III. black pawn b7-b5 — a queenside expansion that ignores the kingside tension. White's strongest reply is white knight e2-f4, placing the knight on a dominant outpost that directly attacks the black knight on f6. Black's most resilient response is black pawn h7-h6, challenging the bishop and preparing to meet white bishop g5 takes black knight f6 with black knight d7 takes white bishop f6. After white knight c3 takes black pawn b5, White grabs the queenside pawn and activates the knight, retaining a modest edge from the superior knight on f4 and the open c1-c8. The alternative black pawn b5-b4 is inferior: after white knight c3-a4, the knight reaches a strong outpost and the black pawn on b4 becomes a target.
+
+BEST_MOVE: black pawn h7-h6
+CRITICAL_LINE: black pawn h7-h6 white bishop g5-h4 black knight d7-f8 white pawn f2-f3 black bishop c8-e6
+PROMISING_MOVES: black pawn h7-h6 black knight d7-f8 black pawn b7-b5
+EVALUATION: the opponent has a slight advantage of 0.2 pawns.

@@ -1,0 +1,33 @@
+ANALYSIS:
+Black holds a decisive material advantage—rook and six pawns against a lone knight—and the practical task is to neutralize the knight's activity while converting the overwhelming surplus. The knight on g5 is Black's most dangerous piece, simultaneously eyeing f7 and h7. Black's black pawn on g4 is a dangerous passer that restricts the white king, and the black rook on h8 can swing to either flank. The central question is how to deal with the knight: capture it directly, or first create a passed pawn that forces the knight into a losing exchange.
+
+I. black pawn f7-f6 — the most direct and strongest move. The pawn immediately attacks the knight, and every white king move allows the capture.
+
+I.a. 1... black pawn f7-f6 2. white king e1-f2 black pawn f6 takes white knight g5 3. white king f2-g3 black king e8-f7. Black eliminates the knight and centralizes the king. The resulting rook-and-pawns endgame is straightforwardly winning.
+
+I.b. 2. white king e1-d2 black pawn f6 takes white knight g5 3. white king d2-d3 black king e8-f7. Slightly inferior for White; the king is less active and the black pawn on g4 is more dangerous with the white king farther from the kingside.
+
+I.c. 2. white king e1-d1 black pawn f6 takes white knight g5 3. white king d1-c2 black king e8-f7. The most passive king placement; the g-pawn is most dangerous with the white king furthest from the action.
+
+II. black pawn h7-h5 — creates a second passed pawn and forces the knight to choose between f7 and h7.
+
+II.a. 2. white knight g5 takes black pawn f7 black king e8 takes white knight f7 3. white king e1-d2 black king f7-e6. Black captures the knight and centralizes. The rook and four pawns against a bare king is a clean win.
+
+II.b. 2. white knight g5-h7 black rook h8 takes white knight h7 3. white king e1-f2 black rook h7-h2+. The rook dominates the second rank; the h-pawn becomes a decisive passer.
+
+II.c. 2. white king e1-f2 black pawn h5-h4 3. white knight g5 takes black pawn f7 black king e8 takes white knight f7. Black retains a rook and four pawns against a bare king with the h-pawn already advanced.
+
+III. black king e8-e7 — centralizes the king but allows White a tempo to activate the king before the knight falls.
+
+III.a. 2. white king e1-f2 black pawn h7-h6 3. white knight g5-h7 black rook h8 takes white knight h7 4. white king f2-g2. Black wins the knight and the rook is well placed on the open h-file.
+
+III.b. 2. white king e1-d2 black pawn h7-h6 3. white knight g5-h7 black rook h8 takes white knight h7 4. white king d2-d3 black rook h7-h3+ 5. white king d3-d4. The check drives the king away from the g-pawn.
+
+III.c. 2. white king e1-f1 black pawn h7-h6 3. white knight g5-h7 black rook h8 takes white knight h7 4. white king f1-g2 black rook h7-h2+ 5. white king g2-g3. The king is exposed to the g-pawn's advance.
+
+The direct capture with black pawn f7-f6 is superior because it eliminates the knight immediately without allowing White any counterplay, whereas the alternatives permit the knight to grab a pawn or create a temporary passed pawn before being captured.
+
+BEST_MOVE: black pawn f7-f6
+CRITICAL_LINE: black pawn f7-f6 white king e1-f2 black pawn f6 takes white knight g5 white king f2-g3 black king e8-f7
+PROMISING_MOVES: black pawn f7-f6 black pawn h7-h5 black king e8-e7
+EVALUATION: the player is winning, with an evaluation of 8.7 pawns.
