@@ -124,6 +124,8 @@ def test_generator_stops_cleanly_on_quota_and_keeps_the_failure(tmp_path):
     assert len(generate.calls) == 2 and not (tmp_path / "raw" / "b").exists()
     saved = list((tmp_path / "attempts" / "b").iterdir())
     assert len(saved) == 1 and json.loads(saved[0].read_text())["body"] == body
+    assert json.loads(saved[0].read_text())["quota_type"] == "runs_limit"
+    assert json.loads((tmp_path / "generation_log.jsonl").read_text().splitlines()[-1])["quota_type"] == "runs_limit"
 
 
 @pytest.mark.parametrize("failure,code", [(ConnectionError("down"), rq.EXIT_ERROR), (("no_result", ""), rq.EXIT_ERROR),
@@ -182,10 +184,12 @@ def test_request_uses_the_settings_and_the_token_is_never_saved(tmp_path, monkey
             assert secret not in open(os.path.join(base, name), encoding="utf-8").read()
 
 
-def test_quota_recognition_covers_both_messages_seen():
-    assert rq.is_quota_error("You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota")
-    assert rq.is_quota_error("Subscribe to Hugging Face PRO to get 40 min of ZeroGPU quota a day")
-    assert not rq.is_quota_error("something else broke")
+def test_quota_errors_are_typed():
+    # both messages the Space has actually sent mention a runs limit
+    assert rq.quota_error_type("You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota") == "runs_limit"
+    assert rq.quota_error_type("You have exceeded your ZeroGPU runs limit. Subscribe to Hugging Face PRO to get 40 min of ZeroGPU quota a day") == "runs_limit"
+    assert rq.quota_error_type("You have exceeded your GPU quota") == "gpu_time"
+    assert rq.quota_error_type("something else broke") is None
 
 
 # ── the frozen code ──────────────────────────────────────────────────────────
