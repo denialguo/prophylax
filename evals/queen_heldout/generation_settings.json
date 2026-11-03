@@ -1,0 +1,14 @@
+{
+ "version": 1,
+ "note": "The settings of the development outputs (queen_eval_audited_01_18/run_queen.py). A change here makes outputs not comparable with that set.",
+ "host": "https://hugging-apps-queen-hce-4-chess.hf.space",
+ "api_name": "analyze",
+ "space_api": "https://huggingface.co/api/spaces/hugging-apps/queen-hce-4-chess",
+ "model_api": "https://huggingface.co/api/models/princeton-nlp/queen_hce-4",
+ "model": "princeton-nlp/queen_hce-4",
+ "expected_space_sha": "9a5483ce0fb50b437fc9f4570e73eb034bb14603",
+ "expected_model_sha": "a98e8e4e8959090bd772fa82bb64414f7810f35e",
+ "max_tokens": 2048,
+ "temperature": 0.6,
+ "seed": 20260823
+}
