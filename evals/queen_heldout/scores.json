@@ -1,0 +1,8450 @@
+{
+ "details": {
+  "ambiguous_misclassified": [
+   {
+    "case": "h16_quiet",
+    "class": "AMBIGUOUS",
+    "got_statuses": [
+     "UNSUPPORTED"
+    ],
+    "label_id": "l0635",
+    "text": "supporting the bishop"
+   }
+  ],
+  "board_binding_wrong": [
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "d"
+     },
+     "board_moves": [
+      "c3d4",
+      "a8d8",
+      "d4d5",
+      "e4d3"
+     ],
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0033",
+    "text": "It opens the d-file",
+    "want_args": {
+     "file": "d"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8",
+     "d4d5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "square": "d4"
+     },
+     "board_moves": [],
+     "predicate": "is_passed_pawn",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0057",
+    "text": "a passed black pawn on d4",
+    "want_args": {
+     "square": "d4"
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "square": "b6"
+     },
+     "board_moves": null,
+     "predicate": "is_passed_pawn",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l1018",
+    "text": "passed white pawn on b6",
+    "want_args": {
+     "square": "b6"
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "c"
+     },
+     "board_moves": [
+      "b2a2",
+      "c3a2",
+      "c2a2",
+      "f8c8",
+      "f3d4"
+     ],
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0155",
+    "text": "open c-file",
+    "want_args": {
+     "file": "c"
+    },
+    "want_branch": [
+     "b2a2",
+     "c3a2",
+     "c2a2",
+     "f8c8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "e"
+     },
+     "board_moves": null,
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l1048",
+    "text": "opening the e-file",
+    "want_args": {
+     "file": "e"
+    },
+    "want_branch": [
+     "f6g5",
+     "d5f4",
+     "g5f4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "piece": "knight",
+      "source": "f4",
+      "target": "e5"
+     },
+     "board_moves": null,
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0443",
+    "text": "attacks the black bishop on e5",
+    "want_args": {
+     "piece": "knight",
+     "source": "f4",
+     "target": "e5"
+    },
+    "want_branch": [
+     "f6e5",
+     "e1g1",
+     "c6b4",
+     "d5b4",
+     "c5b4",
+     "e2f4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "e"
+     },
+     "board_moves": null,
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0554",
+    "text": "opening the e1-e8",
+    "want_args": {
+     "file": "e"
+    },
+    "want_branch": [
+     "d6g3",
+     "h2g3",
+     "a6c6",
+     "f3f4",
+     "b7b5",
+     "f4f5",
+     "e6f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "f"
+     },
+     "board_moves": null,
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0556",
+    "text": "the open f1-f8",
+    "want_args": {
+     "file": "f"
+    },
+    "want_branch": [
+     "d6g3",
+     "h2g3",
+     "a6c6",
+     "f3f4",
+     "b7b5",
+     "f4f5",
+     "e6f5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "c"
+     },
+     "board_moves": [
+      "a6c6",
+      "c4d6",
+      "c7d6",
+      "c2c4"
+     ],
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0570",
+    "text": "it opens the c1-c8",
+    "want_args": {
+     "file": "c"
+    },
+    "want_branch": [
+     "a6c6",
+     "c4d6",
+     "c7d6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "file": "g"
+     },
+     "board_moves": [
+      "d5f5",
+      "g3f5"
+     ],
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0741",
+    "text": "the open g-file",
+    "want_args": {
+     "file": "g"
+    },
+    "want_branch": [
+     "c5c4",
+     "d3f5",
+     "d5f5",
+     "g3f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   }
+  ],
+  "extractable_claim_missed": [
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0002",
+    "text": "a full queen down",
+    "want_args": {
+     "color": "white",
+     "count": 0,
+     "piece": "queen"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0003",
+    "text": "Black's black queen on d4",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0005",
+    "text": "black pawn on e4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0006",
+    "text": "black pawn on e4 forming a dangerous central passer",
+    "want_args": {
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0008",
+    "text": "the queen sits en prise to the white pawn on c3",
+    "want_args": {
+     "piece": "pawn",
+     "source": "c3",
+     "target": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0009",
+    "text": "white pawn on c3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0012",
+    "text": "white knight on f1",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "f1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0013",
+    "text": "white rook on d1",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "d1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0018",
+    "text": "attacking the new white pawn on d4",
+    "want_args": {
+     "piece": "rook",
+     "source": "d8",
+     "target": "d4"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0021",
+    "text": "on the open file",
+    "want_args": {
+     "file": "e"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8",
+     "d3e4",
+     "e7e4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1015",
+    "text": "leaves the white rook on d3 hanging",
+    "want_args": {
+     "piece": "rook",
+     "source": "d4",
+     "target": "d3"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8",
+     "f1e3",
+     "e4d3",
+     "d1d3",
+     "e7d7",
+     "e3f5",
+     "d7d4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0035",
+    "text": "the white pawn on d5 is attacked",
+    "want_args": {
+     "piece": "rook",
+     "source": "d7",
+     "target": "d5"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8",
+     "d4d5",
+     "e4d3",
+     "d1d3",
+     "e7d7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1014",
+    "text": "open file",
+    "want_args": {
+     "file": "d"
+    },
+    "want_branch": [
+     "c3d4",
+     "a8d8",
+     "d4d5",
+     "e4d3",
+     "d1d3",
+     "e7d7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0041",
+    "text": "the open file",
+    "want_args": {
+     "file": "e"
+    },
+    "want_branch": [
+     "d3e4",
+     "d4e4",
+     "f1e3",
+     "a8e8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0045",
+    "text": "eyes the white pawn on c3",
+    "want_args": {
+     "piece": "queen",
+     "source": "d3",
+     "target": "c3"
+    },
+    "want_branch": [
+     "b2b4",
+     "d4d3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0046",
+    "text": "the white rook on d1",
+    "want_args": {
+     "piece": "queen",
+     "source": "d3",
+     "target": "d1"
+    },
+    "want_branch": [
+     "b2b4",
+     "d4d3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0051",
+    "text": "full queen for a bishop",
+    "want_args": {
+     "color": "black",
+     "count": 1,
+     "piece": "queen"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0052",
+    "text": "a ten-point material surplus",
+    "want_args": {
+     "points": -10
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0054",
+    "text": "white pawn on a5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0055",
+    "text": "white pawn on a5 can eliminate the queen",
+    "want_args": {
+     "piece": "pawn",
+     "source": "a5",
+     "target": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0058",
+    "text": "black pawn on d4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0059",
+    "text": "black knight on e5",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "e5"
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0060",
+    "text": "but no queen",
+    "want_args": {
+     "color": "black",
+     "count": 0,
+     "piece": "queen"
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1016",
+    "text": "challenging the knight",
+    "want_args": {
+     "piece": "pawn",
+     "source": "f4",
+     "target": "e5"
+    },
+    "want_branch": [
+     "a5b6",
+     "c8c2",
+     "f2f4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0072",
+    "text": "reduced the material gap to a single pawn",
+    "want_args": {
+     "points": -1
+    },
+    "want_branch": [
+     "a5b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0074",
+    "text": "targeting the black pawn on b7",
+    "want_args": {
+     "piece": "rook",
+     "source": "a7",
+     "target": "b7"
+    },
+    "want_branch": [
+     "a5b6",
+     "c8c2",
+     "a1a7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1017",
+    "text": "defending the pawn",
+    "want_args": {
+     "piece": "bishop",
+     "source": "c5",
+     "target": "b7"
+    },
+    "want_branch": [
+     "a5b6",
+     "c8c2",
+     "a1a7",
+     "e7c5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0076",
+    "text": "passed pawn",
+    "want_args": {
+     "square": "d3"
+    },
+    "want_branch": [
+     "a5b6",
+     "c8c2",
+     "a1a7",
+     "e7c5",
+     "a7b7",
+     "d4d3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h02_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0088",
+    "text": "the d4 passer intact",
+    "want_args": {
+     "square": "d4"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0095",
+    "text": "full queen down",
+    "want_args": {
+     "color": "black",
+     "count": 0,
+     "piece": "queen"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0096",
+    "text": "White's active queen on e2",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "e2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0098",
+    "text": "white knight on g5",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0099",
+    "text": "white rook on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0100",
+    "text": "white bishop on d3",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "d3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1131",
+    "text": "Black's uncastled king",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "e8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0101",
+    "text": "black knight on d5",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0102",
+    "text": "black bishop on c8",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "c8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0103",
+    "text": "the black pawn on h6 which directly attacks the knight",
+    "want_args": {
+     "piece": "pawn",
+     "source": "h6",
+     "target": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0104",
+    "text": "black pawn on h6",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "h6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0112",
+    "text": "attacking the rook",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f5",
+     "target": "c8"
+    },
+    "want_branch": [
+     "h6g5",
+     "c4c8",
+     "d8c8",
+     "d3f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0114",
+    "text": "the discovered check",
+    "want_args": {},
+    "want_branch": [
+     "h6g5",
+     "c4c8",
+     "d8c8",
+     "d3f5",
+     "c8d8",
+     "f5d7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_check"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1019",
+    "text": "the f1-f8 open",
+    "want_args": {
+     "file": "f"
+    },
+    "want_branch": [
+     "e7e6",
+     "g5f7",
+     "e8f7",
+     "d3g6",
+     "f7g6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0141",
+    "text": "a full knight ahead",
+    "want_args": {
+     "points": -3
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0143",
+    "text": "white rook on b2",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "b2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0144",
+    "text": "the knight on a2",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "a2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0146",
+    "text": "white queen on c2",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "c2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0147",
+    "text": "white rook on b2",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "b2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0148",
+    "text": "white rook on b2 form a battery aimed at the a2 knight",
+    "want_args": {
+     "piece": "rook",
+     "source": "b2",
+     "target": "a2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0149",
+    "text": "white knight on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1020",
+    "text": "maintain pressure on a7",
+    "want_args": {
+     "piece": "rook",
+     "source": "a5",
+     "target": "a7"
+    },
+    "want_branch": [
+     "b2a2",
+     "f8c8",
+     "a2a5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0160",
+    "text": "the a-file semi-open",
+    "want_args": {
+     "color": "white",
+     "file": "a"
+    },
+    "want_branch": [
+     "b2a2",
+     "f8c8",
+     "a2a5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_semi_open_file"
+   },
+   {
+    "case": "h04_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1021",
+    "text": "keeping the d4 knight protected",
+    "want_args": {
+     "piece": "queen",
+     "source": "d2",
+     "target": "d4"
+    },
+    "want_branch": [
+     "f3d4",
+     "a2b4",
+     "c2d2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0178",
+    "text": "White's queen on b6",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0179",
+    "text": "targeting the black pawn on a7",
+    "want_args": {
+     "piece": "queen",
+     "source": "b6",
+     "target": "a7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0180",
+    "text": "black pawn on a7",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "a7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0181",
+    "text": "the black pawn on b7",
+    "want_args": {
+     "piece": "queen",
+     "source": "b6",
+     "target": "b7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0182",
+    "text": "black pawn on b7",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "b7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0183",
+    "text": "White holds a full queen in material",
+    "want_args": {
+     "points": 9
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0184",
+    "text": "The black pawn on a7 is the only defender of b6",
+    "want_args": {
+     "piece": "pawn",
+     "source": "a7",
+     "target": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0186",
+    "text": "black pawn on a7",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "a7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0193",
+    "text": "pressuring the black pawn on d5",
+    "want_args": {
+     "piece": "rook",
+     "source": "d4",
+     "target": "d5"
+    },
+    "want_branch": [
+     "a7b6",
+     "d1d4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0197",
+    "text": "targeting the black pawn on b6",
+    "want_args": {
+     "piece": "rook",
+     "source": "b4",
+     "target": "b6"
+    },
+    "want_branch": [
+     "a7b6",
+     "d1d4",
+     "c8c5",
+     "d4b4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0213",
+    "text": "Black's bishop on g5",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0214",
+    "text": "targeting the white knight on d2",
+    "want_args": {
+     "piece": "bishop",
+     "source": "g5",
+     "target": "d2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0215",
+    "text": "white knight on d2",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "d2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0216",
+    "text": "the white pawn on g3",
+    "want_args": {
+     "piece": "bishop",
+     "source": "g5",
+     "target": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0217",
+    "text": "white pawn on g3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1022",
+    "text": "White's c4-d4-e4 pawn chain",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1023",
+    "text": "White's c4-d4-e4 pawn chain",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1024",
+    "text": "White's c4-d4-e4 pawn chain",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1025",
+    "text": "Black's d5-e6 pawns",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1026",
+    "text": "Black's d5-e6 pawns",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "e6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0219",
+    "text": "white bishop on g2",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "g2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0220",
+    "text": "the white king on g1 lacks shelter",
+    "want_args": {
+     "color": "white",
+     "piece": "king",
+     "square": "g1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0224",
+    "text": "pinning the white knight on d2 to the white queen on d1",
+    "want_args": {
+     "pinned": "d2",
+     "pinner": "e3",
+     "target": "d1"
+    },
+    "want_branch": [
+     "g5e3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1013",
+    "text": "the passed pawn",
+    "want_args": {
+     "square": "c4"
+    },
+    "want_branch": [
+     "d5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0239",
+    "text": "Black retains only a slight edge from the extra pawn",
+    "want_args": {
+     "points": -1
+    },
+    "want_branch": [
+     "g5d2",
+     "d1d2",
+     "d5c4",
+     "a1c1",
+     "d7e5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0244",
+    "text": "a two-point material advantage",
+    "want_args": {
+     "points": -2
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0245",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0246",
+    "text": "White's rook on h4",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "h4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0248",
+    "text": "black bishop on h6",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "h6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0249",
+    "text": "the white queen on d2 also eyes that square",
+    "want_args": {
+     "piece": "queen",
+     "source": "d2",
+     "target": "h6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0250",
+    "text": "white queen on d2",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "d2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1132",
+    "text": "Black's king remains uncastled on e8",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "e8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0252",
+    "text": "the black rook on h8 guards the h-file",
+    "want_args": {
+     "piece": "rook",
+     "source": "h8",
+     "target": "h6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0253",
+    "text": "black rook on h8",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "h8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1143",
+    "text": "White's central pawns on c4 and d4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1144",
+    "text": "White's central pawns on c4 and d4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0254",
+    "text": "white knight on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0258",
+    "text": "it pressures the black rook on h8",
+    "want_args": {
+     "piece": "rook",
+     "source": "h6",
+     "target": "h8"
+    },
+    "want_branch": [
+     "h4h6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1028",
+    "text": "the knight eyes a2",
+    "want_args": {
+     "piece": "knight",
+     "source": "b4",
+     "target": "a2"
+    },
+    "want_branch": [
+     "h4h6",
+     "h8h6",
+     "g2g3",
+     "h6h1",
+     "d4d5",
+     "c6b4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1029",
+    "text": "a full bishop ahead",
+    "want_args": {
+     "points": -3
+    },
+    "want_branch": [
+     "d4d5",
+     "d8f6",
+     "d5c6",
+     "b7c6",
+     "h4h6",
+     "h8h6",
+     "d2h6",
+     "f6h6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1030",
+    "text": "The white rook on h6 is now attacked",
+    "want_args": {
+     "piece": "queen",
+     "source": "e7",
+     "target": "h6"
+    },
+    "want_branch": [
+     "d2h6",
+     "h8h6",
+     "h4h6",
+     "d8e7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0284",
+    "text": "Black's queen on b6",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0285",
+    "text": "Black's queen on b6 sits on a semi-open file",
+    "want_args": {
+     "color": "black",
+     "file": "b"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_semi_open_file"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1031",
+    "text": "White's pawn chain a4-b3-c4-d5-f5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "a4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1032",
+    "text": "White's pawn chain a4-b3-c4-d5-f5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "b3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1033",
+    "text": "White's pawn chain a4-b3-c4-d5-f5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1034",
+    "text": "White's pawn chain a4-b3-c4-d5-f5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1035",
+    "text": "White's pawn chain a4-b3-c4-d5-f5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "f5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0288",
+    "text": "the black knight on g5",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0290",
+    "text": "black queen on b6",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0296",
+    "text": "eyes the white pawn on a4",
+    "want_args": {
+     "piece": "queen",
+     "source": "b3",
+     "target": "a4"
+    },
+    "want_branch": [
+     "b6b3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0297",
+    "text": "the white pawn on c4",
+    "want_args": {
+     "piece": "queen",
+     "source": "b3",
+     "target": "c4"
+    },
+    "want_branch": [
+     "b6b3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0310",
+    "text": "immediately challenging the black bishop on e7",
+    "want_args": {
+     "piece": "knight",
+     "source": "g6",
+     "target": "e7"
+    },
+    "want_branch": [
+     "b6b3",
+     "h4g6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1036",
+    "text": "creating a dangerous passed pawn",
+    "want_args": {
+     "square": "g6"
+    },
+    "want_branch": [
+     "b6b3",
+     "h4g6",
+     "f8g6",
+     "f5g6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0318",
+    "text": "creating a dangerous passed pawn",
+    "want_args": {
+     "square": "d6"
+    },
+    "want_branch": [
+     "e5e4",
+     "d5d6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1038",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "e7d6",
+     "b3b4",
+     "a7a5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l1039",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "pawn",
+     "source": "a5",
+     "target": "b6"
+    },
+    "want_branch": [
+     "e7d6",
+     "b3b4",
+     "f8d7",
+     "a4a5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0332",
+    "text": "a one-point material edge",
+    "want_args": {
+     "points": -1
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0334",
+    "text": "two rooks and a knight",
+    "want_args": {
+     "color": "black",
+     "count": 1,
+     "piece": "knight"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0333",
+    "text": "two rooks and a knight",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "rook"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0337",
+    "text": "White's rook, two bishops, and knight",
+    "want_args": {
+     "color": "white",
+     "count": 1,
+     "piece": "knight"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0335",
+    "text": "White's rook, two bishops, and knight",
+    "want_args": {
+     "color": "white",
+     "count": 1,
+     "piece": "rook"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0336",
+    "text": "White's rook, two bishops, and knight",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0338",
+    "text": "The queen on a6",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "a6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0341",
+    "text": "the bishop pair on b4 and b3",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "b3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0340",
+    "text": "the bishop pair on b4 and b3",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "b4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0342",
+    "text": "the knight on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0343",
+    "text": "Black's king on g8",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "g8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0345",
+    "text": "the queen on f5",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "f5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1040",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "rook",
+     "source": "b8",
+     "target": "b5"
+    },
+    "want_branch": [
+     "e4c5",
+     "b4c5",
+     "f5c5",
+     "a6b5",
+     "a8b8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1041",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "e4c5",
+     "b4c5",
+     "f5c5",
+     "a6b5",
+     "a8b8"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0360",
+    "text": "simultaneously eyes f7",
+    "want_args": {
+     "piece": "queen",
+     "source": "a7",
+     "target": "f7"
+    },
+    "want_branch": [
+     "a8d8",
+     "a6a7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h09_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0361",
+    "text": "the black rook on d8",
+    "want_args": {
+     "piece": "queen",
+     "source": "a7",
+     "target": "d8"
+    },
+    "want_branch": [
+     "a8d8",
+     "a6a7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0365",
+    "text": "central pawn duo on c4 and d4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0366",
+    "text": "central pawn duo on c4 and d4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0367",
+    "text": "white queen on b3",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "b3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0369",
+    "text": "pawns on c6 and d5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0370",
+    "text": "pawns on c6 and d5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0371",
+    "text": "black bishop on f8",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "f8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0372",
+    "text": "black knight on b8",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "b8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0373",
+    "text": "black queen on c8",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "c8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1043",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "b1c3",
+     "e7e6",
+     "f1d3",
+     "d5c4",
+     "d3c4",
+     "f8g7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1042",
+    "text": "pins the knight",
+    "want_args": {
+     "pinned": "c6",
+     "pinner": "b5",
+     "target": "e8"
+    },
+    "want_branch": [
+     "c4d5",
+     "c6d5",
+     "b1c3",
+     "b8c6",
+     "f1b5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1044",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "f1e2",
+     "b8d7",
+     "c4d5",
+     "c6d5",
+     "c1d2",
+     "f8g7",
+     "b1c3",
+     "e8g8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0401",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0403",
+    "text": "the central pawn wedge on c5 and d4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0404",
+    "text": "the central pawn wedge on c5 and d4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0405",
+    "text": "white knight on e2",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "e2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0407",
+    "text": "white knight on d5",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1046",
+    "text": "pressures f6 and c7",
+    "want_args": {
+     "piece": "knight",
+     "source": "d5",
+     "target": "c7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1045",
+    "text": "pressures f6 and c7",
+    "want_args": {
+     "piece": "knight",
+     "source": "d5",
+     "target": "f6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1133",
+    "text": "uncastled king on e1",
+    "want_args": {
+     "color": "white",
+     "piece": "king",
+     "square": "e1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0409",
+    "text": "black bishop on f6",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "f6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1047",
+    "text": "eyes d3",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f5",
+     "target": "d3"
+    },
+    "want_branch": [
+     "f6g5",
+     "e1g1",
+     "c8f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0417",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "f6g5",
+     "e1g1",
+     "c8f5",
+     "f2f4",
+     "g5h6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0420",
+    "text": "creating a passed black pawn on the b-file",
+    "want_args": {
+     "color": "black",
+     "file": "b"
+    },
+    "want_branch": [
+     "f6g5",
+     "e1g1",
+     "c8f5",
+     "b2b4",
+     "c5b4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "has_passed_pawn"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0424",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "f6g5",
+     "f2f4",
+     "g5h6",
+     "e1g1",
+     "c8f5",
+     "g3g4",
+     "f5d7",
+     "h3h4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1050",
+    "text": "with check",
+    "want_args": {},
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "is_check"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1049",
+    "text": "attacking the white pawn on a4",
+    "want_args": {
+     "piece": "queen",
+     "source": "a5",
+     "target": "a4"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1052",
+    "text": "pressure on the white pawn on c4",
+    "want_args": {
+     "piece": "bishop",
+     "source": "d6",
+     "target": "c4"
+    },
+    "want_branch": [
+     "f6e5",
+     "e1g1",
+     "c8f5",
+     "f2f4",
+     "e5d6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0447",
+    "text": "a knight for two pawns",
+    "want_args": {
+     "points": -1
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0449",
+    "text": "white knight on e5",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1053",
+    "text": "supported by the white pawn on d5",
+    "want_args": {
+     "piece": "pawn",
+     "source": "d5",
+     "target": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0450",
+    "text": "white pawn on d5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1054",
+    "text": "the white bishop on f4",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f4",
+     "target": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0451",
+    "text": "white bishop on f4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0453",
+    "text": "white rook on e1",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "e1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0455",
+    "text": "black bishop on f5",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "f5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0456",
+    "text": "directly targeting the white pawn on c2",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f5",
+     "target": "c2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0457",
+    "text": "white pawn on c2",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0458",
+    "text": "the black knight on a5 is poised to jump to c4",
+    "want_args": {
+     "piece": "knight",
+     "source": "a5",
+     "target": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0459",
+    "text": "black knight on a5",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0462",
+    "text": "white pawn on c2",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0463",
+    "text": "white bishop on f4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1055",
+    "text": "reinforcing the e5 outpost",
+    "want_args": {
+     "piece": "queen",
+     "source": "f3",
+     "target": "e5"
+    },
+    "want_branch": [
+     "d1f3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1056",
+    "text": "gaining the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "b2b4",
+     "a5c4",
+     "a2c4",
+     "b5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1057",
+    "text": "gaining the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "c2c3",
+     "a5c4",
+     "a2c4",
+     "b5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0488",
+    "text": "white bishop on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0489",
+    "text": "white knight on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0490",
+    "text": "white pawn on g2",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0492",
+    "text": "black bishop on f5",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "f5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0493",
+    "text": "The black queen on a5 is exposed to the white rook on a1",
+    "want_args": {
+     "piece": "rook",
+     "source": "a1",
+     "target": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0495",
+    "text": "black queen on a5",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0496",
+    "text": "white rook on a1",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "a1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0497",
+    "text": "black knight on b8",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "b8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0499",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1060",
+    "text": "immediately challenging the black bishop on f5",
+    "want_args": {
+     "piece": "pawn",
+     "source": "g4",
+     "target": "f5"
+    },
+    "want_branch": [
+     "g2g4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1061",
+    "text": "attacking the bishop",
+    "want_args": {
+     "piece": "knight",
+     "source": "h4",
+     "target": "g6"
+    },
+    "want_branch": [
+     "g2g4",
+     "f5g6",
+     "f3h4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1136",
+    "text": "White has won the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "g2g4",
+     "f5g6",
+     "f3h4",
+     "b8d7",
+     "h4g6",
+     "h7g6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0510",
+    "text": "leaves the black bishop on f5 en prise",
+    "want_args": {
+     "piece": "pawn",
+     "source": "g4",
+     "target": "f5"
+    },
+    "want_branch": [
+     "g2g4",
+     "b7b5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1137",
+    "text": "preserving the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "g2g4",
+     "b7b5",
+     "c4b3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1063",
+    "text": "leaves the black bishop on f5 en prise",
+    "want_args": {
+     "piece": "pawn",
+     "source": "g4",
+     "target": "f5"
+    },
+    "want_branch": [
+     "g2g4",
+     "b8d7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1138",
+    "text": "White has the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "g2g4",
+     "b8d7",
+     "g4f5",
+     "e6f5",
+     "c1d2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1064",
+    "text": "white bishop on d2 eyes the black queen on a5",
+    "want_args": {
+     "piece": "bishop",
+     "source": "d2",
+     "target": "a5"
+    },
+    "want_branch": [
+     "g2g4",
+     "b8d7",
+     "g4f5",
+     "e6f5",
+     "c1d2"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0525",
+    "text": "White retains the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "c1d2",
+     "a5c7",
+     "f3h4",
+     "b8d7",
+     "h4f5",
+     "e6f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0534",
+    "text": "white knight on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0536",
+    "text": "black bishop on d6",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "d6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0538",
+    "text": "black queen on a6",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "a6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0540",
+    "text": "black bishop on g6",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "g6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0541",
+    "text": "eyeing the white knight on g3",
+    "want_args": {
+     "piece": "bishop",
+     "source": "g6",
+     "target": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0542",
+    "text": "white knight on g3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0543",
+    "text": "the white pawn on f3 guards e4",
+    "want_args": {
+     "piece": "pawn",
+     "source": "f3",
+     "target": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0544",
+    "text": "white pawn on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0545",
+    "text": "white bishop on e2",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "e2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1134",
+    "text": "Black's king remains uncastled on e8",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "e8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0547",
+    "text": "black knight on f6",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "f6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1067",
+    "text": "challenging the white knight on c4",
+    "want_args": {
+     "piece": "pawn",
+     "source": "b5",
+     "target": "c4"
+    },
+    "want_branch": [
+     "d6g3",
+     "h2g3",
+     "a6c6",
+     "f3f4",
+     "b7b5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1068",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "pawn",
+     "source": "b3",
+     "target": "a4"
+    },
+    "want_branch": [
+     "d6g3",
+     "h2g3",
+     "a6a4",
+     "b2b3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1069",
+    "text": "The queen is immediately attacked by 3. white pawn a2-a4",
+    "want_args": {
+     "piece": "pawn",
+     "source": "a4",
+     "target": "b5"
+    },
+    "want_branch": [
+     "d6g3",
+     "h2g3",
+     "a6b5",
+     "a2a4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0568",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "a6c6",
+     "c4d6",
+     "c6d6",
+     "c2c3",
+     "c7c5",
+     "d4c5",
+     "d7c5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1071",
+    "text": "white bishop on c4 eyes the black queen on d6",
+    "want_args": {
+     "piece": "bishop",
+     "source": "c4",
+     "target": "d6"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4d6",
+     "a6d6",
+     "c2c4",
+     "b5c4",
+     "e2c4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1139",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4d6",
+     "a6d6",
+     "c2c4",
+     "b5c4",
+     "e2c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1072",
+    "text": "leaves the black queen on a6 en prise to 3. white bishop e2 takes black pawn b5",
+    "want_args": {
+     "piece": "bishop",
+     "source": "b5",
+     "target": "a6"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4d6",
+     "c7d6",
+     "e2b5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0577",
+    "text": "pinning the queen to the black rook on a8",
+    "want_args": {
+     "pinned": "a6",
+     "pinner": "b5",
+     "target": "a8"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4d6",
+     "c7d6",
+     "e2b5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0581",
+    "text": "White's queen on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0582",
+    "text": "queen on c4 exerts direct pressure on the black pawn on c6",
+    "want_args": {
+     "piece": "queen",
+     "source": "c4",
+     "target": "c6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0583",
+    "text": "black pawn on c6",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0584",
+    "text": "white pawn on d4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0585",
+    "text": "white bishop on g2",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "g2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0587",
+    "text": "black bishop on c8",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "c8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0591",
+    "text": "This immediately challenges the queen",
+    "want_args": {
+     "piece": "pawn",
+     "source": "b5",
+     "target": "c4"
+    },
+    "want_branch": [
+     "b7b5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1073",
+    "text": "maintaining pressure on c6",
+    "want_args": {
+     "piece": "queen",
+     "source": "c2",
+     "target": "c6"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4c2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0595",
+    "text": "it eyes e2",
+    "want_args": {
+     "piece": "bishop",
+     "source": "a6",
+     "target": "e2"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4c2",
+     "c8a6"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1074",
+    "text": "supports the black pawn on b5",
+    "want_args": {
+     "piece": "bishop",
+     "source": "a6",
+     "target": "b5"
+    },
+    "want_branch": [
+     "b7b5",
+     "c4c2",
+     "c8a6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1076",
+    "text": "bishop on b7 is blocked by its own pawns",
+    "want_args": {
+     "blocker": "c6",
+     "slider": "b7"
+    },
+    "want_branch": [
+     "b7b6",
+     "f1d1",
+     "c8b7",
+     "c4c2",
+     "b8d7",
+     "e2e4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "blocks"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0622",
+    "text": "bishop pair on c4 and f4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0623",
+    "text": "bishop pair on c4 and f4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0624",
+    "text": "the queen on f3",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "f3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1135",
+    "text": "Black's king remains uncastled on e8",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "e8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0626",
+    "text": "the queen on a5",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0627",
+    "text": "black bishop on f8",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "f8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0630",
+    "text": "the e5 square",
+    "want_args": {
+     "square": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "square_empty"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0631",
+    "text": "black knight on d7",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "d7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0632",
+    "text": "white bishop on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0638",
+    "text": "the d-file opens",
+    "want_args": {
+     "file": "d"
+    },
+    "want_branch": [
+     "d7e5",
+     "f3e3",
+     "e5c4",
+     "d3c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0641",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "bishop",
+     "source": "c7",
+     "target": "a5"
+    },
+    "want_branch": [
+     "d7e5",
+     "f3e3",
+     "e5g6",
+     "f4c7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1079",
+    "text": "leaves the e5 square unoccupied",
+    "want_args": {
+     "square": "e5"
+    },
+    "want_branch": [
+     "f8e7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "square_empty"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0651",
+    "text": "challenging the black knight on f6",
+    "want_args": {
+     "piece": "knight",
+     "source": "e4",
+     "target": "f6"
+    },
+    "want_branch": [
+     "f8e7",
+     "c3e4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l0653",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "knight",
+     "source": "f6",
+     "target": "e4"
+    },
+    "want_branch": [
+     "f8e7",
+     "c3e4",
+     "f6e4",
+     "f3e4",
+     "d7f6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1080",
+    "text": "bishop pair remains intact",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "f8e7",
+     "c3e4",
+     "f6e4",
+     "f3e4",
+     "d7f6",
+     "e4f3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1081",
+    "text": "preserving the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "f8b4",
+     "a2a3",
+     "b4e7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1082",
+    "text": "leaves the bishop en prise to the white pawn on b2",
+    "want_args": {
+     "piece": "pawn",
+     "source": "b2",
+     "target": "c3"
+    },
+    "want_branch": [
+     "f8b4",
+     "a2a3",
+     "b4c3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1083",
+    "text": "white pawn b2-b4 attacks the bishop",
+    "want_args": {
+     "piece": "pawn",
+     "source": "b4",
+     "target": "c5"
+    },
+    "want_branch": [
+     "f8b4",
+     "a2a3",
+     "b4c5",
+     "b2b4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0668",
+    "text": "the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0669",
+    "text": "the active rook on the c-file",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "c1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0670",
+    "text": "Black's queen on e6",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "e6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0672",
+    "text": "a one-pawn material edge",
+    "want_args": {
+     "points": -1
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0673",
+    "text": "black pawn on b4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "b4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0675",
+    "text": "black bishop on e5",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0676",
+    "text": "eyeing g3",
+    "want_args": {
+     "piece": "bishop",
+     "source": "e5",
+     "target": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1084",
+    "text": "black pawn wedge on g5 and h5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1085",
+    "text": "black pawn wedge on g5 and h5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "h5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0685",
+    "text": "the bishop eyes the queen",
+    "want_args": {
+     "piece": "bishop",
+     "source": "d3",
+     "target": "d7"
+    },
+    "want_branch": [
+     "e2c4",
+     "e6d7",
+     "e1b4",
+     "f8g7",
+     "c4d3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1086",
+    "text": "the queen is attacked",
+    "want_args": {
+     "piece": "bishop",
+     "source": "e2",
+     "target": "f3"
+    },
+    "want_branch": [
+     "e2c4",
+     "e6g4",
+     "a3b4",
+     "g4f3",
+     "c4e2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0693",
+    "text": "The capture opens the a2-g8",
+    "want_args": {
+     "source": "a2",
+     "target": "g8"
+    },
+    "want_branch": [
+     "e2c4",
+     "b4a3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "ray_clear"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0696",
+    "text": "White attacks the undefended black pawn on g5",
+    "want_args": {
+     "piece": "queen",
+     "source": "f5",
+     "target": "g5"
+    },
+    "want_branch": [
+     "e2c4",
+     "b4a3",
+     "c4e6",
+     "f7e6",
+     "c2f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1087",
+    "text": "White retains the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "a3b4",
+     "d8c8",
+     "c2d1",
+     "c8c1",
+     "d1c1"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0701",
+    "text": "the open file",
+    "want_args": {
+     "file": "c"
+    },
+    "want_branch": [
+     "a3b4",
+     "d8c8",
+     "c2d1",
+     "c8c1",
+     "d1c1"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h17_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1140",
+    "text": "White's bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "e1b4",
+     "f8g7",
+     "e2c4",
+     "e6h3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0710",
+    "text": "a full knight and pawn behind",
+    "want_args": {
+     "points": 4
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0713",
+    "text": "the active rook on e6",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "e6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0714",
+    "text": "the centralized queen on d5",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0715",
+    "text": "black pawn on d4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0717",
+    "text": "black king on c8",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "c8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0718",
+    "text": "white queen on d3",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "d3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0723",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "queen",
+     "source": "f5",
+     "target": "d5"
+    },
+    "want_branch": [
+     "e6e5",
+     "d3f5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1089",
+    "text": "eyes the white pawn on h3",
+    "want_args": {
+     "piece": "queen",
+     "source": "c6",
+     "target": "h3"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1090",
+    "text": "attack the white pawn on h3",
+    "want_args": {
+     "piece": "rook",
+     "source": "e3",
+     "target": "h3"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0738",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "queen",
+     "source": "f5",
+     "target": "d5"
+    },
+    "want_branch": [
+     "c5c4",
+     "d3f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1091",
+    "text": "attacking the knight",
+    "want_args": {
+     "piece": "rook",
+     "source": "e5",
+     "target": "f5"
+    },
+    "want_branch": [
+     "c5c4",
+     "d3f5",
+     "d5f5",
+     "g3f5",
+     "e6e5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1092",
+    "text": "the rook has an open file",
+    "want_args": {
+     "file": "g"
+    },
+    "want_branch": [
+     "c5c4",
+     "d3f5",
+     "d5f5",
+     "g3f5",
+     "e6e5",
+     "f5g3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0747",
+    "text": "pinning the white knight on g3",
+    "want_args": {
+     "pinned": "g3",
+     "pinner": "e3",
+     "target": "h3"
+    },
+    "want_branch": [
+     "e6e3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1093",
+    "text": "attacking the queen",
+    "want_args": {
+     "piece": "queen",
+     "source": "f5",
+     "target": "d5"
+    },
+    "want_branch": [
+     "e6e3",
+     "d3f5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0755",
+    "text": "a full bishop ahead",
+    "want_args": {
+     "points": 3
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0756",
+    "text": "white bishop on d6",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "d6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0757",
+    "text": "white queen on d4",
+    "want_args": {
+     "color": "white",
+     "piece": "queen",
+     "square": "d4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0758",
+    "text": "the white pawn on d5 forming a dangerous passer",
+    "want_args": {
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0759",
+    "text": "white pawn on d5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1096",
+    "text": "Black's king remains exposed on f7",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "f7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0761",
+    "text": "black queen on h5",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "h5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0762",
+    "text": "the rooks on d8 and g8",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "d8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0763",
+    "text": "the rooks on d8 and g8",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "g8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0765",
+    "text": "black pawn on a7",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "a7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0770",
+    "text": "attacking the bishop",
+    "want_args": {
+     "piece": "rook",
+     "source": "d7",
+     "target": "c7"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8d7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0772",
+    "text": "eyes the black queen on h5",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f4",
+     "target": "h5"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8d7",
+     "c7f4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1097",
+    "text": "supports the white pawn on d5",
+    "want_args": {
+     "piece": "bishop",
+     "source": "f4",
+     "target": "d5"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8d7",
+     "c7f4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0775",
+    "text": "seizing the open file",
+    "want_args": {
+     "file": "d"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8d7",
+     "c7f4",
+     "g8d8",
+     "f1d1"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1099",
+    "text": "attacking the rook",
+    "want_args": {
+     "piece": "rook",
+     "source": "c7",
+     "target": "e7"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1100",
+    "text": "directly attacking the bishop",
+    "want_args": {
+     "piece": "rook",
+     "source": "c8",
+     "target": "c7"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8c8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1102",
+    "text": "creating a dangerous passer",
+    "want_args": {
+     "square": "d5"
+    },
+    "want_branch": [
+     "d6c7",
+     "d8c8",
+     "c7f4",
+     "c8c2",
+     "d4a7"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1101",
+    "text": "attacks the queen",
+    "want_args": {
+     "piece": "rook",
+     "source": "d8",
+     "target": "d6"
+    },
+    "want_branch": [
+     "d4e5",
+     "d8d6",
+     "e5d6",
+     "g8d8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h19_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0792",
+    "text": "pinning the black rook on d6",
+    "want_args": {
+     "pinned": "d6",
+     "pinner": "b6",
+     "target": "g6"
+    },
+    "want_branch": [
+     "d4a7",
+     "d8d6",
+     "a1b1",
+     "g8d8",
+     "b1b7",
+     "f7g6",
+     "b7b6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0796",
+    "text": "Black's knight on e4",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0799",
+    "text": "white pawn on c5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0800",
+    "text": "eyeing the d2-square",
+    "want_args": {
+     "piece": "knight",
+     "source": "e4",
+     "target": "d2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0802",
+    "text": "black bishop on c7",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "c7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0803",
+    "text": "white rook on a1",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "a1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0804",
+    "text": "black rook on a8",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "a8"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0805",
+    "text": "the semi-open b-file",
+    "want_args": {
+     "color": "black",
+     "file": "b"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "is_semi_open_file"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1145",
+    "text": "White's central pawns on c5 and e5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1146",
+    "text": "White's central pawns on c5 and e5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "e5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0806",
+    "text": "the white bishop on c1 remains undeveloped",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "c1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0813",
+    "text": "defends the c5 pawn",
+    "want_args": {
+     "piece": "queen",
+     "source": "c2",
+     "target": "c5"
+    },
+    "want_branch": [
+     "e2c2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0815",
+    "text": "pinning the rook",
+    "want_args": {
+     "pinned": "a1",
+     "pinner": "a5",
+     "target": "g1"
+    },
+    "want_branch": [
+     "e2c2",
+     "c7a5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0818",
+    "text": "attacking the bishop",
+    "want_args": {
+     "piece": "rook",
+     "source": "b8",
+     "target": "b2"
+    },
+    "want_branch": [
+     "e2c2",
+     "c7a5",
+     "c1b2",
+     "a8b8"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1104",
+    "text": "leaves Black with the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "e2c2",
+     "c7a5",
+     "b1d2",
+     "e4d2",
+     "c1d2",
+     "a5d2",
+     "c2d2"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0826",
+    "text": "attacking the knight",
+    "want_args": {
+     "piece": "bishop",
+     "source": "d4",
+     "target": "c5"
+    },
+    "want_branch": [
+     "c1b2",
+     "e4c5",
+     "b2d4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1105",
+    "text": "forking the white rook on a1",
+    "want_args": {
+     "piece": "knight",
+     "source": "b3",
+     "target": "a1"
+    },
+    "want_branch": [
+     "c1b2",
+     "e4c5",
+     "b1d2",
+     "c5b3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1107",
+    "text": "The knight blocks the white bishop on c1",
+    "want_args": {
+     "blocker": "d2",
+     "slider": "c1"
+    },
+    "want_branch": [
+     "b1d2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "blocks"
+   },
+   {
+    "case": "h20_structure",
+    "class": "EXTRACTED",
+    "label_id": "l1109",
+    "text": "connected passed pawns on the queenside",
+    "want_args": {
+     "square": "c5"
+    },
+    "want_branch": [
+     "b1d2",
+     "e4c5",
+     "a1b1",
+     "c5e4",
+     "d2e4",
+     "d5e4",
+     "c1b2",
+     "c6c5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0840",
+    "text": "a pawn ahead",
+    "want_args": {
+     "points": 1
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "material_balance_is"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0841",
+    "text": "white knight on e4",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0842",
+    "text": "white rook on h7",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "h7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0843",
+    "text": "pinning the black pawn on f7",
+    "want_args": {
+     "pinned": "f7",
+     "pinner": "h7",
+     "target": "e7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "pinned_against"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0844",
+    "text": "black pawn on f7",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "f7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0845",
+    "text": "white bishop on c4",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0847",
+    "text": "black knight on g2",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "g2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0848",
+    "text": "directly threatens the white pawn on f4",
+    "want_args": {
+     "piece": "knight",
+     "source": "g2",
+     "target": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0849",
+    "text": "white pawn on f4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0850",
+    "text": "The black knight on c6 eyes the white pawn on c5",
+    "want_args": {
+     "piece": "knight",
+     "source": "c6",
+     "target": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0852",
+    "text": "black knight on c6",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "c6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0853",
+    "text": "white pawn on c5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0854",
+    "text": "black king on c7",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "c7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1111",
+    "text": "challenging the white bishop on c4",
+    "want_args": {
+     "piece": "pawn",
+     "source": "e5",
+     "target": "c4"
+    },
+    "want_branch": [
+     "e4d6",
+     "g2f4",
+     "c1d1",
+     "e6e5"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0875",
+    "text": "defending the bishop",
+    "want_args": {
+     "piece": "rook",
+     "source": "f3",
+     "target": "c4"
+    },
+    "want_branch": [
+     "c1f1",
+     "g2e3",
+     "f1f3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0887",
+    "text": "two rooks and four pawns against Black's single rook and six pawns",
+    "want_args": {
+     "color": "black",
+     "count": 1,
+     "piece": "rook"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0888",
+    "text": "two rooks and four pawns against Black's single rook and six pawns",
+    "want_args": {
+     "color": "black",
+     "count": 6,
+     "piece": "pawn"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0885",
+    "text": "two rooks and four pawns against Black's single rook and six pawns",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "rook"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0886",
+    "text": "two rooks and four pawns against Black's single rook and six pawns",
+    "want_args": {
+     "color": "white",
+     "count": 4,
+     "piece": "pawn"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0890",
+    "text": "black rook on e4",
+    "want_args": {
+     "color": "black",
+     "piece": "rook",
+     "square": "e4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0891",
+    "text": "eyes the white pawn on g5",
+    "want_args": {
+     "piece": "rook",
+     "source": "e4",
+     "target": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0892",
+    "text": "white pawn on g5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0893",
+    "text": "the white pawn on a2",
+    "want_args": {
+     "piece": "rook",
+     "source": "e4",
+     "target": "a2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0894",
+    "text": "white pawn on a2",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "a2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0896",
+    "text": "white pawn on g5",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0897",
+    "text": "black king on g7",
+    "want_args": {
+     "color": "black",
+     "piece": "king",
+     "square": "g7"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0899",
+    "text": "white rook on h3",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "h3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1116",
+    "text": "Black's queenside pawns on a5, b6, and c5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "a5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1117",
+    "text": "Black's queenside pawns on a5, b6, and c5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "b6"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1118",
+    "text": "Black's queenside pawns on a5, b6, and c5",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0908",
+    "text": "the white rook on e7",
+    "want_args": {
+     "color": "white",
+     "piece": "rook",
+     "square": "e7"
+    },
+    "want_branch": [
+     "b1d1",
+     "e4e5",
+     "d1d7",
+     "e5g5",
+     "d7e7",
+     "g5h5",
+     "h3h5",
+     "g6h5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1120",
+    "text": "open file",
+    "want_args": {
+     "file": "e"
+    },
+    "want_branch": [
+     "b1d1",
+     "e4e5",
+     "d1d7",
+     "e5g5",
+     "d7e7",
+     "g5h5",
+     "h3h5",
+     "g6h5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "is_open_file"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0910",
+    "text": "White defends the g-pawn",
+    "want_args": {
+     "piece": "rook",
+     "source": "g3",
+     "target": "g5"
+    },
+    "want_branch": [
+     "b1d1",
+     "e4e5",
+     "h3g3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0914",
+    "text": "Black's check on h4",
+    "want_args": {},
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "is_check"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1121",
+    "text": "challenging the white pawn on g5",
+    "want_args": {
+     "piece": "pawn",
+     "source": "f6",
+     "target": "g5"
+    },
+    "want_branch": [
+     "b1f1",
+     "f7f6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0927",
+    "text": "down a queen for a bishop",
+    "want_args": {
+     "color": "black",
+     "count": 1,
+     "piece": "queen"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0928",
+    "text": "Black's queen on d3",
+    "want_args": {
+     "color": "black",
+     "piece": "queen",
+     "square": "d3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0930",
+    "text": "simultaneously eyeing the white pawn on e3",
+    "want_args": {
+     "piece": "queen",
+     "source": "d3",
+     "target": "e3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0931",
+    "text": "white pawn on e3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "e3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0932",
+    "text": "the white pawn on f4",
+    "want_args": {
+     "piece": "queen",
+     "source": "d3",
+     "target": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0933",
+    "text": "white pawn on f4",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "f4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0935",
+    "text": "black pawn on c4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0936",
+    "text": "White's king on f2",
+    "want_args": {
+     "color": "white",
+     "piece": "king",
+     "square": "f2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0938",
+    "text": "white bishop on e1",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "e1"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0945",
+    "text": "keep the white pawn on h3 defended",
+    "want_args": {
+     "piece": "king",
+     "source": "g3",
+     "target": "h3"
+    },
+    "want_branch": [
+     "e1b4",
+     "d3c2",
+     "f2g3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "defends"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0946",
+    "text": "attacking the bishop",
+    "want_args": {
+     "piece": "pawn",
+     "source": "c3",
+     "target": "b4"
+    },
+    "want_branch": [
+     "e1b4",
+     "d3c2",
+     "f2g3",
+     "c4c3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1125",
+    "text": "maintaining the double attack on e3 and f4",
+    "want_args": {
+     "piece": "queen",
+     "source": "c2",
+     "target": "e3"
+    },
+    "want_branch": [
+     "h3h4",
+     "d3c2"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1126",
+    "text": "maintaining the double attack on e3 and f4",
+    "want_args": {
+     "piece": "queen",
+     "source": "c2",
+     "target": "f4"
+    },
+    "want_branch": [
+     "h3h4",
+     "d3c2"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1127",
+    "text": "attacks the undefended white pawn on e3",
+    "want_args": {
+     "piece": "queen",
+     "source": "f3",
+     "target": "e3"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1128",
+    "text": "leaving the white bishop on e1 en prise",
+    "want_args": {
+     "piece": "queen",
+     "source": "e3",
+     "target": "e1"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1129",
+    "text": "attacks the undefended white pawn on f4",
+    "want_args": {
+     "piece": "queen",
+     "source": "f3",
+     "target": "f4"
+    },
+    "want_branch": [
+     "f2g1",
+     "d3e3",
+     "g1g2",
+     "e3f3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0966",
+    "text": "creating a dangerous passed pawn on the f-file",
+    "want_args": {
+     "color": "black",
+     "file": "f"
+    },
+    "want_branch": [
+     "f2g1",
+     "d3e3",
+     "g1g2",
+     "e3f3",
+     "g2g1",
+     "f3f4"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "has_passed_pawn"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0971",
+    "text": "two bishops and a knight against two pawns",
+    "want_args": {
+     "color": "black",
+     "count": 1,
+     "piece": "knight"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0970",
+    "text": "two bishops and a knight against two pawns",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0972",
+    "text": "two bishops and a knight against two pawns",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "pawn"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0974",
+    "text": "white king on d5",
+    "want_args": {
+     "color": "white",
+     "piece": "king",
+     "square": "d5"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0975",
+    "text": "white pawn on c3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "c3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0976",
+    "text": "the immediate target of the black bishop on b2",
+    "want_args": {
+     "piece": "bishop",
+     "source": "b2",
+     "target": "c3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0977",
+    "text": "black bishop on b2",
+    "want_args": {
+     "color": "black",
+     "piece": "bishop",
+     "square": "b2"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0979",
+    "text": "black knight on d3",
+    "want_args": {
+     "color": "black",
+     "piece": "knight",
+     "square": "d3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l0981",
+    "text": "black pawn on c4",
+    "want_args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "c4"
+    },
+    "want_branch": [],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1141",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "d5d4",
+     "b2c3",
+     "d4d5",
+     "c3e1",
+     "d5d6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1006",
+    "text": "removing White's last pawn",
+    "want_args": {
+     "color": "white",
+     "count": 0,
+     "piece": "pawn"
+    },
+    "want_branch": [
+     "d5e4",
+     "b2c3"
+    ],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1130",
+    "text": "white pawn on g3",
+    "want_args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g3"
+    },
+    "want_branch": [
+     "d5e4",
+     "b2c3",
+     "e4f3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h24_endgame",
+    "class": "EXTRACTED",
+    "label_id": "l1142",
+    "text": "bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "d5e4",
+     "b2c3",
+     "e4f3",
+     "c3e5",
+     "f3g2"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "piece_count_is"
+   }
+  ],
+  "extraction_with_no_label": [
+   {
+    "args": {
+     "piece": "knight",
+     "source": "d2",
+     "target": "d4"
+    },
+    "case": "h06_tactical",
+    "predicate": "attacks",
+    "text": "simultaneously attacking the white pawn on d4",
+    "verifier": "FALSE"
+   },
+   {
+    "args": {
+     "piece": "rook",
+     "source": "h1",
+     "target": "f1"
+    },
+    "case": "h07_tactical",
+    "predicate": "attacks",
+    "text": "attacking the white bishop on f1",
+    "verifier": "VERIFIED"
+   },
+   {
+    "args": {
+     "piece": "bishop",
+     "source": "c4",
+     "target": "f7"
+    },
+    "case": "h17_structure",
+    "predicate": "attacks",
+    "text": "threatening the black pawn on f7",
+    "verifier": "FALSE"
+   },
+   {
+    "args": {
+     "source": "a2",
+     "target": "g8"
+    },
+    "case": "h17_structure",
+    "predicate": "is_open_diagonal",
+    "text": "opens the a2-g8",
+    "verifier": "FALSE"
+   },
+   {
+    "args": {
+     "piece": "rook",
+     "source": "d1",
+     "target": "e7"
+    },
+    "case": "h22_endgame",
+    "predicate": "attacks",
+    "text": "attack the black pawn on e7",
+    "verifier": "FALSE"
+   },
+   {
+    "args": {
+     "piece": "king",
+     "source": "f1",
+     "target": "e3"
+    },
+    "case": "h23_endgame",
+    "predicate": "attacks",
+    "text": "simultaneously attacks the white pawn on e3",
+    "verifier": "UNKNOWN"
+   },
+   {
+    "args": {
+     "file": "e"
+    },
+    "case": "h23_endgame",
+    "predicate": "is_open_file",
+    "text": "opening the e-file",
+    "verifier": "FALSE"
+   }
+  ],
+  "hallucinated_on_non_fact": [
+   {
+    "case": "h04_tactical",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "piece": "knight",
+      "source": "d4",
+      "target": "f5"
+     },
+     "board_moves": [
+      "b2a2",
+      "c3a2",
+      "c2a2",
+      "f8c8",
+      "f3d4"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0156",
+    "text": "White centralizes the knight, threatening f5+, but Black's rook on c8 is well placed and the material balance, while still favorable to Black, is the most defensible outcome available to White."
+   },
+   {
+    "case": "h07_tactical",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "points": 0
+     },
+     "board_moves": null,
+     "predicate": "material_balance_is",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0263",
+    "text": "White retains a slight edge from the more active queen, but Black's king is safe and the material is equal."
+   },
+   {
+    "case": "h08_tactical",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "piece": "bishop",
+      "source": "d5",
+      "target": "g6"
+     },
+     "board_moves": null,
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0320",
+    "text": "After white bishop g2-d5+ black king g8-h8, White retains a clear advantage with the active bishop on d5 and the white knight on h4 still threatening g6."
+   },
+   {
+    "case": "h11_quiet",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "square": "b4"
+     },
+     "board_moves": [
+      "c8f5",
+      "b2b4",
+      "c5b4"
+     ],
+     "predicate": "is_passed_pawn",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0419",
+    "text": "The alternative 2. white pawn b2-b4 is met by 2... black pawn c5 takes white pawn b4, winning a pawn and creating a passed black pawn on the b-file."
+   },
+   {
+    "case": "h11_quiet",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "file": "g"
+     },
+     "board_moves": null,
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0434",
+    "text": "The alternative 2. white pawn g3-g4 allows 2... black bishop f5-d7, and after 3. white pawn g4-g5 black bishop h6 takes white pawn g5, Black wins a pawn and opens the g-file against the white king."
+   },
+   {
+    "case": "h15_quiet",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "blocker": "b7",
+      "slider": "b5"
+     },
+     "board_moves": [
+      "b7b5",
+      "c4c2",
+      "c8b7"
+     ],
+     "predicate": "blocks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l1075",
+    "text": "blocks the black pawn on b5"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "file": "d"
+     },
+     "board_moves": [],
+     "predicate": "is_open_file",
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0889",
+    "text": "The practical task is to coordinate the rooks on the open d-file while managing the active black rook on e4, which simultaneously eyes the white pawn on g5 and the white pawn on a2."
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "square": "g5"
+     },
+     "board_moves": [],
+     "predicate": "is_passed_pawn",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0895",
+    "text": "The white pawn on g5 is a latent passer"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "piece": "pawn",
+      "source": "h5",
+      "target": "g5"
+     },
+     "board_moves": [
+      "b1d1",
+      "e4e5",
+      "d1d7",
+      "e5g5",
+      "d7e7",
+      "g5h5",
+      "h3h5",
+      "g6h5"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0904",
+    "text": "Black's most resilient reply centralizes the rook on the fifth rank, directly attacking the white pawn on g5."
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got": {
+     "args": {
+      "piece": "pawn",
+      "source": "h5",
+      "target": "e7"
+     },
+     "board_moves": [
+      "b1d1",
+      "e4e5",
+      "d1d7",
+      "e5g5",
+      "d7e7",
+      "g5h5",
+      "h3h5",
+      "g6h5"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0905",
+    "text": "White's strongest continuation is the seventh-rank invasion, attacking the black pawn on e7."
+   }
+  ],
+  "negative_claim_missed": [
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "label_id": "l0233",
+    "text": "eliminating the passed pawn",
+    "want_args": {
+     "square": "c4"
+    },
+    "want_branch": [
+     "d5c4",
+     "d2c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "negative",
+    "want_predicate": "is_passed_pawn"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1147",
+    "text": "gaining the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "b2b4",
+     "a5c4",
+     "a2c4",
+     "b5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "negative",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1148",
+    "text": "gaining the bishop pair",
+    "want_args": {
+     "color": "white",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "c2c3",
+     "a5c4",
+     "a2c4",
+     "b5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "negative",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1059",
+    "text": "the white bishop on a2 has been removed from the board",
+    "want_args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "a2"
+    },
+    "want_branch": [
+     "c2c3",
+     "a5c4",
+     "a2c4",
+     "b5c4"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "negative",
+    "want_predicate": "piece_at"
+   },
+   {
+    "case": "h13_quiet",
+    "class": "EXTRACTED",
+    "label_id": "l1149",
+    "text": "White has won the bishop pair",
+    "want_args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "want_branch": [
+     "g2g4",
+     "f5g6",
+     "f3h4",
+     "b8d7",
+     "h4g6",
+     "h7g6"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "negative",
+    "want_predicate": "piece_count_is"
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "label_id": "l0711",
+    "text": "white knight on g3",
+    "want_args": {
+     "color": "white",
+     "piece": "knight",
+     "square": "g3"
+    },
+    "want_branch": [],
+    "want_chess_truth": "FALSE",
+    "want_polarity": "negative",
+    "want_predicate": "piece_at"
+   }
+  ],
+  "predicate_right_args_wrong": [
+   {
+    "case": "h06_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "piece": "knight",
+      "source": "d2",
+      "target": "d4"
+     },
+     "board_moves": [
+      "g5e3"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0225",
+    "text": "attacking the white pawn on d4",
+    "want_args": {
+     "piece": "bishop",
+     "source": "e3",
+     "target": "d4"
+    },
+    "want_branch": [
+     "g5e3"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "piece": "pawn",
+      "source": "h5",
+      "target": "g5"
+     },
+     "board_moves": [
+      "b1d1",
+      "e4e5",
+      "d1d7",
+      "e5g5",
+      "d7e7",
+      "g5h5",
+      "h3h5",
+      "g6h5"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l1119",
+    "text": "directly attacking the white pawn on g5",
+    "want_args": {
+     "piece": "rook",
+     "source": "e5",
+     "target": "g5"
+    },
+    "want_branch": [
+     "b1d1",
+     "e4e5"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h22_endgame",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "piece": "pawn",
+      "source": "h5",
+      "target": "e7"
+     },
+     "board_moves": [
+      "b1d1",
+      "e4e5",
+      "d1d7",
+      "e5g5",
+      "d7e7",
+      "g5h5",
+      "h3h5",
+      "g6h5"
+     ],
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0906",
+    "text": "attacking the black pawn on e7",
+    "want_args": {
+     "piece": "rook",
+     "source": "d7",
+     "target": "e7"
+    },
+    "want_branch": [
+     "b1d1",
+     "e4e5",
+     "d1d7"
+    ],
+    "want_chess_truth": "TRUE",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "got": {
+     "args": {
+      "piece": "king",
+      "source": "f1",
+      "target": "e3"
+     },
+     "board_moves": null,
+     "predicate": "attacks",
+     "status": "EXTRACTED",
+     "verifier_status": "UNKNOWN"
+    },
+    "label_id": "l0952",
+    "text": "attacks the white pawn on e3",
+    "want_args": {
+     "piece": "queen",
+     "source": "f3",
+     "target": "e3"
+    },
+    "want_branch": null,
+    "want_chess_truth": "UNDETERMINED",
+    "want_polarity": "positive",
+    "want_predicate": "attacks"
+   }
+  ],
+  "unsupported_misclassified": [
+   {
+    "case": "h01_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0031",
+    "text": "The advance 2. white pawn d4-d5 is a serious positional error."
+   },
+   {
+    "case": "h01_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0034",
+    "text": "It opens the d-file and allows 2... black pawn e4 takes white pawn d3."
+   },
+   {
+    "case": "h01_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0036",
+    "text": "Black's rook dominates the open file and the position is decisively better for Black."
+   },
+   {
+    "case": "h02_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0082",
+    "text": "Black's best is 1... black queen b6-b2, invading the second rank and directly attacking the white knight on d2."
+   },
+   {
+    "case": "h02_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0087",
+    "text": "After 2. white knight f3 takes black knight e5 2... black queen b2 takes white knight e5 3. white pawn f2-f4, Black retains a decisive material edge with the queen actively placed and the d4 passer in"
+   },
+   {
+    "case": "h03_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS",
+     "EXTRACTED"
+    ],
+    "label_id": "l0107",
+    "text": "Capturing the knight eliminates White's most dangerous attacker and opens the h1-h8 for the black rook on h8."
+   },
+   {
+    "case": "h03_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0116",
+    "text": "White then plays 4. white bishop f5-d7+, forcing 4... black king e8 takes white bishop d7."
+   },
+   {
+    "case": "h03_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0130",
+    "text": "After 2... black king e8 takes white knight f7 3. white bishop d3-g6+ black king f7 takes white bishop g6, the king is exposed on g6 with the f1-f8 open and the white queen ready to join the attack."
+   },
+   {
+    "case": "h03_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0136",
+    "text": "The capture on g5 is the only move that simultaneously removes White's most dangerous attacker and preserves Black's practical chances."
+   },
+   {
+    "case": "h05_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0177",
+    "text": "Black faces a critical decision with White's queen on b6 simultaneously targeting the black pawn on a7 and the black pawn on b7."
+   },
+   {
+    "case": "h06_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS",
+     "EXTRACTED"
+    ],
+    "label_id": "l0232",
+    "text": "White's best is white knight d2 takes black pawn c4, eliminating the passed pawn and restoring material equality."
+   },
+   {
+    "case": "h07_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS",
+     "EXTRACTED"
+    ],
+    "label_id": "l0279",
+    "text": "The white rook on h6 is now attacked, and White's best try 3. white rook h6-h7 is met by 3... black queen e7-b4+, a check that simultaneously attacks the white pawn on b2."
+   },
+   {
+    "case": "h08_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0313",
+    "text": "The alternative black knight f8 takes white knight g6 allows white pawn f5 takes black knight g6, creating a dangerous passed pawn that reduces Black's advantage."
+   },
+   {
+    "case": "h08_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0317",
+    "text": "White's best is white pawn d5-d6, creating a dangerous passed pawn that restricts Black's pieces and threatens to advance with tempo."
+   },
+   {
+    "case": "h08_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0319",
+    "text": "Black's best reply is black bishop e7 takes white pawn d6, removing the thorn while keeping the black rook on d8 available for the open d-file."
+   },
+   {
+    "case": "h08_tactical",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0328",
+    "text": "The alternative black knight f8-d7 allows white pawn a4-a5, attacking the queen, and black pawn c7-c5 is worst, permitting white pawn b4 takes black pawn c5 with a decisive material and positional adv"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0380",
+    "text": "Black has doubled c-pawns"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0389",
+    "text": "Black's best is 1...black pawn c6 takes white pawn d5, after which 2.white knight b1-c3 black knight b8-c6 3.white bishop f1-b5 pins the knight and maintains a small edge."
+   },
+   {
+    "case": "h10_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0390",
+    "text": "The alternative 1...black knight f6 takes white pawn d5 is inferior: 2.white knight b1-c3 black knight d5 takes white knight c3 3.white pawn b2 takes black knight c3 black bishop f8-g7 4.white bishop "
+   },
+   {
+    "case": "h10_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0391",
+    "text": "The passive 1...black bishop f8-g7 is worst of all, allowing 2.white pawn d5 takes black pawn c6 black knight b8 takes white pawn c6 3.white knight b1-c3 black king e8-g8 4.white bishop f1-d3 with a d"
+   },
+   {
+    "case": "h10_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0397",
+    "text": "The alternative 1...black knight b8-d7 is less precise: 2.white pawn c4 takes black pawn d5 black pawn c6 takes white pawn d5 3.white bishop c1-d2 black bishop f8-g7 4.white knight b1-c3 black king e8"
+   },
+   {
+    "case": "h12_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0481",
+    "text": "Black's best is black knight a5-c4, directly attacking the white knight on e5."
+   },
+   {
+    "case": "h13_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0505",
+    "text": "After 2... black knight b8-d7 3. white knight h4 takes black bishop g6 black pawn h7 takes white knight g6, White has won the bishop pair and the white rook on f1 gains access to the open g-file."
+   },
+   {
+    "case": "h13_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0516",
+    "text": "White's best is 2. white pawn g4 takes black bishop f5, opening the g-file."
+   },
+   {
+    "case": "h14_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0551",
+    "text": "Capturing the knight eliminates White's most dangerous attacking piece and forces White to spend a tempo recapturing."
+   },
+   {
+    "case": "h14_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0560",
+    "text": "The queen is immediately attacked by 3. white pawn a2-a4, and after 3...black queen b5-c6 4. white pawn f3-f4, the queen is forced to d5 where it is again harassed by 5. white pawn c2-c4."
+   },
+   {
+    "case": "h15_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0597",
+    "text": "If Black instead plays black bishop c8-b7, the bishop is passive and blocks the black pawn on b5."
+   },
+   {
+    "case": "h15_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0605",
+    "text": "White's most precise reply is white rook f1-d1, placing the rook on the semi-open d-file to support the white pawn on d4 and prepare a future e4 advance."
+   },
+   {
+    "case": "h15_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0611",
+    "text": "The alternative black bishop c8-b7 is inferior: after white queen c4-c2 black knight b8-d7 white pawn e2-e4, White gains space and the bishop on b7 is blocked by its own pawns."
+   },
+   {
+    "case": "h16_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0639",
+    "text": "Black develops with black bishop f8-e7, and after white rook a1-d1, the position is roughly equal with White retaining a slight edge from the open d-file and the more active remaining bishop."
+   },
+   {
+    "case": "h16_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0644",
+    "text": "The retreat black knight e5-d7 is the worst option."
+   },
+   {
+    "case": "h16_quiet",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0664",
+    "text": "The retreat black bishop b4-c5 is worst, as white pawn b2-b4 attacks the bishop and gains space."
+   },
+   {
+    "case": "h18_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0737",
+    "text": "White's strongest reply is 1. white queen d3-f5, attacking the queen."
+   },
+   {
+    "case": "h18_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0740",
+    "text": "After 2. white knight g3 takes black queen f5, the knight lands on a powerful central outpost and the white rook on g1 gains the open g-file."
+   },
+   {
+    "case": "h19_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0769",
+    "text": "Black's best reply is 1...black rook d8-d7, attacking the bishop while maintaining a connection to the d1-d8."
+   },
+   {
+    "case": "h19_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0781",
+    "text": "If Black plays 1...black rook d8-c8, directly attacking the bishop, White's 2.white bishop c7-f4 is again strongest."
+   },
+   {
+    "case": "h20_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS",
+     "EXTRACTED"
+    ],
+    "label_id": "l0814",
+    "text": "Black's strongest reply is 1... black bishop c7-a5, pinning the rook and immediately threatening c5."
+   },
+   {
+    "case": "h20_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0836",
+    "text": "The alternative 2. white rook a1-b1 is inferior: 2... black knight c5-e4 3. white knight d2 takes black knight e4 black pawn d5 takes white knight e4 4. white bishop c1-b2 black pawn c6-c5 leaves Blac"
+   },
+   {
+    "case": "h20_structure",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l1110",
+    "text": "connected passed pawns on the queenside"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS",
+     "EXTRACTED"
+    ],
+    "label_id": "l0869",
+    "text": "Black's alternative 2... black knight f4-d5 is inferior: after 3. white bishop c4 takes black knight d5 black pawn e6 takes white bishop d5 4. white rook d1 takes black pawn d5, White's rook dominates"
+   },
+   {
+    "case": "h21_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0880",
+    "text": "Black's best is 1... black knight g2 takes white pawn f4, and White's best reply is 2. white rook g1-f1."
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0921",
+    "text": "The rook leaves the open h-file and the white rook on b1 remains passive."
+   },
+   {
+    "case": "h22_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0922",
+    "text": "Black's best is 1... black rook e4-h4, swinging to the h-file to target the white pawn on g5 and threaten checks along the fourth rank."
+   },
+   {
+    "case": "h23_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "EXTRACTED"
+    ],
+    "label_id": "l0942",
+    "text": "Black's strongest reply is 1... black queen d3-c2, centralizing on the second rank to attack the white pawn on e3 and prepare checks along the rank."
+   },
+   {
+    "case": "h23_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0944",
+    "text": "White's best is 2. white king f2-g3, stepping toward the kingside to keep the white pawn on h3 defended."
+   },
+   {
+    "case": "h23_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0958",
+    "text": "Black's strongest reply is 1... black queen d3-c2, maintaining the double attack on e3 and f4."
+   },
+   {
+    "case": "h23_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0959",
+    "text": "White's best try is 2. white king f2-g3, and Black plays 2... black queen c2-f3+, a check that simultaneously attacks the undefended white pawn on e3."
+   },
+   {
+    "case": "h23_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [
+     "AMBIGUOUS"
+    ],
+    "label_id": "l0964",
+    "text": "White's best is 2. white king g1-g2, and Black continues 2... black queen e3-f3+, a check that simultaneously attacks the undefended white pawn on f4."
+   },
+   {
+    "case": "h24_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l0996",
+    "text": "Black's strongest reply is again 1... black bishop b2 takes white pawn c3."
+   },
+   {
+    "case": "h24_endgame",
+    "class": "UNSUPPORTED",
+    "got_statuses": [],
+    "label_id": "l1000",
+    "text": "If White instead plays 2. white king d4-e3, Black responds 2... black bishop c3-d4+, forcing 3. white king e3-d2."
+   }
+  ],
+  "variation_missed": [
+   {
+    "case": "h01_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c3d4",
+      "a8d8",
+      "f1e3",
+      "e4d3",
+      "d1d3",
+      "e7d7",
+      "e3f5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0025",
+    "text": "white knight f1-e3 without first capturing the passer, Black seizes the initiative with 2... black pawn e4 takes white pawn d3, creating a passed pawn and opening the d-file. After 3. white rook d1 ta",
+    "want_failure_ply": null,
+    "want_moves": [
+     "c3d4",
+     "a8d8",
+     "f1e3",
+     "e4d3",
+     "d1d3",
+     "e7d7",
+     "e3f5",
+     "d7d4"
+    ]
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0196",
+    "text": "black rook c8-c5, White responds white rook d4-b4, targeting the black pawn on b6. After black rook f8-c8 white rook f1-d1",
+    "want_failure_ply": null,
+    "want_moves": [
+     "a7b6",
+     "d1d4",
+     "c8c5",
+     "d4b4",
+     "f8c8",
+     "f1d1"
+    ]
+   },
+   {
+    "case": "h05_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0199",
+    "text": "black pawn b6-b5 is a serious error. White plays white rook d4-b4, and after black rook c8-c5 white rook b4 takes black pawn b5",
+    "want_failure_ply": null,
+    "want_moves": [
+     "a7b6",
+     "d1d4",
+     "b6b5",
+     "d4b4",
+     "c8c5",
+     "b4b5"
+    ]
+   },
+   {
+    "case": "h07_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "h4h6",
+      "h8h6",
+      "d2h6",
+      "d8e7",
+      "h6g6",
+      "e8c8",
+      "d4d5",
+      "e6d5",
+      "c4d5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0282",
+    "text": "white rook h4 takes black bishop h6 black rook h8 takes white rook h6 white queen d2 takes black rook h6 black queen d8-e7 white queen h6-g6 black king e8-c8 white pawn d4-d5 black pawn e6 takes white",
+    "want_failure_ply": 5,
+    "want_moves": [
+     "h4h6",
+     "h8h6",
+     "d2h6",
+     "d8e7",
+     "h6g6",
+     "e8c8"
+    ]
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "b6b3",
+      "h4g6",
+      "e7d6",
+      "h3h4",
+      "g5f7"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0309",
+    "text": "white knight h4-g6 — the most aggressive option, immediately challenging the black bishop on e7. Black's best is black bishop e7-d6, stepping to a safe square that maintains pressure on the white pawn",
+    "want_failure_ply": null,
+    "want_moves": [
+     "b6b3",
+     "h4g6",
+     "f8g6",
+     "f5g6"
+    ]
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e7d6",
+      "b3b4",
+      "a7a5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0323",
+    "text": "black bishop e7-d6 — a passive retreat that allows White to expand with tempo.\n\nWhite's best is white pawn b3-b4, gaining space and preparing to challenge Black's queenside structure. After black pawn",
+    "want_failure_ply": null,
+    "want_moves": [
+     "e7d6",
+     "b3b4",
+     "f8d7",
+     "a4a5"
+    ]
+   },
+   {
+    "case": "h08_tactical",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e7d6",
+      "b3b4",
+      "a7a5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0324",
+    "text": "black bishop e7-d6 — a passive retreat that allows White to expand with tempo.\n\nWhite's best is white pawn b3-b4, gaining space and preparing to challenge Black's queenside structure. After black pawn",
+    "want_failure_ply": null,
+    "want_moves": [
+     "e7d6",
+     "b3b4",
+     "c7c5",
+     "b4c5"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f6g5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0411",
+    "text": "black bishop f6-g5 — the strongest continuation. The bishop lands on the long diagonal, eyes f4, and coordinates with the black rook on e8. White's best is 1. white king e1-g1, completing development.",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6g5",
+     "e1g1",
+     "c8f5",
+     "h3h4",
+     "g5h6",
+     "f2f4",
+     "h6g7"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f6g5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0412",
+    "text": "black bishop f6-g5 — the strongest continuation. The bishop lands on the long diagonal, eyes f4, and coordinates with the black rook on e8. White's best is 1. white king e1-g1, completing development.",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6g5",
+     "e1g1",
+     "c8f5",
+     "b2b4",
+     "c5b4"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0422",
+    "text": "white pawn f2-f4, Black's best is 1... black bishop g5-h6, preserving the pair and keeping the black bishop on c8 free for f5. After 2. white king e1-g1 black bishop c8-f5 3. white pawn g3-g4 black bi",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6g5",
+     "f2f4",
+     "g5h6",
+     "e1g1",
+     "c8f5",
+     "g3g4",
+     "f5d7",
+     "h3h4"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0426",
+    "text": "white knight d5-f4 walks into Black's prepared response: 1... black bishop g5 takes white knight f4, eliminating White's most active piece and opening the e-file. After 2. white knight e2 takes black ",
+    "want_failure_ply": 3,
+    "want_moves": [
+     "f6g5",
+     "d5f4",
+     "g5f4",
+     "e2f4"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c8f5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0429",
+    "text": "black bishop c8-f5 — a solid alternative that activates the dark-squared bishop immediately. After 1. white king e1-g1, Black's strongest reply is 1... black bishop f6-g5, placing the light-squared bi",
+    "want_failure_ply": null,
+    "want_moves": [
+     "c8f5",
+     "e1g1",
+     "f6g5",
+     "f2f4",
+     "g5h6"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c8f5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0430",
+    "text": "black bishop c8-f5 — a solid alternative that activates the dark-squared bishop immediately. After 1. white king e1-g1, Black's strongest reply is 1... black bishop f6-g5, placing the light-squared bi",
+    "want_failure_ply": 5,
+    "want_moves": [
+     "c8f5",
+     "e1g1",
+     "f6g5",
+     "g3g4",
+     "f5d7",
+     "g4g5"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c8f5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0431",
+    "text": "black bishop c8-f5 — a solid alternative that activates the dark-squared bishop immediately. After 1. white king e1-g1, Black's strongest reply is 1... black bishop f6-g5, placing the light-squared bi",
+    "want_failure_ply": null,
+    "want_moves": [
+     "c8f5",
+     "g3g4",
+     "f5d7"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f6e5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0436",
+    "text": "black bishop f6-e5 — the least effective of the three. The bishop on e5 dominates the center and restricts White's kingside, but it is more vulnerable to direct challenge. After 1. white king e1-g1, B",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6e5",
+     "e1g1",
+     "c8f5",
+     "f2f4",
+     "e5d6"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f6e5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0437",
+    "text": "black bishop f6-e5 — the least effective of the three. The bishop on e5 dominates the center and restricts White's kingside, but it is more vulnerable to direct challenge. After 1. white king e1-g1, B",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6e5",
+     "e1g1",
+     "c6b4",
+     "d5b4",
+     "c5b4",
+     "e2f4"
+    ]
+   },
+   {
+    "case": "h11_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f6g5",
+      "e1g1",
+      "c8f5",
+      "f2f4",
+      "g5h6"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0444",
+    "text": "black bishop f6-g5 white king e1-g1 black bishop c8-f5 white pawn f2-f4 black bishop g5-h6",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f6g5",
+     "e1g1",
+     "c8f5",
+     "f2f4",
+     "g5h6"
+    ]
+   },
+   {
+    "case": "h12_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0472",
+    "text": "white pawn b2-b4, Black simply plays black bishop c2-e4, attacking the queen. After white queen f3-d4 black pawn h7-h5",
+    "want_failure_ply": 4,
+    "want_moves": [
+     "d1f3",
+     "f5c2",
+     "b2b4",
+     "c2e4",
+     "f3d4"
+    ]
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "d6g3",
+      "h2g3",
+      "a6c6"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0550",
+    "text": "black bishop d6 takes white knight g3 — The best move. Capturing the knight eliminates White's most dangerous attacking piece and forces White to spend a tempo recapturing. After 1...black bishop d6 t",
+    "want_failure_ply": null,
+    "want_moves": [
+     "d6g3",
+     "h2g3",
+     "a6c6",
+     "f3f4",
+     "b7b5",
+     "f4f5",
+     "e6f5"
+    ]
+   },
+   {
+    "case": "h14_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "d6g3",
+      "h2g3",
+      "a6b5",
+      "a2a4",
+      "b5c6",
+      "f3f4"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0559",
+    "text": "black queen a6-b5 is the worst option. The queen is immediately attacked by 3. white pawn a2-a4, and after 3...black queen b5-c6 4. white pawn f3-f4, the queen is forced to d5 where it is again harass",
+    "want_failure_ply": 7,
+    "want_moves": [
+     "d6g3",
+     "h2g3",
+     "a6b5",
+     "a2a4",
+     "b5c6",
+     "f3f4",
+     "c6d5",
+     "c2c4"
+    ]
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [],
+     "status": "AMBIGUOUS",
+     "verifier_status": null
+    },
+    "label_id": "l0600",
+    "text": "black knight b8-d7 immediately, the black bishop on c8 remains undeveloped. White plays white knight b1-c3",
+    "want_failure_ply": null,
+    "want_moves": [
+     "b7b5",
+     "c4c2",
+     "b8d7",
+     "b1c3"
+    ]
+   },
+   {
+    "case": "h15_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "b8d7",
+      "c4c2",
+      "b7b5",
+      "b1c3",
+      "c8b7",
+      "e2e4",
+      "c6c5",
+      "d4c5",
+      "d7c5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0613",
+    "text": "black knight b8-d7 — a developing move that leaves the black pawn on c6 under continued pressure. White's best is white queen c4-c2, removing the queen from the c-file and preparing e4. Black's most n",
+    "want_failure_ply": null,
+    "want_moves": [
+     "b8d7",
+     "c4c2",
+     "c6c5",
+     "d4c5",
+     "d7c5"
+    ]
+   },
+   {
+    "case": "h16_quiet",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "f8e7",
+      "c3e4",
+      "f6e4",
+      "f3e4",
+      "d7f6"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0648",
+    "text": "black bishop f8-e7 — a passive developing move that leaves the e5 square unoccupied. White's best is white knight c3-e4, immediately challenging the black knight on f6. After black knight f6 takes whi",
+    "want_failure_ply": null,
+    "want_moves": [
+     "f8e7",
+     "c3e4",
+     "f6e4",
+     "f3e4",
+     "d7f6",
+     "e4f3"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e6e5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0720",
+    "text": "black rook e6-e5 — the best move. The rook steps to the fifth rank, maintaining e-file pressure while avoiding the immediate tactical complications of the third-rank invasion. White's strongest reply ",
+    "want_failure_ply": null,
+    "want_moves": [
+     "e6e5",
+     "d3f5"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "d5f5",
+      "g3f5",
+      "e5f5"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0729",
+    "text": "black queen d5 takes white queen f5 — a queen sacrifice that fails tactically. White simply plays 2. white knight g3 takes black queen f5, winning the queen outright. After 2... black rook e5 takes wh",
+    "want_failure_ply": 2,
+    "want_moves": [
+     "e6e5",
+     "d3f5",
+     "d5f5"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "d5e6"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0732",
+    "text": "black queen d5-e6 — the worst option. White plays 2. white queen f5 takes black queen e6+, and after 2... black rook e5 takes white queen e6",
+    "want_failure_ply": null,
+    "want_moves": [
+     "e6e5",
+     "d3f5",
+     "d5e6",
+     "f5e6",
+     "e5e6"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c5c4"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0734",
+    "text": "black pawn c5-c4 — a queenside pawn push that opens the position but allows White the most forcing continuation. White's strongest reply is 1. white queen d3-f5, attacking the queen. Black's best is 1",
+    "want_failure_ply": null,
+    "want_moves": [
+     "c5c4",
+     "d3f5",
+     "d5f5",
+     "g3f5",
+     "e6e5",
+     "f5g3"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "c5c4"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0735",
+    "text": "black pawn c5-c4 — a queenside pawn push that opens the position but allows White the most forcing continuation. White's strongest reply is 1. white queen d3-f5, attacking the queen. Black's best is 1",
+    "want_failure_ply": null,
+    "want_moves": [
+     "c5c4",
+     "d3f5",
+     "d5f5",
+     "g3f5",
+     "e6e2"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e6e3"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0745",
+    "text": "black rook e6-e3 — the most aggressive option, invading the third rank and pinning the white knight on g3. However, White's best reply is 1. white queen d3-f5, attacking the queen and simultaneously r",
+    "want_failure_ply": 2,
+    "want_moves": [
+     "e6e3",
+     "d3f5",
+     "d5c6"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e6e3"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0746",
+    "text": "black rook e6-e3 — the most aggressive option, invading the third rank and pinning the white knight on g3. However, White's best reply is 1. white queen d3-f5, attacking the queen and simultaneously r",
+    "want_failure_ply": null,
+    "want_moves": [
+     "e6e3",
+     "d3f5",
+     "d5f5",
+     "g3f5"
+    ]
+   },
+   {
+    "case": "h18_structure",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e6e5",
+      "d3f5",
+      "d5c6"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "FALSE"
+    },
+    "label_id": "l0752",
+    "text": "black rook e6-e5 white queen d3-f5 black queen d5-c6",
+    "want_failure_ply": 2,
+    "want_moves": [
+     "e6e5",
+     "d3f5",
+     "d5c6"
+    ]
+   },
+   {
+    "case": "h23_endgame",
+    "class": "EXTRACTED",
+    "got": {
+     "moves": [
+      "e1b4",
+      "d3c2",
+      "f2f1"
+     ],
+     "status": "EXTRACTED",
+     "verifier_status": "VERIFIED"
+    },
+    "label_id": "l0951",
+    "text": "white king f2-f1, Black has the devastating 2... black queen c2-f3+, a check that simultaneously attacks the white pawn on e3. After 3. white king f1-g1, Black plays 3... black queen f3 takes white pa",
+    "want_failure_ply": 3,
+    "want_moves": [
+     "e1b4",
+     "d3c2",
+     "f2f1",
+     "c2f3"
+    ]
+   }
+  ],
+  "variation_with_no_label": [
+   {
+    "case": "h01_tactical",
+    "moves": [
+     "c3d4",
+     "a8d8",
+     "f1e3",
+     "e4d3",
+     "d1d3",
+     "e7d7",
+     "e3f5"
+    ],
+    "text": "2. white knight f1-e3 without first capturing the passer, Black seizes the initiative with 2... black pawn e4 takes white pawn d3, creating a passed pawn and opening the d-file. After 3. white rook d1",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h07_tactical",
+    "moves": [
+     "h4h6",
+     "h8h6",
+     "d2h6",
+     "d8e7",
+     "h6g6",
+     "e8c8",
+     "d4d5",
+     "e6d5",
+     "c4d5"
+    ],
+    "text": "CRITICAL_LINE: white rook h4 takes black bishop h6 black rook h8 takes white rook h6 white queen d2 takes black rook h6 black queen d8-e7 white queen h6-g6 black king e8-c8 white pawn d4-d5 black pawn",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h08_tactical",
+    "moves": [
+     "b6b3",
+     "h4g6",
+     "e7d6",
+     "h3h4",
+     "f8g6",
+     "f5g6"
+    ],
+    "text": "white knight h4-g6 — the most aggressive option, immediately challenging the black bishop on e7. Black's best is black bishop e7-d6, stepping to a safe square that maintains pressure on the white pawn",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h08_tactical",
+    "moves": [
+     "e7d6",
+     "b3b4",
+     "f8d7",
+     "a4a5",
+     "c7c5",
+     "b4c5"
+    ],
+    "text": "black bishop e7-d6 — a passive retreat that allows White to expand with tempo.\n\nWhite's best is white pawn b3-b4, gaining space and preparing to challenge Black's queenside structure. After black pawn",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "f6g5"
+    ],
+    "text": "black bishop f6-g5",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5",
+     "f2f4",
+     "g5h6"
+    ],
+    "text": "1... black bishop c8-f5, placing the second bishop on the a2-g8 where it eyes d3 and supports the kingside. After 2. white pawn f2-f4 black bishop g5-h6",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5",
+     "h3h4",
+     "g5h6"
+    ],
+    "text": "1... black bishop c8-f5, placing the second bishop on the a2-g8 where it eyes d3 and supports the kingside. After 2. white pawn f2-f4 black bishop g5-h6, Black retains the bishop pair with a comfortab",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5",
+     "b2b4",
+     "c5b4"
+    ],
+    "text": "1... black bishop c8-f5, placing the second bishop on the a2-g8 where it eyes d3 and supports the kingside. After 2. white pawn f2-f4 black bishop g5-h6, Black retains the bishop pair with a comfortab",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "g5h6"
+    ],
+    "text": "1... black bishop g5-h6",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5",
+     "e2f4"
+    ],
+    "text": "2. white knight e2 takes black bishop f4",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5"
+    ],
+    "text": "black bishop c8-f5",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "f6g5",
+     "f2f4",
+     "g5h6"
+    ],
+    "text": "1... black bishop f6-g5, placing the light-squared bishop on the long diagonal. After 2. white pawn f2-f4 black bishop g5-h6",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "f6g5",
+     "g3g4",
+     "f5d7"
+    ],
+    "text": "1... black bishop f6-g5, placing the light-squared bishop on the long diagonal. After 2. white pawn f2-f4 black bishop g5-h6, Black retains the bishop pair and a comfortable edge. The alternative 2. w",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "f5d7"
+    ],
+    "text": "1... black bishop f5-d7",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "f6e5"
+    ],
+    "text": "black bishop f6-e5",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c8f5",
+     "f2f4",
+     "e5d6"
+    ],
+    "text": "1... black bishop c8-f5, activating the dark-squared bishop on the long diagonal. After 2. white pawn f2-f4 black bishop e5-d6",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h11_quiet",
+    "moves": [
+     "c6b4",
+     "d5b4",
+     "c5b4",
+     "e2f4"
+    ],
+    "text": "1... black knight c6-b4 is a tactical error: 2. white knight d5 takes black knight b4 black pawn c5 takes white knight b4 3. white knight e2-f4",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h14_quiet",
+    "moves": [
+     "d6g3",
+     "h2g3",
+     "a6c6"
+    ],
+    "text": "black bishop d6 takes white knight g3 — The best move. Capturing the knight eliminates White's most dangerous attacking piece and forces White to spend a tempo recapturing. After 1...black bishop d6 t",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h14_quiet",
+    "moves": [
+     "d6g3",
+     "h2g3",
+     "a6b5",
+     "a2a4",
+     "b5c6",
+     "f3f4"
+    ],
+    "text": "2...black queen a6-b5 is the worst option. The queen is immediately attacked by 3. white pawn a2-a4, and after 3...black queen b5-c6 4. white pawn f3-f4",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h16_quiet",
+    "moves": [
+     "f8e7",
+     "c3e4",
+     "f6e4",
+     "f3e4",
+     "d7f6"
+    ],
+    "text": "black bishop f8-e7 — a passive developing move that leaves the e5 square unoccupied. White's best is white knight c3-e4, immediately challenging the black knight on f6. After black knight f6 takes whi",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "e6e5"
+    ],
+    "text": "black rook e6-e5",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5c6",
+     "b2b3",
+     "e5e3"
+    ],
+    "text": "1... black queen d5-c6 — the best reply. The queen retreats to a safe square where it eyes the white pawn on h3 and maintains some counterplay. White's most natural follow-up is 2. white pawn b2-b3, p",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5f5",
+     "g3f5",
+     "e5f5"
+    ],
+    "text": "1... black queen d5 takes white queen f5 — a queen sacrifice that fails tactically. White simply plays 2. white knight g3 takes black queen f5, winning the queen outright. After 2... black rook e5 tak",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5e6"
+    ],
+    "text": "1... black queen d5-e6",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "c5c4"
+    ],
+    "text": "black pawn c5-c4",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5f5",
+     "g3f5",
+     "e6e5",
+     "f5g3"
+    ],
+    "text": "1... black queen d5 takes white queen f5, trading queens. After 2. white knight g3 takes black queen f5, the knight lands on a powerful central outpost and the white rook on g1 gains the open g-file. ",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5f5",
+     "g3f5",
+     "e6e2"
+    ],
+    "text": "1... black queen d5 takes white queen f5, trading queens. After 2. white knight g3 takes black queen f5, the knight lands on a powerful central outpost and the white rook on g1 gains the open g-file. ",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "e6e3"
+    ],
+    "text": "black rook e6-e3",
+    "verifier": "VERIFIED"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5c6",
+     "f2e3"
+    ],
+    "text": "1... black queen d5-c6, but White then plays 2. white pawn f2 takes black rook e3",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h18_structure",
+    "moves": [
+     "d5f5",
+     "g3f5"
+    ],
+    "text": "1... black queen d5 takes white queen f5 fails to 2. white knight g3 takes black queen f5",
+    "verifier": "FALSE"
+   },
+   {
+    "case": "h23_endgame",
+    "moves": [
+     "e1b4",
+     "d3c2",
+     "f2f1"
+    ],
+    "text": "2. white king f2-f1",
+    "verifier": "VERIFIED"
+   }
+  ]
+ },
+ "end_to_end_facts": {
+  "false_caught": 32,
+  "false_caught_by_stray_candidate": 1,
+  "false_claim_capture_rate": 0.3478,
+  "false_claim_capture_rate_representable": 0.3721,
+  "false_claims": 92,
+  "false_claims_negative": 1,
+  "false_claims_representable": 86,
+  "false_found_on_wrong_board": 2,
+  "false_incorrectly_verified": 0,
+  "false_missed": 53,
+  "false_outside_predicates": 6,
+  "false_unknown": 4
+ },
+ "extraction": {
+  "ambiguous_detected": 0,
+  "ambiguous_labelled": 1,
+  "ambiguous_recall": 0.0,
+  "args_accuracy_given_predicate": 0.9579,
+  "args_match_given_predicate": 91,
+  "board_binding_accuracy": 0.8901,
+  "board_match": 81,
+  "extraction_with_no_label": 7,
+  "facts_labelled": 468,
+  "hallucinated_on_non_fact": 10,
+  "missed": 377,
+  "negative_labelled": 6,
+  "negative_missed": 6,
+  "polarity_flipped": 0,
+  "predicate_accuracy": 0.203,
+  "predicate_and_args_accuracy": 0.1944,
+  "predicate_and_args_match": 91,
+  "predicate_match": 95,
+  "unsupported_detected": 438,
+  "unsupported_labelled": 498,
+  "unsupported_recall": 0.8795,
+  "unsupported_recall_excluding_child_facts_only": 0.9125,
+  "unsupported_undetected_child_facts_only": 18
+ },
+ "failure_taxonomy": {
+  "ambiguous_misclassified": 1,
+  "board_binding_wrong": 10,
+  "extractable_claim_missed": 367,
+  "extraction_with_no_label": 7,
+  "hallucinated_on_non_fact": 10,
+  "negative_claim_missed": 6,
+  "predicate_right_args_wrong": 4,
+  "unsupported_misclassified": 50,
+  "variation_missed": 32,
+  "variation_with_no_label": 31
+ },
+ "known_issues": {},
+ "meta": {
+  "corrections": 0,
+  "draft": false,
+  "independent_of_grammar_author": true,
+  "labeller": "OpenAI GPT-6 (blind primary); independently audited by OpenAI Codex; adjudicated from blind artifacts",
+  "labels": 1142,
+  "labels_sha256": "bda5d507228533289d1138cb7bddf2745697ab8fa2cdce817b58e0df1fa75592",
+  "manifest_sha256": "5805c6b11afaf457f481e2a64e72b3a6072909a371714d8aed3dd6f2c4c39daf",
+  "predictions_opened_before_labels_frozen": false,
+  "set": "held-out evaluation set",
+  "supersedes": {
+   "file": "scores_original_pre_matching_fix.json",
+   "sha256": "39cd8bbde53be6f6ec22db83d906a4373a379dfcc359d287e02ac1098baabfc6"
+  }
+ },
+ "variations": {
+  "ambiguous_detected": 0,
+  "ambiguous_labelled": 0,
+  "exact": 143,
+  "exact_match_rate": 0.8171,
+  "false_became_unknown": 6,
+  "false_caught": 18,
+  "false_incorrectly_verified": 0,
+  "false_lines": 27,
+  "false_missed": 3,
+  "false_variation_capture_rate": 0.6667,
+  "labelled": 175,
+  "missed": 32,
+  "status_FALSE": 18,
+  "status_VERIFIED": 125,
+  "structured_answer_moves": {
+   "VERIFIED": 96
+  },
+  "unlabelled": 31,
+  "verified_false": 0,
+  "verified_true": 125,
+  "verified_unlabelled": 0
+ },
+ "verification": {
+  "FALSE": 32,
+  "UNKNOWN": 4,
+  "VERIFIED": 45,
+  "correctly_extracted": 81,
+  "false_verification_acceptance_rate": 0.0,
+  "false_verified": 0,
+  "not_true_claims": 36,
+  "verdict_accuracy": 1.0,
+  "verdict_correct": 81
+ },
+ "verified_precision": {
+  "fact_precision": 0.8654,
+  "facts_false": 6,
+  "facts_true": 45,
+  "facts_unlabelled": 1,
+  "facts_verified": 52,
+  "variation_precision": 0.8929,
+  "variations_false": 0,
+  "variations_true": 125,
+  "variations_unlabelled": 15,
+  "variations_verified": 140
+ }
+}
