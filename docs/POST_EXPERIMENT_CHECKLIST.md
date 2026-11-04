@@ -3,6 +3,9 @@
 Work deliberately postponed until the blind held-out result is frozen and reported. Doing any of it
 sooner would change the system under test, or the commit hashes the experiment refers to.
 
+To inspect results visually, run `uv run python -m evals.queen_heldout.audit_viewer`. It generates
+`artifacts/queen_heldout_audit.html`; the artifact is intentionally not committed.
+
 ## 1. Fix the known extractor bugs
 
 Turn each bug in [`SEMANTIC_ISSUES.md`](SEMANTIC_ISSUES.md) into a failing regression test, then fix it:
