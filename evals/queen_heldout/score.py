@@ -149,7 +149,8 @@ def score(predictions, labels):
     used = set()  # variation candidates only
     for counter, names in ((ex, ("facts_labelled", "predicate_match", "args_match_given_predicate", "predicate_and_args_match", "board_match",
                                  "missed", "unsupported_labelled", "unsupported_detected", "ambiguous_labelled", "ambiguous_detected",
-                                 "hallucinated_on_non_fact", "negative_labelled", "negative_missed", "polarity_flipped")),
+                                 "hallucinated_on_non_fact", "negative_labelled", "negative_missed", "polarity_flipped",
+                                 "unsupported_undetected_child_facts_only")),
                            (ver, ("correctly_extracted", "VERIFIED", "FALSE", "UNKNOWN", "verdict_correct", "not_true_claims", "false_verified")),
                            (e2e, ("false_claims", "false_claims_representable", "false_claims_negative", "false_outside_predicates", "false_caught", "false_unknown", "false_missed",
                                   "false_incorrectly_verified", "false_found_on_wrong_board", "false_caught_by_stray_candidate")),
@@ -264,6 +265,9 @@ def score(predictions, labels):
                 else:
                     tax[f"{cls}_misclassified"] += 1
                     details[f"{cls}_misclassified"].append(_brief(row, None, sorted(statuses)))
+                    owners = [labelled_candidate[(case, i)]["kind"] for i, c in here if c["status"] == "EXTRACTED"]
+                    if cls == "unsupported" and owners and set(owners) == {"fact"}:
+                        ex["unsupported_undetected_child_facts_only"] += 1
                 if row["false_concrete"]:
                     e2e["false_missed"] += 1
         else:
@@ -301,7 +305,8 @@ def score(predictions, labels):
                        "args_accuracy_given_predicate": rate(ex["args_match_given_predicate"], ex["predicate_match"]),
                        "predicate_and_args_accuracy": rate(ex["predicate_and_args_match"], ex["facts_labelled"]),
                        "board_binding_accuracy": rate(ex["board_match"], ex["predicate_and_args_match"]),
-                       "unsupported_recall": rate(ex["unsupported_detected"], ex["unsupported_labelled"]),
+                       "unsupported_recall": rate(ex["unsupported_detected"], ex["unsupported_labelled"]),  # the primary metric
+                       "unsupported_recall_excluding_child_facts_only": rate(ex["unsupported_detected"], ex["unsupported_labelled"] - ex["unsupported_undetected_child_facts_only"]),  # sensitivity only
                        "ambiguous_recall": rate(ex["ambiguous_detected"], ex["ambiguous_labelled"])},
         "verification": verification,
         "end_to_end_facts": {**e2e,

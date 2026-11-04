@@ -574,6 +574,21 @@ def test_a_parent_whose_only_extraction_went_to_a_child_is_not_counted_as_detect
     assert r["extraction"]["unsupported_detected"] == 0 and r["failure_taxonomy"]["unsupported_misclassified"] == 1
 
 
+def test_the_sensitivity_analysis_leaves_the_primary_unsupported_recall_alone():
+    labels = [non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE"), non_fact("b", "a blunder", "UNSUPPORTED")]
+    r = scored(labels)
+    e = r["extraction"]
+    assert (e["unsupported_detected"], e["unsupported_labelled"], e["unsupported_recall"]) == (1, 2, 0.5)
+    assert e["unsupported_undetected_child_facts_only"] == 1 and e["unsupported_recall_excluding_child_facts_only"] == 1.0
+    text = report.render(r, None, {"cases": [CASE]})
+    assert "| Unsupported classification | 50.0% |" in text and "sensitivity analysis" in text and "| 1 / 1 |" in text
+
+
+def test_a_parent_holding_a_stray_extraction_is_not_excluded_from_the_sensitivity_analysis():
+    e = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED")])["extraction"]
+    assert e["unsupported_undetected_child_facts_only"] == 0 and e["hallucinated_on_non_fact"] == 1
+
+
 def test_a_genuine_extraction_in_unsupported_text_is_still_a_hallucination():
     r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", NOT_ATTACKED, "is_open_file", {"file": "a"}, [], "TRUE")])
     assert r["extraction"]["hallucinated_on_non_fact"] == 1 and r["failure_taxonomy"]["hallucinated_on_non_fact"] == 1
