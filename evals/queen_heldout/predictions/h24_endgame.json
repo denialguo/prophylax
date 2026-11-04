@@ -1,0 +1,3472 @@
+{
+ "case": "h24_endgame",
+ "category": "endgame",
+ "extractor_commit": "046bb1996c44060bfb0a1edb22f00420303a1143",
+ "facts": [
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "White is down overwhelming material—two bishops and a knight against two pawns—and the position is a pure conversion exercise for Black.",
+   "source_text": "White is down overwhelming material",
+   "span_end": 45,
+   "span_start": 10,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "White is down overwhelming material—two bishops and a knight against two pawns—and the position is a pure conversion exercise for Black.",
+   "source_text": "two bishops and a knight against two pawns",
+   "span_end": 88,
+   "span_start": 46,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "White is down overwhelming material—two bishops and a knight against two pawns—and the position is a pure conversion exercise for Black.",
+   "source_text": "and the position is a pure conversion exercise for Black.",
+   "span_end": 146,
+   "span_start": 89,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " The white king on d5 sits exposed in the center, and the white pawn on c3 is the immediate target of the black bishop on b2.",
+   "source_text": " The white king on d5 sits exposed in the center",
+   "span_end": 194,
+   "span_start": 146,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "concrete vocabulary with unresolved terms",
+   "sentence": " The white king on d5 sits exposed in the center, and the white pawn on c3 is the immediate target of the black bishop on b2.",
+   "source_text": "and the white pawn on c3 is the immediate target of the black bishop on b2.",
+   "span_end": 271,
+   "span_start": 196,
+   "status": "AMBIGUOUS",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black's black knight on d3 occupies a dominant outpost, and the black pawn on c4 is a dangerous passer that restricts the white king's mobility.",
+   "source_text": " Black's black knight on d3 occupies a dominant outpost",
+   "span_end": 326,
+   "span_start": 271,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": {
+    "square": "c4"
+   },
+   "board_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+   "board_moves": [],
+   "change_from": null,
+   "guards": [
+    {
+     "args": {
+      "color": "black",
+      "piece": "pawn",
+      "square": "c4"
+     },
+     "predicate": "piece_at"
+    }
+   ],
+   "predicate": "is_passed_pawn",
+   "reason": null,
+   "sentence": " Black's black knight on d3 occupies a dominant outpost, and the black pawn on c4 is a dangerous passer that restricts the white king's mobility.",
+   "source_text": "the black pawn on c4 is a dangerous passer that restricts the white king's mobility.",
+   "span_end": 416,
+   "span_start": 332,
+   "status": "EXTRACTED",
+   "verifier_evidence": [
+    {
+     "args": {
+      "square": "c4"
+     },
+     "evidence": {
+      "enemy_pawns_ahead": [
+       "c3"
+      ]
+     },
+     "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+     "predicate": "is_passed_pawn",
+     "reason": "enemy pawns stand ahead of c4: c3",
+     "status": "FALSE"
+    },
+    {
+     "args": {
+      "color": "black",
+      "piece": "pawn",
+      "square": "c4"
+     },
+     "evidence": {
+      "occupant": {
+       "color": "black",
+       "piece": "pawn",
+       "square": "c4"
+      }
+     },
+     "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+     "predicate": "piece_at",
+     "reason": null,
+     "status": "VERIFIED"
+    }
+   ],
+   "verifier_reason": "enemy pawns stand ahead of c4: c3",
+   "verifier_status": "FALSE"
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " White's only practical resources are the two pawns, but neither can generate meaningful counterplay.",
+   "source_text": " White's only practical resources are the two pawns",
+   "span_end": 467,
+   "span_start": 416,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "not asserted as fact ('can')",
+   "sentence": " White's only practical resources are the two pawns, but neither can generate meaningful counterplay.",
+   "source_text": "but neither can generate meaningful counterplay.",
+   "span_end": 517,
+   "span_start": 469,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "a stated plan, not a board fact",
+   "sentence": " The practical question is which king square minimizes Black's attacking resources.",
+   "source_text": " The practical question is which king square minimizes Black's attacking resources.",
+   "span_end": 600,
+   "span_start": 517,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "white king d5-d6 (best)",
+   "source_text": "best",
+   "span_end": 627,
+   "span_start": 623,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "not asserted as fact ('can')",
+   "sentence": "Stepping to d6 keeps the king on the queenside where it can contest the black pawn on c4.",
+   "source_text": "Stepping to d6 keeps the king on the queenside where it can contest the black pawn on c4.",
+   "span_end": 719,
+   "span_start": 630,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black's strongest reply is 1... black bishop b2 takes white pawn c3, capturing the pawn and activating the bishop on the long diagonal.",
+   "source_text": "capturing the pawn",
+   "span_end": 807,
+   "span_start": 789,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " Black's strongest reply is 1... black bishop b2 takes white pawn c3, capturing the pawn and activating the bishop on the long diagonal.",
+   "source_text": "activating the bishop on the long diagonal.",
+   "span_end": 855,
+   "span_start": 812,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " White's most resilient response is 2. white king d6-c7, stepping toward the queenside to keep the black pawn on c4 in view.",
+   "source_text": "stepping toward the queenside to keep the black pawn on c4 in view.",
+   "span_end": 979,
+   "span_start": 912,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " The king is now cornered with no useful squares, and Black's remaining pieces coordinate to complete the conversion.",
+   "source_text": " The king is now cornered with no useful squares",
+   "span_end": 1137,
+   "span_start": 1089,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " The king is now cornered with no useful squares, and Black's remaining pieces coordinate to complete the conversion.",
+   "source_text": "and Black's remaining pieces coordinate to complete the conversion.",
+   "span_end": 1206,
+   "span_start": 1139,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "If White instead plays 2. white king d6-d5, Black responds 2... black bishop c3-e1, preparing the check on d2.",
+   "source_text": "preparing the check on d2.",
+   "span_end": 1323,
+   "span_start": 1297,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " After 3. white king d5-d6, the bishop on e1 is more flexibly placed than on e5, making this line slightly less favorable for White.",
+   "source_text": "the bishop on e1 is more flexibly placed than on e5",
+   "span_end": 1402,
+   "span_start": 1351,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " After 3. white king d5-d6, the bishop on e1 is more flexibly placed than on e5, making this line slightly less favorable for White.",
+   "source_text": "making this line slightly less favorable for White.",
+   "span_end": 1455,
+   "span_start": 1404,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": "If White plays 2. white king d6-d7, Black activates the knight with 2... black knight d3-e5+, forcing 3. white king d7-c7.",
+   "source_text": "Black activates the knight with 2... black knight d3-e5+",
+   "span_end": 1554,
+   "span_start": 1498,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " The knight check is more forcing than the bishop check in the main line, and the king is driven to the same square with Black's pieces better coordinated.",
+   "source_text": " The knight check is more forcing than the bishop check in the main line",
+   "span_end": 1656,
+   "span_start": 1584,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " The knight check is more forcing than the bishop check in the main line, and the king is driven to the same square with Black's pieces better coordinated.",
+   "source_text": "and the king is driven to the same square with Black's pieces better coordinated.",
+   "span_end": 1739,
+   "span_start": 1658,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "Stepping toward the center exposes the king to checks along the e1-e8 and the a1-h8.",
+   "source_text": "Stepping toward the center exposes the king to checks along the e1-e8 and the a1-h8.",
+   "span_end": 1847,
+   "span_start": 1763,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " White's best is 2. white king d4-d5, keeping the king active.",
+   "source_text": "keeping the king active.",
+   "span_end": 1984,
+   "span_start": 1960,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black continues 2... black bishop c3-e1, preparing the check on d2 while keeping the bishop on the long diagonal.",
+   "source_text": "preparing the check on d2 while keeping the bishop on the long diagonal.",
+   "span_end": 2098,
+   "span_start": 2026,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " After 3. white king d5-d6, Black retains a decisive advantage with the bishop pair and knight fully coordinated.",
+   "source_text": "Black retains a decisive advantage with the bishop pair and knight fully coordinated.",
+   "span_end": 2211,
+   "span_start": 2126,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " The king is driven to the corner with no active prospects.",
+   "source_text": " The king is driven to the corner with no active prospects.",
+   "span_end": 2391,
+   "span_start": 2332,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": "Stepping toward the kingside is the most passive option.",
+   "source_text": "Stepping toward the kingside is the most passive option.",
+   "span_end": 2472,
+   "span_start": 2416,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black's strongest reply is 1... black bishop b2 takes white pawn c3, removing White's last pawn and opening the diagonal.",
+   "source_text": "removing White's last pawn",
+   "span_end": 2568,
+   "span_start": 2542,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black's strongest reply is 1... black bishop b2 takes white pawn c3, removing White's last pawn and opening the diagonal.",
+   "source_text": "opening the diagonal.",
+   "span_end": 2594,
+   "span_start": 2573,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " White's best try is 2. white king e4-f3, keeping the king near the white pawn on g3 and avoiding the immediate check from b2.",
+   "source_text": "keeping the king near the white pawn on g3",
+   "span_end": 2678,
+   "span_start": 2636,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "not asserted as fact ('avoiding')",
+   "sentence": " White's best try is 2. white king e4-f3, keeping the king near the white pawn on g3 and avoiding the immediate check from b2.",
+   "source_text": "avoiding the immediate check from b2.",
+   "span_end": 2720,
+   "span_start": 2683,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black continues 2... black bishop c3-e5, centralizing and preparing the check on d6.",
+   "source_text": "centralizing",
+   "span_end": 2774,
+   "span_start": 2762,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "no supported pattern",
+   "sentence": " Black continues 2... black bishop c3-e5, centralizing and preparing the check on d6.",
+   "source_text": "preparing the check on d6.",
+   "span_end": 2805,
+   "span_start": 2779,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "strategic language",
+   "sentence": " After 3. white king f3-g2, the king tucks in but Black retains a decisive advantage with the bishop pair and knight fully coordinated.",
+   "source_text": "the king tucks in but Black retains a decisive advantage with the bishop pair and knight fully coordinated.",
+   "span_end": 2940,
+   "span_start": 2833,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  },
+  {
+   "args": null,
+   "board_fen": null,
+   "board_moves": null,
+   "change_from": null,
+   "guards": [],
+   "predicate": null,
+   "reason": "engine-style evaluation",
+   "sentence": "EVALUATION: the opponent is winning, with an evaluation of 9.6 pawns.",
+   "source_text": "EVALUATION: the opponent is winning, with an evaluation of 9.6 pawns.",
+   "span_end": 3228,
+   "span_start": 3159,
+   "status": "UNSUPPORTED",
+   "verifier_evidence": null,
+   "verifier_reason": null,
+   "verifier_status": null
+  }
+ ],
+ "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+ "raw_explanation_sha256": "e3510165df6ea9868fd4c5c619e17a63b72a1554cf8021c42aeb3280704138af",
+ "variations": [
+  {
+   "kind": "prose",
+   "moves": [
+    "d5d6",
+    "b2c3",
+    "d6c7",
+    "c3e5",
+    "c7b7"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd6c7",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3e5+",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kc7b7",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-d6 (best)\n\nStepping to d6 keeps the king on the queenside where it can contest the black pawn on c4. Black's strongest reply is 1... black bishop b2 takes white pawn c3, capturing the pawn and activating the bishop on the long diagonal. White's most resilient response is 2. white king d6-c7, stepping toward the queenside to keep the black pawn on c4 in view. Black continues 2... black bishop c3-e5+, a check that centralizes the bishop and forces 3. white king c7-b7",
+   "span_end": 1088,
+   "span_start": 605,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/pK3kpp/8/4b3/2p5/1b1n2P1/8/8 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd6c7",
+      "fen_after": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kc7",
+      "status": "VERIFIED",
+      "uci": "d6c7"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "check_claim",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3e5+",
+      "fen_after": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+      "fen_before": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Be5+",
+      "status": "VERIFIED",
+      "uci": "c3e5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kc7b7",
+      "fen_after": "8/pK3kpp/8/4b3/2p5/1b1n2P1/8/8 b - - 3 41",
+      "fen_before": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+      "ply": 4,
+      "san": "Kb7",
+      "status": "VERIFIED",
+      "uci": "c7b7"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "prose",
+   "moves": [
+    "d5d6",
+    "b2c3",
+    "d6d5",
+    "c3e1",
+    "d5d6"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd6d5",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3e1",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "2. white king d6-d5, Black responds 2... black bishop c3-e1, preparing the check on d2. After 3. white king d5-d6",
+   "span_end": 1349,
+   "span_start": 1236,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/3K4/8/2p5/1b1n2P1/8/4b3 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd6d5",
+      "fen_after": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kd5",
+      "status": "VERIFIED",
+      "uci": "d6d5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3e1",
+      "fen_after": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Be1",
+      "status": "VERIFIED",
+      "uci": "c3e1"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1b1n2P1/8/4b3 b - - 3 41",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+      "ply": 4,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "prose",
+   "moves": [
+    "d5d6",
+    "b2c3",
+    "d6d7",
+    "d3e5",
+    "d7c7"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd6d7",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "knight",
+     "san": "Nd3e5+",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd7c7",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "2. white king d6-d7, Black activates the knight with 2... black knight d3-e5+, forcing 3. white king d7-c7",
+   "span_end": 1583,
+   "span_start": 1477,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p1K2kpp/8/4n3/2p5/1bb3P1/8/8 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd6d7",
+      "fen_after": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kd7",
+      "status": "VERIFIED",
+      "uci": "d6d7"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "knight"
+        },
+        "fen": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+        "predicate": "check_claim",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Nd3e5+",
+      "fen_after": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+      "fen_before": "8/p2K1kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Ne5+",
+      "status": "VERIFIED",
+      "uci": "d3e5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd7c7",
+      "fen_after": "8/p1K2kpp/8/4n3/2p5/1bb3P1/8/8 b - - 3 41",
+      "fen_before": "8/p2K1kpp/8/4n3/2p5/1bb3P1/8/8 w - - 2 41",
+      "ply": 4,
+      "san": "Kc7",
+      "status": "VERIFIED",
+      "uci": "d7c7"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "prose",
+   "moves": [
+    "d5d4",
+    "b2c3",
+    "d4d5",
+    "c3e1",
+    "d5d6"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d4",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd4d5",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3e1",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-d4\n\nStepping toward the center exposes the king to checks along the e1-e8 and the a1-h8. Black's strongest reply is again 1... black bishop b2 takes white pawn c3. White's best is 2. white king d4-d5, keeping the king active. Black continues 2... black bishop c3-e1, preparing the check on d2 while keeping the bishop on the long diagonal. After 3. white king d5-d6",
+   "span_end": 2124,
+   "span_start": 1745,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/3K4/8/2p5/1b1n2P1/8/4b3 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d4",
+      "fen_after": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd4",
+      "status": "VERIFIED",
+      "uci": "d5d4"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3+",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd4d5",
+      "fen_after": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kd5",
+      "status": "VERIFIED",
+      "uci": "d4d5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3e1",
+      "fen_after": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bbn2P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Be1",
+      "status": "VERIFIED",
+      "uci": "c3e1"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1b1n2P1/8/4b3 b - - 3 41",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1b1n2P1/8/4b3 w - - 2 41",
+      "ply": 4,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "prose",
+   "moves": [
+    "d5d4",
+    "b2c3",
+    "d4e3",
+    "c3d4",
+    "e3d2"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d4",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd4e3",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3d4+",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Ke3d2",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "2. white king d4-e3, Black responds 2... black bishop c3-d4+, forcing 3. white king e3-d2",
+   "span_end": 2331,
+   "span_start": 2242,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/8/8/2pb4/1b1n2P1/3K4/8 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d4",
+      "fen_after": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd4",
+      "status": "VERIFIED",
+      "uci": "d5d4"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3+",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd4e3",
+      "fen_after": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/8/8/2pK4/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Ke3",
+      "status": "VERIFIED",
+      "uci": "d4e3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+        "predicate": "check_claim",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3d4+",
+      "fen_after": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+      "fen_before": "8/p4kpp/8/8/2p5/1bbnK1P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Bd4+",
+      "status": "VERIFIED",
+      "uci": "c3d4"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Ke3d2",
+      "fen_after": "8/p4kpp/8/8/2pb4/1b1n2P1/3K4/8 b - - 3 41",
+      "fen_before": "8/p4kpp/8/8/2pb4/1b1nK1P1/8/8 w - - 2 41",
+      "ply": 4,
+      "san": "Kd2",
+      "status": "VERIFIED",
+      "uci": "e3d2"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "prose",
+   "moves": [
+    "d5e4",
+    "b2c3",
+    "e4f3",
+    "c3e5",
+    "f3g2"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5e4",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Ke4f3",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3e5",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kf3g2",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-e4\n\nStepping toward the kingside is the most passive option. Black's strongest reply is 1... black bishop b2 takes white pawn c3, removing White's last pawn and opening the diagonal. White's best try is 2. white king e4-f3, keeping the king near the white pawn on g3 and avoiding the immediate check from b2. Black continues 2... black bishop c3-e5, centralizing and preparing the check on d6. After 3. white king f3-g2",
+   "span_end": 2831,
+   "span_start": 2398,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/8/4b3/2p5/1b1n2P1/6K1/8 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5e4",
+      "fen_after": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Ke4",
+      "status": "VERIFIED",
+      "uci": "d5e4"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Ke4f3",
+      "fen_after": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/8/8/2p1K3/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kf3",
+      "status": "VERIFIED",
+      "uci": "e4f3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3e5",
+      "fen_after": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+      "fen_before": "8/p4kpp/8/8/2p5/1bbn1KP1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Be5",
+      "status": "VERIFIED",
+      "uci": "c3e5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kf3g2",
+      "fen_after": "8/p4kpp/8/4b3/2p5/1b1n2P1/6K1/8 b - - 3 41",
+      "fen_before": "8/p4kpp/8/4b3/2p5/1b1n1KP1/8/8 w - - 2 41",
+      "ply": 4,
+      "san": "Kg2",
+      "status": "VERIFIED",
+      "uci": "f3g2"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "best_move",
+   "moves": [
+    "d5d6"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-d6",
+   "span_end": 2969,
+   "span_start": 2953,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": 0,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "critical_line",
+   "moves": [
+    "d5d6",
+    "b2c3",
+    "d6c7",
+    "c3e5",
+    "c7b7"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    },
+    {
+     "captures": "pawn",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bb2xc3",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd6c7",
+     "side": "white"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "bishop",
+     "san": "Bc3e5",
+     "side": "black"
+    },
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kc7b7",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "CRITICAL_LINE: white king d5-d6 black bishop b2 takes white pawn c3 white king d6-c7 black bishop c3-e5 white king c7-b7",
+   "span_end": 3090,
+   "span_start": 2970,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/pK3kpp/8/4b3/2p5/1b1n2P1/8/8 b - - 3 41",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": -1,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": -1,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "pawn"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bb2xc3",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "ply": 1,
+      "san": "Bxc3",
+      "status": "VERIFIED",
+      "uci": "b2c3"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd6c7",
+      "fen_after": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "fen_before": "8/p4kpp/3K4/8/2p5/1bbn2P1/8/8 w - - 0 40",
+      "ply": 2,
+      "san": "Kc7",
+      "status": "VERIFIED",
+      "uci": "d6c7"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "black"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "bishop"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Bc3e5",
+      "fen_after": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+      "fen_before": "8/p1K2kpp/8/8/2p5/1bbn2P1/8/8 b - - 1 40",
+      "ply": 3,
+      "san": "Be5+",
+      "status": "VERIFIED",
+      "uci": "c3e5"
+     },
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kc7b7",
+      "fen_after": "8/pK3kpp/8/4b3/2p5/1b1n2P1/8/8 b - - 3 41",
+      "fen_before": "8/p1K2kpp/8/4b3/2p5/1b1n2P1/8/8 w - - 2 41",
+      "ply": 4,
+      "san": "Kb7",
+      "status": "VERIFIED",
+      "uci": "c7b7"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "promising_move",
+   "moves": [
+    "d5d6"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d6",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-d6",
+   "span_end": 3124,
+   "span_start": 3108,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": 0,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d6",
+      "fen_after": "8/p4kpp/3K4/8/2p5/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd6",
+      "status": "VERIFIED",
+      "uci": "d5d6"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "promising_move",
+   "moves": [
+    "d5d4"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5d4",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-d4",
+   "span_end": 3141,
+   "span_start": 3125,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": 0,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5d4",
+      "fen_after": "8/p4kpp/8/8/2pK4/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Kd4",
+      "status": "VERIFIED",
+      "uci": "d5d4"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  },
+  {
+   "kind": "promising_move",
+   "moves": [
+    "d5e4"
+   ],
+   "plies": [
+    {
+     "captures": "none",
+     "facts_after": [],
+     "material_gain": null,
+     "move_number": null,
+     "piece": "king",
+     "san": "Kd5e4",
+     "side": "white"
+    }
+   ],
+   "reason": null,
+   "sentence": "white king d5-e4",
+   "span_end": 3158,
+   "span_start": 3142,
+   "status": "EXTRACTED",
+   "verifier_first_false_ply": null,
+   "verifier_result": {
+    "final_fen": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+    "first_false_ply": null,
+    "material_delta": {
+     "balance": 0,
+     "black": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     },
+     "white": {
+      "bishop": 0,
+      "king": 0,
+      "knight": 0,
+      "pawn": 0,
+      "queen": 0,
+      "rook": 0
+     }
+    },
+    "plies": [
+     {
+      "checks": [
+       {
+        "args": {},
+        "evidence": {},
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "move_legal",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "turn": "white"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "side_to_move",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "piece": "king"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "piece_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       },
+       {
+        "args": {},
+        "evidence": {
+         "captured": "none"
+        },
+        "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+        "predicate": "capture_identity",
+        "reason": null,
+        "status": "VERIFIED"
+       }
+      ],
+      "claimed_san": "Kd5e4",
+      "fen_after": "8/p4kpp/8/8/2p1K3/1bPn2P1/1b6/8 b - - 3 39",
+      "fen_before": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+      "ply": 0,
+      "san": "Ke4",
+      "status": "VERIFIED",
+      "uci": "d5e4"
+     }
+    ],
+    "reason": null,
+    "start_fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+    "status": "VERIFIED"
+   },
+   "verifier_status": "VERIFIED"
+  }
+ ],
+ "verifier_commit": "b2ac11c1e578ddf065ff8ee8e89739db5dc6ff86"
+}
