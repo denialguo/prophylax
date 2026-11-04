@@ -1,0 +1,30 @@
+{
+ "fen": "r2q1rk1/p1b2ppp/2p1p3/2PpP3/4nP2/P3P3/4Q1PP/RNB2RK1 w - - 0 17",
+ "best_move_uci": "e2c2",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e2c2",
+  "c7a5",
+  "c1b2",
+  "a8b8",
+  "b2d4"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack's knight on <SQUARE_29> is the dominant feature of the position, simultaneously attacking the <PIECE_MP> on <SQUARE_35> and eyeing the <SQUARE_12>-square. The <PIECE_OB> on <SQUARE_51> controls the long diagonal and can swing to <SQUARE_33> to pin the <PIECE_MR> on <SQUARE_1>, while the <PIECE_OR> on <SQUARE_57> is poised to activate on the semi-open b-file. White's central pawns on <SQUARE_35> and <SQUARE_37> grant space but create fixed targets; the <SQUARE_35> pawn is a natural object of attack, and the <PIECE_MB> on <SQUARE_3> remains undeveloped. The practical question for White is how to develop while limiting Black's ability to exploit the <SQUARE_35> weakness and the b-file.\n\nI. <PIECE_MQ><SQUARE_13><SQUARE_11> \u2014 the best move. The queen centralizes, defends the <SQUARE_35> pawn, and keeps the <PIECE_MB> on <SQUARE_3> available for development. Black's strongest reply is 1... <PIECE_OB><SQUARE_51><SQUARE_33>, pinning the rook and immediately threatening <SQUARE_35>. White's most resilient continuation is 2. <PIECE_MB><SQUARE_3><SQUARE_10>, developing to a useful diagonal. Black then plays 2... <PIECE_OR><SQUARE_57><SQUARE_58>, activating the rook on the open b-file and attacking the bishop. After 3. <PIECE_MB><SQUARE_10><SQUARE_28>, the bishop reaches a strong central outpost, but Black retains a clear advantage with the pin and the rook's activity. The alternative 2. <PIECE_MN><SQUARE_2><SQUARE_12> is inferior: 2... <PIECE_ON><SQUARE_29><PIECE_MN><SQUARE_12> 3. <PIECE_MB><SQUARE_3><PIECE_ON><SQUARE_12> <PIECE_OB><SQUARE_33><PIECE_MB><SQUARE_12> 4. <PIECE_MQ><SQUARE_11><PIECE_OB><SQUARE_12> leaves Black with the bishop pair and a more active queen. The move 2. <PIECE_MN><SQUARE_2><SQUARE_19> is a serious error, losing a piece to 2... <PIECE_ON><SQUARE_29><PIECE_MN><SQUARE_19>.\n\nII. <PIECE_MB><SQUARE_3><SQUARE_10> \u2014 a natural developing move that places the bishop on the long diagonal, but it allows Black to immediately exploit the <SQUARE_35> pawn. Black's strongest reply is 1... <PIECE_ON><SQUARE_29><PIECE_MP><SQUARE_35>, winning the pawn and establishing the knight on a powerful central outpost. White's best practical try is 2. <PIECE_MB><SQUARE_10><SQUARE_28>, developing to a strong square and attacking the knight. Black's most accurate reply is 2... <PIECE_ON><SQUARE_35><SQUARE_29>, re-centralizing and preparing the <PIECE_OB> swing to <SQUARE_33>. After 3. <PIECE_MN><SQUARE_2><SQUARE_12>, Black retains a comfortable material edge with the knight dominating the center. The alternative 2. <PIECE_MN><SQUARE_2><SQUARE_12> allows 2... <PIECE_ON><SQUARE_35><SQUARE_18>, forking the <PIECE_MR> on <SQUARE_1> and threatening <SQUARE_17>.\n\nIII. <PIECE_MN><SQUARE_2><SQUARE_12> \u2014 the worst option. The knight blocks the <PIECE_MB> on <SQUARE_3> and does not address Black's threats. Black simply plays 1... <PIECE_ON><SQUARE_29><PIECE_MP><SQUARE_35>, winning the pawn. After 2. <PIECE_MB><SQUARE_3><SQUARE_10>, Black continues 2... <PIECE_ON><SQUARE_35><SQUARE_29>, centralizing and attacking the <PIECE_MN> on <SQUARE_12>. After 3. <PIECE_MN><SQUARE_12><PIECE_ON><SQUARE_29> <PIECE_OP><SQUARE_36><PIECE_MN><SQUARE_29>, Black has a passed pawn on <SQUARE_29> and the <PIECE_OQ> is freed. The alternative 2. <PIECE_MR><SQUARE_1><SQUARE_2> is inferior: 2... <PIECE_ON><SQUARE_35><SQUARE_29> 3. <PIECE_MN><SQUARE_12><PIECE_ON><SQUARE_29> <PIECE_OP><SQUARE_36><PIECE_MN><SQUARE_29> 4. <PIECE_MB><SQUARE_3><SQUARE_10> <PIECE_OP><SQUARE_43><SQUARE_35> leaves Black with connected passed pawns on the queenside.\n\nBEST_MOVE: <PIECE_MQ><SQUARE_13><SQUARE_11>\nCRITICAL_LINE: <PIECE_MQ><SQUARE_13><SQUARE_11> <PIECE_OB><SQUARE_51><SQUARE_33> <PIECE_MB><SQUARE_3><SQUARE_10> <PIECE_OR><SQUARE_57><SQUARE_58> <PIECE_MB><SQUARE_10><SQUARE_28>\nPROMISING_MOVES: <PIECE_MQ><SQUARE_13><SQUARE_11> <PIECE_MB><SQUARE_3><SQUARE_10> <PIECE_MN><SQUARE_2><SQUARE_12>\nEVALUATION: the opponent has an advantage of 1.2 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 751,
+ "seconds": 23.04,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 410608737,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

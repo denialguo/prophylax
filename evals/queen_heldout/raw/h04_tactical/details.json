@@ -1,0 +1,30 @@
+{
+ "fen": "r4r2/pp3pk1/3b1q1p/3p4/8/1Pn1PNPP/nRQ2PB1/5RK1 w - - 2 22",
+ "best_move_uci": "b2a2",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "b2a2",
+  "c3a2",
+  "c2a2",
+  "f8c8",
+  "f3d4"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack stands a full knight ahead, with both knights occupying dominant outposts: the knight on <SQUARE_19> attacks the <PIECE_MR> on <SQUARE_10> and restricts White's queenside coordination, while the knight on <SQUARE_9> is deeply embedded and directly targeted by that rook. White's <PIECE_MQ> on <SQUARE_11> and <PIECE_MR> on <SQUARE_10> form a battery aimed at the <SQUARE_9> knight, and the <PIECE_MN> on <SQUARE_22> can centralize to <SQUARE_28>. The practical question is whether White can trade off the <SQUARE_9> knight to reduce Black's material edge, or whether any attempt to activate the <SQUARE_22> knight first allows Black to consolidate with a decisive advantage.\n\nI. <PIECE_MR><SQUARE_10><PIECE_ON><SQUARE_9> \u2014 The only move that keeps the evaluation within playable range. By capturing the embedded knight, White eliminates one of Black's two dominant pieces and forces the <SQUARE_19> knight to make a decision.\n\nI.a. 1... <PIECE_ON><SQUARE_19><PIECE_MR><SQUARE_9> 2. <PIECE_MQ><SQUARE_11><PIECE_ON><SQUARE_9> <PIECE_OR><SQUARE_62><SQUARE_59> 3. <PIECE_MN><SQUARE_22><SQUARE_28> \u2014 The main line. Black recaptures the rook, White trades queens' attention by capturing the knight, and Black activates the rook on the open c-file. White centralizes the knight, threatening <SQUARE_38>+, but Black's rook on <SQUARE_59> is well placed and the material balance, while still favorable to Black, is the most defensible outcome available to White.\n\nI.b. 1... <PIECE_OR><SQUARE_62><SQUARE_59> \u2014 A natural developing move that neglects the immediate threat. White plays 2. <PIECE_MR><SQUARE_9><SQUARE_33>, lifting the rook to the fifth rank to maintain pressure on <SQUARE_49> while keeping the a-file semi-open. After 2... <PIECE_ON><SQUARE_19><SQUARE_29> 3. <PIECE_MQ><SQUARE_11><SQUARE_10>, White's queen tucks to safety and the rook retains its grip on the a-file. The position remains approximately equal, with White's active rook compensating for the material deficit.\n\nI.c. 1... <PIECE_OR><SQUARE_57><SQUARE_59> \u2014 A similar idea from the a-file. White again plays 2. <PIECE_MR><SQUARE_9><SQUARE_33>. After 2... <PIECE_ON><SQUARE_19><SQUARE_29> 3. <PIECE_MQ><SQUARE_11><SQUARE_10> <PIECE_OP><SQUARE_50><SQUARE_42>, the position is roughly level with White retaining a small edge from the active rook.\n\nII. <PIECE_MN><SQUARE_22><SQUARE_28> \u2014 Centralizing the knight immediately is far inferior. Black plays 1... <PIECE_ON><SQUARE_9><SQUARE_26>, simultaneously attacking the <PIECE_MQ> on <SQUARE_11> and removing the knight from the rook's target. White's best is 2. <PIECE_MQ><SQUARE_11><SQUARE_12>, centralizing and keeping the <SQUARE_28> knight protected, but Black retains a decisive material advantage with both knights on strong outposts and the <SQUARE_19> knight still dominant.\n\nIII. <PIECE_MR><SQUARE_6><SQUARE_4> \u2014 The worst option. Black plays 1... <PIECE_ON><SQUARE_19><PIECE_MR><SQUARE_4>, capturing the rook and placing the knight on a powerful central square. White's best is 2. <PIECE_MQ><SQUARE_11><PIECE_ON><SQUARE_9>, trading queens' attention, but Black continues 2... <PIECE_ON><SQUARE_4><PIECE_MR><SQUARE_10>, winning a second rook. After 3. <PIECE_MQ><SQUARE_9><PIECE_ON><SQUARE_10>, Black has traded both knights for two rooks and retains a decisive material edge with the <PIECE_OQ> and <PIECE_OB> fully active.\n\nThe decisive factor is that only candidate I immediately resolves the tension around the <SQUARE_9> knight, converting Black's material advantage into a manageable edge rather than a decisive one. Candidates II and III allow Black to maintain or increase the material advantage while keeping both knights on dominant outposts.\n\nBEST_MOVE: <PIECE_MR><SQUARE_10><PIECE_ON><SQUARE_9>\nCRITICAL_LINE: <PIECE_MR><SQUARE_10><PIECE_ON><SQUARE_9> <PIECE_ON><SQUARE_19><PIECE_MR><SQUARE_9> <PIECE_MQ><SQUARE_11><PIECE_ON><SQUARE_9> <PIECE_OR><SQUARE_62><SQUARE_59> <PIECE_MN><SQUARE_22><SQUARE_28>\nPROMISING_MOVES: <PIECE_MR><SQUARE_10><PIECE_ON><SQUARE_9> <PIECE_MN><SQUARE_22><SQUARE_28> <PIECE_MR><SQUARE_6><SQUARE_4>\nEVALUATION: the opponent has an advantage of 0.8 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 787,
+ "seconds": 22.62,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1266194352,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

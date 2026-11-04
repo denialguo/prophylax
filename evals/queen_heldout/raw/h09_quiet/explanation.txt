@@ -1,0 +1,13 @@
+ANALYSIS:
+Black holds a one-point material edge—two rooks and a knight against White's rook, two bishops, and knight—but White's pieces are far more actively deployed. The queen on a6 dominates the queenside, the bishop pair on b4 and b3 controls key diagonals, and the knight on f3 supports central operations. Black's king on g8 is exposed, and the queen on f5 is a recurring target. The practical question is whether Black can neutralize White's piece activity before it converts into a concrete material or attacking advantage.
+
+I. black knight e4-g5 — Best. The knight steps to a strong outpost, attacking the white knight on f3 and creating immediate tactical tension. White's most logical reply is white knight f3 takes black knight g5, trading the active knight for Black's outpost piece. After black pawn h6 takes white knight g5, the position is approximately equal: Black retains the material edge, but White's remaining pieces are well coordinated and the queen on a6 continues to exert queenside pressure. This is the only candidate that preserves Black's chances.
+
+II. black knight e4-c5 — Inferior. The knight centralizes but walks into a decisive capture. White plays white bishop b4 takes black knight c5, eliminating Black's most active piece and opening the c-file. After black queen f5 takes white bishop c5, White grabs the black pawn on b5 with white queen a6 takes black pawn b5, activating the queen on the open b-file. Black's best try is black rook a8-b8, attacking the queen and seizing the file, but White retains a decisive advantage with the bishop pair, the active queen, and the material edge.
+
+III. black rook a8-d8 — Worst. The rook centralizes but allows White to seize the black pawn on a7 with white queen a6 takes black pawn a7, placing the queen on the seventh rank where it simultaneously eyes f7 and the black rook on d8. Black's best reply is black rook d8-a8, contesting the a-file, but White retains a decisive advantage with the queen's dominant placement and the bishop pair's long-range pressure.
+
+BEST_MOVE: black knight e4-g5
+CRITICAL_LINE: black knight e4-g5 white knight f3 takes black knight g5 black pawn h6 takes white knight g5
+PROMISING_MOVES: black knight e4-g5 black knight e4-c5 black rook a8-d8
+EVALUATION: the opponent has a slight advantage of 0.3 pawns.

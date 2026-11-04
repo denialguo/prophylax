@@ -1,0 +1,35 @@
+{
+ "fen": "r2qk2r/pbpp4/1pn1p2b/5p2/2PP3R/5N2/PP1QPPP1/R3KB2 w Qkq - 0 14",
+ "best_move_uci": "h4h6",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "h4h6",
+  "h8h6",
+  "d2h6",
+  "d8e7",
+  "h6g6"
+ ],
+ "critical_line_illegal_at": {
+  "ply": 6,
+  "reason": "illegal",
+  "detail": "move is illegal",
+  "token_text": "<PIECE_OK><SQUARE_61><SQUARE_59>"
+ },
+ "raw_text": "ANALYSIS:\nBlack holds a two-point material advantage with the bishop pair, but the position is sharply tactical. White's rook on <SQUARE_32> directly attacks the <PIECE_OB> on <SQUARE_48>, and the <PIECE_MQ> on <SQUARE_12> also eyes that square. Black's king remains uncastled on <SQUARE_61>, and the <PIECE_OR> on <SQUARE_64> guards the h-file. White's central pawns on <SQUARE_27> and <SQUARE_28> provide space, and the <PIECE_MN> on <SQUARE_22> controls key central squares. The practical question is whether White can exploit the tactical tension on the h-file to neutralize Black's material edge.\n\nI. <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48> \u2014 the strongest move. White eliminates the most dangerous Black piece and activates the rook on the sixth rank, where it pressures the <PIECE_OR> on <SQUARE_64> and the uncastled king.\n\nI.a. 1... <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> 2. <PIECE_MQ><SQUARE_12><PIECE_OR><SQUARE_48> <PIECE_OQ><SQUARE_60><SQUARE_53> 3. <PIECE_MQ><SQUARE_48><SQUARE_47> <PIECE_OK><SQUARE_61><SQUARE_59> 4. <PIECE_MP><SQUARE_28><SQUARE_36> <PIECE_OP><SQUARE_45><PIECE_MP><SQUARE_36> 5. <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36>. The queen trade on <SQUARE_48> is forced; after Black centralizes with ...Qe7 and castles long, White's central break opens the position. Black recaptures with the e-pawn, and after cxd5 the resulting endgame is roughly balanced. White retains a slight edge from the more active queen, but Black's king is safe and the material is equal.\n\nI.b. 1... <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> 2. <PIECE_MP><SQUARE_28><SQUARE_36> <PIECE_OR><SQUARE_48><SQUARE_8>. If White delays the queen recapture with a central break, Black simply retreats the rook to <SQUARE_8>, attacking the <PIECE_MB> on <SQUARE_6>. After 3. <PIECE_MP><SQUARE_36><PIECE_ON><SQUARE_43> <PIECE_OB><SQUARE_50><PIECE_MP><SQUARE_43>, Black has won a piece and the position is decisively in Black's favor. This line is inferior for White to the direct recapture.\n\nI.c. 1... <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> 2. <PIECE_MP><SQUARE_15><SQUARE_23> <PIECE_OR><SQUARE_48><SQUARE_8>. A passive move that ignores the rook. Black plays ...Rh1, and after 3. <PIECE_MP><SQUARE_28><SQUARE_36> <PIECE_ON><SQUARE_43><SQUARE_26>, the knight eyes <SQUARE_9> and prepares ...Nc2+. White's position is decisively worse.\n\nII. <PIECE_MP><SQUARE_28><SQUARE_36> \u2014 a central break that opens lines but fails to address the material deficit. Black responds 1... <PIECE_OQ><SQUARE_60><SQUARE_46>, simultaneously defending the <PIECE_OB> on <SQUARE_48> and activating the queen. White's best try is 2. <PIECE_MP><SQUARE_36><PIECE_ON><SQUARE_43> <PIECE_OB><SQUARE_50><PIECE_MP><SQUARE_43> 3. <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48> <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> 4. <PIECE_MQ><SQUARE_12><PIECE_OR><SQUARE_48> <PIECE_OQ><SQUARE_46><PIECE_MQ><SQUARE_48>. The forced exchange sequence leaves Black a full bishop ahead with a safe king and a comfortable winning endgame. The alternative 2. <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48> <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> 3. <PIECE_MP><SQUARE_36><PIECE_ON><SQUARE_43> <PIECE_OB><SQUARE_50><PIECE_MP><SQUARE_43> 4. <PIECE_MQ><SQUARE_12><PIECE_OR><SQUARE_48> <PIECE_OQ><SQUARE_46><PIECE_MQ><SQUARE_48> is even more direct, winning the exchange outright.\n\nIII. <PIECE_MQ><SQUARE_12><PIECE_OB><SQUARE_48> \u2014 a tempting capture that backfires catastrophically. Black simply plays 1... <PIECE_OR><SQUARE_64><PIECE_MQ><SQUARE_48>, winning the queen. After 2. <PIECE_MR><SQUARE_32><PIECE_OR><SQUARE_48> <PIECE_OQ><SQUARE_60><SQUARE_53>, Black is up a queen for a rook with a decisive material advantage. The <PIECE_MR> on <SQUARE_48> is now attacked, and White's best try 3. <PIECE_MR><SQUARE_48><SQUARE_56> is met by 3... <PIECE_OQ><SQUARE_53><SQUARE_26>+, a check that simultaneously attacks the <PIECE_MP> on <SQUARE_10>. After 4. <PIECE_MK><SQUARE_5><SQUARE_4> <PIECE_OQ><SQUARE_26><PIECE_MP><SQUARE_10>, Black wins another pawn and maintains a decisive edge.\n\nBEST_MOVE: <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48>\nCRITICAL_LINE: <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48> <PIECE_OR><SQUARE_64><PIECE_MR><SQUARE_48> <PIECE_MQ><SQUARE_12><PIECE_OR><SQUARE_48> <PIECE_OQ><SQUARE_60><SQUARE_53> <PIECE_MQ><SQUARE_48><SQUARE_47> <PIECE_OK><SQUARE_61><SQUARE_59> <PIECE_MP><SQUARE_28><SQUARE_36> <PIECE_OP><SQUARE_45><PIECE_MP><SQUARE_36> <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36>\nPROMISING_MOVES: <PIECE_MR><SQUARE_32><PIECE_OB><SQUARE_48> <PIECE_MP><SQUARE_28><SQUARE_36> <PIECE_MQ><SQUARE_12><PIECE_OB><SQUARE_48>\nEVALUATION: the player has an advantage of 1.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 856,
+ "seconds": 23.6,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1584517364,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

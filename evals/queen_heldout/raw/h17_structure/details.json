@@ -1,0 +1,31 @@
+{
+ "fen": "3r1k2/p4p2/1p2qn2/4b1pp/1p6/P3P1P1/2Q1BP1P/2R1B1K1 w - - 0 30",
+ "best_move_uci": "e2c4",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e2c4",
+  "e6d7",
+  "e1b4",
+  "f8g7",
+  "c4d3",
+  "d7h3"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite's position is defined by the bishop pair, the active rook on the c-file, and the vulnerability of Black's queen on <SQUARE_45>. Black holds a one-pawn material edge, but the <PIECE_OP> on <SQUARE_26> is a double-edged asset: it restricts White's queenside and creates a target, yet it also blocks Black's own pieces and can be exploited tactically. The <PIECE_OB> on <SQUARE_37> is Black's most active piece, controlling central squares and eyeing <SQUARE_23>, while the <PIECE_OP> wedge on <SQUARE_39> and <SQUARE_40> grants kingside space. The practical question is how White converts the bishop pair and piece activity into a concrete advantage before Black consolidates.\n\nI. <PIECE_MB><SQUARE_13><SQUARE_27> \u2014 The strongest move. The bishop lands on the long diagonal, simultaneously attacking the <PIECE_OQ> on <SQUARE_45> and threatening the <PIECE_OP> on <SQUARE_54>. Black must respond to the direct queen threat.\n\nI.a. 1... <PIECE_OQ><SQUARE_45><SQUARE_52> \u2014 The most resilient retreat, stepping off the diagonal while maintaining queenside pressure. White's strongest reply is 2. <PIECE_MB><SQUARE_5><PIECE_OP><SQUARE_26>, capturing the thorn and activating the bishop on the long diagonal. After 2... <PIECE_OK><SQUARE_62><SQUARE_55> 3. <PIECE_MB><SQUARE_27><SQUARE_20>, the bishop eyes the queen and prepares a swing to <SQUARE_38>. Black's best is 3... <PIECE_OQ><SQUARE_52><SQUARE_24>, attacking the king's shelter, but White retains a clear edge with the bishop pair and superior piece activity.\n\nI.b. 1... <PIECE_OQ><SQUARE_45><SQUARE_31> \u2014 A more aggressive square that keeps the queen active but leaves it vulnerable to the <PIECE_MB> on <SQUARE_27> and the <PIECE_MR> on <SQUARE_3>. White's best is 2. <PIECE_MP><SQUARE_17><PIECE_OP><SQUARE_26>, eliminating the thorn and opening the a-file. After 2... <PIECE_OQ><SQUARE_31><SQUARE_22> 3. <PIECE_MB><SQUARE_27><SQUARE_13>, the queen is attacked and must retreat, leaving White with a comfortable advantage.\n\nI.c. 1... <PIECE_OP><SQUARE_26><PIECE_MP><SQUARE_17> \u2014 A critical error. The capture opens the <SQUARE_9>-<SQUARE_63> and leaves the queen en prise. White plays 2. <PIECE_MB><SQUARE_27><PIECE_OQ><SQUARE_45>, winning the queen outright. After 2... <PIECE_OP><SQUARE_54><PIECE_MB><SQUARE_45> 3. <PIECE_MQ><SQUARE_11><SQUARE_38>, White attacks the undefended <PIECE_OP> on <SQUARE_39> and threatens <PIECE_MQ><SQUARE_38><SQUARE_59>+. Black's best is 3... <PIECE_OP><SQUARE_39><SQUARE_31>, but White is up a full queen for a bishop.\n\nII. <PIECE_MP><SQUARE_17><PIECE_OP><SQUARE_26> \u2014 A reasonable alternative that immediately eliminates the thorn, but it allows Black to activate the rook with 1... <PIECE_OR><SQUARE_60><SQUARE_59>, creating a direct confrontation on the c-file. After 2. <PIECE_MQ><SQUARE_11><SQUARE_4> <PIECE_OR><SQUARE_59><PIECE_MR><SQUARE_3> 3. <PIECE_MQ><SQUARE_4><PIECE_OR><SQUARE_3>, the position is approximately equal: White retains the bishop pair and a comfortable queen on the open file, but Black's remaining pieces are well coordinated. The alternative 2. <PIECE_MQ><SQUARE_11><SQUARE_2> is passive and allows Black to seize the initiative with ...Rxc1+.\n\nIII. <PIECE_MB><SQUARE_5><PIECE_OP><SQUARE_26> \u2014 The least effective option. Black responds 1... <PIECE_OK><SQUARE_62><SQUARE_55>, tucking the king to safety and maintaining the position. After 2. <PIECE_MB><SQUARE_13><SQUARE_27> <PIECE_OQ><SQUARE_45><SQUARE_24>, the position remains approximately equal, with Black's kingside pawn storm and the open h-file compensating for White's bishop pair.\n\nBEST_MOVE: <PIECE_MB><SQUARE_13><SQUARE_27>\nCRITICAL_LINE: <PIECE_MB><SQUARE_13><SQUARE_27> <PIECE_OQ><SQUARE_45><SQUARE_52> <PIECE_MB><SQUARE_5><PIECE_OP><SQUARE_26> <PIECE_OK><SQUARE_62><SQUARE_55> <PIECE_MB><SQUARE_27><SQUARE_20> <PIECE_OQ><SQUARE_52><SQUARE_24>\nPROMISING_MOVES: <PIECE_MB><SQUARE_13><SQUARE_27> <PIECE_MP><SQUARE_17><PIECE_OP><SQUARE_26> <PIECE_MB><SQUARE_5><PIECE_OP><SQUARE_26>\nEVALUATION: the player has an advantage of 0.9 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 772,
+ "seconds": 22.06,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 936491039,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

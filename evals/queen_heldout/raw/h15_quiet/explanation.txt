@@ -1,0 +1,17 @@
+ANALYSIS:
+Black faces a position where White's queen on c4 exerts direct pressure on the black pawn on c6, while the white pawn on d4 anchors the center and the white bishop on g2 commands the long diagonal. Black's queenside pawns on a5 and c6 are somewhat passive, and the black bishop on c8 remains undeveloped. The practical question is how to challenge White's central and queenside initiative while completing development. Black's three main candidates address this differently: a direct queenside expansion, a solid pawn move, or a developing move.
+
+I. black pawn b7-b5 — the best move. This immediately challenges the queen and creates a compact queenside pawn chain on a5 and b5, gaining space and restricting White's queenside options. White's most accurate reply is white queen c4-c2, retreating to a safe square while maintaining pressure on c6 and keeping the c1-c8 available for the rook. Black then develops with black bishop c8-a6, placing the bishop on the long diagonal where it eyes e2 and supports the black pawn on b5. After white knight b1-c3, Black centralizes with black knight b8-d7, and the position is approximately equal with both sides having completed reasonable development.
+
+I.a. If Black instead plays black bishop c8-b7, the bishop is passive and blocks the black pawn on b5. White can play white pawn a3-a4, and after black pawn b5 takes white pawn a4, the resulting isolated black pawn on a4 becomes a long-term target.
+
+I.b. If Black plays black knight b8-d7 immediately, the black bishop on c8 remains undeveloped. White plays white knight b1-c3, and Black must still develop the bishop, losing a tempo compared to the main line.
+
+II. black pawn b7-b6 — a solid but passive move that does not challenge the queen. White's most precise reply is white rook f1-d1, placing the rook on the semi-open d-file to support the white pawn on d4 and prepare a future e4 advance. Black's best is black bishop c8-a6, developing to the long diagonal. After white queen c4-c2, Black plays black pawn c6-c5, gaining space and freeing the black queen. The resulting position is balanced, with White retaining a modest edge from the more active rook and the open d-file. The alternative black bishop c8-b7 is inferior: after white queen c4-c2 black knight b8-d7 white pawn e2-e4, White gains space and the bishop on b7 is blocked by its own pawns.
+
+III. black knight b8-d7 — a developing move that leaves the black pawn on c6 under continued pressure. White's best is white queen c4-c2, removing the queen from the c-file and preparing e4. Black's most natural reply is black pawn b7-b5, challenging the center and preparing ...c5. After white knight b1-c3 black bishop c8-b7 white pawn e2-e4 black pawn c6-c5 white pawn d4 takes black pawn c5 black knight d7 takes white pawn c5, Black has achieved a solid, flexible position with the bishop pair's potential and the knight well placed on c5. However, the alternative black pawn c6-c5 immediately is inferior: after white pawn d4 takes black pawn c5 black knight d7 takes white pawn c5, the black knight on c5 is vulnerable to white pawn b2-b4, and the black pawn on b7 remains a long-term target.
+
+BEST_MOVE: black pawn b7-b5
+CRITICAL_LINE: black pawn b7-b5 white queen c4-c2 black bishop c8-a6 white knight b1-c3 black knight b8-d7
+PROMISING_MOVES: black pawn b7-b5 black pawn b7-b6 black knight b8-d7
+EVALUATION: the opponent has a modest advantage of 0.5 pawns.

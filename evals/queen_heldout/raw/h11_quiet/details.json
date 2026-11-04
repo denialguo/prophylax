@@ -1,0 +1,30 @@
+{
+ "fen": "r1bqr1k1/pp3p1p/2n2bp1/2pN4/P1Pp4/3P2PP/1P2NPB1/R2QK2R b KQ - 0 13",
+ "best_move_uci": "f6g5",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "f6g5",
+  "e1g1",
+  "c8f5",
+  "f2f4",
+  "g5h6"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack's position is defined by the bishop pair, the rook on <SQUARE_5> commanding the open e-file, and the central pawn wedge on <SQUARE_27> and <SQUARE_36>, which restricts White's queenside and limits the <PIECE_ON> on <SQUARE_53>. White's most active piece is the <PIECE_ON> on <SQUARE_28>, a strong outpost that pressures <SQUARE_22> and <SQUARE_11>, but the uncastled king on <SQUARE_61> is the principal vulnerability. Black's immediate task is to activate the <PIECE_MB> on <SQUARE_22> to a square where it exerts maximum influence while keeping the e-file rook's potential intact.\n\nI. <PIECE_MB><SQUARE_22><SQUARE_31> \u2014 the strongest continuation. The bishop lands on the long diagonal, eyes <SQUARE_38>, and coordinates with the <PIECE_MR> on <SQUARE_5>. White's best is 1. <PIECE_OK><SQUARE_61><SQUARE_63>, completing development. Black's most precise reply is 1... <PIECE_MB><SQUARE_3><SQUARE_30>, placing the second bishop on the <SQUARE_49>-<SQUARE_7> where it eyes <SQUARE_44> and supports the kingside. After 2. <PIECE_OP><SQUARE_54><SQUARE_38> <PIECE_MB><SQUARE_31><SQUARE_24>, Black retains the bishop pair with a comfortable, slightly better position. If White instead tries 2. <PIECE_OP><SQUARE_48><SQUARE_40>, Black responds 2... <PIECE_MB><SQUARE_31><SQUARE_24>, and after 3. <PIECE_OP><SQUARE_54><SQUARE_38> <PIECE_MB><SQUARE_24><SQUARE_15>, the bishop is safely repositioned and Black's edge is maintained. The alternative 2. <PIECE_OP><SQUARE_50><SQUARE_34> is met by 2... <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_34>, winning a pawn and creating a passed <PIECE_MP> on the b-file.\n\nI.a. If White challenges the bishop immediately with 1. <PIECE_OP><SQUARE_54><SQUARE_38>, Black's best is 1... <PIECE_MB><SQUARE_31><SQUARE_24>, preserving the pair and keeping the <PIECE_MB> on <SQUARE_3> free for <SQUARE_30>. After 2. <PIECE_OK><SQUARE_61><SQUARE_63> <PIECE_MB><SQUARE_3><SQUARE_30> 3. <PIECE_OP><SQUARE_47><SQUARE_39> <PIECE_MB><SQUARE_30><SQUARE_12> 4. <PIECE_OP><SQUARE_48><SQUARE_40>, Black retains a comfortable edge with the bishop pair and a solid structure.\n\nI.b. The aggressive 1. <PIECE_ON><SQUARE_28><SQUARE_38> walks into Black's prepared response: 1... <PIECE_MB><SQUARE_31><PIECE_ON><SQUARE_38>, eliminating White's most active piece and opening the e-file. After 2. <PIECE_ON><SQUARE_53><PIECE_MB><SQUARE_38> <PIECE_MQ><SQUARE_4><SQUARE_25>, Black activates the queen with check, attacking the <PIECE_OP> on <SQUARE_33> and preparing the rook lift <PIECE_MR><SQUARE_5><SQUARE_53>. White's best is 3. <PIECE_OK><SQUARE_61><SQUARE_62>, but Black retains a clear advantage with the open e-file, the active queen, and White's compromised king position.\n\nII. <PIECE_MB><SQUARE_3><SQUARE_30> \u2014 a solid alternative that activates the dark-squared bishop immediately. After 1. <PIECE_OK><SQUARE_61><SQUARE_63>, Black's strongest reply is 1... <PIECE_MB><SQUARE_22><SQUARE_31>, placing the light-squared bishop on the long diagonal. After 2. <PIECE_OP><SQUARE_54><SQUARE_38> <PIECE_MB><SQUARE_31><SQUARE_24>, Black retains the bishop pair and a comfortable edge. The alternative 2. <PIECE_OP><SQUARE_47><SQUARE_39> allows 2... <PIECE_MB><SQUARE_30><SQUARE_12>, and after 3. <PIECE_OP><SQUARE_39><SQUARE_31> <PIECE_MB><SQUARE_24><PIECE_OP><SQUARE_31>, Black wins a pawn and opens the g-file against the <PIECE_OK>. If White plays 1. <PIECE_OP><SQUARE_47><SQUARE_39> immediately, Black responds 1... <PIECE_MB><SQUARE_30><SQUARE_12>, repositioning to a flexible diagonal while keeping the <PIECE_MB> on <SQUARE_22> available for a later <SQUARE_29>.\n\nIII. <PIECE_MB><SQUARE_22><SQUARE_29> \u2014 the least effective of the three. The bishop on <SQUARE_29> dominates the center and restricts White's kingside, but it is more vulnerable to direct challenge. After 1. <PIECE_OK><SQUARE_61><SQUARE_63>, Black's best is 1... <PIECE_MB><SQUARE_3><SQUARE_30>, activating the dark-squared bishop on the long diagonal. After 2. <PIECE_OP><SQUARE_54><SQUARE_38> <PIECE_MB><SQUARE_29><SQUARE_20>, the bishop retreats to a safe square while maintaining pressure on the <PIECE_OP> on <SQUARE_35>. The alternative 1... <PIECE_MN><SQUARE_19><SQUARE_34> is a tactical error: 2. <PIECE_ON><SQUARE_28><PIECE_MN><SQUARE_34> <PIECE_MP><SQUARE_27><PIECE_ON><SQUARE_34> 3. <PIECE_ON><SQUARE_53><SQUARE_38> wins a piece for a pawn, and the <PIECE_ON> on <SQUARE_38> immediately attacks the <PIECE_MB> on <SQUARE_29>.\n\nBEST_MOVE: <PIECE_MB><SQUARE_22><SQUARE_31>\nCRITICAL_LINE: <PIECE_MB><SQUARE_22><SQUARE_31> <PIECE_OK><SQUARE_61><SQUARE_63> <PIECE_MB><SQUARE_3><SQUARE_30> <PIECE_OP><SQUARE_54><SQUARE_38> <PIECE_MB><SQUARE_31><SQUARE_24>\nPROMISING_MOVES: <PIECE_MB><SQUARE_22><SQUARE_31> <PIECE_MB><SQUARE_3><SQUARE_30> <PIECE_MB><SQUARE_22><SQUARE_29>\nEVALUATION: the player has a modest advantage of 0.5 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 921,
+ "seconds": 25.78,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 404448583,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

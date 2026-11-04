@@ -1,0 +1,28 @@
+{
+ "fen": "r3k2r/ppqn1pp1/2p1p3/3p2b1/1PPPP3/6P1/P2N2BP/R2Q1RK1 b kq - 0 15",
+ "best_move_uci": "g5e3",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "g5e3",
+  "g1h1",
+  "c7g3"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack's bishop on <SQUARE_31> is the engine of the position, commanding the long diagonal and simultaneously targeting the <PIECE_ON> on <SQUARE_52> and the <PIECE_OP> on <SQUARE_47>. The central tension between White's <SQUARE_35>-<SQUARE_36>-<SQUARE_37> pawn chain and Black's <SQUARE_28>-<SQUARE_21> pawns gives Black multiple ways to open lines, while White's <PIECE_OB> on <SQUARE_55> is hemmed in by its own pawns and the <PIECE_OK> on <SQUARE_63> lacks shelter. The practical question is how to convert the bishop's dual threats into concrete material gain before White reorganizes.\n\nI. <PIECE_MB><SQUARE_31><SQUARE_45> \u2014 the decisive move. The bishop invades the third rank, pinning the <PIECE_ON> on <SQUARE_52> to the <PIECE_OQ> on <SQUARE_60> and simultaneously attacking the <PIECE_OP> on <SQUARE_36>. White's best reply is <PIECE_OK><SQUARE_63><SQUARE_64>, a quiet improvement of king safety that does not address the pressure. Black then plays <PIECE_MQ><SQUARE_11><PIECE_OP><SQUARE_47>, winning a pawn and creating a direct threat against the <PIECE_OK>. The queen on <SQUARE_47> coordinates with the bishop on <SQUARE_45>, and White's king has no safe squares. Black retains a decisive advantage with the extra pawn and superior piece activity.\n\nII. <PIECE_MP><SQUARE_28><PIECE_OP><SQUARE_35> \u2014 a solid but less forcing alternative. White's best is <PIECE_ON><SQUARE_52><PIECE_MP><SQUARE_35>, eliminating the passed pawn and restoring material equality. Black's most precise reply is <PIECE_MB><SQUARE_31><SQUARE_13>, retreating to a safe square while maintaining pressure on the <SQUARE_57>-<SQUARE_8>. After <PIECE_OP><SQUARE_37><SQUARE_29> <PIECE_MB><SQUARE_13><PIECE_OP><SQUARE_34>, Black regains a pawn and activates the bishop, but the position is only moderately favorable compared to the decisive edge after I.\n\nIII. <PIECE_MB><SQUARE_31><PIECE_ON><SQUARE_52> \u2014 the least effective option. White simply recaptures <PIECE_OQ><SQUARE_60><PIECE_MB><SQUARE_52>, and after <PIECE_MP><SQUARE_28><PIECE_OP><SQUARE_35> <PIECE_OR><SQUARE_57><SQUARE_59> <PIECE_MN><SQUARE_12><SQUARE_29>, Black retains only a slight edge from the extra pawn. The bishop's dual threats are neutralized by the queen capture, and Black loses the initiative that makes the position decisively better.\n\nBEST_MOVE: <PIECE_MB><SQUARE_31><SQUARE_45>\nCRITICAL_LINE: <PIECE_MB><SQUARE_31><SQUARE_45> <PIECE_OK><SQUARE_63><SQUARE_64> <PIECE_MQ><SQUARE_11><PIECE_OP><SQUARE_47>\nPROMISING_MOVES: <PIECE_MB><SQUARE_31><SQUARE_45> <PIECE_MP><SQUARE_28><PIECE_OP><SQUARE_35> <PIECE_MB><SQUARE_31><PIECE_ON><SQUARE_52>\nEVALUATION: the player has a decisive advantage of 3.4 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 483,
+ "seconds": 13.14,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1287774103,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

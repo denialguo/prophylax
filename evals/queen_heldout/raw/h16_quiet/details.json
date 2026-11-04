@@ -1,0 +1,31 @@
+{
+ "fen": "r3kb1r/pp1n1ppp/2p1pn2/q7/2B2B2/2NP1Q1P/PPP2PP1/R4RK1 b kq - 2 10",
+ "best_move_uci": "d7e5",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "d7e5",
+  "f3e3",
+  "e5c4",
+  "d3c4",
+  "f8e7",
+  "a1d1"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack faces a position where White's bishop pair on <SQUARE_35> and <SQUARE_38> exerts considerable pressure, with the queen on <SQUARE_46> reinforcing the f-file. Black's king remains uncastled on <SQUARE_5>, the queen on <SQUARE_25> is somewhat exposed, and the <PIECE_MB> on <SQUARE_6> is still undeveloped. The practical task is to complete development while neutralizing White's piece activity without conceding structural weaknesses. The central tension revolves around the <SQUARE_29> square: Black's <PIECE_MN> on <SQUARE_12> can occupy it, directly challenging the <PIECE_OB> on <SQUARE_35> and contesting the center.\n\nI. <PIECE_MN><SQUARE_12><SQUARE_29> \u2014 the strongest move. The knight centralizes, attacks the <PIECE_OB> on <SQUARE_35>, and seizes the key central square. White's best reply is <PIECE_OQ><SQUARE_46><SQUARE_45>, centralizing the queen and supporting the bishop. Black's most natural continuation is <PIECE_MN><SQUARE_29><PIECE_OB><SQUARE_35>, trading the active knight for the bishop. After <PIECE_OP><SQUARE_44><PIECE_MN><SQUARE_35>, the d-file opens and the <PIECE_OB> on <SQUARE_38> gains a clear diagonal. Black develops with <PIECE_MB><SQUARE_6><SQUARE_13>, and after <PIECE_OR><SQUARE_57><SQUARE_60>, the position is roughly equal with White retaining a slight edge from the open d-file and the more active remaining bishop.\n\nI.a. If Black instead retreats with <PIECE_MN><SQUARE_29><SQUARE_23>, White plays <PIECE_OB><SQUARE_38><SQUARE_11>, attacking the queen. After <PIECE_MQ><SQUARE_25><SQUARE_11>, White continues <PIECE_OP><SQUARE_44><SQUARE_36>, gaining space and opening the <PIECE_OB> on <SQUARE_35>'s diagonal. The queen's displacement and the lost <SQUARE_29> outpost give White a comfortable edge.\n\nI.b. The retreat <PIECE_MN><SQUARE_29><SQUARE_12> is the worst option. White plays <PIECE_OR><SQUARE_57><SQUARE_61>, preparing the e6 check. After <PIECE_MB><SQUARE_6><SQUARE_13>, White continues <PIECE_OP><SQUARE_44><SQUARE_36>, and the knight on <SQUARE_12> is poorly placed with the <PIECE_MB> on <SQUARE_13> having limited scope.\n\nII. <PIECE_MB><SQUARE_6><SQUARE_13> \u2014 a passive developing move that leaves the <SQUARE_29> square unoccupied. White's best is <PIECE_ON><SQUARE_43><SQUARE_37>, immediately challenging the <PIECE_MN> on <SQUARE_22>. After <PIECE_MN><SQUARE_22><PIECE_ON><SQUARE_37> <PIECE_OQ><SQUARE_46><PIECE_MN><SQUARE_37>, Black's most precise reply is <PIECE_MN><SQUARE_12><SQUARE_22>, attacking the queen and gaining a tempo. The queen must retreat to <SQUARE_46>, and Black has achieved a comfortable position with the knight well-placed and the <PIECE_MB> on <SQUARE_13> unblocked. However, the position is slightly worse than after I because White's queen is more active and the bishop pair remains intact.\n\nIII. <PIECE_MB><SQUARE_6><SQUARE_34> \u2014 the most ambitious developing move, but it places the bishop on a square where it can be challenged by the <PIECE_OP> on <SQUARE_49>. White's best is <PIECE_OP><SQUARE_49><SQUARE_41>, forcing an immediate decision. The most resilient reply is <PIECE_MB><SQUARE_34><SQUARE_13>, preserving the bishop pair. After <PIECE_OR><SQUARE_57><SQUARE_61> <PIECE_MK><SQUARE_5><SQUARE_7>, the position is balanced with a slight White edge. The capture <PIECE_MB><SQUARE_34><PIECE_ON><SQUARE_43> wins a piece but leaves the bishop en prise to the <PIECE_OP> on <SQUARE_50>; after <PIECE_OP><SQUARE_50><PIECE_MB><SQUARE_43> <PIECE_MQ><SQUARE_25><PIECE_OP><SQUARE_43>, the queen is exposed and White's <PIECE_OR><SQUARE_57><SQUARE_58> creates counterplay. The retreat <PIECE_MB><SQUARE_34><SQUARE_27> is worst, as <PIECE_OP><SQUARE_50><SQUARE_34> attacks the bishop and gains space.\n\nBEST_MOVE: <PIECE_MN><SQUARE_12><SQUARE_29>\nCRITICAL_LINE: <PIECE_MN><SQUARE_12><SQUARE_29> <PIECE_OQ><SQUARE_46><SQUARE_45> <PIECE_MN><SQUARE_29><PIECE_OB><SQUARE_35> <PIECE_OP><SQUARE_44><PIECE_MN><SQUARE_35> <PIECE_MB><SQUARE_6><SQUARE_13> <PIECE_OR><SQUARE_57><SQUARE_60>\nPROMISING_MOVES: <PIECE_MN><SQUARE_12><SQUARE_29> <PIECE_MB><SQUARE_6><SQUARE_13> <PIECE_MB><SQUARE_6><SQUARE_34>\nEVALUATION: the opponent has a slight advantage of 0.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 738,
+ "seconds": 19.96,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 779771758,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

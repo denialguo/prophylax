@@ -1,0 +1,32 @@
+{
+ "fen": "2k1r3/1p6/p3rp2/2pq4/3p4/P2Q2NP/1PP2P1P/R4KR1 b - - 5 25",
+ "best_move_uci": "e6e5",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e6e5",
+  "d3f5"
+ ],
+ "critical_line_illegal_at": {
+  "ply": 3,
+  "reason": "illegal",
+  "detail": "move is illegal",
+  "token_text": "<PIECE_MQ><SQUARE_28><SQUARE_19>"
+ },
+ "raw_text": "ANALYSIS:\nBlack stands a full knight and pawn behind, with the material deficit concentrated in the missing <PIECE_ON> on <SQUARE_47>. Black's compensation rests on the active rook on <SQUARE_21>, the centralized queen on <SQUARE_28>, and the <PIECE_MP> on <SQUARE_36>, which restricts White's queenside. The <PIECE_MK> on <SQUARE_3> is exposed along the c-file, and White's <PIECE_OQ> on <SQUARE_44> is the key piece that can both challenge Black's counterplay and exploit the king's vulnerability. Black's practical task is to generate enough counterplay on the e-file and queenside to offset the material deficit before White consolidates.\n\nI. <PIECE_MR><SQUARE_21><SQUARE_29> \u2014 the best move. The rook steps to the fifth rank, maintaining e-file pressure while avoiding the immediate tactical complications of the third-rank invasion. White's strongest reply is 1. <PIECE_OQ><SQUARE_44><SQUARE_30>, attacking the queen and forcing a decision.\n\nI.a. 1... <PIECE_MQ><SQUARE_28><SQUARE_19> \u2014 the best reply. The queen retreats to a safe square where it eyes the <PIECE_OP> on <SQUARE_48> and maintains some counterplay. White's most natural follow-up is 2. <PIECE_OP><SQUARE_50><SQUARE_42>, preparing to challenge the <PIECE_MP> on <SQUARE_27>. Black's most active response is 2... <PIECE_MR><SQUARE_29><SQUARE_45>, swinging to the third rank to attack the <PIECE_OP> on <SQUARE_48> and prepare a check on <SQUARE_46>. After 3. <PIECE_OP><SQUARE_54><PIECE_MR><SQUARE_45> <PIECE_MR><SQUARE_5><PIECE_OP><SQUARE_45>, Black has traded a rook for a pawn and retains the active queen, but the material deficit remains decisive.\n\nI.b. 1... <PIECE_MQ><SQUARE_28><PIECE_OQ><SQUARE_30> \u2014 a queen sacrifice that fails tactically. White simply plays 2. <PIECE_ON><SQUARE_47><PIECE_MQ><SQUARE_30>, winning the queen outright. After 2... <PIECE_MR><SQUARE_29><PIECE_ON><SQUARE_30> 3. <PIECE_OP><SQUARE_50><SQUARE_34>, the material deficit is even larger.\n\nI.c. 1... <PIECE_MQ><SQUARE_28><SQUARE_21> \u2014 the worst option. White plays 2. <PIECE_OQ><SQUARE_30><PIECE_MQ><SQUARE_21>+, and after 2... <PIECE_MR><SQUARE_29><PIECE_OQ><SQUARE_21>, the queens are traded and White's remaining material advantage is fully realized.\n\nII. <PIECE_MP><SQUARE_27><SQUARE_35> \u2014 a queenside pawn push that opens the position but allows White the most forcing continuation. White's strongest reply is 1. <PIECE_OQ><SQUARE_44><SQUARE_30>, attacking the queen. Black's best is 1... <PIECE_MQ><SQUARE_28><PIECE_OQ><SQUARE_30>, trading queens. After 2. <PIECE_ON><SQUARE_47><PIECE_MQ><SQUARE_30>, the knight lands on a powerful central outpost and the <PIECE_OR> on <SQUARE_63> gains the open g-file. Black's best continuation is 2... <PIECE_MR><SQUARE_21><SQUARE_29>, attacking the knight and seizing the e-file. White retreats 3. <PIECE_ON><SQUARE_30><SQUARE_47>, and the resulting endgame is decisively lost: the knight is well placed, the rook has an open file, and Black's remaining pieces are passive. The alternative 2... <PIECE_MR><SQUARE_21><SQUARE_53> is inferior, as the rook on <SQUARE_53> is less effective than on <SQUARE_29>.\n\nIII. <PIECE_MR><SQUARE_21><SQUARE_45> \u2014 the most aggressive option, invading the third rank and pinning the <PIECE_ON> on <SQUARE_47>. However, White's best reply is 1. <PIECE_OQ><SQUARE_44><SQUARE_30>, attacking the queen and simultaneously removing the pin. Black's most resilient reply is 1... <PIECE_MQ><SQUARE_28><SQUARE_19>, but White then plays 2. <PIECE_OP><SQUARE_54><PIECE_MR><SQUARE_45>, winning the rook and opening the e-file. After 2... <PIECE_MP><SQUARE_36><PIECE_OP><SQUARE_45>, Black obtains a passed pawn on <SQUARE_45>, but the material deficit has grown to a rook and knight for a pawn, and White's pieces are fully active. The direct capture 1... <PIECE_MQ><SQUARE_28><PIECE_OQ><SQUARE_30> fails to 2. <PIECE_ON><SQUARE_47><PIECE_MQ><SQUARE_30>, winning the queen outright.\n\nBEST_MOVE: <PIECE_MR><SQUARE_21><SQUARE_29>\nCRITICAL_LINE: <PIECE_MR><SQUARE_21><SQUARE_29> <PIECE_OQ><SQUARE_44><SQUARE_30> <PIECE_MQ><SQUARE_28><SQUARE_19>\nPROMISING_MOVES: <PIECE_MR><SQUARE_21><SQUARE_29> <PIECE_MP><SQUARE_27><SQUARE_35> <PIECE_MR><SQUARE_21><SQUARE_45>\nEVALUATION: the opponent has a decisive advantage of 2.9 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 835,
+ "seconds": 25.29,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 2073804942,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

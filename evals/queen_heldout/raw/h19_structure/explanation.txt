@@ -1,0 +1,17 @@
+ANALYSIS:
+White stands a full bishop ahead with the white bishop on d6 dominating the long diagonal, the white queen on d4 controlling central squares, and the white pawn on d5 forming a dangerous passer. Black's king remains exposed on f7, the black queen on h5 is active but vulnerable to deflection, and the rooks on d8 and g8 lack coordination. The practical question is how to convert the material edge most efficiently: by embedding the bishop in Black's camp, by centralizing the queen, or by grabbing the black pawn on a7.
+
+I. white bishop d6-c7 — the strongest move. The bishop embeds itself deep in Black's camp, directly threatening the black rook on d8 and restricting the king's mobility. Black's best reply is 1...black rook d8-d7, attacking the bishop while maintaining a connection to the d1-d8. White's most precise continuation is 2.white bishop c7-f4, relocating to the long diagonal where it eyes the black queen on h5 and supports the white pawn on d5. Black's most active response is 2...black rook g8-d8, centralizing and preparing to challenge the d-pawn. White then plays 3.white rook f1-d1, seizing the open file, and after 3...black king f7-g6 the position remains decisively winning with the bishop on f4, the rook on the open d-file, and the king still exposed.
+
+I.a. If Black instead plays 1...black rook d8-e8, activating on the e-file, White's 2.white rook a1-c1 is devastating. After 2...black rook e8-e7, White plays 3.white rook c1-c7, attacking the rook and preparing the discovered check. If 3...black rook e7 takes white rook c7, then 4.white bishop c7-e5 wins the rook and the bishop occupies a dominant central square. The alternative 2...black rook e8-c8 fails to 3.white rook c1 takes black rook c8, winning the exchange outright.
+
+I.b. If Black plays 1...black rook d8-c8, directly attacking the bishop, White's 2.white bishop c7-f4 is again strongest. After 2...black rook c8-d8, White plays 3.white rook f1-d1, and the position is decisively winning. The alternative 2...black rook c8-c2 fails to 3.white queen d4 takes black pawn a7, winning a pawn and creating a dangerous passer.
+
+II. white queen d4-e5 — centralizes the queen and coordinates with the bishop on d6, but allows Black to eliminate the bishop. After 1...black rook d8 takes white bishop d6, White recaptures 2.white queen e5 takes black rook d6, and Black's 2...black rook g8-d8 attacks the queen while contesting the d-file. The resulting position is winning for White but less clear than after I, since the bishop has been traded and Black's rook is active on the d-file.
+
+III. white queen d4 takes black pawn a7 — grabs the pawn and activates the queen on the seventh rank, but allows Black to eliminate the bishop with 1...black rook d8 takes white bishop d6. After 2.white rook a1-b1, Black's 2...black rook g8-d8 contests the d-file and challenges the white pawn on d5. White continues 3.white rook b1 takes black pawn b7+ 3...black king f7-g6 4.white rook b7-b6, pinning the black rook on d6 and preparing white rook b6-d6+. Black's best is 4...black rook d6 takes white pawn d5, grabbing the passer, but White retains a decisive material edge with the rook dominating the sixth rank.
+
+BEST_MOVE: white bishop d6-c7
+CRITICAL_LINE: white bishop d6-c7 black rook d8-d7 white bishop c7-f4 black rook g8-d8 white rook f1-d1 black king f7-g6
+PROMISING_MOVES: white bishop d6-c7 white queen d4-e5 white queen d4 takes black pawn a7
+EVALUATION: the player is winning, with an evaluation of 6.2 pawns.

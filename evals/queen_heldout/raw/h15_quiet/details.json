@@ -1,0 +1,30 @@
+{
+ "fen": "rnbq1rk1/1p2bppp/2p1pn2/p7/2QP4/P4NP1/1P1BPPBP/RN3RK1 b - - 0 10",
+ "best_move_uci": "b7b5",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "b7b5",
+  "c4c2",
+  "c8a6",
+  "b1c3",
+  "b8d7"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack faces a position where White's queen on <SQUARE_35> exerts direct pressure on the <PIECE_MP> on <SQUARE_19>, while the <PIECE_OP> on <SQUARE_36> anchors the center and the <PIECE_OB> on <SQUARE_55> commands the long diagonal. Black's queenside pawns on <SQUARE_25> and <SQUARE_19> are somewhat passive, and the <PIECE_MB> on <SQUARE_3> remains undeveloped. The practical question is how to challenge White's central and queenside initiative while completing development. Black's three main candidates address this differently: a direct queenside expansion, a solid pawn move, or a developing move.\n\nI. <PIECE_MP><SQUARE_10><SQUARE_26> \u2014 the best move. This immediately challenges the queen and creates a compact queenside pawn chain on <SQUARE_25> and <SQUARE_26>, gaining space and restricting White's queenside options. White's most accurate reply is <PIECE_OQ><SQUARE_35><SQUARE_51>, retreating to a safe square while maintaining pressure on <SQUARE_19> and keeping the <SQUARE_59>-<SQUARE_3> available for the rook. Black then develops with <PIECE_MB><SQUARE_3><SQUARE_17>, placing the bishop on the long diagonal where it eyes <SQUARE_53> and supports the <PIECE_MP> on <SQUARE_26>. After <PIECE_ON><SQUARE_58><SQUARE_43>, Black centralizes with <PIECE_MN><SQUARE_2><SQUARE_12>, and the position is approximately equal with both sides having completed reasonable development.\n\nI.a. If Black instead plays <PIECE_MB><SQUARE_3><SQUARE_10>, the bishop is passive and blocks the <PIECE_MP> on <SQUARE_26>. White can play <PIECE_OP><SQUARE_41><SQUARE_33>, and after <PIECE_MP><SQUARE_26><PIECE_OP><SQUARE_33>, the resulting isolated <PIECE_MP> on <SQUARE_33> becomes a long-term target.\n\nI.b. If Black plays <PIECE_MN><SQUARE_2><SQUARE_12> immediately, the <PIECE_MB> on <SQUARE_3> remains undeveloped. White plays <PIECE_ON><SQUARE_58><SQUARE_43>, and Black must still develop the bishop, losing a tempo compared to the main line.\n\nII. <PIECE_MP><SQUARE_10><SQUARE_18> \u2014 a solid but passive move that does not challenge the queen. White's most precise reply is <PIECE_OR><SQUARE_62><SQUARE_60>, placing the rook on the semi-open d-file to support the <PIECE_OP> on <SQUARE_36> and prepare a future <SQUARE_37> advance. Black's best is <PIECE_MB><SQUARE_3><SQUARE_17>, developing to the long diagonal. After <PIECE_OQ><SQUARE_35><SQUARE_51>, Black plays <PIECE_MP><SQUARE_19><SQUARE_27>, gaining space and freeing the <PIECE_MQ>. The resulting position is balanced, with White retaining a modest edge from the more active rook and the open d-file. The alternative <PIECE_MB><SQUARE_3><SQUARE_10> is inferior: after <PIECE_OQ><SQUARE_35><SQUARE_51> <PIECE_MN><SQUARE_2><SQUARE_12> <PIECE_OP><SQUARE_53><SQUARE_37>, White gains space and the bishop on <SQUARE_10> is blocked by its own pawns.\n\nIII. <PIECE_MN><SQUARE_2><SQUARE_12> \u2014 a developing move that leaves the <PIECE_MP> on <SQUARE_19> under continued pressure. White's best is <PIECE_OQ><SQUARE_35><SQUARE_51>, removing the queen from the c-file and preparing <SQUARE_37>. Black's most natural reply is <PIECE_MP><SQUARE_10><SQUARE_26>, challenging the center and preparing ...<SQUARE_27>. After <PIECE_ON><SQUARE_58><SQUARE_43> <PIECE_MB><SQUARE_3><SQUARE_10> <PIECE_OP><SQUARE_53><SQUARE_37> <PIECE_MP><SQUARE_19><SQUARE_27> <PIECE_OP><SQUARE_36><PIECE_MP><SQUARE_27> <PIECE_MN><SQUARE_12><PIECE_OP><SQUARE_27>, Black has achieved a solid, flexible position with the bishop pair's potential and the knight well placed on <SQUARE_27>. However, the alternative <PIECE_MP><SQUARE_19><SQUARE_27> immediately is inferior: after <PIECE_OP><SQUARE_36><PIECE_MP><SQUARE_27> <PIECE_MN><SQUARE_12><PIECE_OP><SQUARE_27>, the <PIECE_MN> on <SQUARE_27> is vulnerable to <PIECE_OP><SQUARE_50><SQUARE_34>, and the <PIECE_MP> on <SQUARE_10> remains a long-term target.\n\nBEST_MOVE: <PIECE_MP><SQUARE_10><SQUARE_26>\nCRITICAL_LINE: <PIECE_MP><SQUARE_10><SQUARE_26> <PIECE_OQ><SQUARE_35><SQUARE_51> <PIECE_MB><SQUARE_3><SQUARE_17> <PIECE_ON><SQUARE_58><SQUARE_43> <PIECE_MN><SQUARE_2><SQUARE_12>\nPROMISING_MOVES: <PIECE_MP><SQUARE_10><SQUARE_26> <PIECE_MP><SQUARE_10><SQUARE_18> <PIECE_MN><SQUARE_2><SQUARE_12>\nEVALUATION: the opponent has a modest advantage of 0.5 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 749,
+ "seconds": 21.18,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 779771758,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}
