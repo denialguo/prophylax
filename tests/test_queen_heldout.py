@@ -51,12 +51,18 @@ def test_suite_has_no_duplicates_within_itself_or_with_the_development_set():
     assert len(set(keys)) == 24 and not set(keys) & dev
 
 
-def test_positions_with_outputs_survive_the_suite_change():
+def test_pre_suite_change_outputs_survive_the_suite_update():
+    # h01 and h02 are the only outputs generated before suite v2 replaced v1; the rest came from v2.
     with open(os.path.join(HERE, "suite_v1.json"), encoding="utf-8") as f:
         v1 = {c["id"]: c["fen"] for c in json.load(f)["cases"]}
     v2 = {c["id"]: c["fen"] for c in SUITE["cases"]}
-    for case in os.listdir(os.path.join(HERE, "raw")):
+    for case in ("h01_tactical", "h02_tactical"):
         assert v1[case] == v2[case]
+
+
+def test_every_stored_output_answers_its_position_in_the_current_suite():
+    v2 = {c["id"]: c["fen"] for c in SUITE["cases"]}
+    for case in os.listdir(os.path.join(HERE, "raw")):
         with open(os.path.join(HERE, "raw", case, "details.json"), encoding="utf-8") as f:
             assert json.load(f)["fen"] == v2[case]
 
