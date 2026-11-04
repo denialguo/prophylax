@@ -6,9 +6,13 @@ Read-only. Experiment files are only ever opened for reading, and the output is 
 under evals/queen_heldout or domain. It also refuses scores that do not name the current labels
 and predictions, since the page would then describe something else.
 
+A reviewer can agree, disagree or be unsure about each finding. Those decisions stay in the browser
+and in JSON files the reviewer exports. They never change a label or a score.
+
 Usage: uv run python -m evals.queen_heldout.audit_viewer [--out FILE]"""
 import argparse
 import collections
+import hashlib
 import json
 import os
 import random
@@ -29,6 +33,20 @@ CAUGHT_FACT, CAUGHT_VARIATION = "caught_false_fact", "caught_false_variation"
 SAMPLE_SEED = 20261104
 ERROR_ANALYSIS = (("extractable_claim_missed", 15), ("board_binding_wrong", None), ("predicate_right_args_wrong", None),
                   ("hallucinated_on_non_fact", 5), ("variation_missed", 10), (CAUGHT_FACT, 5))
+FINDINGS = {
+    "extractable_claim_missed": "The extractor missed a concrete claim it should have read.",
+    "negative_claim_missed": "The extractor missed a concrete negative claim.",
+    "predicate_right_args_wrong": "The extractor read the right predicate with the wrong arguments.",
+    "board_binding_wrong": "The extractor read the right claim but bound it to the wrong board, or to none.",
+    "hallucinated_on_non_fact": "The extractor produced a claim from text labelled as not a checkable fact.",
+    "extraction_with_no_label": "The extractor produced a claim that no label covers.",
+    "unsupported_misclassified": "The text is unsupported, but the extractor did not classify it as unsupported.",
+    "ambiguous_misclassified": "The text is ambiguous, but the extractor did not classify it as ambiguous.",
+    "variation_missed": "The extractor did not read this line exactly.",
+    "variation_with_no_label": "The extractor read a line that no label covers.",
+    CAUGHT_FACT: "The system caught this false claim.",
+    CAUGHT_VARIATION: "The system caught this false line.",
+}
 SENTENCE_END = re.compile(r"[.!?](?=\s+[A-Z])|\n")
 PIECE_LETTERS = (("king", "K"), ("queen", "Q"), ("rook", "R"), ("bishop", "B"), ("knight", "N"), ("pawn", "P"))
 
@@ -337,7 +355,7 @@ def _make_item(item_id, category, case, label, candidate, row, prediction, text,
     gold_moves = (label or {}).get("moves")
     cand_moves = (candidate or {}).get("moves")
     asked = None if is_variation else verifier_on_gold(fen, label)
-    item = {"id": item_id, "category": category, "case": case, "label_id": (label or {}).get("label_id"), "fen": fen, "truth": _truth(label),
+    item = {"id": item_id, "category": category, "finding": FINDINGS.get(category, category), "case": case, "label_id": (label or {}).get("label_id"), "fen": fen, "truth": _truth(label),
             "is_false": _is_false(label), "caught": category in (CAUGHT_FACT, CAUGHT_VARIATION), "is_variation": is_variation,
             "gold": _gold_view(label, fen), "candidate": _candidate_view(candidate), "verifier_on_gold": asked, "verifier_disagrees": verifier_disagrees(label, asked),
             "context": source_context(text, span["span_start"], span["span_end"]) if span else {"span": row.get("text", "")},
@@ -372,13 +390,26 @@ def caught_false_claims(predictions, labels):
     return facts, variations
 
 
+def stable_item_id(category, row, seen):
+    """The same finding keeps its id across rebuilds, so a saved review still applies. A row with no
+    label is named by its content; seen numbers any identical rows, which are interchangeable."""
+    if row.get("label_id"):
+        return f"{category}/{row['label_id']}"
+    content = json.dumps({k: row.get(k) for k in ("case", "predicate", "args", "moves", "text")}, sort_keys=True, ensure_ascii=False)
+    digest = hashlib.sha256(content.encode("utf-8")).hexdigest()[:12]
+    seen[(category, digest)] += 1
+    n = seen[(category, digest)]
+    return f"{category}/{row['case']}/{digest}" + (f"-{n}" if n > 1 else "")
+
+
 def build_items(scores, predictions, labels, texts):
     """(items, stored SVGs): one item per details row, then the caught false claims."""
     by_id = {r["label_id"]: r for r in labels}
     store, items = {}, []
     unlabelled_used = set()
+    seen = collections.Counter()
     for category in sorted(scores["details"]):
-        for n, row in enumerate(scores["details"][category]):
+        for row in scores["details"][category]:
             case = row["case"]
             prediction = predictions[case]
             label = by_id.get(row.get("label_id"))
@@ -395,7 +426,7 @@ def build_items(scores, predictions, labels, texts):
                 candidate = next((c for i, c in enumerate(prediction["facts"]) if (case, "f", i) not in unlabelled_used and c["status"] == "EXTRACTED" and c["predicate"] == row.get("predicate") and c["args"] == row.get("args") and c["source_text"] == row.get("text")), None)
                 if candidate is not None:
                     unlabelled_used.add((case, "f", prediction["facts"].index(candidate)))
-            items.append(_make_item(f"{category}/{row.get('label_id') or n}", category, case, label, candidate, row, prediction, texts[case], store))
+            items.append(_make_item(stable_item_id(category, row, seen), category, case, label, candidate, row, prediction, texts[case], store))
     facts, variations = caught_false_claims(predictions, labels)
     for category, pairs in ((CAUGHT_FACT, facts), (CAUGHT_VARIATION, variations)):
         for label, candidate in sorted(pairs, key=lambda p: p[0]["label_id"]):
@@ -413,12 +444,79 @@ def error_analysis_sample(items, seed=SAMPLE_SEED):
 
 
 # ── the page ─────────────────────────────────────────────────────────────────
+# Review logic, with no page access so tests can run it alone. Reviews live only in this browser
+# and in files the reviewer exports: nothing here can reach an experiment file.
+REVIEW_JS = r"""
+const REVIEW_SCHEMA = "prophylax.queen_heldout.review", REVIEW_VERSION = 1, DECISIONS = ["agree", "disagree", "unsure"];
+function decisionOf(reviews, id) { return (Object.hasOwn(reviews, id) && reviews[id].decision) || null; }
+function reviewCounts(ids, reviews) {
+  const c = {total: ids.length, reviewed: 0, agree: 0, disagree: 0, unsure: 0, unreviewed: 0};
+  for (const id of ids) { const d = decisionOf(reviews, id); if (d) { c[d]++; c.reviewed++; } else c.unreviewed++; }
+  return c;
+}
+function matchesReviewStatus(decision, status) { return !status || (status === "unreviewed" ? !decision : decision === status); }
+function nextUnreviewed(ids, at, reviews) {
+  for (let step = 1; step < ids.length; step++) { const i = (at + step) % ids.length; if (!decisionOf(reviews, ids[i])) return i; }
+  return -1;
+}
+function withEntry(reviews, id, entry) {
+  const next = {...reviews};
+  if (entry.decision || entry.note) next[id] = entry; else delete next[id];
+  return next;
+}
+function applyDecision(reviews, id, decision) {  // the same decision again takes it back
+  if (!DECISIONS.includes(decision)) throw new Error("unknown decision: " + decision);
+  return withEntry(reviews, id, {decision: decisionOf(reviews, id) === decision ? null : decision, note: Object.hasOwn(reviews, id) ? reviews[id].note : ""});
+}
+function applyNote(reviews, id, note) { return withEntry(reviews, id, {decision: decisionOf(reviews, id), note}); }
+function buildReviewExport(items, reviews, experiment, now) {
+  return {schema: REVIEW_SCHEMA, version: REVIEW_VERSION, generated_utc: now, experiment,
+          reviews: items.filter(i => decisionOf(reviews, i.id)).map(i => ({item_id: i.id, case: i.case, label_id: i.label_id ?? null, category: i.category,
+                                                                         decision: reviews[i.id].decision, note: reviews[i.id].note || null}))};
+}
+function notesWithoutDecision(reviews) { return Object.keys(reviews).filter(id => !reviews[id].decision && reviews[id].note).length; }
+function parseReviewImport(text, items, experiment) {  // every problem rejects the whole file
+  let data;
+  try { data = JSON.parse(text); } catch (e) { throw new Error("the file is not valid JSON"); }
+  if (data === null || typeof data !== "object" || Array.isArray(data)) throw new Error("the file is not a review export");
+  if (data.schema !== REVIEW_SCHEMA) throw new Error("the file is not a review export");
+  if (data.version !== REVIEW_VERSION) throw new Error(`unsupported version ${data.version}`);
+  if (typeof data.generated_utc !== "string") throw new Error("generated_utc is missing");
+  if (data.experiment === null || typeof data.experiment !== "object") throw new Error("experiment is missing");
+  for (const [key, value] of Object.entries(experiment)) {
+    if (value && data.experiment[key] && value !== data.experiment[key]) throw new Error(`this review belongs to a different experiment state: ${key} differs`);
+  }
+  if (!Array.isArray(data.reviews)) throw new Error("reviews is missing");
+  const known = new Map(items.map(i => [i.id, i])), reviews = {};
+  data.reviews.forEach((r, n) => {
+    const where = `review ${n + 1}`;
+    if (r === null || typeof r !== "object") throw new Error(`${where} is not an object`);
+    const item = known.get(r.item_id);
+    if (!item) throw new Error(`${where} names an unknown item`);
+    if (Object.hasOwn(reviews, r.item_id)) throw new Error(`${where} repeats ${r.item_id}`);
+    if (r.case !== item.case || (r.label_id ?? null) !== (item.label_id ?? null) || r.category !== item.category) throw new Error(`${where} does not match ${r.item_id}`);
+    if (!DECISIONS.includes(r.decision)) throw new Error(`${where} has an invalid decision`);
+    if (r.note !== undefined && r.note !== null && typeof r.note !== "string") throw new Error(`${where} has an invalid note`);
+    reviews[r.item_id] = {decision: r.decision, note: r.note || ""};
+  });
+  return reviews;
+}
+function cleanStoredReviews(value, items) {  // saved browser data is checked too; anything odd is dropped
+  const known = new Set(items.map(i => i.id)), reviews = {};
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return reviews;
+  for (const [id, r] of Object.entries(value)) {
+    if (known.has(id) && r && typeof r === "object" && (r.decision === null || DECISIONS.includes(r.decision)) && typeof r.note === "string" && (r.decision || r.note)) reviews[id] = {decision: r.decision, note: r.note};
+  }
+  return reviews;
+}
+"""
+
 PAGE = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>QUEEN held-out audit</title>
 <style>
-:root{--bg:#f7f7f5;--panel:#fff;--ink:#1c1c1a;--muted:#62625c;--line:#dcdcd6;--mark:#fde68a;--gold:#2563eb;--ext:#ea580c;--bad:#dc2626;--ok:#15803d;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#171715;--panel:#21211e;--ink:#ececE6;--muted:#a3a39b;--line:#3a3a35;--mark:#854d0e;--gold:#60a5fa;--ext:#fb923c;--bad:#f87171;--ok:#4ade80;color-scheme:dark}}
+:root{--bg:#f7f7f5;--panel:#fff;--ink:#1c1c1a;--muted:#62625c;--line:#dcdcd6;--mark:#fde68a;--gold:#2563eb;--ext:#ea580c;--bad:#dc2626;--ok:#15803d;--unsure:#a16207;--on:#fff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#171715;--panel:#21211e;--ink:#ececE6;--muted:#a3a39b;--line:#3a3a35;--mark:#854d0e;--gold:#60a5fa;--ext:#fb923c;--bad:#f87171;--ok:#4ade80;--unsure:#facc15;--on:#171715;color-scheme:dark}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 header{position:sticky;top:0;z-index:2;background:var(--panel);border-bottom:1px solid var(--line);padding:10px 16px}
 h1{font-size:16px;margin:0 8px 0 0;display:inline}.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:8px}
@@ -442,6 +540,16 @@ table{border-collapse:collapse;width:100%}td,th{text-align:left;vertical-align:t
 .tok.fail{color:var(--bad);font-weight:700;text-decoration:underline}.tok.diff{color:var(--ext);font-weight:600}.tok.unplayed{color:var(--muted);font-style:italic}
 .legend span{white-space:nowrap;margin-right:12px;font-size:13px;color:var(--muted)}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
 .empty{padding:40px;text-align:center;color:var(--muted);grid-column:1/-1}ul{margin:0;padding-left:18px}li{overflow-wrap:anywhere}
+@media (max-width:980px){header{position:static}}
+#counts{font-size:14px}#counts b{font-weight:600}#counts span{margin-right:12px;white-space:nowrap}
+#review-msg{font-size:13px;color:var(--muted);width:100%}#review-msg:empty{display:none}#review-msg.error{color:var(--bad);font-weight:600}
+.review{border-width:2px}.review .finding{font-size:15px;margin:0 0 10px}.review .state{font-weight:600;margin-left:auto;font-size:14px}.decide{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.decide button{min-height:44px;padding:8px 14px;font-weight:600;border-width:2px;background:var(--panel)}
+.decide .agree{color:var(--ok);border-color:var(--ok)}.decide .disagree{color:var(--bad);border-color:var(--bad)}.decide .unsure{color:var(--unsure);border-color:var(--unsure)}
+.decide .agree[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:var(--on)}.decide .disagree[aria-pressed=true]{background:var(--bad);border-color:var(--bad);color:var(--on)}.decide .unsure[aria-pressed=true]{background:var(--unsure);border-color:var(--unsure);color:var(--on)}
+kbd{font:600 11px ui-monospace,monospace;border:1px solid currentColor;border-radius:3px;padding:0 4px;margin-left:6px;opacity:.75}
+.review textarea{display:block;width:100%;min-height:58px;margin-top:10px;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;resize:vertical}
+.review .notelabel{display:block;margin-top:10px}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">__DEFS__</svg>
 <header>
@@ -453,15 +561,42 @@ table{border-collapse:collapse;width:100%}td,th{text-align:left;vertical-align:t
 <label><input type="checkbox" id="f-false"> False claims only</label><label><input type="checkbox" id="f-caught" checked> Show successful catches</label>
 <span class="legend"><span><i class="dot" style="background:#2563eb"></i>gold</span><span><i class="dot" style="background:#ea580c"></i>extractor</span><span><i class="dot" style="background:#dc2626"></i>failing move</span></span>
 </div><div class="row" id="sampleinfo"></div>
+<div class="row"><span id="counts" aria-live="polite"></span></div>
+<div class="row">
+<button id="next-unreviewed">Next unreviewed</button>
+<label>Review status <select id="f-review"><option value="">All</option><option value="unreviewed">Unreviewed</option><option value="agree">Agree</option><option value="disagree">Disagree</option><option value="unsure">Unsure</option></select></label>
+<label><input type="checkbox" id="auto-advance" checked> Auto-advance after review</label>
+<button id="export">Export review JSON</button><button id="import">Import review JSON</button><input type="file" id="import-file" accept=".json,application/json" hidden><button id="clear">Clear review data</button>
+</div><div class="row" id="review-msg" role="status"></div>
 </header>
 <main id="main"></main>
 <script id="data" type="application/json">__DATA__</script>
 <script>
-const {items, svgs, sample, seed} = JSON.parse(document.getElementById("data").textContent);
+__REVIEW_JS__
+const {items, svgs, sample, seed, experiment} = JSON.parse(document.getElementById("data").textContent);
 const $ = id => document.getElementById(id);
 const byId = new Map(items.map(i => [i.id, i]));
 const sampleIds = new Set(Object.values(sample).flat());
 let inSample = false, shown = [], at = 0;
+const STORE_KEY = "queen-heldout-review:v1:" + (experiment.scores_sha256 || "unknown"), AUTO_KEY = "queen-heldout-review:auto-advance";
+let reviews = {}, storageWorks = true;
+
+function say(text, isError) { const m = $("review-msg"); m.textContent = text; m.className = "row" + (isError ? " error" : ""); }
+function loadReviews() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) reviews = cleanStoredReviews(JSON.parse(raw), items);
+    const auto = localStorage.getItem(AUTO_KEY);
+    if (auto !== null) $("auto-advance").checked = auto === "true";
+  } catch (e) {
+    if (e instanceof SyntaxError) say("Saved review data was unreadable and was ignored.", true);
+    else { storageWorks = false; say("This browser is not saving reviews. Export before you close this page.", true); }
+  }
+}
+function saveReviews() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(reviews)); }
+  catch (e) { storageWorks = false; say("This browser could not save that review. Export before you close this page.", true); }
+}
 
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
 function fmt(v) { return v === null || v === undefined ? "none" : typeof v === "object" ? JSON.stringify(v) : String(v); }
@@ -482,13 +617,50 @@ options($("f-case"), uniq("case"), counted("case"));
 options($("f-truth"), uniq("truth"), counted("truth"));
 
 function applyFilters(keep) {
-  const cat = $("f-category").value, cs = $("f-case").value, tr = $("f-truth").value, falseOnly = $("f-false").checked, caught = $("f-caught").checked;
+  const cat = $("f-category").value, cs = $("f-case").value, tr = $("f-truth").value, falseOnly = $("f-false").checked, caught = $("f-caught").checked, status = $("f-review").value;
   const current = keep ?? shown[at]?.id;
-  shown = items.filter(i => (inSample ? sampleIds.has(i.id) : (caught || !i.caught)) && (!cat || i.category === cat) && (!cs || i.case === cs) && (!tr || i.truth === tr) && (!falseOnly || i.is_false));
+  shown = items.filter(i => (inSample ? sampleIds.has(i.id) : (caught || !i.caught)) && (!cat || i.category === cat) && (!cs || i.case === cs) && (!tr || i.truth === tr) && (!falseOnly || i.is_false) && matchesReviewStatus(decisionOf(reviews, i.id), status));
   at = Math.max(0, shown.findIndex(i => i.id === current));
   draw();
 }
-function move(step) { if (shown.length) { at = (at + step + shown.length) % shown.length; draw(); window.scrollTo(0, 0); } }
+function move(step) { if (shown.length) { at = (at + step + shown.length) % shown.length; say(""); draw(); window.scrollTo(0, 0); } }
+function goNextUnreviewed() {
+  const i = nextUnreviewed(shown.map(s => s.id), at, reviews);
+  if (i < 0) { say("No other unreviewed items in this view."); return false; }
+  at = i; say(""); draw(); window.scrollTo(0, 0); return true;
+}
+function decide(decision) {
+  if (!shown.length) return;
+  const id = shown[at].id;
+  reviews = applyDecision(reviews, id, decision);
+  saveReviews();
+  if (!decisionOf(reviews, id) || !$("auto-advance").checked) { draw(); return; }  // the item stays until you move on
+  const ids = shown.map(s => s.id), next = nextUnreviewed(ids, at, reviews);
+  if (next < 0) { say("That was the last unreviewed item in this view."); draw(); return; }
+  applyFilters(ids[next]); window.scrollTo(0, 0);
+}
+function pool() { return inSample ? items.filter(i => sampleIds.has(i.id)) : items; }
+function drawCounts() {
+  const c = reviewCounts(pool().map(i => i.id), reviews), box = $("counts"); box.replaceChildren();
+  for (const [name, n] of [[inSample ? "Sample reviewed" : "Reviewed", `${c.reviewed} / ${c.total}`], ["Agree", c.agree], ["Disagree", c.disagree], ["Unsure", c.unsure], ["Unreviewed", c.unreviewed]]) {
+    const s = el("span"); s.append(name + " "); s.appendChild(el("b", "", n)); box.appendChild(s);
+  }
+}
+function reviewBlock(i) {
+  const s = el("section", "review"); s.appendChild(el("h2", "", "Your review: does this finding look correct?"));
+  s.appendChild(el("p", "finding", i.finding));
+  const row = el("div", "decide"), current = decisionOf(reviews, i.id);
+  for (const [decision, label, key] of [["agree", "✓ Agree with finding", "A"], ["disagree", "✗ Disagree", "D"], ["unsure", "? Unsure", "U"]]) {
+    const b = el("button", decision, label); b.appendChild(el("kbd", "", key));
+    b.setAttribute("aria-pressed", current === decision); b.onclick = () => decide(decision); row.appendChild(b);
+  }
+  const state = el("span", "state", current ? "Reviewed: " + current[0].toUpperCase() + current.slice(1) : "Not reviewed"); state.id = "review-state"; row.appendChild(state);
+  s.appendChild(row);
+  const label = el("label", "notelabel", "Note (optional)"); const note = el("textarea"); note.id = "review-note"; note.value = Object.hasOwn(reviews, i.id) ? reviews[i.id].note : "";
+  note.oninput = () => { reviews = applyNote(reviews, i.id, note.value); saveReviews(); };
+  label.appendChild(note); s.appendChild(label);
+  return s;
+}
 
 function contextBlock(c) {
   const p = el("div", "context");
@@ -517,6 +689,7 @@ function draw() {
   const main = $("main"); main.replaceChildren();
   $("status").textContent = shown.length ? `Item ${at + 1} of ${shown.length}` : "No items match";
   $("sampleinfo").textContent = inSample ? `Error analysis sample, seed ${seed}: ${sampleIds.size} selected (` + Object.entries(sample).map(([k, v]) => `${v.length} ${k}`).join(", ") + ")" : "";
+  drawCounts();
   if (!shown.length) { main.appendChild(el("div", "empty", "Nothing matches these filters.")); return; }
   const i = shown[at];
   try { history.replaceState(null, "", "#" + encodeURIComponent(i.id)); } catch (e) {}
@@ -529,6 +702,7 @@ function draw() {
   if (i.caught) head.appendChild(el("span", "badge ok", "caught"));
   if (i.verifier_disagrees) head.appendChild(el("span", "badge bad", "bare predicate differs from gold: check for a change claim"));
   left.appendChild(head);
+  left.appendChild(reviewBlock(i));
   left.appendChild(section("QUEEN's text, with the " + (i.gold ? "gold" : "candidate") + " span marked", contextBlock(i.context)));
   if (i.gold) {
     const g = i.gold;
@@ -557,16 +731,52 @@ function draw() {
 $("prev").onclick = () => move(-1); $("next").onclick = () => move(1);
 $("random").onclick = () => { if (shown.length) { at = Math.floor(Math.random() * shown.length); draw(); window.scrollTo(0, 0); } };
 $("mode").onclick = () => { inSample = !inSample; $("mode").setAttribute("aria-pressed", inSample); applyFilters(); };
-for (const id of ["f-category", "f-case", "f-truth", "f-false", "f-caught"]) $(id).onchange = e => { applyFilters(); e.target.blur(); };
-document.addEventListener("keydown", e => { if (e.altKey || e.ctrlKey || e.metaKey) return; if (e.key === "ArrowLeft") move(-1); if (e.key === "ArrowRight") move(1); });
+for (const id of ["f-category", "f-case", "f-truth", "f-false", "f-caught", "f-review"]) $(id).onchange = e => { applyFilters(); e.target.blur(); };
+$("next-unreviewed").onclick = goNextUnreviewed;
+$("auto-advance").onchange = e => { try { localStorage.setItem(AUTO_KEY, e.target.checked); } catch (err) {} };
+$("export").onclick = () => {
+  const data = buildReviewExport(items, reviews, experiment, new Date().toISOString());
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], {type: "application/json"}));
+  const a = document.createElement("a"); a.href = url; a.download = `queen_heldout_review_${data.generated_utc.replace(/[:.]/g, "-")}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const loose = notesWithoutDecision(reviews);
+  say(`Exported ${data.reviews.length} reviews.` + (loose ? ` ${loose} notes have no decision yet, so they were left out.` : ""));
+};
+$("import").onclick = () => $("import-file").click();
+$("import-file").onchange = async e => {
+  const file = e.target.files[0]; e.target.value = "";
+  if (!file) return;
+  try {
+    const imported = parseReviewImport(await file.text(), items, experiment), existing = Object.keys(reviews).length;
+    if (existing && !confirm(`Replace your ${existing} saved reviews with the ${Object.keys(imported).length} in this file?`)) return;
+    reviews = imported; saveReviews(); applyFilters();
+    if (storageWorks) say(`Imported ${Object.keys(imported).length} reviews.`);
+  } catch (err) { say(`Import rejected, nothing changed: ${err.message}.`, true); }
+};
+$("clear").onclick = () => {
+  const n = Object.keys(reviews).length;
+  if (!n) { say("There is no review data to clear."); return; }
+  if (!confirm(`Delete all ${n} saved reviews from this browser? Export first if you want to keep them.`)) return;
+  reviews = {};
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  applyFilters(); say("Review data cleared.");
+};
+document.addEventListener("keydown", e => {
+  if (e.altKey || e.ctrlKey || e.metaKey || ["TEXTAREA", "INPUT", "SELECT"].includes(e.target.tagName)) return;
+  if (e.key === "ArrowLeft") move(-1);
+  if (e.key === "ArrowRight") move(1);
+  const decision = {a: "agree", d: "disagree", u: "unsure"}[e.key.toLowerCase()];
+  if (decision) decide(decision);
+});
+loadReviews();
 applyFilters(decodeURIComponent(location.hash.slice(1)) || undefined);
 </script></body></html>
 """
 
 
-def render_html(items, svgs, sample, seed=SAMPLE_SEED):
-    data = json.dumps({"items": items, "svgs": svgs, "sample": sample, "seed": seed}, ensure_ascii=False, separators=(",", ":"))
-    return PAGE.replace("__DEFS__", shared_defs()).replace("__DATA__", data.replace("</", "<\\/"))
+def render_html(items, svgs, sample, seed=SAMPLE_SEED, experiment=None):
+    data = json.dumps({"items": items, "svgs": svgs, "sample": sample, "seed": seed, "experiment": experiment or {}}, ensure_ascii=False, separators=(",", ":"))
+    return PAGE.replace("__DEFS__", shared_defs()).replace("__REVIEW_JS__", REVIEW_JS).replace("__DATA__", data.replace("</", "<\\/"))
 
 
 # ── command ──────────────────────────────────────────────────────────────────
@@ -585,6 +795,12 @@ def load(base=sc.HERE):
     return scores, predictions, labels, texts
 
 
+def experiment_state(scores, base=sc.HERE):
+    """What a review was made against; it travels in the export and an import must agree with it."""
+    return {"manifest_sha256": scores["meta"]["manifest_sha256"], "labels_sha256": scores["meta"]["labels_sha256"],
+            "scores_sha256": sc.sha256_file(os.path.join(base, "scores.json"))}
+
+
 def check_output_path(path, protected=PROTECTED):
     real = os.path.realpath(path)
     for folder in protected:
@@ -599,14 +815,15 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         out = check_output_path(args.out)
-        items, svgs = build_items(*load())
+        loaded = load()
+        items, svgs = build_items(*loaded)
     except (ValueError, sc.ScoreError) as e:
         print(f"REFUSED: {e}")
         return 2
     sample = error_analysis_sample(items)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
-        f.write(render_html(items, svgs, sample))
+        f.write(render_html(items, svgs, sample, experiment=experiment_state(loaded[0])))
     counts = collections.Counter(i["category"] for i in items)
     print(f"{len(items)} items, {len(svgs)} distinct boards, {sum(map(len, sample.values()))} in the error analysis sample; {sum(counts[c] for c in (CAUGHT_FACT, CAUGHT_VARIATION))} are caught false claims")
     print(out)

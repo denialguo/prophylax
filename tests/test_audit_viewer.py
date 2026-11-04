@@ -1,8 +1,11 @@
 """The held-out audit viewer: SAN replay, board selection, span context, board-binding differences,
 and that it reads the real frozen artifacts without changing them."""
+import collections
 import hashlib
 import json
 import os
+import shutil
+import subprocess
 
 import chess
 import pytest
@@ -206,6 +209,202 @@ def test_the_page_loads_nothing_from_the_network():
     assert "http://" not in html.replace("http://www.w3.org", "").replace("http://www.w3.org/1999/xlink", "") and "https://" not in html
 
 
+# ── stable item ids ──────────────────────────────────────────────────────────
+NO_LABEL = {"case": "h01", "predicate": "attacks", "args": {"source": "e4"}, "text": "attacks e4", "verifier": "FALSE"}
+
+
+def test_a_labelled_item_is_named_by_its_category_and_label():
+    assert av.stable_item_id("variation_missed", {"case": "h01", "label_id": "l0025"}, collections.Counter()) == "variation_missed/l0025"
+
+
+def test_an_unlabelled_item_id_depends_on_its_content_not_its_position():
+    alone = av.stable_item_id("extraction_with_no_label", NO_LABEL, collections.Counter())
+    seen = collections.Counter()
+    av.stable_item_id("extraction_with_no_label", {**NO_LABEL, "text": "another row before it"}, seen)
+    assert av.stable_item_id("extraction_with_no_label", NO_LABEL, seen) == alone
+    assert av.stable_item_id("extraction_with_no_label", {**NO_LABEL, "text": "changed"}, collections.Counter()) != alone
+
+
+def test_identical_unlabelled_rows_get_distinct_ids():
+    seen = collections.Counter()
+    first, second = (av.stable_item_id("extraction_with_no_label", NO_LABEL, seen) for _ in range(2))
+    assert second == first + "-2"
+
+
+# ── review logic, run in Node ────────────────────────────────────────────────
+NODE = shutil.which("node")
+needs_node = pytest.mark.skipif(not NODE, reason="review logic is JavaScript; needs node")
+ITEMS = [{"id": "c/l1", "case": "h01", "label_id": "l1", "category": "c"}, {"id": "c/l2", "case": "h01", "label_id": "l2", "category": "c"},
+         {"id": "d/h02/abc", "case": "h02", "label_id": None, "category": "d"}]
+IDS = [i["id"] for i in ITEMS]
+EXPERIMENT = {"manifest_sha256": "m", "labels_sha256": "l", "scores_sha256": "s"}
+
+
+def js(expression):
+    """The value of an expression evaluated after the page's review functions, or the error it threw."""
+    program = f"{av.REVIEW_JS}\nconst ITEMS = {json.dumps(ITEMS)}, IDS = {json.dumps(IDS)}, EXPERIMENT = {json.dumps(EXPERIMENT)};\ntry {{ console.log(JSON.stringify({{value: {expression}}})); }} catch (e) {{ console.log(JSON.stringify({{error: e.message}})); }}"
+    result = subprocess.run([NODE, "-e", program], capture_output=True, text=True, timeout=30, check=True)
+    return json.loads(result.stdout)
+
+
+def value(expression):
+    return js(expression)["value"]
+
+
+def export(reviews):
+    return value(f"buildReviewExport(ITEMS, {json.dumps(reviews)}, EXPERIMENT, '2026-11-04T00:00:00.000Z')")
+
+
+def agreed(note=""):
+    return {"c/l1": {"decision": "agree", "note": note}}
+
+
+@needs_node
+def test_the_export_has_the_agreed_schema():
+    data = export({**agreed("looks right"), "d/h02/abc": {"decision": "unsure", "note": ""}, "c/l2": {"decision": None, "note": "undecided"}})
+    assert (data["schema"], data["version"], data["generated_utc"]) == ("prophylax.queen_heldout.review", 1, "2026-11-04T00:00:00.000Z")
+    assert data["experiment"] == EXPERIMENT
+    assert data["reviews"] == [{"item_id": "c/l1", "case": "h01", "label_id": "l1", "category": "c", "decision": "agree", "note": "looks right"},
+                               {"item_id": "d/h02/abc", "case": "h02", "label_id": None, "category": "d", "decision": "unsure", "note": None}]
+
+
+@needs_node
+def test_the_category_comes_from_the_item_and_cannot_be_chosen():
+    reviews = value("applyDecision({}, 'c/l1', 'disagree')")
+    assert reviews == {"c/l1": {"decision": "disagree", "note": ""}}
+    assert export(reviews)["reviews"][0]["category"] == "c"
+
+
+@needs_node
+def test_an_export_imports_back_exactly():
+    data = export({**agreed("a note"), "d/h02/abc": {"decision": "disagree", "note": ""}})
+    assert value(f"parseReviewImport({json.dumps(json.dumps(data))}, ITEMS, EXPERIMENT)") == {**agreed("a note"), "d/h02/abc": {"decision": "disagree", "note": ""}}
+
+
+def _broken(change):
+    data = {"schema": "prophylax.queen_heldout.review", "version": 1, "generated_utc": "t", "experiment": dict(EXPERIMENT),
+            "reviews": [{"item_id": "c/l1", "case": "h01", "label_id": "l1", "category": "c", "decision": "agree", "note": None}]}
+    change(data)
+    return json.dumps(data)
+
+
+@needs_node
+@pytest.mark.parametrize("text,expect", [
+    ("{not json", "not valid JSON"),
+    ("", "not valid JSON"),
+    ("null", "not a review export"),
+    ("[]", "not a review export"),
+    ("{}", "not a review export"),
+    (_broken(lambda d: d.update(schema="something else")), "not a review export"),
+    (_broken(lambda d: d.update(version=2)), "unsupported version"),
+    (_broken(lambda d: d.pop("generated_utc")), "generated_utc"),
+    (_broken(lambda d: d.update(experiment=None)), "experiment is missing"),
+    (_broken(lambda d: d["experiment"].update(scores_sha256="other")), "different experiment state"),
+    (_broken(lambda d: d["experiment"].update(manifest_sha256="other")), "different experiment state"),
+    (_broken(lambda d: d.update(reviews={})), "reviews is missing"),
+    (_broken(lambda d: d["reviews"].append(None)), "not an object"),
+    (_broken(lambda d: d["reviews"][0].update(item_id="c/nope")), "unknown item"),
+    (_broken(lambda d: d["reviews"][0].update(item_id="__proto__")), "unknown item"),
+    (_broken(lambda d: d["reviews"].append(dict(d["reviews"][0]))), "repeats"),
+    (_broken(lambda d: d["reviews"][0].update(category="WRONG_BOARD")), "does not match"),
+    (_broken(lambda d: d["reviews"][0].update(case="h99")), "does not match"),
+    (_broken(lambda d: d["reviews"][0].update(label_id="l9")), "does not match"),
+    (_broken(lambda d: d["reviews"][0].update(decision="maybe")), "invalid decision"),
+    (_broken(lambda d: d["reviews"][0].update(decision=None)), "invalid decision"),
+    (_broken(lambda d: d["reviews"][0].update(note=7)), "invalid note"),
+])
+def test_an_invalid_or_corrupt_import_is_rejected_whole(text, expect):
+    assert expect in js(f"parseReviewImport({json.dumps(text)}, ITEMS, EXPERIMENT)")["error"]
+
+
+@needs_node
+def test_one_bad_row_rejects_the_good_rows_with_it():
+    text = _broken(lambda d: d["reviews"].append({"item_id": "c/l2", "case": "h01", "label_id": "l2", "category": "c", "decision": "maybe"}))
+    assert "error" in js(f"parseReviewImport({json.dumps(text)}, ITEMS, EXPERIMENT)")
+
+
+@needs_node
+def test_an_import_may_omit_a_hash_the_page_or_file_does_not_have():
+    text = _broken(lambda d: d["experiment"].pop("scores_sha256"))
+    assert value(f"parseReviewImport({json.dumps(text)}, ITEMS, EXPERIMENT)") == agreed()
+
+
+@needs_node
+def test_unknown_or_malformed_saved_browser_data_is_dropped():
+    stored = {"c/l1": {"decision": "agree", "note": "kept"}, "c/nope": {"decision": "agree", "note": ""}, "c/l2": {"decision": "maybe", "note": ""}, "d/h02/abc": "junk"}
+    assert value(f"cleanStoredReviews({json.dumps(stored)}, ITEMS)") == agreed("kept")
+    assert value("cleanStoredReviews([], ITEMS)") == {} and value("cleanStoredReviews(null, ITEMS)") == {}
+
+
+@needs_node
+def test_a_decision_leaves_the_items_and_the_earlier_reviews_untouched():
+    result = value("(() => { const before = JSON.stringify(ITEMS), start = {}; const after = applyNote(applyDecision(start, 'c/l1', 'agree'), 'c/l1', 'n'); buildReviewExport(ITEMS, after, EXPERIMENT, 't'); return {same: JSON.stringify(ITEMS) === before, start, after}; })()")
+    assert result == {"same": True, "start": {}, "after": agreed("n")}
+
+
+@needs_node
+def test_repeating_a_decision_takes_it_back_but_keeps_the_note():
+    assert value("applyDecision(applyDecision({}, 'c/l1', 'agree'), 'c/l1', 'agree')") == {}
+    assert value("applyDecision({'c/l1': {decision: 'agree', note: 'n'}}, 'c/l1', 'agree')") == {"c/l1": {"decision": None, "note": "n"}}
+    assert value("applyDecision({'c/l1': {decision: 'agree', note: 'n'}}, 'c/l1', 'unsure')") == {"c/l1": {"decision": "unsure", "note": "n"}}
+    assert "unknown decision" in js("applyDecision({}, 'c/l1', 'WRONG_BOARD')")["error"]
+
+
+@needs_node
+def test_a_note_without_a_decision_is_kept_but_not_reviewed_or_exported():
+    reviews = value("applyNote({}, 'c/l1', 'thinking')")
+    assert reviews == {"c/l1": {"decision": None, "note": "thinking"}}
+    assert value(f"reviewCounts(IDS, {json.dumps(reviews)})")["unreviewed"] == 3 and export(reviews)["reviews"] == []
+    assert value(f"notesWithoutDecision({json.dumps(reviews)})") == 1
+    assert value(f"applyNote({json.dumps(reviews)}, 'c/l1', '')") == {}
+
+
+@needs_node
+def test_counts_cover_only_the_ids_asked_about():
+    reviews = json.dumps({"c/l1": {"decision": "agree", "note": ""}, "c/l2": {"decision": "disagree", "note": ""}, "d/h02/abc": {"decision": "unsure", "note": ""}})
+    assert value(f"reviewCounts(IDS, {reviews})") == {"total": 3, "reviewed": 3, "agree": 1, "disagree": 1, "unsure": 1, "unreviewed": 0}
+    assert value(f"reviewCounts(['c/l1', 'x/y'], {reviews})") == {"total": 2, "reviewed": 1, "agree": 1, "disagree": 0, "unsure": 0, "unreviewed": 1}
+
+
+@needs_node
+@pytest.mark.parametrize("decision,status,expected", [
+    ("agree", "", True), (None, "", True), (None, "unreviewed", True), ("agree", "unreviewed", False),
+    ("agree", "agree", True), ("disagree", "agree", False), (None, "agree", False), ("unsure", "unsure", True), ("disagree", "disagree", True),
+])
+def test_review_status_filtering(decision, status, expected):
+    assert value(f"matchesReviewStatus({json.dumps(decision)}, {json.dumps(status)})") is expected
+
+
+@needs_node
+@pytest.mark.parametrize("reviewed,at,expected", [
+    ([], 0, 1),                         # the next one along
+    (["c/l2"], 0, 2),                   # skips a reviewed item
+    (["d/h02/abc"], 1, 0),              # wraps around
+    (["c/l1", "d/h02/abc"], 1, -1),     # the current item is not its own next
+    (["c/l1", "c/l2", "d/h02/abc"], 0, -1),
+])
+def test_next_unreviewed(reviewed, at, expected):
+    reviews = {id_: {"decision": "agree", "note": ""} for id_ in reviewed}
+    assert value(f"nextUnreviewed(IDS, {at}, {json.dumps(reviews)})") == expected
+
+
+@needs_node
+def test_a_note_alone_does_not_count_as_reviewed_for_next_unreviewed():
+    assert value("nextUnreviewed(IDS, 0, {'c/l2': {decision: null, note: 'n'}})") == 1
+
+
+def test_the_page_has_no_way_to_send_or_write_anything_but_a_download():
+    html = av.render_html([], [], {}, experiment=EXPERIMENT)
+    assert '"experiment":{"manifest_sha256":"m"' in html
+    for forbidden in ("fetch(", "XMLHttpRequest", "sendBeacon", "WebSocket", "showSaveFilePicker", "<form"):
+        assert forbidden not in html
+
+
+def test_every_category_says_in_plain_words_what_the_finding_is(real):
+    _, items, _, _ = real
+    assert all(i["finding"] != i["category"] for i in items)
+
+
 # ── the real frozen artifacts ────────────────────────────────────────────────
 def experiment_hashes():
     hashes = {}
@@ -272,6 +471,19 @@ def test_the_sample_is_the_requested_composition_and_deterministic(real):
                                                      "hallucinated_on_non_fact": 5, "variation_missed": 10, av.CAUGHT_FACT: 5}
     assert sample == av.error_analysis_sample(list(reversed(items)))
     assert sample != av.error_analysis_sample(items, seed=1)
+
+
+def test_the_fixed_sample_still_selects_the_same_items(real):
+    _, items, _, _ = real  # the fingerprint of the sample as it was first reviewed
+    sample = av.error_analysis_sample(items)
+    assert hashlib.sha256(json.dumps(sample, sort_keys=True).encode()).hexdigest() == "a005deb1ded74f5366882b7d6ad342e78a59282b76776a726f2a9b8d6a9df2f0"
+
+
+def test_real_item_ids_survive_a_rebuild(real):
+    scores, items, _, labels = real
+    again = av.build_items(scores, *av.load()[1:])[0]
+    assert [i["id"] for i in again] == [i["id"] for i in items]
+    assert all("/" in i["id"] for i in items) and not any(i["id"].split("/")[-1].isdigit() for i in items)
 
 
 def test_building_the_page_changes_no_experiment_file(tmp_path):
