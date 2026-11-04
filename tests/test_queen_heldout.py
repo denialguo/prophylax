@@ -536,6 +536,102 @@ def test_an_extraction_no_label_covers_is_reported_and_counts_against_precision(
     assert r["verified_precision"]["fact_precision"] == round(1 / 3, 4)
 
 
+# ── candidate-to-gold assignment: broad NON_FACT parents around concrete FACT children ──
+ATTACK = "The white pawn on e2 attacks the black pawn on d3"
+ATTACK_ARGS = {"source": "e2", "target": "d3"}
+ATTACK_PARENT = ATTACK + "."  # a span holding this one candidate
+KING = "The black king sits on e7"
+KING_ARGS = {"square": "e7", "color": "black", "piece": "king"}
+
+
+def metrics(result):
+    return {k: v for k, v in result.items() if k != "details"}
+
+
+def test_a_child_fact_keeps_its_candidate_whichever_label_id_comes_first():
+    parent_first = [non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")]
+    child_first = [non_fact("z", ATTACK_PARENT, "UNSUPPORTED"), fact("a", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")]
+    r = scored(parent_first)
+    assert r["extraction"]["predicate_and_args_match"] == 1 and r["extraction"]["missed"] == 0
+    assert r["extraction"]["hallucinated_on_non_fact"] == 0 and "extractable_claim_missed" not in r["failure_taxonomy"]
+    assert metrics(r) == metrics(scored(child_first)) == metrics(scored(list(reversed(parent_first))))
+
+
+def test_an_exact_true_fact_inside_an_unsupported_parent_is_a_verified_true_read():
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")])
+    assert r["verification"]["correctly_extracted"] == 1 and r["verification"]["VERIFIED"] == 1 and r["verification"]["verdict_correct"] == 1
+    assert r["verified_precision"]["facts_true"] == 1 and r["verified_precision"]["facts_false"] == 0
+
+
+def test_an_exact_false_fact_inside_an_unsupported_parent_is_caught():
+    r = scored([non_fact("a", KING + ".", "UNSUPPORTED"), fact("z", KING, "piece_at", KING_ARGS, ["e2e4"], "FALSE")])
+    assert r["verification"]["FALSE"] == 1 and r["end_to_end_facts"]["false_caught"] == 1 and r["end_to_end_facts"]["false_missed"] == 0
+    assert r["extraction"]["hallucinated_on_non_fact"] == 0 and outcome_total(r["end_to_end_facts"]) == 1
+
+
+def test_a_parent_whose_only_extraction_went_to_a_child_is_not_counted_as_detected():
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")])
+    assert r["extraction"]["unsupported_detected"] == 0 and r["failure_taxonomy"]["unsupported_misclassified"] == 1
+
+
+def test_a_genuine_extraction_in_unsupported_text_is_still_a_hallucination():
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", NOT_ATTACKED, "is_open_file", {"file": "a"}, [], "TRUE")])
+    assert r["extraction"]["hallucinated_on_non_fact"] == 1 and r["failure_taxonomy"]["hallucinated_on_non_fact"] == 1
+    assert r["extraction"]["extraction_with_no_label"] == 3 and r["verified_precision"]["facts_true"] == 0
+
+
+@pytest.mark.parametrize("predicate,args,reason", [
+    ("is_open_file", {"file": "a"}, "extractable_claim_missed"),
+    ("attacks", {"source": "e2", "target": "f3"}, "predicate_right_args_wrong"),
+])
+def test_an_overlapping_fact_with_the_wrong_predicate_or_args_leaves_the_candidate_to_the_parent(predicate, args, reason):
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, predicate, args, [], "TRUE")])
+    assert r["extraction"]["predicate_and_args_match"] == 0 and r["extraction"]["missed"] == 1 and r["failure_taxonomy"][reason] == 1
+    assert r["extraction"]["hallucinated_on_non_fact"] == 1 and r["verified_precision"]["facts_true"] == 0
+
+
+def test_a_board_mismatch_inside_a_parent_stays_a_binding_failure():
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, ["e2e4"], "TRUE")])
+    assert r["extraction"]["predicate_and_args_match"] == 1 and r["extraction"]["board_match"] == 0
+    assert r["failure_taxonomy"]["board_binding_wrong"] == 1 and r["extraction"]["hallucinated_on_non_fact"] == 0
+    assert r["verification"]["correctly_extracted"] == 0 and r["verified_precision"]["facts_true"] == 0
+
+
+def test_a_negative_fact_inside_a_parent_is_flipped_and_a_right_board_positive_outranks_it():
+    negative = {**fact("m", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE"), "polarity": "negative"}
+    r = scored([non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), negative])
+    assert r["extraction"]["polarity_flipped"] == 1 and r["extraction"]["negative_missed"] == 1
+    assert r["extraction"]["hallucinated_on_non_fact"] == 0 and r["verified_precision"]["facts_true"] == 0
+    r = scored([negative, fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")])
+    assert r["extraction"]["predicate_and_args_match"] == 1 and r["extraction"]["polarity_flipped"] == 0
+    assert r["verified_precision"]["facts_true"] == 1
+
+
+def test_a_candidate_goes_to_the_narrowest_of_two_overlapping_non_facts_whatever_their_ids():
+    wide = ATTACK + ". White has excellent practical chances"
+    for wide_id, narrow_id in (("a", "z"), ("z", "a")):
+        r = scored([non_fact(wide_id, wide, "UNSUPPORTED"), non_fact(narrow_id, ATTACK_PARENT, "UNSUPPORTED")])
+        assert r["extraction"]["hallucinated_on_non_fact"] == 1
+        assert r["details"]["hallucinated_on_non_fact"][0]["label_id"] == narrow_id
+
+
+def test_no_metric_depends_on_label_ids_or_label_order():
+    labels = GOLD + [non_fact("p1", ATTACK_PARENT, "UNSUPPORTED"), non_fact("p2", KING + ".", "UNSUPPORTED")]
+    renumbered = [{**row, "label_id": f"{len(labels) - i:04}"} for i, row in enumerate(labels)]
+    assert metrics(scored(labels)) == metrics(scored(renumbered)) == metrics(scored(list(reversed(renumbered))))
+
+
+def test_the_report_records_that_corrected_scores_supersede_the_original():
+    labels = [non_fact("a", ATTACK_PARENT, "UNSUPPORTED"), fact("z", ATTACK, "attacks", ATTACK_ARGS, [], "TRUE")]
+    corrected = scored(labels)
+    corrected["meta"] = {"supersedes": {"file": sc.ORIGINAL_SCORES, "sha256": "abc"}}
+    original = {**corrected, "extraction": {**corrected["extraction"], "predicate_and_args_match": 0}}
+    text = report.render(corrected, None, {"cases": [CASE]}, original=original)
+    assert "SUPERSEDED" in text and sc.ORIGINAL_SCORES in text and "`abc`" in text
+    assert "| Exact predicate + args | 0 | 1 |" in text
+    assert "SUPERSEDED" not in report.render(corrected, None, {"cases": [CASE]})
+
+
 def test_optional_identity_arguments_only_count_when_both_state_them():
     assert sc.args_match({"source": "e4", "target": "f5"}, {"source": "e4", "target": "f5", "piece": "pawn"})
     assert not sc.args_match({"source": "e4", "target": "f5", "piece": "knight"}, {"source": "e4", "target": "f5", "piece": "pawn"})
