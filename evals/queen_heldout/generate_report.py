@@ -135,6 +135,13 @@ def render(scores, manifest, suite, miss_review=(), original=None) -> str:
     lines.append(f"| Negative claims missed (included in missed) | {fmt(ex.get('negative_missed'))} |")
     lines.append(f"| Positive candidate on a negated claim | {fmt(ex.get('polarity_flipped'))} |")
     lines.append(f"| Variation exact-match rate | {fmt(var.get('exact_match_rate'))} |")
+    excluded = ex.get("unsupported_undetected_child_facts_only")
+    if excluded:
+        lines += ["", "### Unsupported classification: sensitivity analysis", "",
+                  f"The primary metric stays the strict frozen one, {ratio(ex.get('unsupported_detected'), ex.get('unsupported_labelled'))}. "
+                  f"This analysis was chosen after seeing the result and does not replace it. It leaves out {excluded} undetected broad UNSUPPORTED parent spans whose only extracted candidates were matched to concrete child FACT labels: the children were read correctly, but the rest of the parent's content was never classified as unsupported.", "",
+                  "| Metric | Count | Rate |", "|---|---|---|",
+                  f"| Excluding those parent spans | {ratio(ex.get('unsupported_detected'), ex.get('unsupported_labelled') - excluded)} | {fmt(ex.get('unsupported_recall_excluding_child_facts_only'))} |"]
     lines += ["", "## Verification (on correctly extracted claims)", "", "| Metric | Value |", "|---|---|"]
     for key, label in (("VERIFIED", "VERIFIED"), ("FALSE", "FALSE"), ("UNKNOWN", "UNKNOWN"), ("verdict_accuracy", "Verdict accuracy"),
                        ("false_verified", "False VERIFIED"), ("false_verification_acceptance_rate", "False verification acceptance rate")):

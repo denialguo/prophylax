@@ -32,6 +32,13 @@ When the experiment is reported:
 
 Check the result with `git log --all -- games/my_games.pgn` (expect nothing).
 
-## 3. Decide on production integration
+## 3. Define label hierarchy before the next benchmark
+
+Fix in advance, in the labelling instructions and the scorer, how a broad parent label relates to narrower
+FACT labels inside it. In particular: whether a parent counts as classified when its only extractions belong
+to its children, and whether parents may overlap at all. On this benchmark that case was decided after the
+scores existed, so 438/498 stays primary and 438/480 is only a labelled sensitivity analysis.
+
+## 4. Decide on production integration
 
 See [`QUEEN_INTEGRATION_DESIGN.md`](QUEEN_INTEGRATION_DESIGN.md). Its thresholds should be agreed before the result is read.
