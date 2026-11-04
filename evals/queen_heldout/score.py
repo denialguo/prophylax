@@ -17,6 +17,7 @@ from domain.verify import PREDICATES
 HERE = os.path.dirname(__file__)
 TRUTH_TO_STATUS = {"TRUE": "VERIFIED", "FALSE": "FALSE", "UNDETERMINED": "UNKNOWN"}
 STRUCTURED = ("best_move", "promising_move")  # single moves from the answer block; not labelled
+ORIGINAL_SCORES = "scores_original_pre_matching_fix.json"  # first scores, kept: label_id order let broad non-facts take candidates from facts
 
 
 class ScoreError(Exception):
@@ -105,12 +106,47 @@ def args_match(want: dict, got: dict) -> bool:
     return all(want[k] == got[k] for k in want if k in got)
 
 
+def _content_key(row):
+    """Orders labels by what they say, so no result depends on how they were numbered."""
+    return (row["case"], row["span_start"], row["span_end"], json.dumps({k: v for k, v in row.items() if k != "label_id"}, sort_keys=True))
+
+
+def assign_candidates(fact_rows, labels) -> dict:
+    """(case, candidate index) -> the one label that owns it. Fact labels choose first, by predicate
+    and args over overlapping spans: positive on the right board, negative on the right board,
+    positive on another board, negative on another board. A candidate left over goes to the
+    narrowest non-fact it overlaps, and only that can make it a hallucination."""
+    pairs = []
+    for row in labels:
+        if row["kind"] != "fact" or row["case"] not in fact_rows:
+            continue
+        for i, c in enumerate(fact_rows[row["case"]]):
+            if (c["status"] == "EXTRACTED" and _overlap(row["span_start"], row["span_end"], c["span_start"], c["span_end"])
+                    and c["predicate"] == row["predicate"] and args_match(row["args"], c["args"])):
+                tier = (0 if c["board_moves"] == row["branch"] else 2) + (row.get("polarity", "positive") == "negative")
+                pairs.append((tier, _content_key(row), i, row))
+    owner, filled = {}, set()
+    # ponytail: greedy, not maximum matching. The held-out data has at most one option per fact
+    # label, so nothing competes; use augmenting paths if labels ever share candidates.
+    for _, _, i, row in sorted(pairs, key=lambda p: p[:3]):
+        key = (row["case"], i)
+        if key not in owner and row["label_id"] not in filled:
+            owner[key] = row
+            filled.add(row["label_id"])
+    non_facts = [r for r in labels if r["kind"] == "non_fact" and r["case"] in fact_rows]
+    for row in sorted(non_facts, key=lambda r: (r["span_end"] - r["span_start"], _content_key(r))):
+        for i, c in enumerate(fact_rows[row["case"]]):
+            if c["status"] == "EXTRACTED" and _overlap(row["span_start"], row["span_end"], c["span_start"], c["span_end"]):
+                owner.setdefault((row["case"], i), row)
+    return owner
+
+
 def score(predictions, labels):
-    """One deterministic pass. A candidate is matched by at most one label."""
+    """One deterministic pass. A candidate is matched by at most one label (assign_candidates)."""
     ex, ver, e2e, var = collections.Counter(), collections.Counter(), collections.Counter(), collections.Counter()
     tax, details = collections.Counter(), collections.defaultdict(list)
     known = collections.Counter()
-    used = set()
+    used = set()  # variation candidates only
     for counter, names in ((ex, ("facts_labelled", "predicate_match", "args_match_given_predicate", "predicate_and_args_match", "board_match",
                                  "missed", "unsupported_labelled", "unsupported_detected", "ambiguous_labelled", "ambiguous_detected",
                                  "hallucinated_on_non_fact", "negative_labelled", "negative_missed", "polarity_flipped")),
@@ -122,14 +158,14 @@ def score(predictions, labels):
         counter.update({name: 0 for name in names})  # a zero is a result; report it
     fact_rows = {cid: [f for f in p["facts"]] for cid, p in predictions.items()}
     var_rows = {cid: [v for v in p["variations"] if v["kind"] not in STRUCTURED] for cid, p in predictions.items()}
-    labelled_candidate = {}   # (case, index) -> label
+    labelled_candidate = assign_candidates(fact_rows, labels)   # (case, index) -> label
 
-    for row in sorted(labels, key=lambda r: r["label_id"]):
+    for row in sorted(labels, key=_content_key):
         if row["case"] not in predictions:
             continue
         case, candidates = row["case"], fact_rows[row["case"]]
         here = [(i, c) for i, c in enumerate(candidates) if _overlap(row["span_start"], row["span_end"], c["span_start"], c["span_end"])]
-        extracted = [(i, c) for i, c in here if c["status"] == "EXTRACTED" and (case, i) not in used]
+        extracted = [(i, c) for i, c in here if labelled_candidate.get((case, i)) is row]  # the candidates this label owns
         if row["kind"] == "fact" and row.get("polarity", "positive") == "negative":
             # Candidates only ever assert that a predicate holds, so a negative claim cannot be
             # matched: it is a missed concrete claim. A candidate for the same fact here says the
@@ -145,20 +181,19 @@ def score(predictions, labels):
                 e2e["false_claims_representable"] += 1
                 e2e["false_claims_negative"] += 1
                 e2e["false_missed"] += 1
-            flipped = [(i, c) for i, c in extracted if c["predicate"] == row["predicate"] and args_match(row["args"], c["args"])]
-            if flipped:
+            if extracted:
                 ex["polarity_flipped"] += 1
                 tax["polarity_flipped"] += 1
-                details["polarity_flipped"].append(_brief(row, flipped[0][1]))
-                used.add((case, flipped[0][0]))
-                labelled_candidate[(case, flipped[0][0])] = row
+                details["polarity_flipped"].append(_brief(row, extracted[0][1]))
             else:
                 tax["negative_claim_missed"] += 1
                 details["negative_claim_missed"].append(_brief(row, None))
         elif row["kind"] == "fact":
             ex["facts_labelled"] += 1
-            same = [(i, c) for i, c in extracted if c["predicate"] == row["predicate"]]
-            exact = [(i, c) for i, c in same if args_match(row["args"], c["args"])]
+            # A candidate another fact label owns says nothing about this one; one a non-fact owns still shows the predicate was read.
+            same = [(i, c) for i, c in here if c["status"] == "EXTRACTED" and c["predicate"] == row["predicate"]
+                    and (labelled_candidate.get((case, i), row) is row or labelled_candidate[(case, i)]["kind"] != "fact")]
+            exact = extracted
             ex["predicate_match"] += bool(same)
             ex["args_match_given_predicate"] += bool(exact)
             ex["predicate_and_args_match"] += bool(exact)
@@ -177,10 +212,7 @@ def score(predictions, labels):
                 if false_claim:
                     e2e["false_missed"] += 1
                 continue
-            best = next(((i, c) for i, c in exact if c["board_moves"] == row["branch"]), exact[0])
-            i, c = best
-            used.add((case, i))
-            labelled_candidate[(case, i)] = row
+            c = exact[0][1]
             right_board = c["board_moves"] == row["branch"]
             ex["board_match"] += right_board
             status = c["verifier_status"]
@@ -221,9 +253,6 @@ def score(predictions, labels):
                 ex["hallucinated_on_non_fact"] += 1
                 tax["hallucinated_on_non_fact"] += 1
                 details["hallucinated_on_non_fact"].append(_brief(row, extracted[0][1]))
-                for i, c in extracted:
-                    used.add((case, i))
-                    labelled_candidate[(case, i)] = row
                 if row["false_concrete"]:  # each false claim lands in exactly one outcome
                     found = {c["verifier_status"] for _, c in extracted}
                     outcome = ("false_incorrectly_verified" if "VERIFIED" in found else
@@ -400,6 +429,9 @@ def run(base=HERE, draft=False) -> dict:
                       "corrections": len(load_jsonl(os.path.join(base, meta["corrections_file"]))), "labeller": meta["labeller"],
                       "independent_of_grammar_author": meta["independent_of_grammar_author"],
                       "predictions_opened_before_labels_frozen": meta["predictions_opened_before_labels_frozen"]}
+    original = os.path.join(base, ORIGINAL_SCORES)
+    if os.path.exists(original):
+        result["meta"]["supersedes"] = {"file": ORIGINAL_SCORES, "sha256": sha256_file(original)}
     return result
 
 

@@ -8,6 +8,7 @@ import json
 import os
 
 from evals.queen_extraction import evaluate, load_gold
+from evals.queen_heldout.score import ORIGINAL_SCORES
 
 HERE = os.path.dirname(__file__)
 PENDING = "_pending_"
@@ -55,7 +56,31 @@ def _examples(details, key, n=5):
     return [f"- `{r.get('case')}` «{r.get('text', '')}» {json.dumps({k: v for k, v in r.items() if k not in ('case', 'text')}, ensure_ascii=False)}" for r in rows] or ["- none"]
 
 
-def render(scores, manifest, suite, miss_review=()) -> str:
+CORRECTED_METRICS = (("extraction", "predicate_and_args_match", "Exact predicate + args"), ("extraction", "predicate_and_args_accuracy", "Exact predicate + args, rate"),
+                     ("extraction", "board_match", "Correct board"), ("extraction", "missed", "Missed extractable claims"),
+                     ("extraction", "hallucinated_on_non_fact", "Extractions on labelled non-facts"), ("extraction", "extraction_with_no_label", "Extractions matching no label"),
+                     ("extraction", "unsupported_detected", "Unsupported detected"), ("extraction", "unsupported_recall", "Unsupported classification"),
+                     ("verification", "correctly_extracted", "Correctly extracted claims"), ("verification", "VERIFIED", "VERIFIED"), ("verification", "FALSE", "FALSE"),
+                     ("verification", "UNKNOWN", "UNKNOWN"), ("verification", "verdict_accuracy", "Verdict accuracy"), ("verification", "false_verified", "False VERIFIED"),
+                     ("end_to_end_facts", "false_caught", "False claims caught"), ("end_to_end_facts", "false_missed", "False claims missed by extraction"),
+                     ("end_to_end_facts", "false_claim_capture_rate", "False-claim capture rate"),
+                     ("verified_precision", "facts_verified", "Facts marked VERIFIED"), ("verified_precision", "facts_true", "VERIFIED and labelled true on that board"),
+                     ("verified_precision", "facts_false", "VERIFIED, counted against precision"), ("verified_precision", "fact_precision", "Fact precision"))
+
+
+def correction_section(scores, original) -> list:
+    source = scores.get("meta", {}).get("supersedes", {})
+    lines = ["## Scorer correction: the first scores are SUPERSEDED", "",
+             "The first scoring of this experiment had a matching bug in `score.py`. It walked labels in `label_id` order with a shared set of used candidates, so a broad NON_FACT label with an earlier id took candidates that exactly matched a narrower FACT label inside it. The candidate was counted as `hallucinated_on_non_fact` and the FACT as `extractable_claim_missed`.", "",
+             "Predictions, raw outputs, labels, label metadata, manifest, extractor and verifier are unchanged. Only the scorer's assignment changed. The correction was made after the first scores had been read, so it was not blind to its effect on these numbers.", "",
+             f"The original scores stay in `{source.get('file', 'scores_original_pre_matching_fix.json')}` (SHA-256 `{source.get('sha256', PENDING)}`) and the original report in `REPORT_original_pre_matching_fix.md`. Everything below this section uses the corrected scores.", "",
+             "| Metric | Original | Corrected |", "|---|---|---|"]
+    for section, key, label in CORRECTED_METRICS:
+        lines.append(f"| {label} | {fmt(original.get(section, {}).get(key))} | {fmt(scores.get(section, {}).get(key))} |")
+    return lines + [""]
+
+
+def render(scores, manifest, suite, miss_review=(), original=None) -> str:
     done = scores is not None
     s = scores or {}
     ex, ver, e2e, var, vp = (s.get(k, {}) for k in ("extraction", "verification", "end_to_end_facts", "variations", "verified_precision"))
@@ -72,7 +97,7 @@ def render(scores, manifest, suite, miss_review=()) -> str:
         title += "\n\n**TEMPLATE. No held-out results exist yet.**"
     elif meta.get("draft"):
         title += "\n\n**DRAFT. Labels are not frozen; do not report these numbers.**"
-    lines = [title, "", "## Frozen system", "",
+    lines = [title, ""] + (correction_section(s, original) if done and original else []) + ["## Frozen system", "",
              f"- Frozen commit: `{m.get('frozen_commit', '046bb19')}`",
              f"- Extractor commit: `{m.get('extractor_commit', PENDING)}`", f"- Verifier commit: `{m.get('verifier_commit', PENDING)}`",
              f"- Semantic-code override: {m.get('semantic_override') or 'none'}", f"- python-chess: {m.get('python_chess', PENDING)}", "",
@@ -125,7 +150,8 @@ def render(scores, manifest, suite, miss_review=()) -> str:
               f"| **Capture rate** | **{fmt(e2e.get('false_claim_capture_rate'))}** | **{fmt(var.get('false_variation_capture_rate'))}** |",
               f"| Capture rate, representable claims only | {fmt(e2e.get('false_claim_capture_rate_representable'))} | n/a |", "",
               f"False claims outside every predicate: {fmt(e2e.get('false_outside_predicates'))}. FALSE on the wrong board, not counted as caught: {fmt(e2e.get('false_found_on_wrong_board'))}.", "",
-              "## Verified-claim precision", "", "The critical safety metric: of everything the system marks VERIFIED, how much is true.", "",
+              "## Verified-claim precision", "", "The critical safety metric: of everything the system marks VERIFIED, how much is true.",
+              "\"Actually false\" means VERIFIED without a positive TRUE label on the same board: a label on another board, a non-fact or a negated claim all count. A candidate verified against a FALSE label is the False VERIFIED row above.", "",
               "| | Facts | Variations |", "|---|---|---|",
               f"| Marked VERIFIED | {fmt(vp.get('facts_verified'))} | {fmt(vp.get('variations_verified'))} |",
               f"| Actually true | {fmt(vp.get('facts_true'))} | {fmt(vp.get('variations_true'))} |",
@@ -180,8 +206,9 @@ def main(argv=None):
     if os.path.exists(review_path):
         with open(review_path, encoding="utf-8") as f:
             review = [json.loads(line) for line in f if line.strip()]
+    original = None if args.template else load_optional(os.path.join(HERE, ORIGINAL_SCORES))
     with open(args.out, "w", encoding="utf-8") as f:
-        f.write(render(scores, manifest, suite, review))
+        f.write(render(scores, manifest, suite, review, original))
     print(f"wrote {args.out}" + (" (template)" if scores is None else ""))
     return 0
 
