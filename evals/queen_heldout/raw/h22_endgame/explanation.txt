@@ -1,0 +1,21 @@
+ANALYSIS:
+White holds a decisive material advantage—two rooks and four pawns against Black's single rook and six pawns. The practical task is to coordinate the rooks on the open d-file while managing the active black rook on e4, which simultaneously eyes the white pawn on g5 and the white pawn on a2. The white pawn on g5 is a latent passer that restricts the black king on g7, and the white rook on h3 controls the open h-file. Black's queenside pawns on a5, b6, and c5 offer limited counterplay but cannot compensate for the material deficit.
+
+I. white rook b1-d1 — the best move. The rook occupies the open d-file, immediately threatening to swing to the seventh rank and attack the black pawn on e7.
+
+I.a. 1. white rook b1-d1 black rook e4-e5 2. white rook d1-d7 black rook e5 takes white pawn g5 3. white rook d7 takes black pawn e7 black rook g5-h5 4. white rook h3 takes black rook h5 black pawn g6 takes white rook h5. Black's most resilient reply centralizes the rook on the fifth rank, directly attacking the white pawn on g5. White's strongest continuation is the seventh-rank invasion, attacking the black pawn on e7. Black grabs the g-pawn, but White wins the e-pawn and forces the rook trade on h5. After the recapture, White retains a decisive material edge with the white rook on e7 dominating the open file.
+
+I.b. 1. white rook b1-d1 black rook e4-e5 2. white rook h3-g3 black rook e5-d5 3. white rook d1 takes black rook d5 black pawn c5-c4 4. white rook d5-d7. White defends the g-pawn with the rook, but Black activates on the d-file. After the trade, White's remaining rook reaches the seventh rank, though the position is slightly less favorable than after the direct invasion.
+
+I.c. 1. white rook b1-d1 black rook e4-e5 2. white rook h3-d3 black rook e5 takes white pawn g5 3. white rook d3-d7 black rook g5-h5 4. white rook d7 takes black pawn e7 black rook h5-h4. The rook centralizes on the d-file, but Black's check on h4 gains a tempo and the position is less favorable for White than after the direct seventh-rank invasion.
+
+II. white rook b1-f1 — a solid alternative that keeps the rook on the back rank and prepares a swing to the d-file. Black's best reply is 1... black pawn f7-f6, challenging the white pawn on g5 and opening the f-file for the rook. After 2. white rook f1-d1 black rook e4-g4 3. white rook d1-d7, White still seizes the seventh rank, but the extra tempo Black gains from the pawn break makes this slightly less favorable than the direct Rd1.
+
+III. white rook h3-f3 — the least effective candidate. The rook leaves the open h-file and the white rook on b1 remains passive. Black's best is 1... black rook e4-h4, swinging to the h-file to target the white pawn on g5 and threaten checks along the fourth rank. After 2. white king h2-g3 black rook h4-d4 3. white rook b1-f1, White consolidates, but Black retains more active rook play than in the other lines.
+
+The direct seventh-rank invasion via I is superior because it immediately creates a concrete threat against the black pawn on e7, forces Black into a reactive posture, and yields the most favorable resulting endgame.
+
+BEST_MOVE: white rook b1-d1
+CRITICAL_LINE: white rook b1-d1 black rook e4-e5 white rook d1-d7 black rook e5 takes white pawn g5 white rook d7 takes black pawn e7 black rook g5-h5 white rook h3 takes black rook h5 black pawn g6 takes white rook h5
+PROMISING_MOVES: white rook b1-d1 white rook b1-f1 white rook h3-f3
+EVALUATION: the player is winning, with an evaluation of 4.6 pawns.

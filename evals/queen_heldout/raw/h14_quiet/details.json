@@ -1,0 +1,30 @@
+{
+ "fen": "r3k2r/pppn1ppp/q2bpnb1/8/2NP4/5PN1/PPP1B1PP/R1BQ1R1K b kq - 0 12",
+ "best_move_uci": "d6g3",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "d6g3",
+  "h2g3",
+  "a6c6",
+  "f3f4",
+  "b7b5"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nThe position is defined by White's dominant <PIECE_ON> on <SQUARE_35>, which simultaneously attacks the <PIECE_MB> on <SQUARE_20> and the <PIECE_MQ> on <SQUARE_17>. Black's <PIECE_MB> on <SQUARE_23> is the most active Black piece, eyeing the <PIECE_ON> on <SQUARE_47>, but it cannot immediately exploit that target because the <PIECE_OP> on <SQUARE_46> guards <SQUARE_37> and the <PIECE_OB> on <SQUARE_53> covers the diagonal. Black's king remains uncastled on <SQUARE_5>, and the <PIECE_MN> on <SQUARE_22> is somewhat passive. The practical question is how to resolve the dual pressure on <SQUARE_20> and <SQUARE_17> while preserving the bishop pair and generating counterplay.\n\nI. <PIECE_MB><SQUARE_20><PIECE_ON><SQUARE_47> \u2014 The best move. Capturing the knight eliminates White's most dangerous attacking piece and forces White to spend a tempo recapturing. After 1...<PIECE_MB><SQUARE_20><PIECE_ON><SQUARE_47> 2. <PIECE_OP><SQUARE_56><PIECE_MB><SQUARE_47>, Black's most accurate reply is 2...<PIECE_MQ><SQUARE_17><SQUARE_19>, centralizing the queen and preparing to meet 3. <PIECE_OP><SQUARE_46><SQUARE_38> with 3...<PIECE_MP><SQUARE_10><SQUARE_26>, challenging the <PIECE_ON> on <SQUARE_35> and gaining queenside space. If White pushes 4. <PIECE_OP><SQUARE_38><SQUARE_30>, Black responds 4...<PIECE_MP><SQUARE_21><PIECE_OP><SQUARE_30>, winning a pawn and opening the <SQUARE_61>-<SQUARE_5> for the <PIECE_MR>. The resulting position is roughly level, with White retaining a slight edge from the open <SQUARE_62>-<SQUARE_6> and the active <PIECE_OB> on <SQUARE_53>.\n\nI.a. 2...<PIECE_MQ><SQUARE_17><SQUARE_33> is inferior. White plays 3. <PIECE_OP><SQUARE_50><SQUARE_42>, attacking the queen and activating the <PIECE_OB> on <SQUARE_59>. After 3...<PIECE_MQ><SQUARE_33><SQUARE_19> 4. <PIECE_OP><SQUARE_46><SQUARE_38>, Black's best is 4...<PIECE_MQ><SQUARE_19><SQUARE_28>, but 5. <PIECE_OP><SQUARE_38><SQUARE_30> <PIECE_MP><SQUARE_21><PIECE_OP><SQUARE_30> leaves the queen exposed and White's pieces more active.\n\nI.b. 2...<PIECE_MQ><SQUARE_17><SQUARE_26> is the worst option. The queen is immediately attacked by 3. <PIECE_OP><SQUARE_49><SQUARE_33>, and after 3...<PIECE_MQ><SQUARE_26><SQUARE_19> 4. <PIECE_OP><SQUARE_46><SQUARE_38>, the queen is forced to <SQUARE_28> where it is again harassed by 5. <PIECE_OP><SQUARE_51><SQUARE_35>. The queen's wandering costs time and leaves Black's pieces passive.\n\nII. <PIECE_MQ><SQUARE_17><SQUARE_19> \u2014 Centralizing the queen is natural but allows White to resolve the tension on favorable terms. After 1...<PIECE_MQ><SQUARE_17><SQUARE_19> 2. <PIECE_ON><SQUARE_35><PIECE_MB><SQUARE_20>, Black's best recapture is 2...<PIECE_MQ><SQUARE_19><PIECE_ON><SQUARE_20>, preserving the <PIECE_MP> on <SQUARE_11> and keeping the <PIECE_MB> on <SQUARE_23> active. White's most natural continuation is 3. <PIECE_OP><SQUARE_51><SQUARE_43>, connecting the queenside pawns. Black's best reply is 3...<PIECE_MP><SQUARE_11><SQUARE_27>, gaining space and freeing the queen. After 4. <PIECE_OP><SQUARE_36><PIECE_MP><SQUARE_27> <PIECE_MN><SQUARE_12><PIECE_OP><SQUARE_27>, Black has a solid position with the knight on <SQUARE_27> and the bishop pair, but White retains a slight edge from the more active pieces. The alternative 2...<PIECE_MP><SQUARE_11><PIECE_ON><SQUARE_20> is inferior: it opens the <SQUARE_59>-<SQUARE_3> and leaves the <PIECE_MQ> on <SQUARE_19> exposed to 3. <PIECE_OP><SQUARE_51><SQUARE_35>, preparing <SQUARE_27> to dislodge the queen.\n\nIII. <PIECE_MP><SQUARE_10><SQUARE_26> \u2014 Gaining queenside space is tempting but allows White to exploit the tactical tension immediately. After 1...<PIECE_MP><SQUARE_10><SQUARE_26> 2. <PIECE_ON><SQUARE_35><PIECE_MB><SQUARE_20>, Black's best recapture is 2...<PIECE_MQ><SQUARE_17><PIECE_ON><SQUARE_20>, but White's most active follow-up is 3. <PIECE_OP><SQUARE_51><SQUARE_35>, attacking the <PIECE_MP> on <SQUARE_26> and preparing to open the <SQUARE_59>-<SQUARE_3>. After 3...<PIECE_MP><SQUARE_26><PIECE_OP><SQUARE_35> 4. <PIECE_OB><SQUARE_53><PIECE_MP><SQUARE_35>, the <PIECE_OB> on <SQUARE_35> eyes the <PIECE_MQ> on <SQUARE_20>, and White retains a clear advantage from the bishop pair and open lines. The alternative 2...<PIECE_MP><SQUARE_11><PIECE_ON><SQUARE_20> is inferior: it leaves the <PIECE_MQ> on <SQUARE_17> en prise to 3. <PIECE_OB><SQUARE_53><PIECE_MP><SQUARE_26>, winning a pawn and pinning the queen to the <PIECE_MR> on <SQUARE_1>.\n\nBEST_MOVE: <PIECE_MB><SQUARE_20><PIECE_ON><SQUARE_47>\nCRITICAL_LINE: <PIECE_MB><SQUARE_20><PIECE_ON><SQUARE_47> <PIECE_OP><SQUARE_56><PIECE_MB><SQUARE_47> <PIECE_MQ><SQUARE_17><SQUARE_19> <PIECE_OP><SQUARE_46><SQUARE_38> <PIECE_MP><SQUARE_10><SQUARE_26>\nPROMISING_MOVES: <PIECE_MB><SQUARE_20><PIECE_ON><SQUARE_47> <PIECE_MQ><SQUARE_17><SQUARE_19> <PIECE_MP><SQUARE_10><SQUARE_26>\nEVALUATION: the opponent has a slight advantage of 0.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 917,
+ "seconds": 24.88,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 72614882,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

@@ -1,0 +1,19 @@
+ANALYSIS:
+Black holds a two-point material advantage with the bishop pair, but the position is sharply tactical. White's rook on h4 directly attacks the black bishop on h6, and the white queen on d2 also eyes that square. Black's king remains uncastled on e8, and the black rook on h8 guards the h-file. White's central pawns on c4 and d4 provide space, and the white knight on f3 controls key central squares. The practical question is whether White can exploit the tactical tension on the h-file to neutralize Black's material edge.
+
+I. white rook h4 takes black bishop h6 — the strongest move. White eliminates the most dangerous Black piece and activates the rook on the sixth rank, where it pressures the black rook on h8 and the uncastled king.
+
+I.a. 1... black rook h8 takes white rook h6 2. white queen d2 takes black rook h6 black queen d8-e7 3. white queen h6-g6 black king e8-c8 4. white pawn d4-d5 black pawn e6 takes white pawn d5 5. white pawn c4 takes black pawn d5. The queen trade on h6 is forced; after Black centralizes with ...Qe7 and castles long, White's central break opens the position. Black recaptures with the e-pawn, and after cxd5 the resulting endgame is roughly balanced. White retains a slight edge from the more active queen, but Black's king is safe and the material is equal.
+
+I.b. 1... black rook h8 takes white rook h6 2. white pawn d4-d5 black rook h6-h1. If White delays the queen recapture with a central break, Black simply retreats the rook to h1, attacking the white bishop on f1. After 3. white pawn d5 takes black knight c6 black bishop b7 takes white pawn c6, Black has won a piece and the position is decisively in Black's favor. This line is inferior for White to the direct recapture.
+
+I.c. 1... black rook h8 takes white rook h6 2. white pawn g2-g3 black rook h6-h1. A passive move that ignores the rook. Black plays ...Rh1, and after 3. white pawn d4-d5 black knight c6-b4, the knight eyes a2 and prepares ...Nc2+. White's position is decisively worse.
+
+II. white pawn d4-d5 — a central break that opens lines but fails to address the material deficit. Black responds 1... black queen d8-f6, simultaneously defending the black bishop on h6 and activating the queen. White's best try is 2. white pawn d5 takes black knight c6 black bishop b7 takes white pawn c6 3. white rook h4 takes black bishop h6 black rook h8 takes white rook h6 4. white queen d2 takes black rook h6 black queen f6 takes white queen h6. The forced exchange sequence leaves Black a full bishop ahead with a safe king and a comfortable winning endgame. The alternative 2. white rook h4 takes black bishop h6 black rook h8 takes white rook h6 3. white pawn d5 takes black knight c6 black bishop b7 takes white pawn c6 4. white queen d2 takes black rook h6 black queen f6 takes white queen h6 is even more direct, winning the exchange outright.
+
+III. white queen d2 takes black bishop h6 — a tempting capture that backfires catastrophically. Black simply plays 1... black rook h8 takes white queen h6, winning the queen. After 2. white rook h4 takes black rook h6 black queen d8-e7, Black is up a queen for a rook with a decisive material advantage. The white rook on h6 is now attacked, and White's best try 3. white rook h6-h7 is met by 3... black queen e7-b4+, a check that simultaneously attacks the white pawn on b2. After 4. white king e1-d1 black queen b4 takes white pawn b2, Black wins another pawn and maintains a decisive edge.
+
+BEST_MOVE: white rook h4 takes black bishop h6
+CRITICAL_LINE: white rook h4 takes black bishop h6 black rook h8 takes white rook h6 white queen d2 takes black rook h6 black queen d8-e7 white queen h6-g6 black king e8-c8 white pawn d4-d5 black pawn e6 takes white pawn d5 white pawn c4 takes black pawn d5
+PROMISING_MOVES: white rook h4 takes black bishop h6 white pawn d4-d5 white queen d2 takes black bishop h6
+EVALUATION: the player has an advantage of 1.3 pawns.

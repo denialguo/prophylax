@@ -1,0 +1,13 @@
+ANALYSIS:
+Black's bishop on g5 is the engine of the position, commanding the long diagonal and simultaneously targeting the white knight on d2 and the white pawn on g3. The central tension between White's c4-d4-e4 pawn chain and Black's d5-e6 pawns gives Black multiple ways to open lines, while White's white bishop on g2 is hemmed in by its own pawns and the white king on g1 lacks shelter. The practical question is how to convert the bishop's dual threats into concrete material gain before White reorganizes.
+
+I. black bishop g5-e3 — the decisive move. The bishop invades the third rank, pinning the white knight on d2 to the white queen on d1 and simultaneously attacking the white pawn on d4. White's best reply is white king g1-h1, a quiet improvement of king safety that does not address the pressure. Black then plays black queen c7 takes white pawn g3, winning a pawn and creating a direct threat against the white king. The queen on g3 coordinates with the bishop on e3, and White's king has no safe squares. Black retains a decisive advantage with the extra pawn and superior piece activity.
+
+II. black pawn d5 takes white pawn c4 — a solid but less forcing alternative. White's best is white knight d2 takes black pawn c4, eliminating the passed pawn and restoring material equality. Black's most precise reply is black bishop g5-e7, retreating to a safe square while maintaining pressure on the a1-h8. After white pawn e4-e5 black bishop e7 takes white pawn b4, Black regains a pawn and activates the bishop, but the position is only moderately favorable compared to the decisive edge after I.
+
+III. black bishop g5 takes white knight d2 — the least effective option. White simply recaptures white queen d1 takes black bishop d2, and after black pawn d5 takes white pawn c4 white rook a1-c1 black knight d7-e5, Black retains only a slight edge from the extra pawn. The bishop's dual threats are neutralized by the queen capture, and Black loses the initiative that makes the position decisively better.
+
+BEST_MOVE: black bishop g5-e3
+CRITICAL_LINE: black bishop g5-e3 white king g1-h1 black queen c7 takes white pawn g3
+PROMISING_MOVES: black bishop g5-e3 black pawn d5 takes white pawn c4 black bishop g5 takes white knight d2
+EVALUATION: the player has a decisive advantage of 3.4 pawns.

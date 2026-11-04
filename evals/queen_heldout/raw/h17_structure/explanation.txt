@@ -1,0 +1,19 @@
+ANALYSIS:
+White's position is defined by the bishop pair, the active rook on the c-file, and the vulnerability of Black's queen on e6. Black holds a one-pawn material edge, but the black pawn on b4 is a double-edged asset: it restricts White's queenside and creates a target, yet it also blocks Black's own pieces and can be exploited tactically. The black bishop on e5 is Black's most active piece, controlling central squares and eyeing g3, while the black pawn wedge on g5 and h5 grants kingside space. The practical question is how White converts the bishop pair and piece activity into a concrete advantage before Black consolidates.
+
+I. white bishop e2-c4 — The strongest move. The bishop lands on the long diagonal, simultaneously attacking the black queen on e6 and threatening the black pawn on f7. Black must respond to the direct queen threat.
+
+I.a. 1... black queen e6-d7 — The most resilient retreat, stepping off the diagonal while maintaining queenside pressure. White's strongest reply is 2. white bishop e1 takes black pawn b4, capturing the thorn and activating the bishop on the long diagonal. After 2... black king f8-g7 3. white bishop c4-d3, the bishop eyes the queen and prepares a swing to f5. Black's best is 3... black queen d7-h3, attacking the king's shelter, but White retains a clear edge with the bishop pair and superior piece activity.
+
+I.b. 1... black queen e6-g4 — A more aggressive square that keeps the queen active but leaves it vulnerable to the white bishop on c4 and the white rook on c1. White's best is 2. white pawn a3 takes black pawn b4, eliminating the thorn and opening the a-file. After 2... black queen g4-f3 3. white bishop c4-e2, the queen is attacked and must retreat, leaving White with a comfortable advantage.
+
+I.c. 1... black pawn b4 takes white pawn a3 — A critical error. The capture opens the a2-g8 and leaves the queen en prise. White plays 2. white bishop c4 takes black queen e6, winning the queen outright. After 2... black pawn f7 takes white bishop e6 3. white queen c2-f5, White attacks the undefended black pawn on g5 and threatens white queen f5-c8+. Black's best is 3... black pawn g5-g4, but White is up a full queen for a bishop.
+
+II. white pawn a3 takes black pawn b4 — A reasonable alternative that immediately eliminates the thorn, but it allows Black to activate the rook with 1... black rook d8-c8, creating a direct confrontation on the c-file. After 2. white queen c2-d1 black rook c8 takes white rook c1 3. white queen d1 takes black rook c1, the position is approximately equal: White retains the bishop pair and a comfortable queen on the open file, but Black's remaining pieces are well coordinated. The alternative 2. white queen c2-b1 is passive and allows Black to seize the initiative with ...Rxc1+.
+
+III. white bishop e1 takes black pawn b4 — The least effective option. Black responds 1... black king f8-g7, tucking the king to safety and maintaining the position. After 2. white bishop e2-c4 black queen e6-h3, the position remains approximately equal, with Black's kingside pawn storm and the open h-file compensating for White's bishop pair.
+
+BEST_MOVE: white bishop e2-c4
+CRITICAL_LINE: white bishop e2-c4 black queen e6-d7 white bishop e1 takes black pawn b4 black king f8-g7 white bishop c4-d3 black queen d7-h3
+PROMISING_MOVES: white bishop e2-c4 white pawn a3 takes black pawn b4 white bishop e1 takes black pawn b4
+EVALUATION: the player has an advantage of 0.9 pawns.

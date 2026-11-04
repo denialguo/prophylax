@@ -1,0 +1,33 @@
+{
+ "fen": "rnq1kb1r/pp2pp1p/2p2np1/3p4/2PP4/PQ2P3/1P3PPP/RNB1KB1R w KQkq - 3 9",
+ "best_move_uci": "b1c3",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "b1c3",
+  "e7e6",
+  "c4d5",
+  "c6d5",
+  "f1b5",
+  "b8c6",
+  "b5c6",
+  "b7c6"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite's position is defined by the central pawn duo on <SQUARE_27> and <SQUARE_28>, supported by the <PIECE_MQ> on <SQUARE_18>. Black's compact structure with pawns on <SQUARE_43> and <SQUARE_36> is solid but passive: the <PIECE_OB> on <SQUARE_62> is undeveloped, the <PIECE_ON> on <SQUARE_58> has no natural square, and the <PIECE_OQ> on <SQUARE_59> is hemmed in by its own pawns. White's plans center on exploiting the spatial edge\u2014either by resolving the central tension favorably or by developing with tempo\u2014while Black must complete development and neutralize the center before it becomes a permanent asset.\n\nI. <PIECE_MN><SQUARE_2><SQUARE_19> \u2014 the strongest candidate. This develops the knight to its natural square, reinforces the center, and keeps all options open for the light-squared bishop. Black's best reply is 1...<PIECE_OP><SQUARE_53><SQUARE_45>, preparing ...<PIECE_OB><SQUARE_62><SQUARE_55> and ...<PIECE_ON><SQUARE_58><SQUARE_52> while preserving the central tension. White's most ambitious continuation is 2.<PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_OP><SQUARE_43><PIECE_MP><SQUARE_36> 3.<PIECE_MB><SQUARE_6><SQUARE_34>+ <PIECE_ON><SQUARE_58><SQUARE_43> 4.<PIECE_MB><SQUARE_34><PIECE_ON><SQUARE_43>+ <PIECE_OP><SQUARE_50><PIECE_MB><SQUARE_43>. The check on <SQUARE_34> forces the knight to <SQUARE_43>, where it is captured with check; after the recapture, Black has doubled c-pawns but White retains a modest edge from the open c-file and the active <PIECE_MQ> on <SQUARE_18>.\n\nI.a. 2.<PIECE_MB><SQUARE_6><SQUARE_13> is quieter and allows 2...<PIECE_OB><SQUARE_62><SQUARE_55> 3.<PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_OP><SQUARE_45><PIECE_MP><SQUARE_36>, when Black's structure is sound and the position is more level.\n\nI.b. 2.<PIECE_MB><SQUARE_6><SQUARE_20> permits 2...<PIECE_OP><SQUARE_36><PIECE_MP><SQUARE_27> 3.<PIECE_MB><SQUARE_20><PIECE_OP><SQUARE_27> <PIECE_OB><SQUARE_62><SQUARE_55>, giving Black the bishop pair and a solid center.\n\nII. <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> \u2014 immediately resolving the tension. Black's best is 1...<PIECE_OP><SQUARE_43><PIECE_MP><SQUARE_36>, after which 2.<PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_ON><SQUARE_58><SQUARE_43> 3.<PIECE_MB><SQUARE_6><SQUARE_34> pins the knight and maintains a small edge. The alternative 1...<PIECE_ON><SQUARE_46><PIECE_MP><SQUARE_36> is inferior: 2.<PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_ON><SQUARE_36><PIECE_MN><SQUARE_19> 3.<PIECE_MP><SQUARE_10><PIECE_ON><SQUARE_19> <PIECE_OB><SQUARE_62><SQUARE_55> 4.<PIECE_MB><SQUARE_6><SQUARE_34> <PIECE_OP><SQUARE_43><PIECE_MB><SQUARE_34> 5.<PIECE_MQ><SQUARE_18><PIECE_OP><SQUARE_34> leaves White with a comfortable spatial and developmental advantage. The passive 1...<PIECE_OB><SQUARE_62><SQUARE_55> is worst of all, allowing 2.<PIECE_MP><SQUARE_36><PIECE_OP><SQUARE_43> <PIECE_ON><SQUARE_58><PIECE_MP><SQUARE_43> 3.<PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_OK><SQUARE_61><SQUARE_63> 4.<PIECE_MB><SQUARE_6><SQUARE_20> with a decisive advantage from the open c-file and the active bishop.\n\nIII. <PIECE_MB><SQUARE_6><SQUARE_13> \u2014 a solid developing move that supports the center and prepares castling. Black's best is 1...<PIECE_OB><SQUARE_62><SQUARE_55>, after which 2.<PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_OP><SQUARE_53><SQUARE_45> 3.<PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_OP><SQUARE_43><PIECE_MP><SQUARE_36> 4.<PIECE_MB><SQUARE_3><SQUARE_12> <PIECE_OK><SQUARE_61><SQUARE_63> leads to a balanced position with White retaining a slight edge from the more active bishop. The alternative 1...<PIECE_ON><SQUARE_58><SQUARE_52> is less precise: 2.<PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_OP><SQUARE_43><PIECE_MP><SQUARE_36> 3.<PIECE_MB><SQUARE_3><SQUARE_12> <PIECE_OB><SQUARE_62><SQUARE_55> 4.<PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_OK><SQUARE_61><SQUARE_63> gives White a comfortable spatial and developmental advantage with the bishop pair and the open c-file.\n\nBEST_MOVE: <PIECE_MN><SQUARE_2><SQUARE_19>\nCRITICAL_LINE: <PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_OP><SQUARE_53><SQUARE_45> <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_OP><SQUARE_43><PIECE_MP><SQUARE_36> <PIECE_MB><SQUARE_6><SQUARE_34> <PIECE_ON><SQUARE_58><SQUARE_43> <PIECE_MB><SQUARE_34><PIECE_ON><SQUARE_43> <PIECE_OP><SQUARE_50><PIECE_MB><SQUARE_43>\nPROMISING_MOVES: <PIECE_MN><SQUARE_2><SQUARE_19> <PIECE_MP><SQUARE_27><PIECE_OP><SQUARE_36> <PIECE_MB><SQUARE_6><SQUARE_13>\nEVALUATION: the player has an advantage of 0.8 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 770,
+ "seconds": 22.95,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1414045122,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

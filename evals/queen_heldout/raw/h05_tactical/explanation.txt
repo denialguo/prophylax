@@ -1,0 +1,19 @@
+ANALYSIS:
+Black faces a critical decision with White's queen on b6 simultaneously targeting the black pawn on a7 and the black pawn on b7. White holds a full queen in material, but Black's immediate resource is to eliminate this piece entirely. The black pawn on a7 is the only defender of b6, and capturing the queen converts the position into a roughly balanced rook-and-knight endgame. Any move that fails to capture the queen leaves White with a decisive material advantage that cannot be offset by positional compensation.
+
+I. black pawn a7 takes white queen b6 — the only move that preserves the position. After this capture, White's best continuation is white rook d1-d4, activating the rook on the open d-file and pressuring the black pawn on d5. Black's most accurate reply is black rook c8-c6, contesting the c-file and preparing to challenge the rook. White's natural white rook f1-d1 doubles on the d-file, and the resulting position is approximately equal with a slight edge to White from the more active rook placement.
+
+I.a. If Black instead plays black rook c8-c5, White responds white rook d4-b4, targeting the black pawn on b6. After black rook f8-c8 white rook f1-d1, the position is approximately equal, but the black rook on c5 is less flexibly placed than on c6.
+
+I.b. The pawn push black pawn b6-b5 is a serious error. White plays white rook d4-b4, and after black rook c8-c5 white rook b4 takes black pawn b5, White wins a pawn and obtains a clear advantage.
+
+II. black knight f6-e4 — a developing move that attacks the white knight on c3, but it leaves the queen on b6 untouched. White simply plays white queen b6 takes black pawn a7, winning a pawn and placing the queen on the seventh rank. After black knight e4 takes white knight c3 white pawn b2 takes black knight c3 black rook c8 takes white pawn c3, Black recovers a pawn but remains down a full queen with no realistic compensation.
+
+III. black pawn h7-h6 — a passive flank move that does nothing to address the queen. White again plays white queen b6 takes black pawn a7, and after black rook c8-a8 white queen a7 takes black pawn b7 black rook a8 takes white pawn a2 white knight c3 takes black rook a2, Black has recovered two pawns but the material deficit remains decisive.
+
+The capture on b6 is the only move that saves the position. It eliminates White's overwhelming material advantage and produces a playable endgame where both sides have active pieces and realistic chances.
+
+BEST_MOVE: black pawn a7 takes white queen b6
+CRITICAL_LINE: black pawn a7 takes white queen b6 white rook d1-d4 black rook c8-c6 white rook f1-d1
+PROMISING_MOVES: black pawn a7 takes white queen b6 black knight f6-e4 black pawn h7-h6
+EVALUATION: the opponent has a slight advantage of 0.1 pawns.

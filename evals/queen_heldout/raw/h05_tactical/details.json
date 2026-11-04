@@ -1,0 +1,29 @@
+{
+ "fen": "2r2rk1/pp3ppp/1Q2pn2/3p4/8/2N1P3/PPP2PPP/3R1RK1 b - - 0 15",
+ "best_move_uci": "a7b6",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "a7b6",
+  "d1d4",
+  "c8c6",
+  "f1d1"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack faces a critical decision with White's queen on <SQUARE_18> simultaneously targeting the <PIECE_MP> on <SQUARE_9> and the <PIECE_MP> on <SQUARE_10>. White holds a full queen in material, but Black's immediate resource is to eliminate this piece entirely. The <PIECE_MP> on <SQUARE_9> is the only defender of <SQUARE_18>, and capturing the queen converts the position into a roughly balanced rook-and-knight endgame. Any move that fails to capture the queen leaves White with a decisive material advantage that cannot be offset by positional compensation.\n\nI. <PIECE_MP><SQUARE_9><PIECE_OQ><SQUARE_18> \u2014 the only move that preserves the position. After this capture, White's best continuation is <PIECE_OR><SQUARE_60><SQUARE_36>, activating the rook on the open d-file and pressuring the <PIECE_MP> on <SQUARE_28>. Black's most accurate reply is <PIECE_MR><SQUARE_3><SQUARE_19>, contesting the c-file and preparing to challenge the rook. White's natural <PIECE_OR><SQUARE_62><SQUARE_60> doubles on the d-file, and the resulting position is approximately equal with a slight edge to White from the more active rook placement.\n\nI.a. If Black instead plays <PIECE_MR><SQUARE_3><SQUARE_27>, White responds <PIECE_OR><SQUARE_36><SQUARE_34>, targeting the <PIECE_MP> on <SQUARE_18>. After <PIECE_MR><SQUARE_6><SQUARE_3> <PIECE_OR><SQUARE_62><SQUARE_60>, the position is approximately equal, but the <PIECE_MR> on <SQUARE_27> is less flexibly placed than on <SQUARE_19>.\n\nI.b. The pawn push <PIECE_MP><SQUARE_18><SQUARE_26> is a serious error. White plays <PIECE_OR><SQUARE_36><SQUARE_34>, and after <PIECE_MR><SQUARE_3><SQUARE_27> <PIECE_OR><SQUARE_34><PIECE_MP><SQUARE_26>, White wins a pawn and obtains a clear advantage.\n\nII. <PIECE_MN><SQUARE_22><SQUARE_37> \u2014 a developing move that attacks the <PIECE_ON> on <SQUARE_43>, but it leaves the queen on <SQUARE_18> untouched. White simply plays <PIECE_OQ><SQUARE_18><PIECE_MP><SQUARE_9>, winning a pawn and placing the queen on the seventh rank. After <PIECE_MN><SQUARE_37><PIECE_ON><SQUARE_43> <PIECE_OP><SQUARE_50><PIECE_MN><SQUARE_43> <PIECE_MR><SQUARE_3><PIECE_OP><SQUARE_43>, Black recovers a pawn but remains down a full queen with no realistic compensation.\n\nIII. <PIECE_MP><SQUARE_16><SQUARE_24> \u2014 a passive flank move that does nothing to address the queen. White again plays <PIECE_OQ><SQUARE_18><PIECE_MP><SQUARE_9>, and after <PIECE_MR><SQUARE_3><SQUARE_1> <PIECE_OQ><SQUARE_9><PIECE_MP><SQUARE_10> <PIECE_MR><SQUARE_1><PIECE_OP><SQUARE_49> <PIECE_ON><SQUARE_43><PIECE_MR><SQUARE_49>, Black has recovered two pawns but the material deficit remains decisive.\n\nThe capture on <SQUARE_18> is the only move that saves the position. It eliminates White's overwhelming material advantage and produces a playable endgame where both sides have active pieces and realistic chances.\n\nBEST_MOVE: <PIECE_MP><SQUARE_9><PIECE_OQ><SQUARE_18>\nCRITICAL_LINE: <PIECE_MP><SQUARE_9><PIECE_OQ><SQUARE_18> <PIECE_OR><SQUARE_60><SQUARE_36> <PIECE_MR><SQUARE_3><SQUARE_19> <PIECE_OR><SQUARE_62><SQUARE_60>\nPROMISING_MOVES: <PIECE_MP><SQUARE_9><PIECE_OQ><SQUARE_18> <PIECE_MN><SQUARE_22><SQUARE_37> <PIECE_MP><SQUARE_16><SQUARE_24>\nEVALUATION: the opponent has a slight advantage of 0.1 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 572,
+ "seconds": 16.77,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1287774103,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

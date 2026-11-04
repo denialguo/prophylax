@@ -1,0 +1,19 @@
+ANALYSIS:
+Black stands a full knight and pawn behind, with the material deficit concentrated in the missing white knight on g3. Black's compensation rests on the active rook on e6, the centralized queen on d5, and the black pawn on d4, which restricts White's queenside. The black king on c8 is exposed along the c-file, and White's white queen on d3 is the key piece that can both challenge Black's counterplay and exploit the king's vulnerability. Black's practical task is to generate enough counterplay on the e-file and queenside to offset the material deficit before White consolidates.
+
+I. black rook e6-e5 — the best move. The rook steps to the fifth rank, maintaining e-file pressure while avoiding the immediate tactical complications of the third-rank invasion. White's strongest reply is 1. white queen d3-f5, attacking the queen and forcing a decision.
+
+I.a. 1... black queen d5-c6 — the best reply. The queen retreats to a safe square where it eyes the white pawn on h3 and maintains some counterplay. White's most natural follow-up is 2. white pawn b2-b3, preparing to challenge the black pawn on c5. Black's most active response is 2... black rook e5-e3, swinging to the third rank to attack the white pawn on h3 and prepare a check on f3. After 3. white pawn f2 takes black rook e3 black rook e8 takes white pawn e3, Black has traded a rook for a pawn and retains the active queen, but the material deficit remains decisive.
+
+I.b. 1... black queen d5 takes white queen f5 — a queen sacrifice that fails tactically. White simply plays 2. white knight g3 takes black queen f5, winning the queen outright. After 2... black rook e5 takes white knight f5 3. white pawn b2-b4, the material deficit is even larger.
+
+I.c. 1... black queen d5-e6 — the worst option. White plays 2. white queen f5 takes black queen e6+, and after 2... black rook e5 takes white queen e6, the queens are traded and White's remaining material advantage is fully realized.
+
+II. black pawn c5-c4 — a queenside pawn push that opens the position but allows White the most forcing continuation. White's strongest reply is 1. white queen d3-f5, attacking the queen. Black's best is 1... black queen d5 takes white queen f5, trading queens. After 2. white knight g3 takes black queen f5, the knight lands on a powerful central outpost and the white rook on g1 gains the open g-file. Black's best continuation is 2... black rook e6-e5, attacking the knight and seizing the e-file. White retreats 3. white knight f5-g3, and the resulting endgame is decisively lost: the knight is well placed, the rook has an open file, and Black's remaining pieces are passive. The alternative 2... black rook e6-e2 is inferior, as the rook on e2 is less effective than on e5.
+
+III. black rook e6-e3 — the most aggressive option, invading the third rank and pinning the white knight on g3. However, White's best reply is 1. white queen d3-f5, attacking the queen and simultaneously removing the pin. Black's most resilient reply is 1... black queen d5-c6, but White then plays 2. white pawn f2 takes black rook e3, winning the rook and opening the e-file. After 2... black pawn d4 takes white pawn e3, Black obtains a passed pawn on e3, but the material deficit has grown to a rook and knight for a pawn, and White's pieces are fully active. The direct capture 1... black queen d5 takes white queen f5 fails to 2. white knight g3 takes black queen f5, winning the queen outright.
+
+BEST_MOVE: black rook e6-e5
+CRITICAL_LINE: black rook e6-e5 white queen d3-f5 black queen d5-c6
+PROMISING_MOVES: black rook e6-e5 black pawn c5-c4 black rook e6-e3
+EVALUATION: the opponent has a decisive advantage of 2.9 pawns.

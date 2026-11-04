@@ -1,0 +1,21 @@
+ANALYSIS:
+Black stands a full knight ahead, with both knights occupying dominant outposts: the knight on c3 attacks the white rook on b2 and restricts White's queenside coordination, while the knight on a2 is deeply embedded and directly targeted by that rook. White's white queen on c2 and white rook on b2 form a battery aimed at the a2 knight, and the white knight on f3 can centralize to d4. The practical question is whether White can trade off the a2 knight to reduce Black's material edge, or whether any attempt to activate the f3 knight first allows Black to consolidate with a decisive advantage.
+
+I. white rook b2 takes black knight a2 — The only move that keeps the evaluation within playable range. By capturing the embedded knight, White eliminates one of Black's two dominant pieces and forces the c3 knight to make a decision.
+
+I.a. 1... black knight c3 takes white rook a2 2. white queen c2 takes black knight a2 black rook f8-c8 3. white knight f3-d4 — The main line. Black recaptures the rook, White trades queens' attention by capturing the knight, and Black activates the rook on the open c-file. White centralizes the knight, threatening f5+, but Black's rook on c8 is well placed and the material balance, while still favorable to Black, is the most defensible outcome available to White.
+
+I.b. 1... black rook f8-c8 — A natural developing move that neglects the immediate threat. White plays 2. white rook a2-a5, lifting the rook to the fifth rank to maintain pressure on a7 while keeping the a-file semi-open. After 2... black knight c3-e4 3. white queen c2-b2, White's queen tucks to safety and the rook retains its grip on the a-file. The position remains approximately equal, with White's active rook compensating for the material deficit.
+
+I.c. 1... black rook a8-c8 — A similar idea from the a-file. White again plays 2. white rook a2-a5. After 2... black knight c3-e4 3. white queen c2-b2 black pawn b7-b6, the position is roughly level with White retaining a small edge from the active rook.
+
+II. white knight f3-d4 — Centralizing the knight immediately is far inferior. Black plays 1... black knight a2-b4, simultaneously attacking the white queen on c2 and removing the knight from the rook's target. White's best is 2. white queen c2-d2, centralizing and keeping the d4 knight protected, but Black retains a decisive material advantage with both knights on strong outposts and the c3 knight still dominant.
+
+III. white rook f1-d1 — The worst option. Black plays 1... black knight c3 takes white rook d1, capturing the rook and placing the knight on a powerful central square. White's best is 2. white queen c2 takes black knight a2, trading queens' attention, but Black continues 2... black knight d1 takes white rook b2, winning a second rook. After 3. white queen a2 takes black knight b2, Black has traded both knights for two rooks and retains a decisive material edge with the black queen and black bishop fully active.
+
+The decisive factor is that only candidate I immediately resolves the tension around the a2 knight, converting Black's material advantage into a manageable edge rather than a decisive one. Candidates II and III allow Black to maintain or increase the material advantage while keeping both knights on dominant outposts.
+
+BEST_MOVE: white rook b2 takes black knight a2
+CRITICAL_LINE: white rook b2 takes black knight a2 black knight c3 takes white rook a2 white queen c2 takes black knight a2 black rook f8-c8 white knight f3-d4
+PROMISING_MOVES: white rook b2 takes black knight a2 white knight f3-d4 white rook f1-d1
+EVALUATION: the opponent has an advantage of 0.8 pawns.

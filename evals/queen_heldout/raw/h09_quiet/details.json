@@ -1,0 +1,28 @@
+{
+ "fen": "r3r1k1/p4pp1/Q6p/1p3q2/1B2n3/1B3N1P/5PP1/R5K1 b - - 2 27",
+ "best_move_uci": "e4g5",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e4g5",
+  "f3g5",
+  "h6g5"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nBlack holds a one-point material edge\u2014two rooks and a knight against White's rook, two bishops, and knight\u2014but White's pieces are far more actively deployed. The queen on <SQUARE_17> dominates the queenside, the bishop pair on <SQUARE_34> and <SQUARE_42> controls key diagonals, and the knight on <SQUARE_46> supports central operations. Black's king on <SQUARE_7> is exposed, and the queen on <SQUARE_30> is a recurring target. The practical question is whether Black can neutralize White's piece activity before it converts into a concrete material or attacking advantage.\n\nI. <PIECE_MN><SQUARE_37><SQUARE_31> \u2014 Best. The knight steps to a strong outpost, attacking the <PIECE_ON> on <SQUARE_46> and creating immediate tactical tension. White's most logical reply is <PIECE_ON><SQUARE_46><PIECE_MN><SQUARE_31>, trading the active knight for Black's outpost piece. After <PIECE_MP><SQUARE_24><PIECE_ON><SQUARE_31>, the position is approximately equal: Black retains the material edge, but White's remaining pieces are well coordinated and the queen on <SQUARE_17> continues to exert queenside pressure. This is the only candidate that preserves Black's chances.\n\nII. <PIECE_MN><SQUARE_37><SQUARE_27> \u2014 Inferior. The knight centralizes but walks into a decisive capture. White plays <PIECE_OB><SQUARE_34><PIECE_MN><SQUARE_27>, eliminating Black's most active piece and opening the c-file. After <PIECE_MQ><SQUARE_30><PIECE_OB><SQUARE_27>, White grabs the <PIECE_MP> on <SQUARE_26> with <PIECE_OQ><SQUARE_17><PIECE_MP><SQUARE_26>, activating the queen on the open b-file. Black's best try is <PIECE_MR><SQUARE_1><SQUARE_2>, attacking the queen and seizing the file, but White retains a decisive advantage with the bishop pair, the active queen, and the material edge.\n\nIII. <PIECE_MR><SQUARE_1><SQUARE_4> \u2014 Worst. The rook centralizes but allows White to seize the <PIECE_MP> on <SQUARE_9> with <PIECE_OQ><SQUARE_17><PIECE_MP><SQUARE_9>, placing the queen on the seventh rank where it simultaneously eyes <SQUARE_14> and the <PIECE_MR> on <SQUARE_4>. Black's best reply is <PIECE_MR><SQUARE_4><SQUARE_1>, contesting the a-file, but White retains a decisive advantage with the queen's dominant placement and the bishop pair's long-range pressure.\n\nBEST_MOVE: <PIECE_MN><SQUARE_37><SQUARE_31>\nCRITICAL_LINE: <PIECE_MN><SQUARE_37><SQUARE_31> <PIECE_ON><SQUARE_46><PIECE_MN><SQUARE_31> <PIECE_MP><SQUARE_24><PIECE_ON><SQUARE_31>\nPROMISING_MOVES: <PIECE_MN><SQUARE_37><SQUARE_31> <PIECE_MN><SQUARE_37><SQUARE_27> <PIECE_MR><SQUARE_1><SQUARE_4>\nEVALUATION: the opponent has a slight advantage of 0.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 485,
+ "seconds": 15.31,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 921952479,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

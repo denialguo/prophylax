@@ -1,0 +1,25 @@
+ANALYSIS:
+White is down overwhelming material—two bishops and a knight against two pawns—and the position is a pure conversion exercise for Black. The white king on d5 sits exposed in the center, and the white pawn on c3 is the immediate target of the black bishop on b2. Black's black knight on d3 occupies a dominant outpost, and the black pawn on c4 is a dangerous passer that restricts the white king's mobility. White's only practical resources are the two pawns, but neither can generate meaningful counterplay. The practical question is which king square minimizes Black's attacking resources.
+
+I. white king d5-d6 (best)
+
+Stepping to d6 keeps the king on the queenside where it can contest the black pawn on c4. Black's strongest reply is 1... black bishop b2 takes white pawn c3, capturing the pawn and activating the bishop on the long diagonal. White's most resilient response is 2. white king d6-c7, stepping toward the queenside to keep the black pawn on c4 in view. Black continues 2... black bishop c3-e5+, a check that centralizes the bishop and forces 3. white king c7-b7. The king is now cornered with no useful squares, and Black's remaining pieces coordinate to complete the conversion.
+
+I.a. If White instead plays 2. white king d6-d5, Black responds 2... black bishop c3-e1, preparing the check on d2. After 3. white king d5-d6, the bishop on e1 is more flexibly placed than on e5, making this line slightly less favorable for White.
+
+I.b. If White plays 2. white king d6-d7, Black activates the knight with 2... black knight d3-e5+, forcing 3. white king d7-c7. The knight check is more forcing than the bishop check in the main line, and the king is driven to the same square with Black's pieces better coordinated.
+
+II. white king d5-d4
+
+Stepping toward the center exposes the king to checks along the e1-e8 and the a1-h8. Black's strongest reply is again 1... black bishop b2 takes white pawn c3. White's best is 2. white king d4-d5, keeping the king active. Black continues 2... black bishop c3-e1, preparing the check on d2 while keeping the bishop on the long diagonal. After 3. white king d5-d6, Black retains a decisive advantage with the bishop pair and knight fully coordinated.
+
+II.a. If White instead plays 2. white king d4-e3, Black responds 2... black bishop c3-d4+, forcing 3. white king e3-d2. The king is driven to the corner with no active prospects.
+
+III. white king d5-e4
+
+Stepping toward the kingside is the most passive option. Black's strongest reply is 1... black bishop b2 takes white pawn c3, removing White's last pawn and opening the diagonal. White's best try is 2. white king e4-f3, keeping the king near the white pawn on g3 and avoiding the immediate check from b2. Black continues 2... black bishop c3-e5, centralizing and preparing the check on d6. After 3. white king f3-g2, the king tucks in but Black retains a decisive advantage with the bishop pair and knight fully coordinated.
+
+BEST_MOVE: white king d5-d6
+CRITICAL_LINE: white king d5-d6 black bishop b2 takes white pawn c3 white king d6-c7 black bishop c3-e5 white king c7-b7
+PROMISING_MOVES: white king d5-d6 white king d5-d4 white king d5-e4
+EVALUATION: the opponent is winning, with an evaluation of 9.6 pawns.

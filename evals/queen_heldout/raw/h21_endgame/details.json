@@ -1,0 +1,30 @@
+{
+ "fen": "5r2/2k1rp1R/2n1p1p1/p1P5/2B1NP2/P7/1P4nP/1KR5 w - - 2 33",
+ "best_move_uci": "e4d6",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e4d6",
+  "g2f4",
+  "c1d1",
+  "e6e5",
+  "c4b5"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite stands a pawn ahead with a dominant <PIECE_MN> on <SQUARE_29>, an active <PIECE_MR> on <SQUARE_56> pinning the <PIECE_OP> on <SQUARE_54>, and a <PIECE_MB> on <SQUARE_27> controlling the long diagonal. Black's most dangerous asset is the <PIECE_ON> on <SQUARE_15>, which directly threatens the <PIECE_MP> on <SQUARE_30> and can reposition to central outposts. The <PIECE_ON> on <SQUARE_43> eyes the <PIECE_MP> on <SQUARE_35>, and the <PIECE_OK> on <SQUARE_51> is exposed along the <SQUARE_2>-<SQUARE_58>. The practical question for White is how to consolidate the material edge while neutralizing Black's knight activity, particularly the pressure on <SQUARE_30>.\n\nI. <PIECE_MN><SQUARE_29><SQUARE_44> \u2014 the strongest continuation. The knight leaps to a dominant central outpost, simultaneously threatening <SQUARE_54> and <SQUARE_34> while restricting Black's king. Black's best reply is 1... <PIECE_ON><SQUARE_15><PIECE_MP><SQUARE_30>, grabbing the pawn and activating the knight on a central square. White's most precise response is 2. <PIECE_MR><SQUARE_3><SQUARE_4>, centralizing the rook on the open <SQUARE_4>-<SQUARE_60> and preparing to swing toward the kingside or support the <PIECE_MN> on <SQUARE_44>. Black's most active try is 2... <PIECE_OP><SQUARE_45><SQUARE_37>, opening the <SQUARE_5>-<SQUARE_61> and challenging the <PIECE_MB> on <SQUARE_27>. White responds 3. <PIECE_MB><SQUARE_27><SQUARE_34>, attacking the <PIECE_ON> on <SQUARE_43> and preparing the check <PIECE_MB><SQUARE_34><SQUARE_42>. Black's alternative 2... <PIECE_ON><SQUARE_30><SQUARE_36> is inferior: after 3. <PIECE_MB><SQUARE_27><PIECE_ON><SQUARE_36> <PIECE_OP><SQUARE_45><PIECE_MB><SQUARE_36> 4. <PIECE_MR><SQUARE_4><PIECE_OP><SQUARE_36>, White's rook dominates the open <SQUARE_4>-<SQUARE_60> and the <PIECE_MN> on <SQUARE_44> remains a potent attacker.\n\nII. <PIECE_MR><SQUARE_3><SQUARE_6> \u2014 a solid but less precise alternative. The rook centralizes on the <SQUARE_6>-<SQUARE_62>, but it leaves the <PIECE_MN> on <SQUARE_29> without the additional pressure of a <SQUARE_44> outpost. Black's best is 1... <PIECE_ON><SQUARE_15><SQUARE_21>, centralizing and attacking the <PIECE_MB> on <SQUARE_27>. White's best reply is 2. <PIECE_MR><SQUARE_6><SQUARE_22>, defending the bishop and preparing to recapture on <SQUARE_30>. After 2... <PIECE_ON><SQUARE_21><PIECE_MB><SQUARE_27> 3. <PIECE_MR><SQUARE_22><PIECE_ON><SQUARE_27> <PIECE_OP><SQUARE_54><SQUARE_38>, White retains the extra pawn and the active <PIECE_MR> on <SQUARE_56>, but Black has achieved a reasonable position with the <PIECE_OP> on <SQUARE_38> attacking the <PIECE_MN> on <SQUARE_29>.\n\nIII. <PIECE_MR><SQUARE_3><SQUARE_7> \u2014 the least effective option. The rook retreats to the <SQUARE_7>-<SQUARE_63>, where it is passive and does not contribute to the attack on the <PIECE_OK>. Black's best is 1... <PIECE_ON><SQUARE_15><PIECE_MP><SQUARE_30>, and White's best reply is 2. <PIECE_MR><SQUARE_7><SQUARE_6>. The position remains slightly better for White, but Black's active knight on <SQUARE_30> and the open <SQUARE_5>-<SQUARE_61> provide adequate counterplay.\n\nBEST_MOVE: <PIECE_MN><SQUARE_29><SQUARE_44>\nCRITICAL_LINE: <PIECE_MN><SQUARE_29><SQUARE_44> <PIECE_ON><SQUARE_15><PIECE_MP><SQUARE_30> <PIECE_MR><SQUARE_3><SQUARE_4> <PIECE_OP><SQUARE_45><SQUARE_37> <PIECE_MB><SQUARE_27><SQUARE_34>\nPROMISING_MOVES: <PIECE_MN><SQUARE_29><SQUARE_44> <PIECE_MR><SQUARE_3><SQUARE_6> <PIECE_MR><SQUARE_3><SQUARE_7>\nEVALUATION: the player has an advantage of 0.8 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 667,
+ "seconds": 20.17,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 330632568,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

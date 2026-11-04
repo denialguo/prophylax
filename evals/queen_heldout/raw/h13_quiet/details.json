@@ -1,0 +1,31 @@
+{
+ "fen": "rn3rk1/pp3ppp/2p1pn2/q1b2b2/2B5/2NP1N1P/PPP2PP1/R1BQ1R1K w - - 2 10",
+ "best_move_uci": "g2g4",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "g2g4",
+  "f5g6",
+  "f3h4",
+  "b8d7",
+  "h4g6",
+  "h7g6"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite holds a modest but concrete advantage in this semi-closed position. The <PIECE_MB> on <SQUARE_27> dominates the long diagonal toward <SQUARE_54>, the <PIECE_MN> on <SQUARE_22> is ready to jump to <SQUARE_32>, and the <PIECE_MP> on <SQUARE_15> is poised to advance. Black's <PIECE_OB> on <SQUARE_38> is the most active Black piece, controlling the <SQUARE_9>-<SQUARE_63> and supporting the kingside, but it is simultaneously a target. The <PIECE_OQ> on <SQUARE_33> is exposed to the <PIECE_MR> on <SQUARE_1>, and the <PIECE_ON> on <SQUARE_58> remains undeveloped. White's practical task is to exploit the kingside space and the bishop pair before Black completes development and generates queenside counterplay with ...<SQUARE_34>.\n\nI. <PIECE_MP><SQUARE_15><SQUARE_31> \u2014 the most precise move, immediately challenging the <PIECE_OB> on <SQUARE_38> and preparing to open the g-file for the rook.\n\nI.a. 1... <PIECE_OB><SQUARE_38><SQUARE_47> is Black's best reply, retreating while maintaining diagonal influence. White's strongest continuation is 2. <PIECE_MN><SQUARE_22><SQUARE_32>, attacking the bishop and threatening to open the g-file. After 2... <PIECE_ON><SQUARE_58><SQUARE_52> 3. <PIECE_MN><SQUARE_32><PIECE_OB><SQUARE_47> <PIECE_OP><SQUARE_56><PIECE_MN><SQUARE_47>, White has won the bishop pair and the <PIECE_MR> on <SQUARE_6> gains access to the open g-file. Black's <PIECE_ON> on <SQUARE_52> is well placed and the position remains playable, but White's edge is clear.\n\nI.b. 1... <PIECE_OP><SQUARE_50><SQUARE_34> attacks the <PIECE_MB> on <SQUARE_27> but leaves the <PIECE_OB> on <SQUARE_38> en prise. White's best is 2. <PIECE_MB><SQUARE_27><SQUARE_18>, preserving the bishop pair. After 2... <PIECE_OB><SQUARE_38><SQUARE_47> 3. <PIECE_MN><SQUARE_22><SQUARE_32>, the same knight-sacrifice pattern arises, but White has gained a tempo with the bishop retreat. The alternative 2. <PIECE_MP><SQUARE_31><PIECE_OB><SQUARE_38> is inferior: after 2... <PIECE_OP><SQUARE_34><PIECE_MB><SQUARE_27> 3. <PIECE_MP><SQUARE_20><PIECE_OP><SQUARE_27> <PIECE_OP><SQUARE_45><PIECE_MP><SQUARE_38>, Black has won a pawn and the <PIECE_OP> on <SQUARE_38> is a thorn in White's camp.\n\nI.c. 1... <PIECE_ON><SQUARE_58><SQUARE_52> is a natural developing move but leaves the <PIECE_OB> on <SQUARE_38> en prise. White's best is 2. <PIECE_MP><SQUARE_31><PIECE_OB><SQUARE_38>, opening the g-file. After 2... <PIECE_OP><SQUARE_45><PIECE_MP><SQUARE_38> 3. <PIECE_MB><SQUARE_3><SQUARE_12>, White has the bishop pair, an open g-file, and the <PIECE_MB> on <SQUARE_12> eyes the <PIECE_OQ> on <SQUARE_33>. Black's 3... <PIECE_OP><SQUARE_50><SQUARE_34> attacks the <PIECE_MB> on <SQUARE_27>, but White's initiative is already decisive.\n\nII. <PIECE_MB><SQUARE_3><SQUARE_12> \u2014 a solid developing move that places the bishop on the long diagonal, but it does not immediately challenge the <PIECE_OB> on <SQUARE_38>. After 1... <PIECE_OQ><SQUARE_33><SQUARE_51>, Black's queen retreats to a safe central square, connecting the rooks and removing the x-ray target on <SQUARE_33>. White's best is 2. <PIECE_MN><SQUARE_22><SQUARE_32>, and after 2... <PIECE_ON><SQUARE_58><SQUARE_52> 3. <PIECE_MN><SQUARE_32><PIECE_OB><SQUARE_38> <PIECE_OP><SQUARE_45><PIECE_MN><SQUARE_38>, White retains the bishop pair and a comfortable spatial edge, but Black has achieved full development and the position remains playable. The alternative 1... <PIECE_ON><SQUARE_58><SQUARE_52> is less precise, allowing 2. <PIECE_MP><SQUARE_15><SQUARE_31> with a direct challenge to the <PIECE_OB> on <SQUARE_38>, leading to a similar knight-sacrifice pattern as in line I.a.\n\nIII. <PIECE_MP><SQUARE_9><SQUARE_17> \u2014 a prophylactic move that prevents ...<SQUARE_34> but is too slow. After 1... <PIECE_OQ><SQUARE_33><SQUARE_51>, Black consolidates comfortably. The most natural continuation is 2. <PIECE_MB><SQUARE_3><SQUARE_30> <PIECE_ON><SQUARE_58><SQUARE_52> 3. <PIECE_MN><SQUARE_22><SQUARE_32> <PIECE_OB><SQUARE_38><SQUARE_47> 4. <PIECE_MN><SQUARE_32><PIECE_OB><SQUARE_47> <PIECE_OP><SQUARE_56><PIECE_MN><SQUARE_47>, where White trades the active bishop for the passive one, but Black's resulting structure is sound and the <PIECE_ON> on <SQUARE_52> is well placed. The position is approximately equal, with White's edge reduced to a slight initiative.\n\nBEST_MOVE: <PIECE_MP><SQUARE_15><SQUARE_31>\nCRITICAL_LINE: <PIECE_MP><SQUARE_15><SQUARE_31> <PIECE_OB><SQUARE_38><SQUARE_47> <PIECE_MN><SQUARE_22><SQUARE_32> <PIECE_ON><SQUARE_58><SQUARE_52> <PIECE_MN><SQUARE_32><PIECE_OB><SQUARE_47> <PIECE_OP><SQUARE_56><PIECE_MN><SQUARE_47>\nPROMISING_MOVES: <PIECE_MP><SQUARE_15><SQUARE_31> <PIECE_MB><SQUARE_3><SQUARE_12> <PIECE_MP><SQUARE_9><SQUARE_17>\nEVALUATION: the player has a modest advantage of 0.5 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 914,
+ "seconds": 25.31,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 296589959,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

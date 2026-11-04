@@ -1,0 +1,31 @@
+{
+ "fen": "3r2r1/pp3k2/3B3p/3P1p1q/3Qp1pP/6P1/P3PP1K/R4R2 w - - 1 28",
+ "best_move_uci": "d6c7",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "d6c7",
+  "d8d7",
+  "c7f4",
+  "g8d8",
+  "f1d1",
+  "f7g6"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite stands a full bishop ahead with the <PIECE_MB> on <SQUARE_44> dominating the long diagonal, the <PIECE_MQ> on <SQUARE_28> controlling central squares, and the <PIECE_MP> on <SQUARE_36> forming a dangerous passer. Black's king remains exposed on <SQUARE_54>, the <PIECE_OQ> on <SQUARE_40> is active but vulnerable to deflection, and the rooks on <SQUARE_60> and <SQUARE_63> lack coordination. The practical question is how to convert the material edge most efficiently: by embedding the bishop in Black's camp, by centralizing the queen, or by grabbing the <PIECE_OP> on <SQUARE_49>.\n\nI. <PIECE_MB><SQUARE_44><SQUARE_51> \u2014 the strongest move. The bishop embeds itself deep in Black's camp, directly threatening the <PIECE_OR> on <SQUARE_60> and restricting the king's mobility. Black's best reply is 1...<PIECE_OR><SQUARE_60><SQUARE_52>, attacking the bishop while maintaining a connection to the <SQUARE_4>-<SQUARE_60>. White's most precise continuation is 2.<PIECE_MB><SQUARE_51><SQUARE_30>, relocating to the long diagonal where it eyes the <PIECE_OQ> on <SQUARE_40> and supports the <PIECE_MP> on <SQUARE_36>. Black's most active response is 2...<PIECE_OR><SQUARE_63><SQUARE_60>, centralizing and preparing to challenge the d-pawn. White then plays 3.<PIECE_MR><SQUARE_6><SQUARE_4>, seizing the open file, and after 3...<PIECE_OK><SQUARE_54><SQUARE_47> the position remains decisively winning with the bishop on <SQUARE_30>, the rook on the open d-file, and the king still exposed.\n\nI.a. If Black instead plays 1...<PIECE_OR><SQUARE_60><SQUARE_61>, activating on the e-file, White's 2.<PIECE_MR><SQUARE_1><SQUARE_3> is devastating. After 2...<PIECE_OR><SQUARE_61><SQUARE_53>, White plays 3.<PIECE_MR><SQUARE_3><SQUARE_51>, attacking the rook and preparing the discovered check. If 3...<PIECE_OR><SQUARE_53><PIECE_MR><SQUARE_51>, then 4.<PIECE_MB><SQUARE_51><SQUARE_37> wins the rook and the bishop occupies a dominant central square. The alternative 2...<PIECE_OR><SQUARE_61><SQUARE_59> fails to 3.<PIECE_MR><SQUARE_3><PIECE_OR><SQUARE_59>, winning the exchange outright.\n\nI.b. If Black plays 1...<PIECE_OR><SQUARE_60><SQUARE_59>, directly attacking the bishop, White's 2.<PIECE_MB><SQUARE_51><SQUARE_30> is again strongest. After 2...<PIECE_OR><SQUARE_59><SQUARE_60>, White plays 3.<PIECE_MR><SQUARE_6><SQUARE_4>, and the position is decisively winning. The alternative 2...<PIECE_OR><SQUARE_59><SQUARE_11> fails to 3.<PIECE_MQ><SQUARE_28><PIECE_OP><SQUARE_49>, winning a pawn and creating a dangerous passer.\n\nII. <PIECE_MQ><SQUARE_28><SQUARE_37> \u2014 centralizes the queen and coordinates with the bishop on <SQUARE_44>, but allows Black to eliminate the bishop. After 1...<PIECE_OR><SQUARE_60><PIECE_MB><SQUARE_44>, White recaptures 2.<PIECE_MQ><SQUARE_37><PIECE_OR><SQUARE_44>, and Black's 2...<PIECE_OR><SQUARE_63><SQUARE_60> attacks the queen while contesting the d-file. The resulting position is winning for White but less clear than after I, since the bishop has been traded and Black's rook is active on the d-file.\n\nIII. <PIECE_MQ><SQUARE_28><PIECE_OP><SQUARE_49> \u2014 grabs the pawn and activates the queen on the seventh rank, but allows Black to eliminate the bishop with 1...<PIECE_OR><SQUARE_60><PIECE_MB><SQUARE_44>. After 2.<PIECE_MR><SQUARE_1><SQUARE_2>, Black's 2...<PIECE_OR><SQUARE_63><SQUARE_60> contests the d-file and challenges the <PIECE_MP> on <SQUARE_36>. White continues 3.<PIECE_MR><SQUARE_2><PIECE_OP><SQUARE_50>+ 3...<PIECE_OK><SQUARE_54><SQUARE_47> 4.<PIECE_MR><SQUARE_50><SQUARE_42>, pinning the <PIECE_OR> on <SQUARE_44> and preparing <PIECE_MR><SQUARE_42><SQUARE_44>+. Black's best is 4...<PIECE_OR><SQUARE_44><PIECE_MP><SQUARE_36>, grabbing the passer, but White retains a decisive material edge with the rook dominating the sixth rank.\n\nBEST_MOVE: <PIECE_MB><SQUARE_44><SQUARE_51>\nCRITICAL_LINE: <PIECE_MB><SQUARE_44><SQUARE_51> <PIECE_OR><SQUARE_60><SQUARE_52> <PIECE_MB><SQUARE_51><SQUARE_30> <PIECE_OR><SQUARE_63><SQUARE_60> <PIECE_MR><SQUARE_6><SQUARE_4> <PIECE_OK><SQUARE_54><SQUARE_47>\nPROMISING_MOVES: <PIECE_MB><SQUARE_44><SQUARE_51> <PIECE_MQ><SQUARE_28><SQUARE_37> <PIECE_MQ><SQUARE_28><PIECE_OP><SQUARE_49>\nEVALUATION: the player is winning, with an evaluation of 6.2 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 798,
+ "seconds": 23.58,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1330968318,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

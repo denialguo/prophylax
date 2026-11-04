@@ -1,0 +1,17 @@
+ANALYSIS:
+White is down a queen for a bishop and the position is decisively lost. Black's queen on d3 dominates the center, simultaneously eyeing the white pawn on e3 and the white pawn on f4, while the black pawn on c4 is a dangerous passer that will advance with tempo. White's king on f2 is exposed, and the white bishop on e1 is the only piece with any activity. The practical question is which move delays Black's conversion the longest: activating the bishop on the long diagonal, creating a passed h-pawn, or repositioning the king.
+
+I. white bishop e1-b4 — the best move. The bishop steps to the long diagonal, where it can interpose on the c-file and maintain a degree of activity. Black's strongest reply is 1... black queen d3-c2, centralizing on the second rank to attack the white pawn on e3 and prepare checks along the rank. White's best is 2. white king f2-g3, stepping toward the kingside to keep the white pawn on h3 defended. Black then pushes 2... black pawn c4-c3, attacking the bishop. White must respond 3. white bishop b4 takes black pawn c3, and Black recaptures 3... black queen c2 takes white bishop c3, winning the bishop and activating the queen on the open c-file. After 4. white king g3-g2, Black retains a decisive material advantage with the queen dominating the board.
+
+I.a. If White instead plays 2. white king f2-g1, Black plays 2... black pawn c4-c3 3. white bishop b4 takes black pawn c3 black queen c2 takes white bishop c3, reaching a similar winning position with the king more exposed on the g-file.
+
+I.b. If White plays 2. white king f2-f1, Black has the devastating 2... black queen c2-f3+, a check that simultaneously attacks the white pawn on e3. After 3. white king f1-g1, Black plays 3... black queen f3 takes white pawn e3+, winning the pawn with check. The king is forced to 4. white king g1-g2, and Black continues 4... black queen e3 takes white pawn f4, capturing another pawn and leaving the white pawn on f5 undefended. This is the worst outcome for White.
+
+II. white pawn h3-h4 — creating a passed h-pawn. Black's strongest reply is 1... black queen d3-c2, maintaining the double attack on e3 and f4. White's best try is 2. white king f2-g3, and Black plays 2... black queen c2-f3+, a check that simultaneously attacks the undefended white pawn on e3. After 3. white king g3-h2, Black captures 3... black queen f3 takes white pawn e3, winning the pawn and leaving the white bishop on e1 en prise. The h-pawn does not create sufficient counterplay to offset the material deficit.
+
+III. white king f2-g1 — the least favorable option. The king steps to the corner, and Black immediately plays 1... black queen d3 takes white pawn e3, removing the central pawn and opening the e-file. White's best is 2. white king g1-g2, and Black continues 2... black queen e3-f3+, a check that simultaneously attacks the undefended white pawn on f4. After 3. white king g2-g1, Black captures 3... black queen f3 takes white pawn f4, winning a second pawn and creating a dangerous passed pawn on the f-file. The king's retreat to the corner eliminates any possibility of interposing the bishop on the e-file, making this the most rapid conversion for Black.
+
+BEST_MOVE: white bishop e1-b4
+CRITICAL_LINE: white bishop e1-b4 black queen d3-c2 white king f2-g3 black pawn c4-c3 white bishop b4 takes black pawn c3 black queen c2 takes white bishop c3 white king g3-g2
+PROMISING_MOVES: white bishop e1-b4 white pawn h3-h4 white king f2-g1
+EVALUATION: the opponent is winning, with an evaluation of 8.3 pawns.

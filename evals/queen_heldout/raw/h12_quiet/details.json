@@ -1,0 +1,34 @@
+{
+ "fen": "2rq1k1r/p4ppp/3b1n2/np1PNb2/5B2/P6P/BPP2PP1/R2QR1K1 w - - 0 17",
+ "best_move_uci": "d1f3",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "d1f3",
+  "f5c2",
+  "e1e2",
+  "c2e4"
+ ],
+ "critical_line_illegal_at": {
+  "ply": 5,
+  "reason": "illegal",
+  "detail": "move is illegal",
+  "token_text": "<PIECE_MQ><SQUARE_22><SQUARE_28>"
+ },
+ "raw_text": "ANALYSIS:\nBlack holds a material edge of a knight for two pawns, but the position is far from comfortable. White's <PIECE_MN> on <SQUARE_37> is a dominant central outpost supported by the <PIECE_MP> on <SQUARE_36> and the <PIECE_MB> on <SQUARE_30>, while the <PIECE_MR> on <SQUARE_5> controls the open e-file. Black's <PIECE_OB> on <SQUARE_38> is the most active piece, directly targeting the <PIECE_MP> on <SQUARE_11>, and the <PIECE_ON> on <SQUARE_33> is poised to jump to <SQUARE_27>. The practical question is whether White can generate sufficient counterplay before Black consolidates the material advantage. The queen's placement is the key decision: it must support the center, defend the <PIECE_MP> on <SQUARE_11>, and coordinate with the <PIECE_MB> on <SQUARE_30>.\n\nI. <PIECE_MQ><SQUARE_4><SQUARE_22> \u2014 the strongest move. The queen steps to a central square, reinforcing the <SQUARE_37> outpost and preparing to challenge Black's active pieces. Black's best reply is <PIECE_OB><SQUARE_38><PIECE_MP><SQUARE_11>, capturing the pawn and activating the bishop on the long diagonal. White's best continuation is <PIECE_MR><SQUARE_5><SQUARE_13>, centralizing the rook to support the knight and prepare a swing to the c-file. Black's most natural follow-up is <PIECE_OB><SQUARE_11><SQUARE_29>, attacking the <PIECE_MQ> on <SQUARE_22> and activating the bishop. After <PIECE_MQ><SQUARE_22><SQUARE_28>, the position is approximately equal: Black's material edge is offset by White's active pieces and the strong <PIECE_MN> on <SQUARE_37>.\n\nI.a. If White instead plays <PIECE_MR><SQUARE_5><SQUARE_3>, Black responds <PIECE_OB><SQUARE_11><SQUARE_29>, and after <PIECE_MQ><SQUARE_22><SQUARE_28> <PIECE_OP><SQUARE_56><SQUARE_40>, Black frees the <PIECE_OR> on <SQUARE_64> and gains kingside space. The rook on <SQUARE_3> is less useful than on <SQUARE_13>.\n\nI.b. If White plays <PIECE_MP><SQUARE_10><SQUARE_26>, Black simply plays <PIECE_OB><SQUARE_11><SQUARE_29>, attacking the queen. After <PIECE_MQ><SQUARE_22><SQUARE_28> <PIECE_OP><SQUARE_56><SQUARE_40>, Black has a clear advantage: the <PIECE_MP> on <SQUARE_26> has weakened the queenside without generating sufficient counterplay.\n\nII. <PIECE_MP><SQUARE_10><SQUARE_26> \u2014 a natural queenside expansion that challenges the <PIECE_ON> on <SQUARE_33> and opens lines for the <PIECE_MR> on <SQUARE_1>. However, Black's best reply is <PIECE_ON><SQUARE_33><SQUARE_27>, occupying a powerful central square and directly attacking the <PIECE_MN> on <SQUARE_37>. White's most natural response is <PIECE_MB><SQUARE_9><PIECE_ON><SQUARE_27>, trading the active knight, but Black recaptures <PIECE_OP><SQUARE_34><PIECE_MB><SQUARE_27>, gaining the bishop pair and opening the b-file. The resulting position gives Black a modest advantage.\n\nIII. <PIECE_MP><SQUARE_11><SQUARE_19> \u2014 a passive move that concedes the c-file to Black's rook and allows the <PIECE_ON> on <SQUARE_33> to centralize with tempo. Black's best is <PIECE_ON><SQUARE_33><SQUARE_27>, directly attacking the <PIECE_MN> on <SQUARE_37>. White's most natural response is <PIECE_MB><SQUARE_9><PIECE_ON><SQUARE_27>, eliminating the active knight, but Black recaptures <PIECE_OP><SQUARE_34><PIECE_MB><SQUARE_27>, gaining the bishop pair. The resulting position gives Black a clear advantage, as the <PIECE_MP> on <SQUARE_19> has weakened White's queenside structure and the <PIECE_MB> on <SQUARE_9> has been removed from the board.\n\nBEST_MOVE: <PIECE_MQ><SQUARE_4><SQUARE_22>\nCRITICAL_LINE: <PIECE_MQ><SQUARE_4><SQUARE_22> <PIECE_OB><SQUARE_38><PIECE_MP><SQUARE_11> <PIECE_MR><SQUARE_5><SQUARE_13> <PIECE_OB><SQUARE_11><SQUARE_29> <PIECE_MQ><SQUARE_22><SQUARE_28>\nPROMISING_MOVES: <PIECE_MQ><SQUARE_4><SQUARE_22> <PIECE_MP><SQUARE_10><SQUARE_26> <PIECE_MP><SQUARE_11><SQUARE_19>\nEVALUATION: the player has a modest advantage of 0.4 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 709,
+ "seconds": 19.18,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 410608737,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

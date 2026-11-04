@@ -1,0 +1,30 @@
+{
+ "fen": "8/p4kpp/8/3K4/2p5/1bPn2P1/1b6/8 w - - 2 39",
+ "best_move_uci": "d5d6",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "d5d6",
+  "b2c3",
+  "d6c7",
+  "c3e5",
+  "c7b7"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite is down overwhelming material\u2014two bishops and a knight against two pawns\u2014and the position is a pure conversion exercise for Black. The <PIECE_MK> on <SQUARE_36> sits exposed in the center, and the <PIECE_MP> on <SQUARE_19> is the immediate target of the <PIECE_OB> on <SQUARE_10>. Black's <PIECE_ON> on <SQUARE_20> occupies a dominant outpost, and the <PIECE_OP> on <SQUARE_27> is a dangerous passer that restricts the white king's mobility. White's only practical resources are the two pawns, but neither can generate meaningful counterplay. The practical question is which king square minimizes Black's attacking resources.\n\nI. <PIECE_MK><SQUARE_36><SQUARE_44> (best)\n\nStepping to <SQUARE_44> keeps the king on the queenside where it can contest the <PIECE_OP> on <SQUARE_27>. Black's strongest reply is 1... <PIECE_OB><SQUARE_10><PIECE_MP><SQUARE_19>, capturing the pawn and activating the bishop on the long diagonal. White's most resilient response is 2. <PIECE_MK><SQUARE_44><SQUARE_51>, stepping toward the queenside to keep the <PIECE_OP> on <SQUARE_27> in view. Black continues 2... <PIECE_OB><SQUARE_19><SQUARE_37>+, a check that centralizes the bishop and forces 3. <PIECE_MK><SQUARE_51><SQUARE_50>. The king is now cornered with no useful squares, and Black's remaining pieces coordinate to complete the conversion.\n\nI.a. If White instead plays 2. <PIECE_MK><SQUARE_44><SQUARE_36>, Black responds 2... <PIECE_OB><SQUARE_19><SQUARE_5>, preparing the check on <SQUARE_12>. After 3. <PIECE_MK><SQUARE_36><SQUARE_44>, the bishop on <SQUARE_5> is more flexibly placed than on <SQUARE_37>, making this line slightly less favorable for White.\n\nI.b. If White plays 2. <PIECE_MK><SQUARE_44><SQUARE_52>, Black activates the knight with 2... <PIECE_ON><SQUARE_20><SQUARE_37>+, forcing 3. <PIECE_MK><SQUARE_52><SQUARE_51>. The knight check is more forcing than the bishop check in the main line, and the king is driven to the same square with Black's pieces better coordinated.\n\nII. <PIECE_MK><SQUARE_36><SQUARE_28>\n\nStepping toward the center exposes the king to checks along the <SQUARE_5>-<SQUARE_61> and the <SQUARE_1>-<SQUARE_64>. Black's strongest reply is again 1... <PIECE_OB><SQUARE_10><PIECE_MP><SQUARE_19>. White's best is 2. <PIECE_MK><SQUARE_28><SQUARE_36>, keeping the king active. Black continues 2... <PIECE_OB><SQUARE_19><SQUARE_5>, preparing the check on <SQUARE_12> while keeping the bishop on the long diagonal. After 3. <PIECE_MK><SQUARE_36><SQUARE_44>, Black retains a decisive advantage with the bishop pair and knight fully coordinated.\n\nII.a. If White instead plays 2. <PIECE_MK><SQUARE_28><SQUARE_21>, Black responds 2... <PIECE_OB><SQUARE_19><SQUARE_28>+, forcing 3. <PIECE_MK><SQUARE_21><SQUARE_12>. The king is driven to the corner with no active prospects.\n\nIII. <PIECE_MK><SQUARE_36><SQUARE_29>\n\nStepping toward the kingside is the most passive option. Black's strongest reply is 1... <PIECE_OB><SQUARE_10><PIECE_MP><SQUARE_19>, removing White's last pawn and opening the diagonal. White's best try is 2. <PIECE_MK><SQUARE_29><SQUARE_22>, keeping the king near the <PIECE_MP> on <SQUARE_23> and avoiding the immediate check from <SQUARE_10>. Black continues 2... <PIECE_OB><SQUARE_19><SQUARE_37>, centralizing and preparing the check on <SQUARE_44>. After 3. <PIECE_MK><SQUARE_22><SQUARE_15>, the king tucks in but Black retains a decisive advantage with the bishop pair and knight fully coordinated.\n\nBEST_MOVE: <PIECE_MK><SQUARE_36><SQUARE_44>\nCRITICAL_LINE: <PIECE_MK><SQUARE_36><SQUARE_44> <PIECE_OB><SQUARE_10><PIECE_MP><SQUARE_19> <PIECE_MK><SQUARE_44><SQUARE_51> <PIECE_OB><SQUARE_19><SQUARE_37> <PIECE_MK><SQUARE_51><SQUARE_50>\nPROMISING_MOVES: <PIECE_MK><SQUARE_36><SQUARE_44> <PIECE_MK><SQUARE_36><SQUARE_28> <PIECE_MK><SQUARE_36><SQUARE_29>\nEVALUATION: the opponent is winning, with an evaluation of 9.6 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 749,
+ "seconds": 21.48,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1674988579,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

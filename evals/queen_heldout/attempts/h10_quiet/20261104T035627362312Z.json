@@ -1,0 +1,8 @@
+{
+ "utc": "2026-11-04T03:56:27.362824+00:00",
+ "event": "error",
+ "case": "h10_quiet",
+ "body": "{\"error\": \"You have exceeded your ZeroGPU runs limit. Subscribe to Hugging Face PRO to get 40 min of ZeroGPU quota a day - https://huggingface.co/subscribe/pro?from=ZeroGPU\", \"duration\": 10, \"visible\": true, \"title\": \"ZeroGPU quota exceeded\"}",
+ "seconds": 0.5,
+ "quota_type": "runs_limit"
+}

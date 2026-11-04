@@ -1,0 +1,33 @@
+{
+ "fen": "8/4ppk1/1p4p1/p1p3P1/4r3/1P5R/P5PK/1R6 w - - 2 33",
+ "best_move_uci": "b1d1",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "b1d1",
+  "e4e5",
+  "d1d7",
+  "e5g5",
+  "d7e7",
+  "g5h5",
+  "h3h5",
+  "g6h5"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite holds a decisive material advantage\u2014two rooks and four pawns against Black's single rook and six pawns. The practical task is to coordinate the rooks on the open d-file while managing the active <PIECE_OR> on <SQUARE_29>, which simultaneously eyes the <PIECE_MP> on <SQUARE_39> and the <PIECE_MP> on <SQUARE_9>. The <PIECE_MP> on <SQUARE_39> is a latent passer that restricts the <PIECE_OK> on <SQUARE_55>, and the <PIECE_MR> on <SQUARE_24> controls the open h-file. Black's queenside pawns on <SQUARE_33>, <SQUARE_42>, and <SQUARE_35> offer limited counterplay but cannot compensate for the material deficit.\n\nI. <PIECE_MR><SQUARE_2><SQUARE_4> \u2014 the best move. The rook occupies the open d-file, immediately threatening to swing to the seventh rank and attack the <PIECE_OP> on <SQUARE_53>.\n\nI.a. 1. <PIECE_MR><SQUARE_2><SQUARE_4> <PIECE_OR><SQUARE_29><SQUARE_37> 2. <PIECE_MR><SQUARE_4><SQUARE_52> <PIECE_OR><SQUARE_37><PIECE_MP><SQUARE_39> 3. <PIECE_MR><SQUARE_52><PIECE_OP><SQUARE_53> <PIECE_OR><SQUARE_39><SQUARE_40> 4. <PIECE_MR><SQUARE_24><PIECE_OR><SQUARE_40> <PIECE_OP><SQUARE_47><PIECE_MR><SQUARE_40>. Black's most resilient reply centralizes the rook on the fifth rank, directly attacking the <PIECE_MP> on <SQUARE_39>. White's strongest continuation is the seventh-rank invasion, attacking the <PIECE_OP> on <SQUARE_53>. Black grabs the g-pawn, but White wins the e-pawn and forces the rook trade on <SQUARE_40>. After the recapture, White retains a decisive material edge with the <PIECE_MR> on <SQUARE_53> dominating the open file.\n\nI.b. 1. <PIECE_MR><SQUARE_2><SQUARE_4> <PIECE_OR><SQUARE_29><SQUARE_37> 2. <PIECE_MR><SQUARE_24><SQUARE_23> <PIECE_OR><SQUARE_37><SQUARE_36> 3. <PIECE_MR><SQUARE_4><PIECE_OR><SQUARE_36> <PIECE_OP><SQUARE_35><SQUARE_27> 4. <PIECE_MR><SQUARE_36><SQUARE_52>. White defends the g-pawn with the rook, but Black activates on the d-file. After the trade, White's remaining rook reaches the seventh rank, though the position is slightly less favorable than after the direct invasion.\n\nI.c. 1. <PIECE_MR><SQUARE_2><SQUARE_4> <PIECE_OR><SQUARE_29><SQUARE_37> 2. <PIECE_MR><SQUARE_24><SQUARE_20> <PIECE_OR><SQUARE_37><PIECE_MP><SQUARE_39> 3. <PIECE_MR><SQUARE_20><SQUARE_52> <PIECE_OR><SQUARE_39><SQUARE_40> 4. <PIECE_MR><SQUARE_52><PIECE_OP><SQUARE_53> <PIECE_OR><SQUARE_40><SQUARE_32>. The rook centralizes on the d-file, but Black's check on <SQUARE_32> gains a tempo and the position is less favorable for White than after the direct seventh-rank invasion.\n\nII. <PIECE_MR><SQUARE_2><SQUARE_6> \u2014 a solid alternative that keeps the rook on the back rank and prepares a swing to the d-file. Black's best reply is 1... <PIECE_OP><SQUARE_54><SQUARE_46>, challenging the <PIECE_MP> on <SQUARE_39> and opening the f-file for the rook. After 2. <PIECE_MR><SQUARE_6><SQUARE_4> <PIECE_OR><SQUARE_29><SQUARE_31> 3. <PIECE_MR><SQUARE_4><SQUARE_52>, White still seizes the seventh rank, but the extra tempo Black gains from the pawn break makes this slightly less favorable than the direct Rd1.\n\nIII. <PIECE_MR><SQUARE_24><SQUARE_22> \u2014 the least effective candidate. The rook leaves the open h-file and the <PIECE_MR> on <SQUARE_2> remains passive. Black's best is 1... <PIECE_OR><SQUARE_29><SQUARE_32>, swinging to the h-file to target the <PIECE_MP> on <SQUARE_39> and threaten checks along the fourth rank. After 2. <PIECE_MK><SQUARE_16><SQUARE_23> <PIECE_OR><SQUARE_32><SQUARE_28> 3. <PIECE_MR><SQUARE_2><SQUARE_6>, White consolidates, but Black retains more active rook play than in the other lines.\n\nThe direct seventh-rank invasion via I is superior because it immediately creates a concrete threat against the <PIECE_OP> on <SQUARE_53>, forces Black into a reactive posture, and yields the most favorable resulting endgame.\n\nBEST_MOVE: <PIECE_MR><SQUARE_2><SQUARE_4>\nCRITICAL_LINE: <PIECE_MR><SQUARE_2><SQUARE_4> <PIECE_OR><SQUARE_29><SQUARE_37> <PIECE_MR><SQUARE_4><SQUARE_52> <PIECE_OR><SQUARE_37><PIECE_MP><SQUARE_39> <PIECE_MR><SQUARE_52><PIECE_OP><SQUARE_53> <PIECE_OR><SQUARE_39><SQUARE_40> <PIECE_MR><SQUARE_24><PIECE_OR><SQUARE_40> <PIECE_OP><SQUARE_47><PIECE_MR><SQUARE_40>\nPROMISING_MOVES: <PIECE_MR><SQUARE_2><SQUARE_4> <PIECE_MR><SQUARE_2><SQUARE_6> <PIECE_MR><SQUARE_24><SQUARE_22>\nEVALUATION: the player is winning, with an evaluation of 4.6 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 826,
+ "seconds": 26.26,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 330632568,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "fen": "6k1/6pp/p4p2/P4P2/2p1pP2/3qP2P/5K2/4B3 w - - 2 39",
+ "best_move_uci": "e1b4",
+ "move_source": "best_move",
+ "critical_line_uci": [
+  "e1b4",
+  "d3c2",
+  "f2g3",
+  "c4c3",
+  "b4c3",
+  "c2c3",
+  "g3g2"
+ ],
+ "critical_line_illegal_at": null,
+ "raw_text": "ANALYSIS:\nWhite is down a queen for a bishop and the position is decisively lost. Black's queen on <SQUARE_20> dominates the center, simultaneously eyeing the <PIECE_MP> on <SQUARE_21> and the <PIECE_MP> on <SQUARE_30>, while the <PIECE_OP> on <SQUARE_27> is a dangerous passer that will advance with tempo. White's king on <SQUARE_14> is exposed, and the <PIECE_MB> on <SQUARE_5> is the only piece with any activity. The practical question is which move delays Black's conversion the longest: activating the bishop on the long diagonal, creating a passed h-pawn, or repositioning the king.\n\nI. <PIECE_MB><SQUARE_5><SQUARE_26> \u2014 the best move. The bishop steps to the long diagonal, where it can interpose on the c-file and maintain a degree of activity. Black's strongest reply is 1... <PIECE_OQ><SQUARE_20><SQUARE_11>, centralizing on the second rank to attack the <PIECE_MP> on <SQUARE_21> and prepare checks along the rank. White's best is 2. <PIECE_MK><SQUARE_14><SQUARE_23>, stepping toward the kingside to keep the <PIECE_MP> on <SQUARE_24> defended. Black then pushes 2... <PIECE_OP><SQUARE_27><SQUARE_19>, attacking the bishop. White must respond 3. <PIECE_MB><SQUARE_26><PIECE_OP><SQUARE_19>, and Black recaptures 3... <PIECE_OQ><SQUARE_11><PIECE_MB><SQUARE_19>, winning the bishop and activating the queen on the open c-file. After 4. <PIECE_MK><SQUARE_23><SQUARE_15>, Black retains a decisive material advantage with the queen dominating the board.\n\nI.a. If White instead plays 2. <PIECE_MK><SQUARE_14><SQUARE_7>, Black plays 2... <PIECE_OP><SQUARE_27><SQUARE_19> 3. <PIECE_MB><SQUARE_26><PIECE_OP><SQUARE_19> <PIECE_OQ><SQUARE_11><PIECE_MB><SQUARE_19>, reaching a similar winning position with the king more exposed on the g-file.\n\nI.b. If White plays 2. <PIECE_MK><SQUARE_14><SQUARE_6>, Black has the devastating 2... <PIECE_OQ><SQUARE_11><SQUARE_22>+, a check that simultaneously attacks the <PIECE_MP> on <SQUARE_21>. After 3. <PIECE_MK><SQUARE_6><SQUARE_7>, Black plays 3... <PIECE_OQ><SQUARE_22><PIECE_MP><SQUARE_21>+, winning the pawn with check. The king is forced to 4. <PIECE_MK><SQUARE_7><SQUARE_15>, and Black continues 4... <PIECE_OQ><SQUARE_21><PIECE_MP><SQUARE_30>, capturing another pawn and leaving the <PIECE_MP> on <SQUARE_38> undefended. This is the worst outcome for White.\n\nII. <PIECE_MP><SQUARE_24><SQUARE_32> \u2014 creating a passed h-pawn. Black's strongest reply is 1... <PIECE_OQ><SQUARE_20><SQUARE_11>, maintaining the double attack on <SQUARE_21> and <SQUARE_30>. White's best try is 2. <PIECE_MK><SQUARE_14><SQUARE_23>, and Black plays 2... <PIECE_OQ><SQUARE_11><SQUARE_22>+, a check that simultaneously attacks the undefended <PIECE_MP> on <SQUARE_21>. After 3. <PIECE_MK><SQUARE_23><SQUARE_16>, Black captures 3... <PIECE_OQ><SQUARE_22><PIECE_MP><SQUARE_21>, winning the pawn and leaving the <PIECE_MB> on <SQUARE_5> en prise. The h-pawn does not create sufficient counterplay to offset the material deficit.\n\nIII. <PIECE_MK><SQUARE_14><SQUARE_7> \u2014 the least favorable option. The king steps to the corner, and Black immediately plays 1... <PIECE_OQ><SQUARE_20><PIECE_MP><SQUARE_21>, removing the central pawn and opening the e-file. White's best is 2. <PIECE_MK><SQUARE_7><SQUARE_15>, and Black continues 2... <PIECE_OQ><SQUARE_21><SQUARE_22>+, a check that simultaneously attacks the undefended <PIECE_MP> on <SQUARE_30>. After 3. <PIECE_MK><SQUARE_15><SQUARE_7>, Black captures 3... <PIECE_OQ><SQUARE_22><PIECE_MP><SQUARE_30>, winning a second pawn and creating a dangerous passed pawn on the f-file. The king's retreat to the corner eliminates any possibility of interposing the bishop on the e-file, making this the most rapid conversion for Black.\n\nBEST_MOVE: <PIECE_MB><SQUARE_5><SQUARE_26>\nCRITICAL_LINE: <PIECE_MB><SQUARE_5><SQUARE_26> <PIECE_OQ><SQUARE_20><SQUARE_11> <PIECE_MK><SQUARE_14><SQUARE_23> <PIECE_OP><SQUARE_27><SQUARE_19> <PIECE_MB><SQUARE_26><PIECE_OP><SQUARE_19> <PIECE_OQ><SQUARE_11><PIECE_MB><SQUARE_19> <PIECE_MK><SQUARE_23><SQUARE_15>\nPROMISING_MOVES: <PIECE_MB><SQUARE_5><SQUARE_26> <PIECE_MP><SQUARE_24><SQUARE_32> <PIECE_MK><SQUARE_14><SQUARE_7>\nEVALUATION: the opponent is winning, with an evaluation of 8.3 pawns.",
+ "finish_reason": "stop",
+ "generated_tokens": 811,
+ "seconds": 23.65,
+ "inference_settings": {
+  "prompt": "Analyze the given chess position, identify the best move, give the critical line assuming best play, list promising moves for deeper investigation, and evaluate the position.",
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95,
+  "max_tokens": 2048,
+  "repetition_penalty": 1.0,
+  "seed": 20260823,
+  "request_seed": 1674988579,
+  "history_plies": 0,
+  "dtype": "bfloat16",
+  "backend": "transformers (port of the release's vLLM runner)"
+ }
+}
