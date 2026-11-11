@@ -232,7 +232,7 @@ caller.
   correction. An audit found labels describing the grammar's limits, and the fix moved exact fact
   matches from 83/83 to 83/106.
 - **Held-out evaluation set:** `evals/queen_heldout/`, 24 other positions scored separately. The code
-  under evaluation is frozen at `046bb19`, and `tests/test_queen_heldout.py` fails if it changes.
+  under evaluation is frozen at `046bb19` (now `0370ce1`, see `predictions/COMMIT_MAP.md`), and `tests/test_queen_heldout.py` fails if it changes.
   The flow is `run_queen` → `freeze_predictions` → `build_labeling_package` → blind labels →
   `import_blind_labels` → `score` → `generate_report`. Predictions are written read-only, with
   hashes, before any label exists. The labelling package is standalone and contains nothing about

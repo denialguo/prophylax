@@ -26,7 +26,7 @@ from evals.queen_extraction import judge_fact
 
 HERE = os.path.dirname(__file__)
 ROOT = os.path.dirname(os.path.dirname(HERE))
-FROZEN_COMMIT = "046bb19"
+FROZEN_COMMIT = "0370ce1"  # originally 046bb19; history rewritten, see predictions/COMMIT_MAP.md
 FROZEN_CHESS_VERSION = "1.11.2"
 SEMANTIC_FILES = ("domain/extract.py", "domain/verify.py", "domain/models.py", "evals/queen_extraction.py")
 

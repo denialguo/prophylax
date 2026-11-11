@@ -22,7 +22,9 @@ development benchmark, and treat any later performance claim as needing fresh he
 in public Git history, with opponents' usernames. So does a username that was hard-coded in
 `scripts/dev/mine_inaccuracies.py`.
 
-It's postponed because rewriting history changes every commit hash, including `046bb19`, which the
+**Note:** history was rewritten on 2026-11-10 to strip commit trailers only; `046bb19` is now `0370ce1` (see `evals/queen_heldout/predictions/COMMIT_MAP.md`). The personal-data purge below was not done.
+
+It was postponed because rewriting history changes every commit hash, including `046bb19`, which the
 freeze, its manifest and the reports refer to.
 
 When the experiment is reported:

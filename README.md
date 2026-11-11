@@ -44,7 +44,7 @@ VERIFIED / FALSE / UNKNOWN
 
 ## Blind evaluation
 
-The V1 extractor and the verifier were frozen at commit `046bb19`, and their predictions were saved
+The V1 extractor and the verifier were frozen at commit `046bb19` ([now `0370ce1`](evals/queen_heldout/predictions/COMMIT_MAP.md) after a history rewrite), and their predictions were saved
 read-only with SHA-256 hashes. Labels were then written blind to the predictions. Full report:
 [`evals/queen_heldout/REPORT.md`](evals/queen_heldout/REPORT.md).
 

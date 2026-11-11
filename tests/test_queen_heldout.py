@@ -262,7 +262,7 @@ def test_freeze_writes_everything_needed_to_audit(frozen):
 
 def test_freeze_manifest_records_commits_and_hashes(frozen):
     m = json.loads((frozen / "predictions" / "MANIFEST.json").read_text())
-    assert m["frozen_commit"] == "046bb19" and m["extractor_commit"] and m["verifier_commit"] and m["python_chess"] == chess.__version__
+    assert m["frozen_commit"] == fp.FROZEN_COMMIT and m["extractor_commit"] and m["verifier_commit"] and m["python_chess"] == chess.__version__
     assert m["model"] == SETTINGS["model"] and m["generation_settings"] == SETTINGS and m["complete_suite"] is True
     row = m["cases"][0]
     assert row["fen"] == FEN and (row["space_sha"], row["model_sha"], row["raw_response_sha256"]) == ("S", "M", "R")
@@ -743,7 +743,7 @@ def test_report_shows_the_experiment_and_never_adds_the_sets(ready):
     manifest = json.loads((ready / "predictions" / "MANIFEST.json").read_text())
     text = report.render(result, manifest, {"cases": [CASE]})
     assert "TEMPLATE" not in text and "DRAFT" not in text
-    assert "046bb19" in text and manifest["cases"][0]["raw_explanation_sha256"] in text
+    assert manifest["frozen_commit"] in text and manifest["cases"][0]["raw_explanation_sha256"] in text
     assert "| Capture rate" in text.replace("**", "") and "Verified-claim precision" in text and "Failure taxonomy" in text
     assert "| Exact predicate + args | 83 / 106 | 4 / 4 |" in text  # side by side, not summed
     assert "87 / 110" not in text

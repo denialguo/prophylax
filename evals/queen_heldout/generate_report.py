@@ -8,6 +8,7 @@ import json
 import os
 
 from evals.queen_extraction import evaluate, load_gold
+from evals.queen_heldout.freeze_predictions import FROZEN_COMMIT
 from evals.queen_heldout.score import ORIGINAL_SCORES
 
 HERE = os.path.dirname(__file__)
@@ -98,7 +99,7 @@ def render(scores, manifest, suite, miss_review=(), original=None) -> str:
     elif meta.get("draft"):
         title += "\n\n**DRAFT. Labels are not frozen; do not report these numbers.**"
     lines = [title, ""] + (correction_section(s, original) if done and original else []) + ["## Frozen system", "",
-             f"- Frozen commit: `{m.get('frozen_commit', '046bb19')}`",
+             f"- Frozen commit: `{m.get('frozen_commit', FROZEN_COMMIT)}`",
              f"- Extractor commit: `{m.get('extractor_commit', PENDING)}`", f"- Verifier commit: `{m.get('verifier_commit', PENDING)}`",
              f"- Semantic-code override: {m.get('semantic_override') or 'none'}", f"- python-chess: {m.get('python_chess', PENDING)}", "",
              "## Sets (never combined)", "",
