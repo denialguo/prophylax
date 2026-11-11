@@ -1,0 +1,611 @@
+{
+ "cases": [
+  "01_fools_mate",
+  "02_legal_trap",
+  "03_smothered_mate",
+  "04_knight_fork",
+  "05_pin"
+ ],
+ "count_taxonomy": {
+  "families": {
+   "has no pieces": 4,
+   "inventory: X and Y against Z": 7
+  },
+  "labels": 11,
+  "quotes": [
+   "queen and knight against a lone rook and two pawns",
+   "Black has no pieces",
+   "rook and six pawns against a lone knight"
+  ],
+  "sentences": 3
+ },
+ "of": 18,
+ "systems": {
+  "Flash-Lite": {
+   "ambiguous": [
+    0,
+    1
+   ],
+   "board": [
+    13,
+    14
+   ],
+   "branch_rejected": 6,
+   "by_predicate": {
+    "attacks": [
+     6,
+     17
+    ],
+    "blocks": [
+     1,
+     1
+    ],
+    "is_check": [
+     1,
+     1
+    ],
+    "is_checkmate": [
+     0,
+     2
+    ],
+    "is_open_diagonal": [
+     1,
+     1
+    ],
+    "is_open_file": [
+     2,
+     2
+    ],
+    "is_passed_pawn": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     2
+    ],
+    "piece_count_is": [
+     0,
+     8
+    ]
+   },
+   "cases": 5,
+   "exact": [
+    14,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    6,
+    6
+   ],
+   "false_verdicts_unlabelled": 5,
+   "hallucinated": 1,
+   "invented_quotes": 3,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    6,
+    6
+   ],
+   "rejected": 3,
+   "residual": 34,
+   "slices": {
+    "attacks": [
+     6,
+     17
+    ],
+    "branch selection (non-root board)": [
+     10,
+     23
+    ],
+    "change claims": [
+     3,
+     3
+    ],
+    "counts": [
+     0,
+     8
+    ],
+    "mixed concrete + strategic": [
+     1,
+     2
+    ],
+    "other relations": [
+     1,
+     1
+    ],
+    "referent resolution": [
+     5,
+     13
+    ]
+   },
+   "unlabelled_verified": 26,
+   "unsupported": [
+    7,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  },
+  "V1": {
+   "ambiguous": [
+    1,
+    1
+   ],
+   "board": [
+    23,
+    23
+   ],
+   "exact": [
+    23,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    8,
+    8
+   ],
+   "hallucinated": 0,
+   "precision": [
+    8,
+    8
+   ],
+   "unlabelled_verified": 1,
+   "unsupported": [
+    11,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  },
+  "V2.1": {
+   "ambiguous": [
+    1,
+    1
+   ],
+   "board": [
+    33,
+    34
+   ],
+   "branch_rejected": 6,
+   "by_predicate": {
+    "attacks": [
+     16,
+     17
+    ],
+    "blocks": [
+     1,
+     1
+    ],
+    "is_check": [
+     1,
+     1
+    ],
+    "is_checkmate": [
+     2,
+     2
+    ],
+    "is_open_diagonal": [
+     1,
+     1
+    ],
+    "is_open_file": [
+     2,
+     2
+    ],
+    "is_passed_pawn": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     2
+    ],
+    "piece_count_is": [
+     8,
+     8
+    ]
+   },
+   "cases": 5,
+   "exact": [
+    34,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    9,
+    9
+   ],
+   "false_verdicts_unlabelled": 5,
+   "hallucinated": 2,
+   "invented_quotes": 3,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    11,
+    11
+   ],
+   "rejected": 3,
+   "residual": 0,
+   "slices": {
+    "attacks": [
+     16,
+     17
+    ],
+    "branch selection (non-root board)": [
+     22,
+     23
+    ],
+    "change claims": [
+     3,
+     3
+    ],
+    "counts": [
+     8,
+     8
+    ],
+    "mixed concrete + strategic": [
+     2,
+     2
+    ],
+    "other relations": [
+     1,
+     1
+    ],
+    "referent resolution": [
+     12,
+     13
+    ]
+   },
+   "unlabelled_verified": 24,
+   "unsupported": [
+    10,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  },
+  "V2.2 + Flash-Lite": {
+   "ambiguous": [
+    1,
+    1
+   ],
+   "board": [
+    33,
+    34
+   ],
+   "branch_rejected": 6,
+   "by_predicate": {
+    "attacks": [
+     16,
+     17
+    ],
+    "blocks": [
+     1,
+     1
+    ],
+    "is_check": [
+     1,
+     1
+    ],
+    "is_checkmate": [
+     2,
+     2
+    ],
+    "is_open_diagonal": [
+     1,
+     1
+    ],
+    "is_open_file": [
+     2,
+     2
+    ],
+    "is_passed_pawn": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     2
+    ],
+    "piece_count_is": [
+     8,
+     8
+    ]
+   },
+   "cases": 5,
+   "exact": [
+    34,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    9,
+    9
+   ],
+   "false_verdicts_unlabelled": 2,
+   "hallucinated": 1,
+   "invented_quotes": 3,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    11,
+    11
+   ],
+   "rejected": 3,
+   "residual": 0,
+   "slices": {
+    "attacks": [
+     16,
+     17
+    ],
+    "branch selection (non-root board)": [
+     22,
+     23
+    ],
+    "change claims": [
+     3,
+     3
+    ],
+    "counts": [
+     8,
+     8
+    ],
+    "mixed concrete + strategic": [
+     2,
+     2
+    ],
+    "other relations": [
+     1,
+     1
+    ],
+    "referent resolution": [
+     12,
+     13
+    ]
+   },
+   "unlabelled_verified": 24,
+   "unsupported": [
+    11,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  },
+  "V2.2 + gemini/gemini-3-flash-preview": {
+   "ambiguous": [
+    0,
+    1
+   ],
+   "board": [
+    33,
+    33
+   ],
+   "branch_rejected": 13,
+   "by_predicate": {
+    "attacks": [
+     15,
+     17
+    ],
+    "blocks": [
+     1,
+     1
+    ],
+    "is_check": [
+     1,
+     1
+    ],
+    "is_checkmate": [
+     2,
+     2
+    ],
+    "is_open_diagonal": [
+     1,
+     1
+    ],
+    "is_open_file": [
+     2,
+     2
+    ],
+    "is_passed_pawn": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     2
+    ],
+    "piece_count_is": [
+     8,
+     8
+    ]
+   },
+   "cases": 5,
+   "exact": [
+    33,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    10,
+    10
+   ],
+   "false_verdicts_unlabelled": 1,
+   "hallucinated": 4,
+   "invented_quotes": 3,
+   "negative_candidates": 0,
+   "negative_verdicts": {},
+   "precision": [
+    10,
+    10
+   ],
+   "rejected": 3,
+   "residual": 0,
+   "slices": {
+    "attacks": [
+     15,
+     17
+    ],
+    "branch selection (non-root board)": [
+     22,
+     23
+    ],
+    "change claims": [
+     3,
+     3
+    ],
+    "counts": [
+     8,
+     8
+    ],
+    "mixed concrete + strategic": [
+     2,
+     2
+    ],
+    "other relations": [
+     1,
+     1
+    ],
+    "referent resolution": [
+     11,
+     13
+    ]
+   },
+   "unlabelled_verified": 31,
+   "unsupported": [
+    9,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  },
+  "gemini/gemini-3-flash-preview": {
+   "ambiguous": [
+    0,
+    1
+   ],
+   "board": [
+    23,
+    23
+   ],
+   "branch_rejected": 11,
+   "by_predicate": {
+    "attacks": [
+     6,
+     17
+    ],
+    "blocks": [
+     1,
+     1
+    ],
+    "is_check": [
+     1,
+     1
+    ],
+    "is_checkmate": [
+     1,
+     2
+    ],
+    "is_open_diagonal": [
+     1,
+     1
+    ],
+    "is_open_file": [
+     2,
+     2
+    ],
+    "is_passed_pawn": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     2
+    ],
+    "piece_count_is": [
+     8,
+     8
+    ]
+   },
+   "cases": 5,
+   "exact": [
+    23,
+    35
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    6,
+    6
+   ],
+   "false_verdicts_unlabelled": 7,
+   "hallucinated": 4,
+   "invented_quotes": 5,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "VERIFIED": 1
+   },
+   "precision": [
+    8,
+    8
+   ],
+   "rejected": 5,
+   "residual": 9,
+   "slices": {
+    "attacks": [
+     6,
+     17
+    ],
+    "branch selection (non-root board)": [
+     16,
+     23
+    ],
+    "change claims": [
+     3,
+     3
+    ],
+    "counts": [
+     8,
+     8
+    ],
+    "mixed concrete + strategic": [
+     1,
+     2
+    ],
+    "other relations": [
+     1,
+     1
+    ],
+    "referent resolution": [
+     5,
+     13
+    ]
+   },
+   "unlabelled_verified": 32,
+   "unsupported": [
+    7,
+    12
+   ],
+   "variations": [
+    15,
+    15
+   ]
+  }
+ }
+}

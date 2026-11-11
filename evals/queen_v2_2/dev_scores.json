@@ -1,0 +1,488 @@
+{
+ "cases": [
+  "01_fools_mate",
+  "02_legal_trap",
+  "03_smothered_mate",
+  "04_knight_fork",
+  "05_pin",
+  "06_knight_net",
+  "07_noahs_ark",
+  "08_back_rank",
+  "09_carlsbad_before",
+  "10_carlsbad_after",
+  "11_scandinavian_after",
+  "12_start",
+  "13_closed_center",
+  "14_pawn_structure_control",
+  "15_c6_promotion_distance",
+  "16_false_passed_b6",
+  "17_opposition",
+  "18_rook_pawn_draw"
+ ],
+ "count_taxonomy": {
+  "families": {
+   "has no pieces": 4,
+   "inventory: X and Y against Z": 7
+  },
+  "labels": 11,
+  "quotes": [
+   "queen and knight against a lone rook and two pawns",
+   "Black has no pieces",
+   "rook and six pawns against a lone knight"
+  ],
+  "sentences": 3
+ },
+ "of": 18,
+ "systems": {
+  "Flash-Lite": {
+   "ambiguous": [
+    1,
+    4
+   ],
+   "board": [
+    57,
+    61
+   ],
+   "branch_rejected": 12,
+   "by_predicate": {
+    "attacks": [
+     15,
+     33
+    ],
+    "blocks": [
+     3,
+     4
+    ],
+    "defends": [
+     0,
+     1
+    ],
+    "is_check": [
+     1,
+     2
+    ],
+    "is_checkmate": [
+     1,
+     3
+    ],
+    "is_open_diagonal": [
+     2,
+     3
+    ],
+    "is_open_file": [
+     19,
+     25
+    ],
+    "is_passed_pawn": [
+     10,
+     11
+    ],
+    "is_semi_open_file": [
+     0,
+     1
+    ],
+    "legal_move_count_is": [
+     1,
+     1
+    ],
+    "material_balance_is": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     3
+    ],
+    "piece_count_is": [
+     0,
+     11
+    ],
+    "pinned_against": [
+     3,
+     3
+    ],
+    "promotion_distance_is": [
+     3,
+     4
+    ]
+   },
+   "cases": 18,
+   "exact": [
+    61,
+    106
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    34,
+    34
+   ],
+   "false_verdicts_unlabelled": 13,
+   "hallucinated": 7,
+   "invented_quotes": 4,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    22,
+    22
+   ],
+   "rejected": 4,
+   "residual": 195,
+   "slices": {
+    "attacks": [
+     15,
+     33
+    ],
+    "branch selection (non-root board)": [
+     44,
+     78
+    ],
+    "change claims": [
+     22,
+     25
+    ],
+    "counts": [
+     0,
+     11
+    ],
+    "material": [
+     1,
+     1
+    ],
+    "mixed concrete + strategic": [
+     2,
+     3
+    ],
+    "other relations": [
+     6,
+     8
+    ],
+    "referent resolution": [
+     16,
+     32
+    ]
+   },
+   "unlabelled_verified": 105,
+   "unsupported": [
+    24,
+    38
+   ],
+   "variations": [
+    45,
+    48
+   ]
+  },
+  "V1": {
+   "ambiguous": [
+    4,
+    4
+   ],
+   "board": [
+    83,
+    83
+   ],
+   "exact": [
+    83,
+    106
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    40,
+    40
+   ],
+   "hallucinated": 0,
+   "precision": [
+    32,
+    32
+   ],
+   "unlabelled_verified": 4,
+   "unsupported": [
+    37,
+    38
+   ],
+   "variations": [
+    45,
+    48
+   ]
+  },
+  "V2.1": {
+   "ambiguous": [
+    3,
+    4
+   ],
+   "board": [
+    95,
+    96
+   ],
+   "branch_rejected": 15,
+   "by_predicate": {
+    "attacks": [
+     29,
+     33
+    ],
+    "blocks": [
+     3,
+     4
+    ],
+    "defends": [
+     1,
+     1
+    ],
+    "is_check": [
+     2,
+     2
+    ],
+    "is_checkmate": [
+     3,
+     3
+    ],
+    "is_open_diagonal": [
+     2,
+     3
+    ],
+    "is_open_file": [
+     24,
+     25
+    ],
+    "is_passed_pawn": [
+     10,
+     11
+    ],
+    "is_semi_open_file": [
+     0,
+     1
+    ],
+    "legal_move_count_is": [
+     1,
+     1
+    ],
+    "material_balance_is": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     3
+    ],
+    "piece_count_is": [
+     11,
+     11
+    ],
+    "pinned_against": [
+     3,
+     3
+    ],
+    "promotion_distance_is": [
+     4,
+     4
+    ]
+   },
+   "cases": 18,
+   "exact": [
+    96,
+    106
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    41,
+    41
+   ],
+   "false_verdicts_unlabelled": 15,
+   "hallucinated": 8,
+   "invented_quotes": 3,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    35,
+    35
+   ],
+   "rejected": 3,
+   "residual": 0,
+   "slices": {
+    "attacks": [
+     29,
+     33
+    ],
+    "branch selection (non-root board)": [
+     69,
+     78
+    ],
+    "change claims": [
+     24,
+     25
+    ],
+    "counts": [
+     11,
+     11
+    ],
+    "material": [
+     1,
+     1
+    ],
+    "mixed concrete + strategic": [
+     3,
+     3
+    ],
+    "other relations": [
+     7,
+     8
+    ],
+    "referent resolution": [
+     25,
+     32
+    ]
+   },
+   "unlabelled_verified": 94,
+   "unsupported": [
+    31,
+    38
+   ],
+   "variations": [
+    45,
+    48
+   ]
+  },
+  "V2.2 + Flash-Lite": {
+   "ambiguous": [
+    3,
+    4
+   ],
+   "board": [
+    95,
+    96
+   ],
+   "branch_rejected": 15,
+   "by_predicate": {
+    "attacks": [
+     29,
+     33
+    ],
+    "blocks": [
+     3,
+     4
+    ],
+    "defends": [
+     1,
+     1
+    ],
+    "is_check": [
+     2,
+     2
+    ],
+    "is_checkmate": [
+     3,
+     3
+    ],
+    "is_open_diagonal": [
+     2,
+     3
+    ],
+    "is_open_file": [
+     24,
+     25
+    ],
+    "is_passed_pawn": [
+     10,
+     11
+    ],
+    "is_semi_open_file": [
+     0,
+     1
+    ],
+    "legal_move_count_is": [
+     1,
+     1
+    ],
+    "material_balance_is": [
+     1,
+     1
+    ],
+    "piece_at": [
+     2,
+     3
+    ],
+    "piece_count_is": [
+     11,
+     11
+    ],
+    "pinned_against": [
+     3,
+     3
+    ],
+    "promotion_distance_is": [
+     4,
+     4
+    ]
+   },
+   "cases": 18,
+   "exact": [
+    96,
+    106
+   ],
+   "false_acceptances": 0,
+   "false_capture": [
+    41,
+    41
+   ],
+   "false_verdicts_unlabelled": 11,
+   "hallucinated": 6,
+   "invented_quotes": 3,
+   "negative_candidates": 1,
+   "negative_verdicts": {
+    "FALSE": 1
+   },
+   "precision": [
+    35,
+    35
+   ],
+   "rejected": 3,
+   "residual": 0,
+   "slices": {
+    "attacks": [
+     29,
+     33
+    ],
+    "branch selection (non-root board)": [
+     69,
+     78
+    ],
+    "change claims": [
+     24,
+     25
+    ],
+    "counts": [
+     11,
+     11
+    ],
+    "material": [
+     1,
+     1
+    ],
+    "mixed concrete + strategic": [
+     3,
+     3
+    ],
+    "other relations": [
+     7,
+     8
+    ],
+    "referent resolution": [
+     25,
+     32
+    ]
+   },
+   "unlabelled_verified": 93,
+   "unsupported": [
+    33,
+    38
+   ],
+   "variations": [
+    45,
+    48
+   ]
+  }
+ }
+}

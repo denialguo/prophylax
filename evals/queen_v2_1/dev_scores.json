@@ -1,0 +1,1784 @@
+{
+ "V1": {
+  "ambiguous": [
+   4,
+   4
+  ],
+  "board": [
+   83,
+   83
+  ],
+  "exact": [
+   83,
+   106
+  ],
+  "false_acceptances": 0,
+  "false_capture": [
+   40,
+   40
+  ],
+  "hallucinated": 0,
+  "precision": [
+   32,
+   32
+  ],
+  "unlabelled_verified": 4,
+  "unsupported": [
+   37,
+   38
+  ],
+  "variations": [
+   45,
+   48
+  ]
+ },
+ "V2": {
+  "ambiguous": [
+   1,
+   4
+  ],
+  "board": [
+   57,
+   61
+  ],
+  "exact": [
+   61,
+   106
+  ],
+  "false_acceptances": 0,
+  "false_capture": [
+   34,
+   34
+  ],
+  "hallucinated": 7,
+  "precision": [
+   22,
+   22
+  ],
+  "unlabelled_verified": 105,
+  "unsupported": [
+   24,
+   38
+  ],
+  "variations": [
+   45,
+   48
+  ]
+ },
+ "V2.1": {
+  "ambiguous": [
+   3,
+   4
+  ],
+  "board": [
+   95,
+   96
+  ],
+  "exact": [
+   96,
+   106
+  ],
+  "false_acceptances": 0,
+  "false_capture": [
+   41,
+   41
+  ],
+  "hallucinated": 8,
+  "precision": [
+   35,
+   35
+  ],
+  "unlabelled_verified": 94,
+  "unsupported": [
+   31,
+   38
+  ],
+  "variations": [
+   45,
+   48
+  ]
+ },
+ "hybrid_details": {
+  "args_wrong": [
+   [
+    "06_knight_net",
+    "The pawn immediately attacks the knight",
+    "attacks",
+    {
+     "piece": "pawn",
+     "source": "f6",
+     "target": "g5"
+    },
+    {
+     "source": "f6",
+     "target": "g5"
+    }
+   ],
+   [
+    "08_back_rank",
+    "The h-pawn advance creates a passed pawn",
+    "is_passed_pawn",
+    {
+     "square": "h4"
+    },
+    {
+     "square": "h5"
+    }
+   ],
+   [
+    "12_start",
+    "the white knight on d4 is attacked",
+    "attacks",
+    {
+     "piece": "pawn",
+     "source": "e5",
+     "target": "d4"
+    },
+    {
+     "source": "e5",
+     "target": "d4"
+    }
+   ],
+   [
+    "17_opposition",
+    "the opponent's lone king sits on e6",
+    "piece_at",
+    {
+     "piece": "king",
+     "square": "e6"
+    },
+    {
+     "color": "black",
+     "piece": "king",
+     "square": "e6"
+    }
+   ]
+  ],
+  "board_wrong": [
+   [
+    "04_knight_fork",
+    "the knight lands on a square attacked by the king",
+    null,
+    [
+     "e4d6",
+     "e8d7"
+    ]
+   ]
+  ],
+  "hallucinated": [
+   [
+    "04_knight_fork",
+    "relocating to a central square that is not attacked by the king on d7",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "black"
+       ],
+       [
+        "piece",
+        "king"
+       ],
+       [
+        "square",
+        "d7"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "05_pin",
+    "White is down a full queen",
+    [
+     [
+      "material_balance_is",
+      [
+       [
+        "points",
+        -9
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "08_back_rank",
+    "is hemmed in by its own pawns",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "black"
+       ],
+       [
+        "piece",
+        "pawn"
+       ],
+       [
+        "square",
+        "f7"
+       ]
+      ]
+     ],
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "black"
+       ],
+       [
+        "piece",
+        "pawn"
+       ],
+       [
+        "square",
+        "g7"
+       ]
+      ]
+     ],
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "black"
+       ],
+       [
+        "piece",
+        "pawn"
+       ],
+       [
+        "square",
+        "h7"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "09_carlsbad_before",
+    "the white bishop on d3 eyes h7",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "white"
+       ],
+       [
+        "piece",
+        "bishop"
+       ],
+       [
+        "square",
+        "d3"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "11_scandinavian_after",
+    "The white bishop on d2 eyes c3",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "white"
+       ],
+       [
+        "piece",
+        "bishop"
+       ],
+       [
+        "square",
+        "d2"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "14_pawn_structure_control",
+    "Black's black bishop on c8 is blocked by its own pawns",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "black"
+       ],
+       [
+        "piece",
+        "bishop"
+       ],
+       [
+        "square",
+        "c8"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "16_false_passed_b6",
+    "leaves the white pawn on c5 en prise",
+    [
+     [
+      "piece_at",
+      [
+       [
+        "color",
+        "white"
+       ],
+       [
+        "piece",
+        "pawn"
+       ],
+       [
+        "square",
+        "c5"
+       ]
+      ]
+     ]
+    ]
+   ],
+   [
+    "18_rook_pawn_draw",
+    "the player cannot push a7 because the black king on a8 controls it",
+    [
+     [
+      "attacks",
+      [
+       [
+        "source",
+        "a8"
+       ],
+       [
+        "target",
+        "a7"
+       ]
+      ]
+     ]
+    ]
+   ]
+  ],
+  "missed": [
+   [
+    "03_smothered_mate",
+    "centralizing to attack the rook",
+    "attacks",
+    {
+     "piece": "queen",
+     "source": "e5",
+     "target": "f8"
+    },
+    null
+   ],
+   [
+    "10_carlsbad_after",
+    "the open long diagonal",
+    "is_open_diagonal",
+    {
+     "source": "a1",
+     "target": "h8"
+    },
+    null
+   ],
+   [
+    "11_scandinavian_after",
+    "Black's rook is active on the open file",
+    "is_open_file",
+    {
+     "file": "a"
+    },
+    null
+   ],
+   [
+    "12_start",
+    "blocking the white bishop on c1 and granting Black",
+    "blocks",
+    {
+     "blocker": "c3",
+     "slider": "c1"
+    },
+    null
+   ],
+   [
+    "14_pawn_structure_control",
+    "activates the rook on the semi-open c1-c8",
+    "is_semi_open_file",
+    {
+     "color": "white",
+     "file": "c"
+    },
+    null
+   ],
+   [
+    "18_rook_pawn_draw",
+    "attacking the pawn directly",
+    "attacks",
+    {
+     "piece": "king",
+     "source": "a7",
+     "target": "a6"
+    },
+    null
+   ]
+  ],
+  "variation_missed": [
+   [
+    "07_noahs_ark",
+    "I.b. white queen d5-d4 — a passive retreat",
+    [
+     "c1g5",
+     "g8f6",
+     "d5d4",
+     "c4b3",
+     "a2b3",
+     "f8e7",
+     "g5f6",
+     "e7f6"
+    ],
+    [
+     []
+    ]
+   ],
+   [
+    "13_closed_center",
+    "I.b. If White plays white pawn c3-c4",
+    [
+     "b7b6",
+     "c3c4"
+    ],
+    [
+     []
+    ]
+   ],
+   [
+    "13_closed_center",
+    "III.a. If Black instead plays black knight c6-a5 immediately",
+    [
+     "c5d4",
+     "c4d5",
+     "c6a5",
+     "d5e6",
+     "c8e6"
+    ],
+    [
+     []
+    ]
+   ]
+  ],
+  "verdict_differs": [
+   [
+    "04_knight_fork",
+    "the knight lands on a square attacked by the king",
+    "UNKNOWN",
+    "FALSE"
+   ]
+  ]
+ },
+ "hybrid_unlabelled": [
+  [
+   "01_fools_mate",
+   false,
+   " The decisive dynamic feature is the open h4-f2 diagonal: with the white king still on e1 and no White piece able to interpose on f2, Black possesses an immediate mating resource.",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "e1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "01_fools_mate",
+   false,
+   "The game ends here.",
+   "is_terminal",
+   {},
+   "VERIFIED"
+  ],
+  [
+   "01_fools_mate",
+   false,
+   "establishes the central pawn duo on d5 and e5.",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "d5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "01_fools_mate",
+   false,
+   "establishes the central pawn duo on d5 and e5.",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "e5"
+   },
+   "FALSE"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "White stands a full queen behind",
+   "material_balance_is",
+   {
+    "points": -9
+   },
+   "FALSE"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "The white bishop on c4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "c4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "white knight on e5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "e5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "the white knight on c3",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "c3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "the black bishop on d1",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "d1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "02_legal_trap",
+   false,
+   "Black remains a full queen ahead",
+   "material_balance_is",
+   {
+    "points": -9
+   },
+   "FALSE"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "black king confined to h8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "h8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "pawns on g7 and h7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "g7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "pawns on g7 and h7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "h7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "queen on e6",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "queen",
+    "square": "e6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "knight on h6",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "h6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "03_smothered_mate",
+   false,
+   "rook on f8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "rook",
+    "square": "f8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "White's knight on e4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "e4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "Black's queen on d6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "queen",
+    "square": "d6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   true,
+   "the king on d7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "d7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "Black's queen centralizes with 1...black queen d6-d4, attacking the knight",
+   "attacks",
+   {
+    "piece": "queen",
+    "source": "d4",
+    "target": "e4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "Black plays 1...black queen d6-e5",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "queen",
+    "square": "e5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "Black captures with check: 2...black queen e5 takes white knight e4+",
+   "is_check",
+   {},
+   "VERIFIED"
+  ],
+  [
+   "04_knight_fork",
+   false,
+   "Black continues 3...black queen e4-d4+",
+   "is_check",
+   {},
+   "VERIFIED"
+  ],
+  [
+   "05_pin",
+   true,
+   "White is down a full queen",
+   "material_balance_is",
+   {
+    "points": -9
+   },
+   "FALSE"
+  ],
+  [
+   "05_pin",
+   true,
+   "the white bishop on b5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "b5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "05_pin",
+   true,
+   "the black knight on c6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "c6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "05_pin",
+   false,
+   "the white pawn on d5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "d5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "05_pin",
+   false,
+   "the king on f2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "f2"
+   },
+   "VERIFIED"
+  ],
+  [
+   "05_pin",
+   false,
+   "driving the king to f2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "f2"
+   },
+   "FALSE"
+  ],
+  [
+   "06_knight_net",
+   true,
+   "The pawn immediately attacks the knight",
+   "attacks",
+   {
+    "source": "f6",
+    "target": "g5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "06_knight_net",
+   false,
+   "Black retains a rook and four pawns",
+   "piece_count_is",
+   {
+    "color": "black",
+    "count": 4,
+    "piece": "pawn"
+   },
+   "FALSE"
+  ],
+  [
+   "06_knight_net",
+   false,
+   "Black retains a rook and four pawns",
+   "piece_count_is",
+   {
+    "color": "black",
+    "count": 1,
+    "piece": "rook"
+   },
+   "VERIFIED"
+  ],
+  [
+   "06_knight_net",
+   false,
+   "Black retains a rook and four pawns against a bare king",
+   "material_balance_is",
+   {
+    "points": -9
+   },
+   "FALSE"
+  ],
+  [
+   "07_noahs_ark",
+   false,
+   "The white queen on d5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "queen",
+    "square": "d5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "07_noahs_ark",
+   false,
+   " Black plays black pawn c4 takes white bishop b3, winning the bishop and opening the a-file.",
+   "is_open_file",
+   {
+    "file": "a"
+   },
+   "UNKNOWN"
+  ],
+  [
+   "07_noahs_ark",
+   false,
+   " After white pawn a2 takes black pawn b3, Black continues black bishop f8-e7, attacking the bishop on g5.",
+   "attacks",
+   {
+    "piece": "bishop",
+    "source": "g5",
+    "target": "g5"
+   },
+   "UNKNOWN"
+  ],
+  [
+   "07_noahs_ark",
+   false,
+   " Black then plays black pawn c4 takes white bishop b3, winning the bishop pair and opening the a-file.",
+   "is_open_file",
+   {
+    "file": "a"
+   },
+   "FALSE"
+  ],
+  [
+   "07_noahs_ark",
+   false,
+   " White's white bishop c1-g5 is the most active reply, but Black retains a decisive advantage with the bishop pair, the open a-file, and superior piece coordination.",
+   "is_open_file",
+   {
+    "file": "a"
+   },
+   "FALSE"
+  ],
+  [
+   "08_back_rank",
+   false,
+   "The black king on g8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "g8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   true,
+   "pawns on f7, g7, and h7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "f7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   true,
+   "pawns on f7, g7, and h7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "g7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   true,
+   "pawns on f7, g7, and h7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "h7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   false,
+   "White's rook on d1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "rook",
+    "square": "d1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   false,
+   "f8 and h8 are both controlled by the checking rook",
+   "attacks",
+   {
+    "piece": "rook",
+    "source": "d8",
+    "target": "f8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "08_back_rank",
+   false,
+   "f8 and h8 are both controlled by the checking rook",
+   "attacks",
+   {
+    "piece": "rook",
+    "source": "d8",
+    "target": "h8"
+   },
+   "FALSE"
+  ],
+  [
+   "08_back_rank",
+   true,
+   "The h-pawn advance creates a passed pawn",
+   "is_passed_pawn",
+   {
+    "square": "h5"
+   },
+   "FALSE"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "White's white bishop on g5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "g5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "white bishop on g5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "g5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "black knight on f6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "f6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "black queen on d8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "queen",
+    "square": "d8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "white bishop on d3",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "d3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   "white queen on c2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "queen",
+    "square": "c2"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "black bishop on c8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "c8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "black knight on d7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "d7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   "white bishop on g5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "g5"
+   },
+   "FALSE"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   "black bishop on c8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "c8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   "white bishop h4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "h4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   true,
+   "white rook on f1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "rook",
+    "square": "f1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   "black knight on d7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "d7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "09_carlsbad_before",
+   false,
+   " After black bishop e7 takes white bishop f6 white pawn f2-f3 black knight f8-g6 white pawn e3-e4 black pawn d5 takes white pawn e4 white pawn f3 takes black pawn e4, White retains a slight edge from the more active white bishop on d3 and the open f1-f8.",
+   "is_open_file",
+   {
+    "file": "f"
+   },
+   "FALSE"
+  ],
+  [
+   "10_carlsbad_after",
+   false,
+   "the black bishop on c8 remains undeveloped behind the black pawn on c6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "c6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "10_carlsbad_after",
+   false,
+   "the black bishop on c8 remains undeveloped behind the black pawn on c6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "c8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "10_carlsbad_after",
+   false,
+   "White retains a modest edge from the more active white knight on e2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "e2"
+   },
+   "VERIFIED"
+  ],
+  [
+   "10_carlsbad_after",
+   false,
+   "attacking the knight",
+   "attacks",
+   {
+    "piece": "pawn",
+    "source": "b4",
+    "target": "c3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "Black's position is defined by the advanced black pawn on d4",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "d4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   true,
+   "White's white pawn on b4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "b4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   true,
+   "The white bishop on d2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "d2"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "the white knight on g3",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "knight",
+    "square": "g3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "Black's black bishop on d6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "d6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "the black knight on e7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "e7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   " After white pawn b4 takes black pawn a5 black rook a8 takes white pawn a5, Black's rook is active on the open file and the passed black pawn on c3 remains a persistent threat.",
+   "is_passed_pawn",
+   {
+    "square": "c3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "If White plays white bishop d2-c1, the bishop is completely passive and blocks the white rook on a1.",
+   "blocks",
+   {
+    "blocker": "c1",
+    "slider": "a1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "Black has a solid knight on c6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "c6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "white pawn b4-b5, attacking the knight",
+   "attacks",
+   {
+    "piece": "pawn",
+    "source": "b5",
+    "target": "c6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "11_scandinavian_after",
+   false,
+   "the active black rook on e8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "rook",
+    "square": "e8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "12_start",
+   false,
+   "opens the white bishop on f1's diagonal",
+   "is_open_diagonal",
+   {
+    "source": "f1",
+    "target": "a6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "12_start",
+   true,
+   "the white knight on d4 is attacked",
+   "attacks",
+   {
+    "source": "e5",
+    "target": "d4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "12_start",
+   false,
+   "Black attacks the bishop",
+   "attacks",
+   {
+    "source": "d5",
+    "target": "c4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "White's white pawn on d4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "d4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "Black's black pawn on d5",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "d5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "the white pawn on e3",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "e3"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   true,
+   "Black's black bishop on c8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "bishop",
+    "square": "c8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "the black knight on b8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "knight",
+    "square": "b8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "White's white bishop on f1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "f1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "14_pawn_structure_control",
+   false,
+   "white bishop on f1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "bishop",
+    "square": "f1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "15_c6_promotion_distance",
+   false,
+   "the white king on a1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "a1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "15_c6_promotion_distance",
+   false,
+   "the black king has already penetrated to e7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "e7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "15_c6_promotion_distance",
+   false,
+   "the black king has already reached f7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "f7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "The player holds a single white pawn on c5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "c5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "the opponent has two pawns on a7 and b6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "a7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "the opponent has two pawns on a7 and b6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "b6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "The white king on a1",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "a1"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "the opponent's king on h8",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "h8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   true,
+   "white pawn on c5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "c5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "16_false_passed_b6",
+   false,
+   "the black pawn on a7",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "pawn",
+    "square": "a7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "The player holds a single white pawn on e2",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "e2"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "with the white king on e4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "e4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   true,
+   " The player holds a single white pawn on e2 with the white king on e4, while the opponent's lone king sits on e6.",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "e6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "The king steps to f4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "f4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "stepping to the fifth rank to support the pawn",
+   "defends",
+   {
+    "source": "f5",
+    "target": "e2"
+   },
+   "FALSE"
+  ],
+  [
+   "17_opposition",
+   false,
+   "The opponent then plays 2...black king d5-d6",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "d6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "the opponent immediately answers 2...black king d5-e5",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "e5"
+   },
+   "VERIFIED"
+  ],
+  [
+   "17_opposition",
+   false,
+   "The king steps to d4",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "d4"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "The player holds a single white pawn on a6",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "pawn",
+    "square": "a6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "the white king on b6",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "b6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   " The player holds a single white pawn on a6 with the white king on b6, while the opponent's lone king sits on a8.",
+   "piece_at",
+   {
+    "color": "black",
+    "piece": "king",
+    "square": "a8"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   true,
+   "the black king on a8 controls it",
+   "attacks",
+   {
+    "source": "a8",
+    "target": "a7"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "the opponent plays 3... black king a7 takes white pawn a6",
+   "square_empty",
+   {
+    "square": "a6"
+   },
+   "FALSE"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "The king steps to c6",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "c6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "stepping to the square that attacks the pawn",
+   "attacks",
+   {
+    "source": "a7",
+    "target": "a6"
+   },
+   "VERIFIED"
+  ],
+  [
+   "18_rook_pawn_draw",
+   false,
+   "The king steps to b5",
+   "piece_at",
+   {
+    "color": "white",
+    "piece": "king",
+    "square": "b5"
+   },
+   "VERIFIED"
+  ]
+ ]
+}

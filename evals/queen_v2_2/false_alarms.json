@@ -1,0 +1,940 @@
+[
+ {
+  "args": {
+   "points": -9
+  },
+  "board": "root",
+  "case": "h01_tactical",
+  "class": "F",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": true,
+  "label_id": "l0001",
+  "near": [
+   {
+    "args": {
+     "color": "white",
+     "count": 0,
+     "piece": "queen"
+    },
+    "label_id": "l0002",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "White minus Black is -8 points",
+  "source": "rules",
+  "text": "White stands a full queen down"
+ },
+ {
+  "args": {
+   "square": "d3"
+  },
+  "board": "6 moves in",
+  "case": "h02_tactical",
+  "class": "E",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": null,
+  "near": [],
+  "polarity": "positive",
+  "predicate": "is_passed_pawn",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "it already held before the move",
+  "source": "v2",
+  "text": "pushing the passer"
+ },
+ {
+  "args": {
+   "color": "white",
+   "piece": "knight",
+   "square": "d2"
+  },
+  "board": "2 moves in",
+  "case": "h02_tactical",
+  "class": "C",
+  "false_concrete": false,
+  "family": "placement",
+  "from_rule": false,
+  "label_id": "l0091",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "piece_at",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "d2 is empty",
+  "source": "v2",
+  "text": "the white knight on d2"
+ },
+ {
+  "args": {
+   "points": 9
+  },
+  "board": "root",
+  "case": "h03_tactical",
+  "class": "F",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": true,
+  "label_id": "l0094",
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "count": 0,
+     "piece": "queen"
+    },
+    "label_id": "l0095",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "White minus Black is 7 points",
+  "source": "rules",
+  "text": "Black stands a full queen down"
+ },
+ {
+  "args": {
+   "source": "a7",
+   "target": "b6"
+  },
+  "board": "root",
+  "case": "h05_tactical",
+  "class": "F",
+  "false_concrete": false,
+  "family": "defend",
+  "from_rule": false,
+  "label_id": "l0185",
+  "near": [
+   {
+    "args": {
+     "piece": "pawn",
+     "source": "a7",
+     "target": "b6"
+    },
+    "label_id": "l0184",
+    "predicate": "attacks",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "black",
+     "piece": "pawn",
+     "square": "a7"
+    },
+    "label_id": "l0186",
+    "predicate": "piece_at",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "defends",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "b6 holds an enemy piece (it attacks it)",
+  "source": "v2",
+  "text": "The black pawn on a7 is the only defender of b6"
+ },
+ {
+  "args": {
+   "points": 0
+  },
+  "board": "4 moves in",
+  "case": "h07_tactical",
+  "class": "C",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": false,
+  "label_id": "l0263",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "White minus Black is 1 points",
+  "source": "v2",
+  "text": "the material is equal"
+ },
+ {
+  "args": {
+   "points": -9
+  },
+  "board": "4 moves in",
+  "case": "h07_tactical",
+  "class": "C",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": true,
+  "label_id": "l0278",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "White minus Black is -3 points",
+  "source": "rules",
+  "text": "Black is up a queen"
+ },
+ {
+  "args": {
+   "square": "a2"
+  },
+  "board": "4 moves in",
+  "case": "h12_quiet",
+  "class": "F",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": "l0484",
+  "near": [
+   {
+    "args": {
+     "color": "white",
+     "piece": "bishop",
+     "square": "a2"
+    },
+    "label_id": "l1059",
+    "predicate": "not:piece_at",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "square_empty",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "it already held before the move",
+  "source": "v2",
+  "text": "the white bishop on a2 has been removed from the board"
+ },
+ {
+  "args": {
+   "blocker": "b7",
+   "slider": "b5"
+  },
+  "board": "3 moves in",
+  "case": "h15_quiet",
+  "class": "C",
+  "false_concrete": true,
+  "family": "other",
+  "from_rule": false,
+  "label_id": "l1075",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "blocks",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "no sliding piece on b5",
+  "source": "v1",
+  "text": "blocks the black pawn on b5"
+ },
+ {
+  "args": {
+   "blocker": "b5",
+   "slider": "b7"
+  },
+  "board": "3 moves in",
+  "case": "h15_quiet",
+  "class": "C",
+  "false_concrete": true,
+  "family": "other",
+  "from_rule": false,
+  "label_id": "l1075",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "blocks",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "a bishop on b7 does not move along the line to b5",
+  "source": "v2",
+  "text": "blocks the black pawn on b5"
+ },
+ {
+  "args": {
+   "source": "d1",
+   "target": "d4"
+  },
+  "board": "2 moves in",
+  "case": "h15_quiet",
+  "class": "C",
+  "false_concrete": false,
+  "family": "defend",
+  "from_rule": false,
+  "label_id": "l0605",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "defends",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "the line from d1 to d4 is blocked",
+  "source": "v2",
+  "text": "support the white pawn on d4"
+ },
+ {
+  "args": {
+   "blocker": "b6",
+   "slider": "b7"
+  },
+  "board": "6 moves in",
+  "case": "h15_quiet",
+  "class": "F",
+  "false_concrete": false,
+  "family": "other",
+  "from_rule": false,
+  "label_id": "l0611",
+  "near": [
+   {
+    "args": {
+     "blocker": "c6",
+     "slider": "b7"
+    },
+    "label_id": "l1076",
+    "predicate": "blocks",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "blocks",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "b6 is empty",
+  "source": "v2",
+  "text": "the bishop on b7 is blocked by its own pawns"
+ },
+ {
+  "args": {
+   "piece": "queen",
+   "source": "e3",
+   "target": "c4"
+  },
+  "board": "2 moves in",
+  "case": "h16_quiet",
+  "class": "D",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": "l0635",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "defends",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "a queen on e3 does not reach c4",
+  "source": "v2",
+  "text": "supporting the bishop"
+ },
+ {
+  "args": {
+   "source": "f4",
+   "target": "c7"
+  },
+  "board": "4 moves in",
+  "case": "h16_quiet",
+  "class": "C",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": "l0637",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "is_open_diagonal",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "it already held before the move",
+  "source": "v2",
+  "text": "the white bishop on f4 gains a clear diagonal"
+ },
+ {
+  "args": {
+   "piece": "bishop",
+   "source": "c7",
+   "target": "c7"
+  },
+  "board": "4 moves in",
+  "case": "h16_quiet",
+  "class": "F",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "piece": "bishop",
+     "source": "c7",
+     "target": "a5"
+    },
+    "label_id": "l0641",
+    "predicate": "attacks",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "a bishop on c7 does not reach c7",
+  "source": "v2",
+  "text": "White plays white bishop f4-c7, attacking the queen"
+ },
+ {
+  "args": {
+   "piece": "bishop",
+   "source": "c4",
+   "target": "f7"
+  },
+  "board": "1 moves in",
+  "case": "h17_structure",
+  "class": "E",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": null,
+  "near": [],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "the line from c4 to f7 is blocked",
+  "source": "v1",
+  "text": "threatening the black pawn on f7"
+ },
+ {
+  "args": {
+   "source": "a2",
+   "target": "g8"
+  },
+  "board": "2 moves in",
+  "case": "h17_structure",
+  "class": "F",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "source": "a2",
+     "target": "g8"
+    },
+    "label_id": "l0693",
+    "predicate": "ray_clear",
+    "truth": "FALSE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "is_open_diagonal",
+  "produced_by": [
+   "v1",
+   "v2"
+  ],
+  "reason": "the diagonal from a2 to g8 is blocked",
+  "source": "merged",
+  "text": "opens the a2-g8"
+ },
+ {
+  "args": {
+   "points": 9
+  },
+  "board": "6 moves in",
+  "case": "h17_structure",
+  "class": "C",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": true,
+  "label_id": "l0697",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "White minus Black is 4 points",
+  "source": "rules",
+  "text": "White is up a full queen"
+ },
+ {
+  "args": {
+   "source": "c6",
+   "target": "h3"
+  },
+  "board": "1 moves in, differs from label",
+  "case": "h18_structure",
+  "class": "B",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": "l1089",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "a queen on c6 does not reach h3",
+  "source": "v2",
+  "text": "The queen retreats to a safe square where it eyes the white pawn on h3"
+ },
+ {
+  "args": {
+   "piece": "rook",
+   "source": "c7",
+   "target": "e7"
+  },
+  "board": "4 moves in, differs from label",
+  "case": "h19_structure",
+  "class": "B",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": "l1099",
+  "near": [],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "the piece on c7 is a bishop",
+  "source": "v2",
+  "text": "attacking the rook"
+ },
+ {
+  "args": {
+   "pinned": "d6",
+   "pinner": "b6",
+   "target": "d5"
+  },
+  "board": "7 moves in",
+  "case": "h19_structure",
+  "class": "F",
+  "false_concrete": false,
+  "family": "pin",
+  "from_rule": false,
+  "label_id": "l0791",
+  "near": [
+   {
+    "args": {
+     "pinned": "d6",
+     "pinner": "b6",
+     "target": "g6"
+    },
+    "label_id": "l0792",
+    "predicate": "pinned_against",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "pinned_against",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "no piece of the pinned side on d5",
+  "source": "v2",
+  "text": "pinning the black rook on d6"
+ },
+ {
+  "args": {
+   "square": "g5"
+  },
+  "board": "root",
+  "case": "h22_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "passed pawn",
+  "from_rule": false,
+  "label_id": "l0895",
+  "near": [
+   {
+    "args": {
+     "color": "white",
+     "piece": "pawn",
+     "square": "g5"
+    },
+    "label_id": "l0896",
+    "predicate": "piece_at",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "black",
+     "piece": "king",
+     "square": "g7"
+    },
+    "label_id": "l0897",
+    "predicate": "piece_at",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "is_passed_pawn",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "enemy pawns stand ahead of g5: f7, g6",
+  "source": "v1",
+  "text": "The white pawn on g5 is a latent passer that restricts the black king on g7"
+ },
+ {
+  "args": {
+   "piece": "rook",
+   "source": "d1",
+   "target": "e7"
+  },
+  "board": "1 moves in",
+  "case": "h22_endgame",
+  "class": "E",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": null,
+  "near": [],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "a rook on d1 does not reach e7",
+  "source": "v1",
+  "text": "attack the black pawn on e7"
+ },
+ {
+  "args": {
+   "piece": "pawn",
+   "source": "h5",
+   "target": "g5"
+  },
+  "board": "8 moves in",
+  "case": "h22_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": "l0904",
+  "near": [
+   {
+    "args": {
+     "piece": "rook",
+     "source": "e5",
+     "target": "g5"
+    },
+    "label_id": "l1119",
+    "predicate": "attacks",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "a pawn on h5 does not reach g5",
+  "source": "v1",
+  "text": "directly attacking the white pawn on g5"
+ },
+ {
+  "args": {
+   "piece": "pawn",
+   "source": "h5",
+   "target": "e7"
+  },
+  "board": "8 moves in",
+  "case": "h22_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "attack",
+  "from_rule": false,
+  "label_id": "l0905",
+  "near": [
+   {
+    "args": {
+     "piece": "rook",
+     "source": "d7",
+     "target": "e7"
+    },
+    "label_id": "l0906",
+    "predicate": "attacks",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "attacks",
+  "produced_by": [
+   "v1"
+  ],
+  "reason": "a pawn on h5 does not reach e7",
+  "source": "v1",
+  "text": "attacking the black pawn on e7"
+ },
+ {
+  "args": {
+   "points": -9
+  },
+  "board": "root",
+  "case": "h23_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "material",
+  "from_rule": true,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "count": 1,
+     "piece": "queen"
+    },
+    "label_id": "l0927",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "material_balance_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "White minus Black is -7 points",
+  "source": "rules",
+  "text": "White is down a queen"
+ },
+ {
+  "args": {
+   "file": "e"
+  },
+  "board": "2 moves in",
+  "case": "h23_endgame",
+  "class": "E",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": null,
+  "near": [],
+  "polarity": "positive",
+  "predicate": "is_open_file",
+  "produced_by": [
+   "v1",
+   "v2"
+  ],
+  "reason": "the e-file has pawns",
+  "source": "merged",
+  "text": "opening the e-file"
+ },
+ {
+  "args": {
+   "square": "f4"
+  },
+  "board": "6 moves in",
+  "case": "h23_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "change",
+  "from_rule": false,
+  "label_id": "l0965",
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "file": "f"
+    },
+    "label_id": "l0966",
+    "predicate": "has_passed_pawn",
+    "truth": "FALSE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "is_passed_pawn",
+  "produced_by": [
+   "v2"
+  ],
+  "reason": "no pawn on f4",
+  "source": "v2",
+  "text": "creating a dangerous passed pawn on the f-file"
+ },
+ {
+  "args": {
+   "color": "white",
+   "count": 2,
+   "piece": "bishop"
+  },
+  "board": "root",
+  "case": "h24_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "count",
+  "from_rule": true,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "label_id": "l0970",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "black",
+     "count": 1,
+     "piece": "knight"
+    },
+    "label_id": "l0971",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "white",
+     "count": 2,
+     "piece": "pawn"
+    },
+    "label_id": "l0972",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "piece_count_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "white has 0, not 2",
+  "source": "rules",
+  "text": "two bishops and a knight"
+ },
+ {
+  "args": {
+   "color": "white",
+   "count": 1,
+   "piece": "knight"
+  },
+  "board": "root",
+  "case": "h24_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "count",
+  "from_rule": true,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "label_id": "l0970",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "black",
+     "count": 1,
+     "piece": "knight"
+    },
+    "label_id": "l0971",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "white",
+     "count": 2,
+     "piece": "pawn"
+    },
+    "label_id": "l0972",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "piece_count_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "white has 0, not 1",
+  "source": "rules",
+  "text": "two bishops and a knight"
+ },
+ {
+  "args": {
+   "color": "black",
+   "count": 2,
+   "piece": "pawn"
+  },
+  "board": "root",
+  "case": "h24_endgame",
+  "class": "F",
+  "false_concrete": false,
+  "family": "count",
+  "from_rule": true,
+  "label_id": null,
+  "near": [
+   {
+    "args": {
+     "color": "black",
+     "count": 2,
+     "piece": "bishop"
+    },
+    "label_id": "l0970",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "black",
+     "count": 1,
+     "piece": "knight"
+    },
+    "label_id": "l0971",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   },
+   {
+    "args": {
+     "color": "white",
+     "count": 2,
+     "piece": "pawn"
+    },
+    "label_id": "l0972",
+    "predicate": "piece_count_is",
+    "truth": "TRUE"
+   }
+  ],
+  "polarity": "positive",
+  "predicate": "piece_count_is",
+  "produced_by": [
+   "rules"
+  ],
+  "reason": "black has 4, not 2",
+  "source": "rules",
+  "text": "two pawns"
+ }
+]
