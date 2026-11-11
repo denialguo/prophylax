@@ -159,6 +159,77 @@ def test_a_line_with_nothing_to_compare_shows_its_end():
     assert panels[0]["moves"] == ["e2e4"] and panels[0]["arrows"] == []
 
 
+# ── why a board_binding_wrong item is flagged ────────────────────────────────
+def why(branch, moves, truth="FALSE", verdict="FALSE"):
+    return av.board_binding_summary(START, {"branch": branch, "chess_truth": truth}, {"board_moves": moves, "verifier_status": verdict})
+
+
+def test_different_branches_name_both_positions_and_the_timing():
+    w = why(["e2e4", "e7e5"], ["e2e4", "e7e5", "g1f3"])
+    assert w["gold_position"] == "after 1. e4 e5" and w["extractor_position"] == "after 1. e4 e5 2. Nf3"
+    assert w["comparison"] == "DIFFERENT BOARD" and w["warning"] is None
+    assert "one move too late" in w["explanation"] and "the claim is false" in w["explanation"]
+    assert w["consequence"] == "The extractor parsed the claim, but checked it at a different point in the move sequence."
+
+
+@pytest.mark.parametrize("branch,moves,expected", [
+    (["e2e4"], ["e2e4", "e7e5", "g1f3"], "2 moves too late"),
+    (["e2e4", "e7e5"], ["e2e4"], "one move too early"),
+    (["e2e4", "e7e5", "g1f3"], [], "3 moves too early"),
+    (["e2e4"], ["d2d4"], "different sequence of moves"),
+])
+def test_the_timing_is_stated_in_plain_words(branch, moves, expected):
+    assert expected in why(branch, moves)["explanation"]
+
+
+def test_a_null_extractor_branch_is_unresolved_and_never_a_position():
+    w = why(["e2e4"], None, verdict="UNKNOWN")
+    assert w["extractor_position"] == "NONE / unresolved" and w["comparison"] == "EXTRACTOR HAS NO RESOLVED BOARD"
+    assert w["extractor_has_board"] is False and w["extractor_line"] == []
+    assert w["consequence"].startswith("The extractor parsed the claim, but did not resolve which position")
+    assert w["explanation"] == "The claim itself was parsed correctly, but the extractor did not bind it to the position after 1. e4. On the correct gold board, the claim is false."
+
+
+def test_the_root_is_a_real_position_and_not_the_same_as_no_board():
+    assert why([], ["e2e4"])["gold_position"] == "root position"
+    w = why(["e2e4"], [])
+    assert w["extractor_position"] == "root position" and w["comparison"] == "DIFFERENT BOARD" and "one move too early" in w["explanation"]
+    assert why([], None, verdict="UNKNOWN")["explanation"].startswith("The claim itself was parsed correctly, but the extractor did not bind it to the root position.")
+    assert why([], [])["comparison"] == "SAME BOARD"
+
+
+def test_positions_are_rendered_in_san_with_the_right_move_numbers():
+    w = av.board_binding_summary(BLACK_TO_MOVE, {"branch": ["e8e7"], "chess_truth": "TRUE"}, {"board_moves": ["e8e7", "e1d1"], "verifier_status": "VERIFIED"})
+    assert w["gold_position"] == "after 30... Ke7" and w["extractor_position"] == "after 30... Ke7 31. Kd1"
+    assert [t["t"] for t in w["extractor_line"]] == ["30... Ke7", "31. Kd1"]
+    assert [t["c"] for t in w["extractor_line"]] == ["", "diff"]  # the extra move is picked out
+
+
+def test_identical_branches_warn_that_the_category_looks_wrong():
+    w = why(["e2e4"], ["e2e4"])
+    assert w["comparison"] == "SAME BOARD" and w["warning"] == "WARNING: This item is categorized as board_binding_wrong, but both branches are identical."
+    assert w["consequence"] is None and w["verdict_note"] is None
+    assert why(["e2e4"], ["d2d4"])["warning"] is None and why(["e2e4"], None)["warning"] is None
+
+
+@pytest.mark.parametrize("moves,verdict", [(["e2e4", "e7e5"], "VERIFIED"), (["e2e4", "e7e5"], "FALSE"), (["e2e4", "e7e5"], "UNKNOWN"), (None, "UNKNOWN")])
+def test_the_verifier_result_is_the_one_for_the_extractor_board_and_separate_from_gold(moves, verdict):
+    w = why(["e2e4"], moves, truth="TRUE", verdict=verdict)
+    assert w["verifier_result"] == verdict and w["gold_truth"] == "TRUE"
+
+
+def test_a_matching_verdict_on_the_wrong_board_is_not_presented_as_a_catch():
+    assert "does not count as a correct result" in why(["e2e4"], ["d2d4"], truth="FALSE", verdict="FALSE")["verdict_note"]
+    assert "says nothing about the gold position" in why(["e2e4"], ["d2d4"], truth="FALSE", verdict="VERIFIED")["verdict_note"]
+    assert why(["e2e4"], ["d2d4"], verdict="UNKNOWN")["verdict_note"] is None
+
+
+def test_an_undetermined_gold_claim_does_not_claim_a_position():
+    w = why(None, ["e2e4"], truth="UNDETERMINED", verdict="UNKNOWN")
+    assert w["gold_position"].startswith("not a single position") and "root" not in w["gold_position"]
+    assert w["comparison"] == "DIFFERENT BOARD" and "too late" not in w["explanation"]
+
+
 # ── annotations ──────────────────────────────────────────────────────────────
 @pytest.mark.parametrize("predicate,args,arrows,fills", [
     ("attacks", {"source": "e4", "target": "f5"}, [(chess.E4, chess.F5)], []),
@@ -456,6 +527,42 @@ def test_real_board_binding_failures_show_both_boards_whenever_the_extractor_nam
         expected = ["gold"] if i["candidate"]["board_moves"] is None else ["gold", "extractor"]
         assert [p["role"] for p in i["panels"]] == expected
     assert sum(i["candidate"]["board_moves"] is not None for i in wrong) == 5
+
+
+def test_every_real_board_binding_item_explains_itself_and_no_other_item_does(real):
+    _, items, _, _ = real
+    wrong = [i for i in items if i["category"] == "board_binding_wrong"]
+    assert all("why_flagged" in i and i["review_hints"] for i in wrong)
+    assert not any("why_flagged" in i for i in items if i["category"] != "board_binding_wrong")
+    assert not any(i["why_flagged"]["warning"] for i in wrong)  # the scorer flagged no identical branches
+    assert {i["why_flagged"]["comparison"] for i in wrong} == {"DIFFERENT BOARD", "EXTRACTOR HAS NO RESOLVED BOARD"}
+    for i in wrong:
+        w, c = i["why_flagged"], i["candidate"]
+        assert w["verifier_result"] == c["verifier_status"] and w["gold_truth"] == i["gold"]["chess_truth"]
+        assert (w["extractor_position"] == "NONE / unresolved") == (c["board_moves"] is None)
+        assert len(i["panels"]) == (1 if c["board_moves"] is None else 2)  # the boards themselves are unchanged
+
+
+def test_real_examples_read_as_intended(real):
+    _, items, _, _ = real
+    by_id = {i["id"]: i["why_flagged"] for i in items if "why_flagged" in i}
+    late = by_id["board_binding_wrong/l0033"]
+    assert late["gold_position"] == "after 25. cxd4 Rd8 26. d5" and late["extractor_position"] == "after 25. cxd4 Rd8 26. d5 exd3"
+    assert "one move too late" in late["explanation"] and late["verifier_result"] == "FALSE" and late["gold_truth"] == "FALSE"
+    assert "does not count as a correct result" in late["verdict_note"]
+    unresolved = by_id["board_binding_wrong/l1018"]
+    assert unresolved["extractor_position"] == "NONE / unresolved" and unresolved["verifier_result"] == "UNKNOWN"
+    root = by_id["board_binding_wrong/l0057"]
+    assert root["extractor_position"] == "root position" and "one move too early" in root["explanation"]
+
+
+def test_the_page_shows_the_section_and_a_mislabelled_item_gets_the_warning():
+    item = {"id": "board_binding_wrong/x", "why_flagged": why(["e2e4"], ["e2e4"])}
+    html = av.render_html([item], [], {})
+    assert "WHY THIS IS FLAGGED" in html and "both branches are identical" in html
+    gold = {"kind": "fact", "predicate": "attacks", "args": {"source": "e4", "target": "f5"}, "branch": ["e2e4"], "chess_truth": "TRUE", "label_id": "x", "polarity": "positive", "span_start": 0, "span_end": 1, "source_text": "x", "extraction_class": "EXTRACTED"}
+    made = av._make_item("board_binding_wrong/x", "board_binding_wrong", "h", gold, candidate(["e2e4"], status="EXTRACTED", verifier_status="VERIFIED"), {}, {"fen": START, "facts": []}, "text", {})
+    assert made["why_flagged"]["warning"] and len(made["panels"]) == 1  # identical branches keep one board
 
 
 def test_a_caught_change_claim_shows_what_it_changed_from(real):

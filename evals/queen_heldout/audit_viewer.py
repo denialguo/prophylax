@@ -280,6 +280,59 @@ def verifier_disagrees(gold, asked):
     return asked["status"] != ("VERIFIED" if holds else "FALSE")
 
 
+# ── why a board_binding_wrong item is flagged ────────────────────────────────
+SAME_BOARD, DIFFERENT_BOARD, NO_BOARD = "SAME BOARD", "DIFFERENT BOARD", "EXTRACTOR HAS NO RESOLVED BOARD"
+UNRESOLVED = "NONE / unresolved"
+CONSEQUENCE_DIFFERENT = "The extractor parsed the claim, but checked it at a different point in the move sequence."
+CONSEQUENCE_NONE = "The extractor parsed the claim, but did not resolve which position the claim refers to, so the verifier could not evaluate it on the intended board."
+BOARD_BINDING_HINTS = (("Agree", "yes, the extractor used the wrong board or no board"), ("Disagree", "no, the board assignment is actually correct"),
+                       ("Unsure", "the timing in QUEEN's prose is genuinely unclear"))
+
+
+def describe_position(fen, moves):
+    if moves is None:
+        return UNRESOLVED
+    return f"after {san_line(fen, moves)}" if moves else "root position"
+
+
+def _moves_apart(n):
+    return "one move" if n == 1 else f"{n} moves"
+
+
+def _timing(gold, extractor):
+    """When the extractor's position falls relative to gold's, in plain words."""
+    if extractor[:len(gold)] == gold:
+        return f"The extractor evaluated the claim {_moves_apart(len(extractor) - len(gold))} too late."
+    if gold[:len(extractor)] == extractor:
+        return f"The extractor evaluated the claim {_moves_apart(len(gold) - len(extractor))} too early."
+    return "The extractor evaluated the claim on a different sequence of moves."
+
+
+def board_binding_summary(fen, gold, candidate):
+    """Everything a reviewer needs to judge a board_binding_wrong item, with no inference left to do."""
+    branch, moves = gold["branch"], candidate.get("board_moves")
+    gold_position = "not a single position (gold is undetermined)" if branch is None else describe_position(fen, branch)
+    truth, verdict = gold["chess_truth"], candidate.get("verifier_status")
+    on_gold = f"On the correct gold board, the claim is {truth.lower()}." if branch is not None else "Gold does not name one position for this claim."
+    summary = {"gold_position": gold_position, "extractor_position": describe_position(fen, moves), "gold_truth": truth, "verifier_result": verdict,
+               "extractor_has_board": moves is not None, "warning": None, "verdict_note": None,
+               "gold_line": line_tokens(fen, branch or [], other=moves or []) if moves is not None else line_tokens(fen, branch or []),
+               "extractor_line": line_tokens(fen, moves or [], other=branch or [])}
+    if moves is None:
+        summary.update(comparison=NO_BOARD, consequence=CONSEQUENCE_NONE,
+                       explanation=f"The claim itself was parsed correctly, but the extractor did not bind it to {'the root position' if branch == [] else 'the position ' + gold_position}. {on_gold}")
+    elif moves == branch:
+        summary.update(comparison=SAME_BOARD, consequence=None, explanation="Both branches are identical, so the board is not what went wrong here.",
+                       warning="WARNING: This item is categorized as board_binding_wrong, but both branches are identical.")
+    else:
+        summary.update(comparison=DIFFERENT_BOARD, consequence=CONSEQUENCE_DIFFERENT, explanation=f"{_timing(branch or [], moves)} {on_gold}" if branch is not None else on_gold)
+        if verdict in ("VERIFIED", "FALSE") and sc.TRUTH_TO_STATUS.get(truth) == verdict:
+            summary["verdict_note"] = f"The {verdict} verdict matches the gold truth, but it was reached on a different board, so it does not count as a correct result."
+        elif verdict in ("VERIFIED", "FALSE"):
+            summary["verdict_note"] = f"The {verdict} verdict was reached on a different board, so it says nothing about the gold position."
+    return summary
+
+
 # ── items ────────────────────────────────────────────────────────────────────
 def _overlaps(row, c):
     return sc._overlap(row["span_start"], row["span_end"], c["span_start"], c["span_end"])
@@ -363,6 +416,9 @@ def _make_item(item_id, category, case, label, candidate, row, prediction, text,
             "panels": [render_panel(fen, p, store) for p in panels]}
     if candidate and candidate.get("board_moves") is not None:
         item["candidate_board_san"] = san_line(fen, candidate["board_moves"]) or "root position"
+    if category == "board_binding_wrong" and label and candidate:
+        item["why_flagged"] = board_binding_summary(fen, label, candidate)
+        item["review_hints"] = BOARD_BINDING_HINTS
     if is_variation:
         item["gold_line"] = line_tokens(fen, gold_moves, (label or {}).get("failure_ply"), cand_moves)
         item["extractor_line"] = line_tokens(fen, cand_moves, (candidate or {}).get("verifier_first_false_ply"), gold_moves)
@@ -550,6 +606,14 @@ table{border-collapse:collapse;width:100%}td,th{text-align:left;vertical-align:t
 kbd{font:600 11px ui-monospace,monospace;border:1px solid currentColor;border-radius:3px;padding:0 4px;margin-left:6px;opacity:.75}
 .review textarea{display:block;width:100%;min-height:58px;margin-top:10px;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;resize:vertical}
 .review .notelabel{display:block;margin-top:10px}
+.review .hints{margin:10px 0 0;font-size:13px;color:var(--muted)}.review .hints b{color:var(--ink);font-weight:600}.review .hints span{display:block}
+.why{border:2px solid var(--ext)}.why h2{color:var(--ext);font-size:13px;font-weight:700}
+.verdict{display:block;font-size:19px;font-weight:700;margin:0 0 12px;color:var(--ext)}.verdict.none{color:var(--bad)}.verdict.same{color:var(--bad)}
+.warn{background:var(--bad);color:var(--on);font-weight:700;border-radius:6px;padding:8px 12px;margin:0 0 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px;margin-bottom:10px}
+.card{border:1px solid var(--line);border-left-width:5px;border-radius:6px;padding:8px 12px;min-width:0}.card .k{font-size:12px;color:var(--muted);font-weight:600;display:block}.card .v{font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.card.gold{border-left-color:var(--gold)}.card.extractor{border-left-color:var(--ext)}.card.unresolved .v{color:var(--bad)}
+.why .explain{font-size:15px;margin:10px 0 0}.why .explain.sub{color:var(--muted);font-size:14px;margin-top:6px}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">__DEFS__</svg>
 <header>
@@ -656,6 +720,11 @@ function reviewBlock(i) {
   }
   const state = el("span", "state", current ? "Reviewed: " + current[0].toUpperCase() + current.slice(1) : "Not reviewed"); state.id = "review-state"; row.appendChild(state);
   s.appendChild(row);
+  if (i.review_hints) {
+    const hints = el("p", "hints");
+    i.review_hints.forEach(([name, meaning]) => { const line = el("span"); line.appendChild(el("b", "", name)); line.append(" = " + meaning); hints.appendChild(line); });
+    s.appendChild(hints);
+  }
   const label = el("label", "notelabel", "Note (optional)"); const note = el("textarea"); note.id = "review-note"; note.value = Object.hasOwn(reviews, i.id) ? reviews[i.id].note : "";
   note.oninput = () => { reviews = applyNote(reviews, i.id, note.value); saveReviews(); };
   label.appendChild(note); s.appendChild(label);
@@ -685,6 +754,35 @@ function boardBlock(p) {
   p.notes.forEach(n => d.appendChild(el("p", "note", n)));
   return d;
 }
+function positionValue(text, tokens) {  // SAN with the moves that differ picked out; plain text otherwise
+  const v = el("span", "v");
+  if (!text.startsWith("after ")) { v.textContent = text; return v; }
+  v.append("after ");
+  tokens.forEach(t => v.appendChild(el("span", "tok " + t.c, t.t)));
+  return v;
+}
+function card(cls, name, value) {
+  const c = el("div", "card " + cls); c.appendChild(el("span", "k", name));
+  c.appendChild(typeof value === "string" ? el("span", "v", value) : value);
+  return c;
+}
+function whyBlock(w) {
+  const s = el("section", "why"); s.appendChild(el("h2", "", "WHY THIS IS FLAGGED"));
+  if (w.warning) s.appendChild(el("p", "warn", w.warning));
+  s.appendChild(el("span", "verdict" + (w.extractor_has_board ? (w.warning ? " same" : "") : " none"), w.comparison));
+  const positions = el("div", "cards");
+  positions.appendChild(card("gold", "Gold position", positionValue(w.gold_position, w.gold_line)));
+  positions.appendChild(card("extractor" + (w.extractor_has_board ? "" : " unresolved"), "Extractor position", positionValue(w.extractor_position, w.extractor_line)));
+  s.appendChild(positions);
+  const results = el("div", "cards");
+  results.appendChild(card("gold", "Gold truth", w.gold_truth));
+  results.appendChild(card("extractor", w.extractor_has_board ? "Frozen verifier result, on the extractor board" : "Frozen verifier result", w.verifier_result || "none"));
+  s.appendChild(results);
+  s.appendChild(el("p", "explain", w.explanation));
+  if (w.verdict_note) s.appendChild(el("p", "explain sub", w.verdict_note));
+  if (w.consequence) s.appendChild(el("p", "explain sub", w.consequence));
+  return s;
+}
 function draw() {
   const main = $("main"); main.replaceChildren();
   $("status").textContent = shown.length ? `Item ${at + 1} of ${shown.length}` : "No items match";
@@ -703,6 +801,7 @@ function draw() {
   if (i.verifier_disagrees) head.appendChild(el("span", "badge bad", "bare predicate differs from gold: check for a change claim"));
   left.appendChild(head);
   left.appendChild(reviewBlock(i));
+  if (i.why_flagged) left.appendChild(whyBlock(i.why_flagged));
   left.appendChild(section("QUEEN's text, with the " + (i.gold ? "gold" : "candidate") + " span marked", contextBlock(i.context)));
   if (i.gold) {
     const g = i.gold;
@@ -714,7 +813,8 @@ function draw() {
     const c = i.candidate;
     left.appendChild(section("Frozen extractor candidate", table(i.is_variation
       ? [["status", c.status], ["verifier", c.verifier_status], ["first false ply", c.verifier_first_false_ply === null || c.verifier_first_false_ply === undefined ? "none" : `${c.verifier_first_false_ply + 1} (index ${c.verifier_first_false_ply})`], ["reason", c.reason]]
-      : [["status", c.status], ["predicate", c.predicate], ["args", c.args], ["board (SAN)", i.candidate_board_san], ["board moves", c.board_moves], ["change from", c.change_from || undefined], ["guards", c.guards && c.guards.length ? c.guards : undefined], ["verifier", c.verifier_status], ["verifier reason", c.verifier_reason], ["text", c.source_text], ["reason", c.reason]])));
+      : [["status", c.status], ["predicate", c.predicate], ["args", c.args],
+         ...(i.why_flagged ? [["gold branch", i.why_flagged.gold_position], ["extractor branch", i.why_flagged.extractor_position], ["board binding", i.why_flagged.comparison]] : [["board (SAN)", i.candidate_board_san]]), ["board moves", c.board_moves], ["change from", c.change_from || undefined], ["guards", c.guards && c.guards.length ? c.guards : undefined], ["verifier", c.verifier_status], ["verifier reason", c.verifier_reason], ["text", c.source_text], ["reason", c.reason]])));
   } else left.appendChild(section("Frozen extractor candidate", el("div", "", "None.")));
   if (i.verifier_on_gold) left.appendChild(section("Bare predicate on the gold board (ignores any change the text claims)", table([["result", i.verifier_on_gold.status], ["reason", i.verifier_on_gold.reason]])));
   if (i.got_statuses) left.appendChild(section("Extractor statuses on this span", el("div", "", i.got_statuses.join(", ") || "none")));
