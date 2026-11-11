@@ -237,6 +237,9 @@ caller.
   `import_blind_labels` → `score` → `generate_report`. Predictions are written read-only, with
   hashes, before any label exists. The labelling package is standalone and contains nothing about
   how any software reads the texts.
+- **Result:** `evals/queen_heldout/REPORT.md` (corrected scores). On correctly extracted claims, verdicts
+  were 81/81 right with 0 false VERIFIED, but only 91/468 facts were extracted exactly. Post-hoc
+  extractor experiments: `docs/EXTRACTOR_V2_DESIGN.md`.
 - **Open bugs:** `docs/SEMANTIC_ISSUES.md`, left unfixed for the evaluation. Post-evaluation plan: `docs/QUEEN_INTEGRATION_DESIGN.md`.
 - **Known failure:** 13 I.b (`white pawn c3-c4`) is illegal at the branch the text means, but it
   becomes legal later in the parent line. With no move number the extractor treats the branch point

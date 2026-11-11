@@ -1,296 +1,168 @@
 # Prophylax
 
-**A positional chess coach that explains your mistakes from engine facts, and finds the ones you keep repeating.**
-
-Stockfish gives you a number; Prophylax tells you what the move gave away. Every
-chess fact comes from Stockfish and python-chess. The language model only puts
-facts it has been handed into words, and deterministic checks reject anything
-else before you see it.
+**An AI chess coach and reliability system that turns language-model chess explanations into typed claims, then checks them against the board and legal moves.**
 
 [![CI](https://github.com/denialguo/prophylax/actions/workflows/ci.yml/badge.svg)](https://github.com/denialguo/prophylax/actions/workflows/ci.yml)
 
-**At a glance**
+## Why it exists
 
-- **Grounded coaching.** Every narrated fact traces to a verified claim, with its evidence. Anything
-  unbacked is rejected, retried once, then replaced by the claims themselves.
-- **Decisions by experiment.** The default narration path was chosen by a pre-registered, paired
-  comparison (54 trials) with the switching rule written before the data.
-- **Your recurring mistakes.** A deterministic profile over your own games, re-derived in seconds
-  when the logic changes, without rerunning the engine.
-- **Checking another model's chess.** A verifier and claim extractor that test what a chess language
-  model says against the board. A blind evaluation on unseen outputs is in progress
-  ([details](#checking-another-models-chess-research-in-progress)).
+A language model's chess explanation can sound convincing and still contain concrete mistakes: attacks that
+don't exist, files called open with pawns on them, lines with illegal moves. Prophylax separates the two jobs:
 
-**Try it with no API keys or engine:**
-
-```bash
-git clone https://github.com/denialguo/prophylax && cd prophylax
-uv sync --locked
-uv run pytest                                 # about 30s, offline
-uv run python -m evals.claim_metrics          # the claim benchmark
-uv run python -m evals.queen_extraction       # extraction and verification on stored QUEEN outputs
-uv run python -m evals.queen_heldout.status   # where the blind evaluation stands
-```
+- **Interpretation is semantic.** Reading what a sentence claims is a language problem.
+- **Verification is deterministic.** Whether that claim holds is computed, never judged by a model.
+- **Stockfish and python-chess are the authority** on every chess fact. The model only phrases, or proposes
+  claims for checking.
 
 ## Architecture
 
 ```
-PGN (Chess.com / Lichess export, untrusted)
- │  sanitizer: headers whitelisted, names anonymised, comments/variations stripped
- ▼
-MCP server (JSON-RPC over stdio) ── Stockfish 18, pinned: 1 thread, 16 MB hash, fixed nodes
- │  per position: win/draw/loss + principal variation            (the only engine call)
- │  per move: win-probability drop, phase, python-chess features (weak squares,
- │  backward / unsupported pawns, king shelter), flags:
- │    Channel 1  win-probability drop beyond a phase band (5 / 8 / 10 %)
- │    Channel 2  quiet structural concession the evaluation barely registers
- ▼
-typed analysis (pydantic): payload checked against the replayed game; fails closed
- ▼
-verified coaching claims: one per fact, each carrying its evidence and provenance
- (engine / server features / board), re-checked against the board
- ▼
-LLM narration (Gemini or Groq, certified models only)
- ▼
-fail-closed validation: every move legal at its ply, every square and line from the
- payload, precise terms only where a claim backs them → one retry → deterministic fallback
-
-          +
-
-history (SQLite, your own games)
- │  stored engine searches → the same derivation code → MistakeEvents
- ▼
-deterministic recurring-weakness profile (counts and medians, no model)
+Chess position / game
+        │
+        ▼
+QUEEN (or another explanation model)       free-text explanation, untrusted
+        │
+        ▼
+Semantic extractor                         V1: deterministic grammar + variation parser
+        │                                  V2.x (experimental): LLM proposals + V1 + rules, merged deterministically
+        ▼
+Typed claims                               attacks(c5, g5) · is_open_file(d) · piece_count_is(white, queen, 0) …
+        │                                  each bound to the board the prose has reached
+        ▼
+Deterministic verifier                     python-chess; replays every line for legality
+        │
+        ▼
+VERIFIED / FALSE / UNKNOWN
 ```
 
-## Why the chess and the language are separated
+- **Deterministic variation parser.** Binds each move in the prose to a legal line from the root.
+- **Typed predicates.** Claims are checked against the verifier's own function signatures. A predicate it
+  can't decide returns UNKNOWN, never a guess.
+- **Hybrid extractor (experimental).** Combines V1's grammar with LLM proposals. The LLM can't give a
+  verdict, and any quote, square or branch it invents is rejected.
+- **Visual audit tooling.** An offline HTML viewer shows every label, extraction and verdict side by side.
 
-A language model asked about a chess position will confidently invent lines,
-misattribute moves and name weaknesses that aren't there. So Prophylax never
-lets it calculate anything.
+## Blind evaluation
 
-- **Facts are deterministic and testable.** Stockfish supplies evaluations and
-  lines. python-chess derives the structure. Both are pinned, so the same game
-  gives the same facts every time, and they're pinned by golden tests.
-- **Claims are the contract.** Each claim ("13.b4 created a weak square on a3")
-  is built from one signal, with its evidence. A 29-case hand-labelled benchmark
-  checks the claim builder against definitions written before the code was
-  run: precision and recall are 1.0 on every type.
-- **The model only phrases.** Its output is checked by code. If it cites a move
-  that isn't legal at that point, a square the facts don't mention, or a term
-  like "backward pawn" with no claim behind it, the narration is rejected,
-  retried once, and otherwise replaced by the claim sentences themselves.
+The V1 extractor and the verifier were frozen at commit `046bb19`, and their predictions were saved
+read-only with SHA-256 hashes. Labels were then written blind to the predictions. Full report:
+[`evals/queen_heldout/REPORT.md`](evals/queen_heldout/REPORT.md).
 
-## Example 1: one game
-
-Scandinavian, move 13. White plays **13.b4**. Stockfish at 1M nodes: White's
-win probability drops from 84% to 52%. The verified claims for that move:
-
-```
-13.b4 dropped White's win probability from 84% to 52% in the engine's evaluation.
-The engine preferred 13.cxd4, with the line 13.cxd4 13...exd4 14.Be2 14...Bxg3 15.hxg3 15...c5.
-The engine's refutation of 13.b4 is 13...a5 14.bxa5 14...Nc6 15.Nf5 15...dxc3 16.Bxc3.
-13.b4 created a weak square on a3: no White pawn can ever guard it again.
-After 13.b4, no White pawn can ever support White's c3 pawn. Black's pawn on d4 attacks it.
-```
-
-Each claim carries its evidence. For example, "a3 was guarded by the b2 pawn
-that moved" and "Black's d4 pawn attacks c3" are recomputed from the board and
-must agree with the engine server's facts, or no claim is made.
-
-The default narration of another flagged move in the same game, from a real
-run (`python -m app.agent --pgn tests/fixtures/scandinavian_blitz.pgn`, 1M nodes):
-
-> The move 21.h4 is a significant error that undermines White's position by
-> thinning the pawn cover around the king, causing a sharp 22.9% drop in win
-> probability from 74% to 51%. The engine highlights that this choice invites
-> exploitation, as shown by the refutation line 21...Nxf3 22.Kxf3 h5 23.Kg2 g6
-> 24.Nh6+. Instead, the engine preferred the solid developing maneuver 21.Bd1,
-> leading to the continuation 21...a6 22.Bb3 Ne6 23.a5 h5.
-
-## Example 2: your own history
-
-`python -m history profile`, over 250 of my own rated Chess.com blitz and rapid
-games (analysed at 100k nodes, about 29 minutes for the whole history):
-
-```
-Your last 20 eligible games (2026-01-02 to 2026-01-14, blitz, rated 1419-1453)
-Based on engine-flagged moves, Stockfish at 100,000 nodes per position (analyzer a1, claims c1).
-
-Weak squares created
-  14 of your last 20 games (25 flagged moves: 9 in the opening, 10 in the middlegame, 6 in the endgame)
-  median win-probability loss: 10.3 points (range 0 to 99.7)
-  9 of the 25 were quiet concessions: flagged for the structure, not for an immediate drop in the evaluation
-  you did this on 72 moves in those games; 25 of them were engine-flagged
-  previous 20 games: 8 games
-
-Backward pawns created
-  10 of your last 20 games (15 flagged moves: 2 in the opening, 7 in the middlegame, 6 in the endgame)
-  median win-probability loss: 2 points (range 0 to 49.8)
-  9 of the 15 were quiet concessions: flagged for the structure, not for an immediate drop in the evaluation
-  you did this on 20 moves in those games; 15 of them were engine-flagged
-  previous 20 games: 3 games
-
-Flagged moves with no structural pattern (tactical or other): 100 moves in 20 games (not a positional pattern).
-```
-
-- **Only engine-flagged moves count.** A weak square appears in 93% of games,
-  so a raw count would say nothing. The raw structural events appear only as
-  the "you did this on N moves" base rate.
-- **Everything is a count, a distinct-game count or a median.** There is no
-  weakness score. One chaotic game counts once.
-- **Eligibility is explicit and recorded per game.** Of 350 source games,
-  250 are profiled. 100 are excluded: 50 bullet, 24 abandoned, 14 under 20
-  plies, 6 containing a null move, and 6 not the player's own.
-- **Nothing is re-searched when the logic changes.** Engine searches are
-  stored once with their provenance (engine, nodes, threads, hash). When the
-  claim or detection code changes, a version bump re-derives the whole history
-  from the stored searches in seconds, and a test fails if covered code changes
-  without a bump.
-
-## Checking another model's chess (research in progress)
-
-[QUEEN](https://huggingface.co/princeton-nlp/queen_hce-4) is a chess language model that writes rich
-explanations. On 18 stored outputs it chose well: its move was Stockfish's first choice 8 times and in
-the top three 16 times. But an audit found at least 76 false concrete statements, such as attacks that
-don't exist, files called open with pawns on them, and pawns "one step from promotion" that need two.
-
-Prophylax has what's needed to check such text:
-
-```
-QUEEN's text → extraction (what does it claim?) → verifier (is it true on that board?) → VERIFIED / FALSE / UNKNOWN
-```
-
-```text
-"the white pawn on f3 blocks the white bishop on f1"  →  blocks(f1, f3)        →  FALSE: a bishop on f1 does not move along the line to f3
-"The white king on b6 already controls a7"            →  attacks(b6, a7, king) →  VERIFIED
-"immediately creating a passed pawn" (after e2-e4)    →  is_passed_pawn(e4)    →  FALSE: it already held before the move
-```
-
-- **`domain/verify.py`** proves or disproves simple facts by wrapping python-chess, and answers UNKNOWN
-  for anything else. It is property-tested against python-chess on random games.
-- **`domain/extract.py`** is a deterministic grammar. It reports what a sentence says and never whether
-  it's true, and binds each claim to the board the prose has reached.
-
-**How far to trust this so far:**
-
-| On the 18 development outputs | |
+| Held-out result (24 unseen positions, 1,142 independently adjudicated labels) | |
 |---|---|
-| Facts read exactly | 83 of 106 |
-| Variations read exactly | 45 of 48 |
-| False VERIFIED among labelled claims | 0 |
+| Correct verifier verdicts on correctly extracted claims | **81 / 81** |
+| False VERIFIED among correctly extracted claims | **0** |
+| VERIFIED fact precision | **86.5%** (45 / 52) |
+| False factual claims caught | 32 / 92 |
+| Exact variation extractions | 143 / 175 |
+| False variations caught | 18 / 27 |
 
-The grammar was written while reading those same outputs, so these numbers are optimistic. An audit
-of my own labels also found they'd been leaning toward what the grammar could read, and correcting them
-took the fact score from 83/83 to 83/106. The real test is a [blind held-out evaluation](evals/queen_heldout/):
-24 unseen positions, code frozen at `046bb19`, predictions saved read-only before a separate labeller
-sees the text. **It hasn't finished,** because generating outputs is limited by free GPU quota, so
-there's no held-out result yet. Known bugs are listed in [`docs/SEMANTIC_ISSUES.md`](docs/SEMANTIC_ISSUES.md),
-including two that can produce a false VERIFIED, and they stay unfixed until the evaluation is done.
-QUEEN isn't used in production; the [plan for after the evaluation](docs/QUEEN_INTEGRATION_DESIGN.md) is
-a proposal.
+**The bottleneck was semantic extraction, not verification.** When a claim was read correctly, the verifier
+was always right. But V1's grammar read only 91 of 468 labelled facts exactly (19.4%), so most false claims
+never reached the verifier.
 
-## Testing and evaluation
+> **Scorer correction.** The first scoring had a candidate-matching bug, and it was fixed after the first scores
+> had been read. Predictions, labels and code under test are unchanged. The numbers above are the corrected
+> ones. The original scores and report are kept for transparency, and the report's first section explains the
+> change.
 
-- **Fast suite:** over 700 tests, about 30s, offline. It covers:
-  - the domain models and conversion
-  - claims in both colours and in mirrored positions
-  - the validators and the prompt contracts
-  - the history schema, import, derivation and profile statistics
-  - payload parity, from recorded engine searches
-  - the semantic fact verifier and QUEEN claim extraction (neither used in production yet)
-- **Golden tests:** engine-backed at the pinned 1M nodes, with WDL bands
-  measured, not hand-typed. They include a live check that the refactored
-  server returns exactly its pre-refactor output.
-- **Claim benchmark:** 29 hand-labelled positions (fixtures, mirrors, targeted
-  edge cases, real endgames from my games), approved by review before any
-  label was asserted. Labels are never generated by the builder.
-- **Narration gate and LLM-as-judge:** the judge is a different model from the
-  narrator and is calibrated on a captured real failure.
-- **Pre-registered A/B tests for prompt changes:** paired, seeded runs
-  alternating which arm goes first, with a switching rule written before the
-  data. Provider outages are logged and rerun, never counted. The first
-  comparison kept the payload path (gate passes regressed). After fixing a
-  validator false positive and adding deterministic required-claim markers,
-  the rerun (54 trials) switched the default to claim-grounded narration:
-  judge passes 27/27 vs 25/27, with gate passes, fallbacks, invalid
-  narrations and concept violations level. The losing arm was not tuned.
+## Experimental extractor work (post-hoc)
+
+> **Not a generalization result.** The 24 held-out outputs had already been read when this work began, and they
+> shaped it. These comparisons show whether the direction is promising, not how it performs on unseen text.
+
+- **V2:** an LLM (Gemini Flash-Lite, recorded and replayable) reads the prose. Deterministic checks reject
+  invented quotes, illegal branches and malformed predicates.
+- **V2.1 hybrid:** merges V1, V2 and a few phrase rules. On the inspected held-out set:
+  - Exact fact extraction rose from 19.4% to 52.4%.
+  - False factual claims caught rose from 34.8% to 48.9%.
+  - The cost: VERIFIED precision fell from 86.5% to 74.6%, and it produced more FALSE verdicts that no label
+    supports.
+
+  See [`evals/queen_v2_1/COMPARISON.md`](evals/queen_v2_1/COMPARISON.md).
+- **V2.2:** tightens material, count and negation semantics. Evaluated on the development set only and not
+  frozen. See [`evals/queen_v2_2/`](evals/queen_v2_2/).
+
+Any generalization claim needs a frozen extractor and a new blind benchmark. The design and its limits are in
+[`docs/EXTRACTOR_V2_DESIGN.md`](docs/EXTRACTOR_V2_DESIGN.md).
+
+## Original coaching system
+
+Before the verification work, Prophylax was a Stockfish-grounded positional coach:
+
+- **Every narrated fact traces to a verified claim.** The language model phrases claims it's given.
+  Deterministic validators reject illegal moves, unbacked squares and unsupported terms, then retry once, then
+  fall back to the claims themselves.
+- **Recurring weaknesses across 250 of my own games.** 18,232 plies analysed with pinned Stockfish produced
+  10,642 structured claims and 1,553 MistakeEvents. A deterministic profile reports counts and medians, with
+  no model involved.
+- **The default narration path was chosen by a pre-registered A/B test** of 54 paired trials.
+
+Pipeline, claim types and limits: [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+## Reliability and evaluation infrastructure
+
+- **Frozen predictions** with SHA-256 checks on raw outputs and predictions. A test fails if the frozen code
+  changes.
+- **Blind labels,** imported and validated separately from predictions. Corrections are logged and never
+  silently applied.
+- **Scorer regression tests,** including the matching bug above.
+- **Recorded model answers** keyed by request hash, so every V2.x score replays offline with no API key.
+- **An offline audit viewer** for the held-out results.
+- **CI on Python 3.11 and 3.13.** The fast suite is 1,152 offline tests at the latest experimental checkpoint.
+  Engine-backed golden tests and API-key narration tests run separately.
+
+## Running locally
+
+Requirements: Python 3.11+ and [uv](https://docs.astral.sh/uv/). Nothing else for the offline commands.
 
 ```bash
-uv run pytest                    # fast suite (offline)
-uv run pytest -m golden          # engine-backed, needs Stockfish (~2 min)
-uv run pytest -m narration       # flag-path narrator gate + default-path report (API key, Stockfish)
-uv run python -m evals.claim_metrics   # claim benchmark + narration coverage
+git clone https://github.com/denialguo/prophylax && cd prophylax
+uv sync --locked
+
+uv run pytest                                      # fast suite, offline (~40s)
+uv run python -m evals.queen_extraction            # V1 on the 18 development outputs
+uv run python -m evals.queen_heldout.status        # state of the frozen blind evaluation
+uv run python -m evals.queen_extraction_v2_2 dev   # experimental hybrid, replayed from recordings
+uv run python -m evals.claim_metrics               # coaching-claim benchmark
 ```
 
-## Running it
-
-Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Stockfish 18, and
-a Gemini or Groq API key (both have free tiers).
+The coach itself needs Stockfish 18 and a Gemini or Groq API key (both have free tiers):
 
 ```bash
-git clone https://github.com/denialguo/prophylax && cd prophylax && uv sync --locked
-cp app/.env.example app/.env         # fill in your key and Stockfish path (git-ignored)
+cp app/.env.example app/.env          # fill in STOCKFISH_PATH and a key; git-ignored
 set -a; . app/.env; set +a
-
-# one game: a report on the flagged moves
-uv run python -m app.agent --pgn mygame.pgn --max-flags 4
-
-# conversational coach (paste a PGN, then ask "what about 13.b4?")
-uv run adk web
-
-# your history: import, analyse at 100k nodes, profile
-export PROPHYLAX_PLAYER_NAMES=YourChessComName
-uv run python -m history import --pgn games/your_games.pgn   # games/*.pgn is git-ignored
-uv run python -m history analyze          # ~7 s per game; resumable
-uv run python -m history profile          # --include-bullet, --tc rapid, --since 2025-10-01, --json
+uv run python -m app.agent --pgn tests/fixtures/scandinavian_blitz.pgn   # one-game report
+uv run pytest -m golden               # engine-backed tests (~2 min)
 ```
 
-The history database lives at `data/prophylax_history.sqlite3` (git-ignored;
-`PROPHYLAX_HISTORY_DB` overrides it). Your PGN files are only ever read.
+## Audit viewer
 
-## Honest limitations
+```bash
+uv run python -m evals.queen_heldout.audit_viewer
+```
 
-- **Claim-grounded narration names the expected theme less often.** It is the
-  default because it won its pre-registered comparison (judge passes 27/27 vs
-  25/27). But its theme subscore was 30 against 43 for the payload path, so it
-  more often stays correct without leading on the theme a coach would pick.
-  The payload path (`PROPHYLAX_NARRATION_INPUT=flag`) is kept for comparison,
-  and it can misuse terms: in the example game it called a3 an "outpost" and
-  c3 "isolated", both of which the claim-grounded path rejects.
-- **Most mistakes are unclassified.** 1,239 of 1,553 flagged moves have no
-  structural category. They're tactical or not yet a defined concept (for
-  example, pawn races). Prophylax reports them as such and never guesses a
-  category.
-- **History uses 100k-node analysis.** On a 6-game check, 100k agreed with 1M
-  on 89% of flagged moves, but on only 76% of best moves. So profile counts
-  are labelled with their budget, and single positions should be re-checked at
-  1M.
-- **Coverage gaps:**
-  - King safety is a pawn-shelter heuristic. It ignores uncastled kings and
-    is switched off in endgames, where it measured king activity, not danger.
-  - The exports have no clock data, so time trouble can't be told apart from
-    misunderstanding.
-- **Scope.** Single player and command-line only. Cross-game conversational
-  retrieval and training positions built from your own mistakes are designed
-  (`docs/plans/PHASE_C_PLAN.md`) but not built.
+This generates `artifacts/queen_heldout_audit.html`, a self-contained page you open in a browser. It shows each
+held-out case's QUEEN text, labels, extractions and verdicts, with why each one was flagged. The HTML is a
+generated artifact and is intentionally not committed.
 
-## Where things are
+## Repository map
 
 | Path | What |
 |---|---|
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | The full pipeline, configuration, tests and known limits |
-| `app/` | The agent, narration harness and command-line report |
-| `mcp_server/` | The only code that talks to Stockfish; deterministic features |
-| `domain/` | Typed models, coaching claims, the verifier and the extractor |
-| `history/` | Player history and the recurring-weakness profile |
-| `evals/` | Benchmarks, the narration comparison, the QUEEN evaluation |
-| [`docs/`](docs/) | Design notes, known semantic issues, the original plans (`docs/plans/`) |
+| `domain/verify.py` | The deterministic verifier, frozen for the blind evaluation |
+| `domain/extract.py` | V1 extractor (grammar and variation parser), frozen |
+| `domain/extract_v2*.py` | Experimental V2, V2.1 and V2.2 extractors |
+| `evals/queen_heldout/` | **Frozen blind V1 evaluation:** predictions, labels, corrected scores, report |
+| `evals/queen_v2/`, `queen_v2_1/`, `queen_v2_2/` | **Post-hoc experiments:** recordings, comparisons, development scores |
+| `evals/queen_benchmark/` | Development set: 18 QUEEN outputs and their labels |
+| `app/`, `mcp_server/`, `history/` | The coach: agent and narration, the Stockfish server, player history |
+| `docs/` | Design notes, known issues, the post-experiment checklist |
 | [`AGENTS.md`](AGENTS.md) | The rules the project was built under |
 
 ## License
 
-Prophylax's own code is under the [MIT license](LICENSE). That doesn't extend to third-party software,
-models or data, which stay under their own terms, including Stockfish and python-chess (both GPL).
-QUEEN is an external model that this repository evaluates. Its weights aren't included here, and nothing
-here grants rights to it. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Prophylax's own code is under the [MIT license](LICENSE). That doesn't extend to third-party software, models
+or data, which keep their own terms, including Stockfish and python-chess (both GPL). QUEEN is an external
+model that this repository evaluates. Its weights aren't included, and nothing here grants rights to it. See
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

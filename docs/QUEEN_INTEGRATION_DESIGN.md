@@ -4,6 +4,10 @@
 the go/no-go below has been decided. The thresholds are proposals for review, and should be agreed
 **before** the results are seen.
 
+**Outcome against the proposed gate: no-go for V1.** The held-out report has 0 false VERIFIED, but fact
+precision is 86.5%, below the proposed 98%. The verifier and extractor stay an evaluation tool. The
+experimental V2.x extractors were not measured on fresh text, so they can't reopen this decision.
+
 ## The idea
 
 QUEEN writes richer explanations than our narrator but states false chess facts. Prophylax can check
